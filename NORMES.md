@@ -1,8 +1,8 @@
 # Documentation
-- La notation deoxygen ([doxygen.org](doxygen.org)) sera utilisée pour documenter le code
-- La documentation des méthodes et du code sera en anglais
-- Une entête de fichier sera utilisée pour chaque fichier
-- La tabulation est quatre espaces
+- La notation Doxygen ([doxygen.org](doxygen.org)) est utilisée pour documenter le code
+- La documentation des méthodes et du code est en anglais
+- Une entête de fichier est utilisée pour chaque fichier
+- La tabulation est de quatre espaces
 
 # Variables et méthodes
 - Utilisation de la notation camel case pour les variables et méthodes
@@ -68,35 +68,57 @@ class MaClasse {
 # Exemple complet
 ```
 /**
- * \author Auteur 1
- * \author Auteur 2
- * \class MaClasse.java
- * \brief This class is an example.
+ * @author Auteur 1
+ * @author Auteur 2
+ *
+ * @class MaClasse
+ *
+ * @brief This class is an example.
  *
  * Its description continues on multiple lines without any problem. However, if a
  * comment seems too long, feel free to break the comment in two lines.
  */
-
  class MaClasse {
 
-    private final static int I_AM_A_STATIC_VARIABLE = 10; /**< Comment after the member */
-    public String iAmAString; /**< Comment after the member */
-    protected char iAmACharacter; /**< Comment after the member */
-    private booleand amIABoolean; /**< Comment after the member */
+    /**
+     * I_AM_A_STATIC_VARIABLE description.
+     */
+    private final static int I_AM_A_STATIC_VARIABLE = 10;
 
-    /** @brief Description about the method
-     *  @param x Short description
-     *  @param y Short description
-     *  @return int The multiplication of x and y
+    /**
+     * iAmAString description.
+     */
+    public String iAmAString;
+
+    /**
+     * iAmACharacter description.
+     */
+    protected char iAmACharacter;
+
+    /**
+     * amIABoolean description.
+     */
+    private boolean amIABoolean;
+
+    /**
+     * @brief Description about the method
+     *
+     * @param x Short description
+     * @param y Short description
+     *
+     * @return int The multiplication of x and y
      */
     public int myMethod(int x, int y) {
         return x * y;
     }
 
-    /** @brief Description about the method
-     *  @return void
+    /**
+     * @brief Description about the method
+     *
+     * @return void
      */
     public void myMethod2() {
+        // In-method comment.
         System.out.println("Hi");
     }
 
