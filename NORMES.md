@@ -2,8 +2,8 @@
 - La documentation des méthodes et du code sera en anglais
 - La tabulation est quatre espaces
 - La longeur maximale les lignes de code est sur 120 caractères
-- La notation deoxygen ([doxygen.org](doxygen.org)) sera utilisée pour documenter le code, avec le caractère `@` et non `\`
-- Une entête de fichier (deoxygen) sera utilisée pour chaque fichier
+- La notation doxygen ([doxygen.org](doxygen.org)) sera utilisée pour documenter le code, avec le caractère `@` et non `\`
+- Une entête de fichier (doxygen) sera utilisée pour chaque fichier
 
 # Entêtes
 Les entêtes de fonctions et fichiers devront respecter la forme suivante:
@@ -180,10 +180,17 @@ class MaClasse {
  */
  class MaClasse {
 
-    private final static int I_AM_A_STATIC_VARIABLE = 10; //! Comment after the member
-    public String iAmAString; //! Comment after the member
-    protected char iAmACharacter; //! Comment after the member
-    private booleand amIABoolean; //! Comment after the member
+    //! Comment before the member
+    private final static int I_AM_A_STATIC_VARIABLE = 10;
+
+    //! Comment before the member
+    public String iAmAString;
+
+    //! Comment before the member
+    protected char iAmACharacter;
+
+    //! Comment before the member
+    private booleand amIABoolean;
 
     /**
      * @brief Description about the method
