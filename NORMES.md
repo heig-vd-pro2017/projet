@@ -49,8 +49,10 @@ L'entête des fonctions devra respecter la forme suivante:
 ```
 /**
  * @brief Description about the method
+ *
  * @param x Short description
  * @param y Short description
+ *
  * @return int The multiplication of x and y
  */
 public int myMethod(int x, int y) {
