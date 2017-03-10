@@ -1,0 +1,74 @@
+@startuml
+
+
+class Player {
+    name
+
+    play()
+    stop()
+    pause()
+    
+    next()
+    previous()
+}
+
+class Playlist {
+    name
+
+    setName()
+    getName()
+
+    addTrack()
+    removeTrack()
+    deleteTrack()
+
+    getTrack()
+    getTracks()
+
+}
+
+class Track {
+    artist
+    title
+    album
+    duration
+    uri
+    addedDate
+    playedDate
+
+    getArtist()
+    getTitle()
+    getAlbum()
+    getDuration()
+    getUri()
+    getAddedDate()
+    getPlayedDate()
+}
+
+class PlaylistManager {
+
+}
+
+class VoteManager {
+
+}
+
+class Database {
+
+}
+
+class Configuration {
+
+}
+
+class Storage {
+
+}
+
+class Network {
+
+}
+
+
+
+@enduml
