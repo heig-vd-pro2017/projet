@@ -1,7 +1,7 @@
 # Documentation
 - La documentation des méthodes et du code sera en anglais
-- La tabulation est quatre espaces
-- La longeur maximale les lignes de code est sur 120 caractères
+- La tabulation est de quatre espaces
+- La longeur maximale des lignes de code est sur 120 caractères
 - La notation doxygen ([doxygen.org](doxygen.org)) sera utilisée pour documenter le code, avec le caractère `@` et non `\`
 - Une entête de fichier (doxygen) sera utilisée pour chaque fichier
 
@@ -29,7 +29,7 @@ Les entêtes de fonctions et fichiers devront respecter la forme suivante:
  */
 ```
 
-Ne pas écrire d'entêtes commme ceux-ci:
+Ne pas écrire d'entêtes commme ceci:
 ```
 /** This comment starts at the very top...
  * ...but should has started here.
@@ -96,7 +96,7 @@ Pour commenter des variables, on utilise la forme:
 //! The current volume of the application
 private unsigned int volume;
 
-//! The playlist containing all the musics
+//! The playlist containing all the songs
 private ArrayList<Music> playlist;
 ```
 
