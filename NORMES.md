@@ -2,7 +2,7 @@
 - La documentation des méthodes et du code sera en anglais
 - La tabulation est quatre espaces
 - La longeur maximale les lignes de code est sur 120 caractères
-- La notation deoxygen ([doxygen.org](doxygen.org)) sera utilisée pour documenter le code, avec le caractère `\` et non `@`
+- La notation deoxygen ([doxygen.org](doxygen.org)) sera utilisée pour documenter le code, avec le caractère `@` et non `\`
 - Une entête de fichier (deoxygen) sera utilisée pour chaque fichier
 
 # Entêtes
@@ -48,10 +48,10 @@ Ne pas écrire d'entêtes commme ceux-ci:
 L'entête des fonctions devra respecter la forme suivante:
 ```
 /**
- * \brief Description about the method
- * \param x Short description
- * \param y Short description
- * \return int The multiplication of x and y
+ * @brief Description about the method
+ * @param x Short description
+ * @param y Short description
+ * @return int The multiplication of x and y
  */
 public int myMethod(int x, int y) {
     return x * y;
@@ -91,14 +91,18 @@ int a = iAmACoolFunctionWithoutAnySpaces(4);
 # Variables
 Pour commenter des variables, on utilise la forme:
 ```
-private int volume; //! The current volume of the application
+//! The current volume of the application
+private unsigned int volume;
+
+//! The playlist containing all the musics
+private ArrayList<Music> playlist;
 ```
 
 # Entête de fichier
 L'entête des fichiers devra respecter la forme suivante:
 ```
 /**
- * \brief This class is an example.
+ * @brief This class is an example.
  *
  * Its description continues on multiple lines without any problem. However, if a comment is too long (max. 120
  * characters), feel free to break the comment in two lines.
@@ -169,7 +173,7 @@ class MaClasse {
 # Exemple complet
 ```
 /**
- * \brief This class is an example.
+ * @brief This class is an example.
  *
  * Its description continues on multiple lines without any problem. However, if a comment seems too long (max. 120
  * characters), feel free to break the comment in two lines.
@@ -182,10 +186,12 @@ class MaClasse {
     private booleand amIABoolean; //! Comment after the member
 
     /**
-     * \brief Description about the method
-     * \param x Short description
-     * \param y Short description
-     * \return int The multiplication of x and y
+     * @brief Description about the method
+     *
+     * @param x Short description
+     * @param y Short description
+     *
+     * @return int The multiplication of x and y
      */
     public int myMethod(int x, int y) {
 
@@ -195,9 +201,11 @@ class MaClasse {
     }
 
     /**
-     * \brief Description about the method
-     * \param c Change the message
-     * \return void
+     * @brief Description about the method
+     *
+     * @param c Change the message
+     *
+     * @return void
      */
     public void myMethod2(boolean c) {
 
