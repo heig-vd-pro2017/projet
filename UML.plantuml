@@ -1,5 +1,7 @@
 @startuml
 
+skinparam classAttributeIconSize 0
+
 class Player {
     -String name
 
