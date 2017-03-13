@@ -54,30 +54,34 @@ class VoteManager {
     -int votes
 
     +getVote()
+    +updateVote()
 }
 
-class Database {
 
-}
+class StorageManager {
 
-class Configuration {
-    -String defaultOutput
-    -int defaultVolume
-    -int defaultConnections
-    -int waitBetweenUploads
-
-    +loadParameters()
-    +saveParameters()
-}
-
-class Storage {
+    +store(Track)
+    +remove(Track)
+    +clean()
 
 }
 
-class Network {
+class NetworkManager {
 
+    -broadcast()
 }
+
 
 Player <..> Playlist
-Playlist <..> Track
+
+Track <..> VoteManager
+
+VoteManager <..> Playlist
+
+StorageManager <..> Playlist
+
+Playlist <..> PlaylistManager
+
+NetworkManager <..> StorageManager
+
 @enduml
