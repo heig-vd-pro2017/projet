@@ -1,0 +1,41 @@
+@startuml
+
+
+Client -> Client : Fichier\nsupporté?
+
+Client -> Serveur : Puis-je proposer cette chanson?\nEnvoi des métadonnées
+
+note left
+    Métadonnées:
+    - titre
+    - artiste
+    - album
+    - durée
+    - format
+    - taille
+end note
+
+
+Serveur -> Serveur : Chanson déjà présente\ndans la DB?
+
+Client <--x Serveur : <i>Chanson déjà présente</i>
+
+Serveur -> Serveur : Combien d'uploads\nactifs?
+
+Client <--x Serveur : <i>Trop d'uploads actifs</i>
+
+Serveur -> Serveur : Espace disque\nsuffisant?
+
+Client <--x Serveur : <i>Espace disque insuffisant</i>
+
+Client <- Serveur : <i>OK pour le transfert</i>
+
+Client -> Serveur : Envoi de la chanson
+
+Serveur -> Serveur : Erreur lors du\ntransfert?
+
+Client <--x Serveur : <i>Erreur lors du transfert</i>
+
+Client <-x Serveur : Transfert réussi
+
+@enduml
