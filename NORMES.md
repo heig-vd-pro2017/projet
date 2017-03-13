@@ -4,6 +4,9 @@
 - La longeur maximale des lignes de code est sur 120 caractères
 - La notation doxygen ([doxygen.org](doxygen.org)) sera utilisée pour documenter le code, avec le caractère `@` et non `\`
 - Une entête de fichier (doxygen) sera utilisée pour chaque fichier
+- Utilisation de la notation camel case pour les variables et méthodes
+- Les variables de types statiques sont en majuscules
+- Ne pas utiliser de caractères spéciaux dans les variables et fonctions
 
 # Entêtes
 Les entêtes de fonctions et fichiers devront respecter la forme suivante:
@@ -100,7 +103,7 @@ private unsigned int volume;
 private ArrayList<Music> playlist;
 ```
 
-# Entête de fichier
+# Entête des fichiers
 L'entête des fichiers devra respecter la forme suivante:
 ```
 /**
@@ -110,11 +113,6 @@ L'entête des fichiers devra respecter la forme suivante:
  * characters), feel free to break the comment in two lines.
  */
 ```
-
-# Variables et méthodes
-- Utilisation de la notation camel case pour les variables et méthodes
-- Les variables de types statiques sont en majuscules
-- Ne pas utiliser de caractères spéciaux
 
 # Les instructions de branchement
 Les instructions de branchement sont écrites de la façon suivante, le `_` illustrant un espace:
