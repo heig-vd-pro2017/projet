@@ -1,85 +1,112 @@
 @startuml
 
-skinparam classAttributeIconSize 0
+class DBManager <<(S, #FF7700)>> {
+    - {static} sharedManager : DBManager
 
-class Player {
-    -String name
+    -- shared instance --
+    - DBManager()
+    + {static} getSharedManager() : DBManager
+}
 
-    +play()
-    +stop()
-    +pause()
+class FileManager <<(S, #FF7700)>> {
+    - {static} sharedManager : FileManager
 
-    +next()
-    +previous()
+    -- shared instance --
+    - SharedManager()
+    + {static} getSharedManager() : FileManager
+}
+
+class Player <<(S, #FF7700)>> {
+    - currentTrack : Track
+    - {static} sharedPlayer : Player
+
+    -- shared instance --
+    - Player()
+    + {static} getSharedPlayer() : Player
+
+    -- music controls --
+    + next() : void
+    + pause() : void
+    + play() : void
+    + previous() : void
+    + stop() : void
 }
 
 class Playlist {
-    -String name
+    - dbManager : DBManager
+    - name : String
+    - tracks : List<Track>
+    - voteManager : VoteManager
 
-    +setName()
-    +getName()
+    -- getters/setters --
+    + getName() : String
+    + setName(name : String) : void
 
-    +addTrack()
-    +removeTrack()
-    +deleteTrack()
+    -- tracks interaction --
+    + addTrack(track : Track) : void
+    + deleteTrack(track : Track) : void
+    + getTrack() : Track
+    + getTracks() : List<Track>
+    + removeTrack(track : Track) : void
+}
 
-    +getTrack()
-    +getTracks()
+class PlaylistManager <<(S, #FF7700)>> {
+    - dbManager : DBManager
+    - {static} sharedManager : PlaylistManager
+    - playlists : List<Playlist>
 
+    -- shared instance --
+    - PlaylistManager()
+    + {static} getSharedManager() : PlaylistManager
 }
 
 class Track {
-    -String artist
-    -String title
-    -String album
-    -String duration
-    -String uri
-    -Timestamp addedDate
-    -Timestamp playedDate
+    - addedDate : Timestamp
+    - album : String
+    - artist : String
+    - duration : double
+    - playedDate : Timestamp
+    - title : String
+    - uri : String
 
-    +getArtist()
-    +getTitle()
-    +getAlbum()
-    +getDuration()
-    +getUri()
-    +getAddedDate()
-    +getPlayedDate()
-}
-
-class PlaylistManager {
-    -ArrayList<Playlist>
+    + getAddedDate() : Timestamp
+    + getAlbum() : String
+    + getArtist() : String
+    + getDuration() : double
+    + getPlayedDate() : Timestamp
+    + getTitle() : String
+    + getUri() : String
 }
 
 class VoteManager {
-    -Track track
-    -Playlist playlist
-    -int votes
+    - votes : Map<Track, Integer> votes
 
-    +getVote()
+    + downvote(track : Track) : int
+    + upvote(track : Track) : int
 }
 
-class Database {
+FileManager -right> "1" DBManager
 
-}
+Player -() MediaPlayer
 
-class Configuration {
-    -String defaultOutput
-    -int defaultVolume
-    -int defaultConnections
-    -int waitBetweenUploads
+Playlist --> "1" DBManager
+Playlist "1" --> "0..*" Track
+Playlist "1" -> "1" VoteManager
 
-    +loadParameters()
-    +saveParameters()
-}
+PlaylistManager -left> "1" DBManager
+PlaylistManager "1" --> "0..*" Playlist
 
-class Storage {
+Track "1" <- Player
 
-}
+note as note1
+    Les classes représentées
+    par "S" sont des singletons.
+endnote
 
-class Network {
+note left of Playlist
+    Différence entre
+    ""deleteTrack()"" et
+    ""removeTrack()""?
+endnote
 
-}
-
-Player <..> Playlist
-Playlist <..> Track
 @enduml
