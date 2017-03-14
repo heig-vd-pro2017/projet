@@ -1,129 +1,122 @@
 @startuml
 
-class DatabaseManager <<(S, #FF7700)>> {
-    - {static} sharedManager : DatabaseManager
+class NetworkManager {
 
-    -- shared instance --
-    - DatabaseManager()
-    + {static} getSharedManager() : DatabaseManager
 }
 
-class FileManager <<(S, #FF7700)>> {
-    - {static} sharedManager : FileManager
+class Controller {
 
-    -- shared instance --
-    - SharedManager()
-    + {static} getSharedManager() : FileManager
 }
 
-class Player <<(S, #FF7700)>> {
-    - currentTrack : Track
-    - {static} sharedPlayer : Player
+class FileManager {
 
-    -- shared instance --
-    - Player()
-    + {static} getSharedPlayer() : Player
-
-    -- music controls --
-    + next() : void
-    + pause() : void
-    + play() : void
-    + previous() : void
-    + stop() : void
 }
 
-class Playlist {
-    - databaseManager : DatabaseManager
-    - name : String
-    - tracks : List<Track>
-    - voteManager : VoteManager
+class DatabaseManager {
 
-    -- getters/setters --
-    + getName() : String
-    + setName(name : String) : void
-
-    -- tracks interaction --
-    + addTrack(track : Track) : void
-    + deleteTrack(track : Track) : void
-    + getTrack() : Track
-    + getTracks() : List<Track>
-    + removeTrack(track : Track) : void
 }
 
-class PlaylistManager <<(S, #FF7700)>> {
-    - databaseManager : DatabaseManager
-    - {static} sharedManager : PlaylistManager
-    - playlists : List<Playlist>
+class PlaylistManager {
 
-    -- shared instance --
-    - PlaylistManager()
-    + {static} getSharedManager() : PlaylistManager
 }
 
-class Track {
-    - addedDate : Timestamp
-    - album : String
-    - artist : String
-    - duration : double
-    - playedDate : Timestamp
-    - title : String
-    - uri : String
+class FavouriteManager {
 
-    + getAddedDate() : Timestamp
-    + getAlbum() : String
-    + getArtist() : String
-    + getDuration() : double
-    + getPlayedDate() : Timestamp
-    + getTitle() : String
-    + getUri() : String
 }
 
 class VoteManager {
-    - votes : Map<Track, Integer> votes
 
-    + downvote(track : Track) : int
-    + upvote(track : Track) : int
 }
 
-FileManager -right> "1" DatabaseManager
+class Playlist {
 
-Player -() MediaPlayer
+}
 
-Playlist --> "1" DatabaseManager
-Playlist "1" --> "0..*" Track
-Playlist "1" -> "1" VoteManager
+class Player {
 
-PlaylistManager -left> "1" DatabaseManager
-PlaylistManager "1" --> "0..*" Playlist
+}
 
-Track "1" <- Player
+class Track {
 
-note as note1
-    Les classes représentées
-    par "S" sont des singletons.
+}
+
+NetworkManager -- Controller
+
+Controller -- FileManager
+Controller -- DatabaseManager
+Controller -- PlaylistManager
+
+PlaylistManager -- FavouriteManager
+PlaylistManager -- VoteManager
+PlaylistManager -- Playlist
+
+Playlist -- Player
+Playlist -- Track
+
+note left of NetworkManager
+    Communication entre
+    le serveur et le client
+endnote
+
+note left of Controller
+    "Routeur" qui rédirige
+    les demandes du client
+endnote
+
+note  right of Controller
+    Le client demande une requête au servuer. Si une requête n'a
+    pas de correspondance avec une classe/méthode, le serveur
+    renvoie une erreur.
+    Exemple:
+    192.168.1.45:4004/PlaylistManager/VoteManager/upvote/1302
+    Le controlleur demande au PlaylistManager s'il a la méthode
+    VoteManager(). Le PlaylistManager n'a pas cette fonction,
+    mais a la classe VoteManager et renvoie la requête à cette
+    dernière. Elle demande si la méthode 'upvote()' existe.
+    Si c'est le cas, on appelle cette fonction en passant l'id
+    '1302' en paramètre à la fonction. Son résultat est retourné
+    jusqu'au contrôleur qui renverra au client le résultat
+endnote
+
+note left of FileManager
+    Gestionnaire de
+    fichiers au niveau
+    du système hôte
+endnote
+
+note left of DatabaseManager
+    Interraction avec
+    la base de données
+endnote
+
+note left of PlaylistManager
+    Gestionnaire
+    de playlists
+endnote
+
+note left of FavouriteManager
+    Gestionnaire
+    de favoris
+endnote
+
+note left of VoteManager
+    Gestionnaire
+    de votes
 endnote
 
 note left of Playlist
-    Différence entre
-    ""deleteTrack()"" et
-    ""removeTrack()""?
+    Abstraction
+    d'une playlist
 endnote
 
-@enduml
+note left of Player
+    Lecture
+    de musique
+endnote
 
-
-Player <..> Playlist
-
-Track <..> VoteManager
-
-VoteManager <..> Playlist
-
-StorageManager <..> Playlist
-
-Playlist <..> PlaylistManager
-
-NetworkManager <..> StorageManager
-
-
+note left of Track
+    Abstraction
+    d'une chanson
+endnote
 
 @enduml
