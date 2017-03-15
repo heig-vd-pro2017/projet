@@ -7,6 +7,8 @@ Client -> Serveur : Envoi des métadonnées\n(titre, artiste, album, durée, for
 
 Serveur -> Serveur: Format\nsupporté ?
 
+Client <--x Serveur : <i>Format non supporté</i>
+
 Serveur -> Serveur : Chanson déjà\nprésente dans la\nbase de données ?
 
 Client <--x Serveur : <i>Chanson déjà présente</i>
