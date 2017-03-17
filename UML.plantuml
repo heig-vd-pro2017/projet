@@ -16,10 +16,6 @@ class NetworkManager {
 
 }
 
-class Reflection {
-
-}
-
 class Controller {
     -id : Integer
     -name : String
@@ -70,8 +66,7 @@ class Track {
     -datePlayed : Timestamp
 }
 
-NetworkManager -- Reflection
-Reflection -- Controller
+NetworkManager -- Controller
 
 Controller -- FileManager
 Controller -- DatabaseManager
@@ -93,11 +88,6 @@ endnote
 note left of NetworkManager
     Communication entre
     le serveur et le client
-endnote
-
-note left of Reflection
-    Convertit les requêtes de
-    l'utilisateur en objets
 endnote
 
 note left of Controller
