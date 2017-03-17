@@ -19,7 +19,7 @@ Client <--x Serveur : <i>Trop d'uploads actifs</i>
 
 Serveur -> Serveur : Espace disque\nsuffisant?
 
-Client <--x Serveur : : <i>Espace disque insuffisant</i>
+Client <--x Serveur : <i>Espace disque insuffisant</i>
 
 Serveur -> Serveur : Réservation de\nl'espace disque
 

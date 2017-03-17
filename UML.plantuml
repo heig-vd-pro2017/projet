@@ -1,11 +1,28 @@
 @startuml
 
+skinparam classAttributeIconSize 0
+
+class Logger {
+    -print(String) : void
+    +info(String) : void
+    +warning(String) : void
+    +alert(String) : void
+}
+
 class NetworkManager {
+    -clients : Array of Threads
+
+    -addClient() : Integer
+
+}
+
+class Reflection {
 
 }
 
 class Controller {
-
+    -id : Integer
+    -name : String
 }
 
 class FileManager {
@@ -17,45 +34,70 @@ class DatabaseManager {
 }
 
 class PlaylistManager {
-
+    -playlists : Array of playlists
 }
 
-class FavouriteManager {
-
+class FavoriteManager {
+    favorites : Map of track/favorites
 }
 
 class VoteManager {
-
+    -votes : Map of track/votes
 }
 
 class Playlist {
-
+    -id : Integer
+    -name : String
+    -tracks : Array of tracks
+    -dateAdded : Timestamp
+    -datePlayed : Timestamp
 }
 
 class Player {
-
+    +play(Track) : void
+    +stop() : void
+    +pause() : void
 }
 
 class Track {
-
+    -id : Integer
+    -title : String
+    -artist : String
+    -album : String
+    -length : Duration
+    -uri : String
+    -dateAdded : Timestamp
+    -datePlayed : Timestamp
 }
 
-NetworkManager -- Controller
+NetworkManager -- Reflection
+Reflection -- Controller
 
 Controller -- FileManager
 Controller -- DatabaseManager
 Controller -- PlaylistManager
 
-PlaylistManager -- FavouriteManager
+PlaylistManager -- FavoriteManager
 PlaylistManager -- VoteManager
 PlaylistManager -- Playlist
 
 Playlist -- Player
 Playlist -- Track
 
+note left of Logger
+    Permet de logger
+    les activités du
+    programme
+endnote
+
 note left of NetworkManager
     Communication entre
     le serveur et le client
+endnote
+
+note left of Reflection
+    Convertit les requêtes de
+    l'utilisateur en objets
 endnote
 
 note left of Controller
@@ -94,7 +136,7 @@ note left of PlaylistManager
     de playlists
 endnote
 
-note left of FavouriteManager
+note left of FavoriteManager
     Gestionnaire
     de favoris
 endnote
