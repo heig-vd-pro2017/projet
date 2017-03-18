@@ -1,6 +1,12 @@
 # Procès verbaux
 *Les PV sont en ordre anti-chronologique afin d'avoir accès aux dernières nouvelles plus rapidement !*
 
+## 17.03.2017
+Nous avons décidé de mettre en place le projet selon une architecture RESTful. Cela nous permettra plus aisément de développer des plugins.
+* La semaine prochaine, Ludo et Thibaut démarreront la mise en place de la base de données. Ca prendra environ deux semaines.
+* Lucas et Denise, plutôt que de démarrer la mise en place du démarrage et arrêt de l'application, se lanceront dans la création de l'interface graphique à travers Sandbuilder.
+* David et Yosra démarreront la mise en place du serveur et le protocole de communication.
+
 ## 14.03.2017
 * Retour de M. Rentsch sur le cahier des charges:
     * Revoir le contexte : spécifier que le projet se fait dans le contexte du cours PRO au sein de l'HEIG-VD
