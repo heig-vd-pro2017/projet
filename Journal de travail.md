@@ -7,3 +7,7 @@
 * Création du journal de travail
 * Corrections du diagramme de séquence
 * Documentation sur Reflexion
+
+## 18.03.2017
+* Création du schéma de la base de données
+* Mise à jour du diagramme UML
