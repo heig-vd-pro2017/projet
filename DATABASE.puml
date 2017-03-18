@@ -1,0 +1,40 @@
+@startuml
+
+Object track
+Object playlist
+Object playlist_track
+Object favorite
+Object vote
+
+track : id : INTEGER
+track : title : VARCHAR
+track : artist : VARCHAR
+track : album : VARCHAR
+track : length : TIME
+track : uri : VARCHAR
+track : date_added : DATETIME
+track : date_played : DATETIME
+
+playlist : id : INTEGER
+playlist : name : VARCHAR
+playlist : date_added : DATETIME
+playlist : date_played : DATETIME
+
+playlist_track : track_id : INTEGER
+playlist_track : playlist_id : INTEGER
+
+favorite : track_id : INTEGER
+
+vote : track_id : INTEGER
+vote : playlist_id : INTEGER
+vote : vibes : INTEGER
+
+track "1..*" - "0..*" playlist_track
+playlist_track "0..*" - "0..*" playlist
+
+favorite "1" - "1" track
+
+vote "0..*" - "1" track
+vote "0..*"- "1" playlist
+
+@enduml

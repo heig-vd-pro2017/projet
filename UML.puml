@@ -16,6 +16,18 @@ class NetworkManager {
 
 }
 
+class SessionManager {
+    array of Session
+}
+
+class Session {
+    -id : Integer
+    -ipAddress : String
+    -macAddress : String
+    -token : String
+    -dateAdded : Timestamp
+}
+
 class Controller {
     -id : Integer
     -name : String
@@ -68,6 +80,10 @@ class Track {
 
 NetworkManager -- Controller
 
+NetworkManager -- SessionManager
+
+SessionManager -- Session
+
 Controller -- FileManager
 Controller -- DatabaseManager
 Controller -- PlaylistManager
@@ -88,6 +104,16 @@ endnote
 note left of NetworkManager
     Communication entre
     le serveur et le client
+endnote
+
+note left of SessionManager
+    Permet de gérer les
+    différents utilisateurs
+endnote
+
+note left of Session
+    Abstraction d'une
+    session utilisateur
 endnote
 
 note left of Controller
