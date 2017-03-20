@@ -1,5 +1,6 @@
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -16,6 +17,7 @@ public class SessionManager {
 
     public void storeSession(Session s) {
         sessions.add(s);
+        System.out.println(sessions);
         LOG.info("New session with id " + s.getId() + " stored.");
     }
 
@@ -25,18 +27,29 @@ public class SessionManager {
      * @param id
      */
     public void removeSessionById(int id) {
-        for (Session s : sessions) {
+        for (Iterator<Session> iterator = sessions.iterator(); iterator.hasNext(); ) {
+            Session s = iterator.next();
             if (s.getId() == id) {
-                sessions.remove(s);
+                iterator.remove();
+
                 LOG.info("Session with id " + s.getId() + " deleted.");
             }
         }
     }
 
+    public void updateSession(int id) {
+        for (Iterator<Session> iterator = sessions.iterator(); iterator.hasNext(); ) {
+            Session s = iterator.next();
+            if (s.getId() == id) {
+                s.updateDateAdded();
+            }
+        }
+
+    }
+
     public boolean idAlreadyStored(int id) {
         for (Session s : sessions) {
             if (s.getId() == id) {
-                s.updateDateAdded();
                 return true;
             }
         }
@@ -45,14 +58,14 @@ public class SessionManager {
 
     public void deleteObsoleteSessions() {
         Timestamp now = new Timestamp(System.currentTimeMillis());
-        for(Session s : sessions) {
-            if(now.getTime() - s.getDateAdded().getTime() > 1000 * 60 * 60 * hoursOfSession) {
 
+        for (Iterator<Session> iterator = sessions.iterator(); iterator.hasNext(); ) {
+            Session s = iterator.next();
+            if (now.getTime() - s.getDateAdded().getTime() > 60 * 60 * 1000 * hoursOfSession) {
             // for tests you can uncomment this line and comment the line on top of this comment
-            // if (now.getTime() - s.getDateAdded().getTime() > 3000) {
-
+            //if (now.getTime() - s.getDateAdded().getTime() > 3000) {
+                iterator.remove();
                 LOG.info("Session with id " + s.getId() + " removed because obsolete.");
-                sessions.remove(s);
             }
         }
     }

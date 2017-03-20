@@ -38,26 +38,24 @@ public class NetworkManager {
     /**
      * This method initiates the process. The server creates a socket and binds it
      * to the previously specified port. It then waits for clients in a infinite
-     * loop. When a client arrives, the server will read its input line by line
-     * and send back the data converted to uppercase. This will continue until the
-     * client sends the "BYE" command.
+     * loop.
      */
     public void serveClients() {
         LOG.info("Starting the Receptionist Worker on a new thread...");
 
         ScheduledExecutorService scheduledExecutorService =
-                Executors.newScheduledThreadPool(5);
+                Executors.newScheduledThreadPool(1);
 
-        ScheduledFuture scheduledFuture =
+        //ScheduledFuture scheduledFuture =
                 scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
                                                                  public void run() {
-                                                                     LOG.info("Checking if a session is obsolete");
-                                                                     sm.deleteObsoleteSessions();
+                                                                     try {
+                                                                         sm.deleteObsoleteSessions();
+                                                                     } catch (Exception e) {
+                                                                         e.printStackTrace();
+                                                                     }
                                                                  }
-                                                             },
-                        0,
-                        1,
-                        TimeUnit.SECONDS);
+                                                             },0, 1, TimeUnit.SECONDS);
 
         new Thread(new ReceptionistWorker()).start();
     }
@@ -124,24 +122,20 @@ public class NetworkManager {
                 String line;
                 boolean shouldRun = true;
 
-                out.println("Welcome to the Multi-Threaded Server.\nSend me text lines and conclude with the BYE command.");
+                out.println("Welcome to the Multi-Threaded Server.");
                 out.flush();
                 try {
-                    LOG.info("Reading until client sends BYE or closes the connection...");
-
                     out.println("What is your id?");
                     out.flush();
                     Scanner sc = new Scanner(in);
-                    /*while ((shouldRun) && (line = in.readLine()) != null) {
-                        if (line.equalsIgnoreCase("bye")) {
-                            shouldRun = false;
-                        }
-                        out.println("> " + line.toUpperCase());
-                        out.flush();
-                    }*/
+
                     int id = sc.nextInt();
-                    if (!sm.idAlreadyStored(id)) {
+                    if (id == 0 || !sm.idAlreadyStored(id)) {
                         sm.storeSession(new Session(id, new Timestamp(System.currentTimeMillis())));
+                        out.println(id);
+                        out.flush();
+                    } else {
+                        sm.updateSession(id);
                     }
 
                     LOG.info("Cleaning up resources...");

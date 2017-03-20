@@ -7,20 +7,14 @@ public class Session {
 
     public Session(int id, Timestamp dateAdded) {
         this.id = id;
-        this.token = token;
         this.dateAdded = dateAdded;
     }
 
     private int id;
-    private String token;
     private Timestamp dateAdded;
 
     public int getId() {
         return id;
-    }
-
-    public String getToken() {
-        return token;
     }
 
     public Timestamp getDateAdded() {
