@@ -7,16 +7,16 @@ Object favorite
 Object vote
 
 track : id : INTEGER
-track : title : VARCHAR
-track : artist : VARCHAR
-track : album : VARCHAR
+track : title : TEXT
+track : artist : TEXT
+track : album : TEXT
 track : length : TIME
-track : uri : VARCHAR
+track : uri : TEXT
 track : date_added : DATETIME
 track : date_played : DATETIME
 
 playlist : id : INTEGER
-playlist : name : VARCHAR
+playlist : name : TEXT
 playlist : date_added : DATETIME
 playlist : date_played : DATETIME
 
@@ -27,7 +27,7 @@ favorite : track_id : INTEGER
 
 vote : track_id : INTEGER
 vote : playlist_id : INTEGER
-vote : vibes : INTEGER
+vote : counted_votes : INTEGER
 
 track "1..*" - "0..*" playlist_track
 playlist_track "0..*" - "0..*" playlist
