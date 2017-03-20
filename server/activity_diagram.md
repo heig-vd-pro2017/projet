@@ -9,4 +9,4 @@
     - Un `Timestamp` qui permettra de vérifier si elle est obsolète (possible de
          définir le temps d'obsolésence).
 
-![Diagramme d'activité du serveur (provisoire)](images\activity_diagram.PNG)
+![Diagramme d'activité du serveur provisoire](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/projet/master/server/activity_diagram.plantuml)
