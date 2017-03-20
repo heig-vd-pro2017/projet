@@ -1,0 +1,27 @@
+@startuml
+start
+repeat
+if (Demande de connexion\nd'un client) then (oui)
+
+    if (le client possede-t-il\n\tun token?) then (oui)
+      if (une session existante\ncontient-elle le token?) then (oui)
+
+        else (non)
+          :creation d'une session\navec ce token;
+        endif
+
+    else (non)
+        :attribution d'un token\n
+        au client;
+        :creation d'une session pour ce token;
+        :envoi du token au client;
+    endif
+    :creation d'un thread pour gerer le client;
+else (non)
+    if (minute  ecoulee?) then (oui)
+        :suppression des sessions\ninactives depuis plus de 1h;
+    endif
+endif
+repeat while(serveur actif)
+stop
+@enduml
