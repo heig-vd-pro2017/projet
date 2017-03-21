@@ -1,6 +1,10 @@
 # Procès verbaux
 *Les PV sont en ordre anti-chronologique afin d'avoir accès aux dernières nouvelles plus rapidement !*
 
+## 21.03.2017
+Nous avons décidé d'utiliser maven et avons mis en place la hiérarchie de dossiers du projet.
+On va abandonner l'idée de GitBook et utiliser Markdown tout de même, pour la documentation.
+
 ## 17.03.2017
 Nous avons décidé de mettre en place le projet selon une architecture RESTful. Cela nous permettra plus aisément de développer des plugins.
 * La semaine prochaine, Ludo et Thibaut démarreront la mise en place de la base de données. Ca prendra environ deux semaines.
