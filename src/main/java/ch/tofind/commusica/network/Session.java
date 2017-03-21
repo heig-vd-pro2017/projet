@@ -1,3 +1,5 @@
+package ch.tofind.commusica.network;
+
 import java.sql.Timestamp;
 
 /**
