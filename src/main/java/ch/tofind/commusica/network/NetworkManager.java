@@ -1,3 +1,5 @@
+package ch.tofind.commusica.network;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -69,7 +71,6 @@ public class NetworkManager {
      */
     private class ReceptionistWorker implements Runnable {
 
-        @Override
         public void run() {
             ServerSocket serverSocket;
 
@@ -117,7 +118,6 @@ public class NetworkManager {
                 }
             }
 
-            @Override
             public void run() {
                 String line;
                 boolean shouldRun = true;
