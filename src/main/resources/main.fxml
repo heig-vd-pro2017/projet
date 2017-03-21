@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TreeView?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+<?import javafx.scene.text.Font?>
+
+<SplitPane dividerPositions="0.75" orientation="VERTICAL" prefHeight="608.0" prefWidth="1080.0" xmlns:fx="http://javafx.com/fxml" xmlns="http://javafx.com/javafx/8.0.72" fx:controller="ch.tofind.commusica.ui.UIController">
+  <items>
+    <AnchorPane prefHeight="456.0" prefWidth="1280.0">
+        <children>
+            <HBox focusTraversable="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <children>
+
+                    <!-- Playlists view (upper left) -->
+                    <AnchorPane focusTraversable="false" prefHeight="456.0" prefWidth="270.0">
+
+                        <!-- Title -->
+                        <Label text="Playlists" textAlignment="CENTER" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="20.0">
+                            <font>
+                                <Font name="System Bold" size="20.0"></Font>
+                            </font>
+                        </Label>
+
+                        <!-- List view -->
+                        <ListView focusTraversable="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="60.0" fx:id="playlistsListView">
+
+                        </ListView>
+
+                    </AnchorPane>
+
+                    <!-- Songs view (upper center) -->
+                    <ScrollPane focusTraversable="false" prefHeight="456.0" prefWidth="540.0">
+                        <content>
+                            <AnchorPane maxWidth="520.0" minWidth="520.0" minHeight="456.0" prefHeight="456.0" prefWidth="520.0">
+                            </AnchorPane>
+                        </content>
+                    </ScrollPane>
+
+                    <!-- Settings view (upper right) -->
+                    <TreeView focusTraversable="false" prefHeight="456.0" prefWidth="270.0">
+                    </TreeView>
+                </children>
+            </HBox>
+        </children>
+    </AnchorPane>
+    <AnchorPane prefHeight="182.0" prefWidth="1280.0">
+
+    </AnchorPane>
+  </items>
+</SplitPane>
