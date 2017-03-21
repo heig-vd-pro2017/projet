@@ -1,6 +1,11 @@
 # Journal de travail
 *Le journal de travail début le 15.03.2017*
 
+## 21.03.2017
+### Ludovic Delafontaine
+* Avancement dans la base de données
+    * Corrections et améliorations
+
 ## 15.03.2017
 ### Ludovic Delafontaine
 * Ajout des éléments manquants dans les PV
