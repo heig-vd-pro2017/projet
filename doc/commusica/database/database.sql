@@ -1,24 +1,35 @@
-BEGIN TRANSACTION;
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
+
+DROP SCHEMA IF EXISTS Commusica;
+CREATE SCHEMA Commusica;
+USE Commusica;
+
+
+
+
 
 CREATE TABLE track (
     id INTEGER NOT NULL,
-    title TEXT NOT NULL,
-    artist TEXT NOT NULL,
-    album TEXT NOT NULL,
+    title VARCHAR(512) NOT NULL,
+    artist VARCHAR(512) NOT NULL,
+    album VARCHAR(512) NOT NULL,
     length INTEGER NOT NULL,
-    uri TEXT UNIQUE NOT NULL,
-    date_added DATETIME NOT NULL,
+    uri VARCHAR(512) UNIQUE NOT NULL,
+    date_added DATETIME NOT NULL DEFAULT NOW(),
     date_played DATETIME NULL,
     PRIMARY KEY(id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE playlist (
     id INTEGER NOT NULL,
-    name text NOT NULL,
-    date_added DATETIME NOT NULL,
-    date_played DATETIME NULL,
+    name VARCHAR(512) NOT NULL,
+    date_added DATETIME NOT NULL DEFAULT NOW(),
+    date_played DATETIME NULL DEFAULT NOW(),
     PRIMARY KEY(id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE playlist_track (
     playlist_id INTEGER,
@@ -26,13 +37,13 @@ CREATE TABLE playlist_track (
     FOREIGN KEY(playlist_id) REFERENCES playlist(id),
     FOREIGN KEY(track_id) REFERENCES track(id),
     PRIMARY KEY(playlist_id, track_id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE favorite (
     track_id INTEGER NOT NULL,
     FOREIGN KEY(track_id) REFERENCES track(id),
     PRIMARY KEY(track_id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE  vote (
     playlist_id INTEGER NOT NULL,
@@ -41,6 +52,6 @@ CREATE TABLE  vote (
     FOREIGN KEY(track_id) REFERENCES track(id),
     FOREIGN KEY(playlist_id) REFERENCES playlist(id),
     PRIMARY KEY(track_id, playlist_id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 COMMIT;
