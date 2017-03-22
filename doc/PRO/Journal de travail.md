@@ -1,7 +1,12 @@
 # Journal de travail
-*Le journal de travail début le 15.03.2017*
+*Le journal de travail débute le 15.03.2017*
 
 ## 21.03.2017
+### Lucas Elisei
+* Interface graphique: premier jet
+    * Mise en place des principaux composants graphiques
+    * Affichage d'une liste de playlists
+
 ### Ludovic Delafontaine
 * Avancement dans la base de données
     * Corrections et améliorations
