@@ -29,28 +29,30 @@
                         </Label>
 
                         <!-- List view -->
-                        <ListView focusTraversable="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="60.0" fx:id="playlistsListView">
+                        <ListView focusTraversable="false" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="60.0" fx:id="playlistsListView">
 
                         </ListView>
 
                     </AnchorPane>
 
                     <!-- Songs view (upper center) -->
-                    <ScrollPane focusTraversable="false" prefHeight="456.0" prefWidth="540.0">
+                    <ScrollPane focusTraversable="false" prefHeight="456.0" prefWidth="520.0" maxWidth="Infinity" HBox.hgrow="ALWAYS">
                         <content>
-                            <AnchorPane maxWidth="520.0" minWidth="520.0" minHeight="456.0" prefHeight="456.0" prefWidth="520.0">
+                            <AnchorPane maxWidth="Infinity" prefHeight="456.0" prefWidth="520.0" HBox.hgrow="ALWAYS">
                             </AnchorPane>
                         </content>
+                        <fitToHeight>true</fitToHeight>
+                        <fitToWidth>true</fitToWidth>
                     </ScrollPane>
 
                     <!-- Settings view (upper right) -->
-                    <TreeView focusTraversable="false" prefHeight="456.0" prefWidth="270.0">
-                    </TreeView>
+                    <AnchorPane focusTraversable="false" prefHeight="456.0" prefWidth="270.0">
+                    </AnchorPane>
                 </children>
             </HBox>
         </children>
     </AnchorPane>
-    <AnchorPane prefHeight="182.0" prefWidth="1280.0">
+    <AnchorPane minHeight="80.0" prefHeight="182.0" prefWidth="1280.0">
 
     </AnchorPane>
   </items>
