@@ -1,6 +1,12 @@
 # Journal de travail
 *Le journal de travail débute le 15.03.2017*
 
+## 22.03.2017
+### Denise Gemesio
+* Interface graphique: tutoriel et documentation (2h30)
+   * Installation de Scene Builder et configuration de Intellij
+   * Tutoriel sur http://code.makery.ch/library/javafx-8-tutorial/fr/
+   
 ## 21.03.2017
 ### Lucas Elisei
 * Interface graphique: premier jet
