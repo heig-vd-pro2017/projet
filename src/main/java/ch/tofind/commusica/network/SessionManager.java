@@ -1,5 +1,7 @@
 package ch.tofind.commusica.network;
 
+import ch.tofind.commusica.network.Session;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -14,7 +16,7 @@ public class SessionManager {
 
     final static Logger LOG = Logger.getLogger(SessionManager.class.getName());
 
-    private List<Session> sessions = new ArrayList<Session>();
+    private List<Session> sessions = new ArrayList<>();
     private int hoursOfSession = 1;
 
     public void storeSession(Session s) {
