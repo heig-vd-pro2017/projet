@@ -12,10 +12,16 @@
 * Interface graphique: premier jet
     * Mise en place des principaux composants graphiques
     * Affichage d'une liste de playlists
+### David Truan
+* Meilleur division client/serveur et base du protocole (1h).
 
 ### Ludovic Delafontaine
 * Avancement dans la base de données
     * Corrections et améliorations
+    
+## 20.03.2017
+### David Truan
+* Essais et documentatin sur la partie client/serveur (3h).
 
 ## 15.03.2017
 ### Ludovic Delafontaine
