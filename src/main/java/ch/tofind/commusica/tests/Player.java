@@ -27,8 +27,8 @@ public class Player extends Application {
         System.out.println(media.getMetadata());
 
         // Print the duration
-        System.out.println(media.getDuration();
-        
+        System.out.println(media.getDuration());
+
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.play();
     }
