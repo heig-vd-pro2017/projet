@@ -7,6 +7,11 @@
    * Installation de Scene Builder et configuration de Intellij
    * Tutoriel sur http://code.makery.ch/library/javafx-8-tutorial/fr/
 
+### Ludovic Delafontaine
+* Player
+    * Tests de lecture de fichiers audio
+    * Tests de récupération des metadatas des fichiers
+
 ## 21.03.2017
 ### Lucas Elisei
 * Interface graphique: premier jet (1h30)
