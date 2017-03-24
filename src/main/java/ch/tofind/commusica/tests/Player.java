@@ -22,7 +22,13 @@ public class Player extends Application {
     public void start(Stage primaryStage) {
         resource = new File("doc/commusica/player/sample.wav");
         media = new Media(resource.toURI().toString());
-        System.out.println(resource.toURI().toString());
+
+        // Print the metadata
+        System.out.println(media.getMetadata());
+
+        // Print the duration
+        System.out.println(media.getDuration();
+        
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.play();
     }
