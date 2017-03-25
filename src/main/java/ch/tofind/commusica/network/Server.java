@@ -12,9 +12,8 @@ import java.util.logging.Logger;
 
 
 /**
- * For now you a client can connet to the server (by using telnet for example), say its id (for test) and the session
- * will be created or not if the id is already stored
- * The management of obsolete sessions doesn't work well. It only runs one time.
+ * IMPORTANT!! The NetPort superclass doesn't work with this type of archictecture (multi clients)!
+ * We need to remove/find a workaround
  */
 
 public class Server extends NetPort {
@@ -38,18 +37,6 @@ public class Server extends NetPort {
      */
     public void serveClients() {
         LOG.info("Starting the Receptionist Worker on a new thread...");
-
-        try {
-            InetAddress address = InetAddress.getLocalHost();
-            NetworkInterface nwi = NetworkInterface.getByInetAddress(address);
-            byte mac[] = nwi.getHardwareAddress();
-            for(byte b : mac) {
-                System.out.printf("%02X:", b);
-            }
-        } catch (Exception e) {
-
-        }
-
         ScheduledExecutorService scheduledExecutorService =
                 Executors.newScheduledThreadPool(1);
         scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
@@ -63,6 +50,7 @@ public class Server extends NetPort {
         },0, 1, TimeUnit.SECONDS);
 
         new Thread(new ReceptionistWorker()).start();
+        new Thread(new MulticastSocketServer()).start();
     }
 
 
@@ -106,14 +94,17 @@ public class Server extends NetPort {
          * data sent by the client and where we generate the responses.
          */
         private class ServantWorker implements Runnable {
+            private PrintWriter out_test;
+            private BufferedReader in_test;
 
             Socket clientSocket;
 
             public ServantWorker(Socket clientSocket) {
                 try {
                     this.clientSocket = clientSocket;
-                    in = new BufferedReader (new InputStreamReader(clientSocket.getInputStream()));
-                    out = new PrintWriter(clientSocket.getOutputStream());
+                    in_test = new BufferedReader (new InputStreamReader(clientSocket.getInputStream()));
+                    out_test = new PrintWriter(clientSocket.getOutputStream());
+
                 } catch (IOException ex) {
                     Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -121,27 +112,42 @@ public class Server extends NetPort {
 
             @Override
             public void run() {
-                String line;
-                boolean shouldRun = true;
-
-                out.println("Welcome to the Multi-Threaded Server.");
-                out.flush();
+                out_test.println("Welcome to the Multi-Threaded Server.");
+                out_test.flush();
                 try {
-                    send(SEND_ID);
-                    int id = Integer.parseInt(receive());
+                    //send(SEND_ID);
+                    out_test.write(SEND_ID + "\n");
+                    out_test.flush();
+                    //int id = Integer.parseInt(receive());
+
+                    int id = Integer.parseInt(in_test.readLine());
                     if (!sm.idAlreadyStored(id)) {
                         sm.storeSession(new Session(id, new Timestamp(System.currentTimeMillis())));
+                        /*
                         send(Integer.toString(id));
+                        send(SESSION_CREATED);
+                        */
+                        out_test.write(SESSION_CREATED + "\n");
+                        out_test.flush();
                     } else {
                         sm.updateSession(id);
-                    }
+                        /*
+                        send(SESSION_UPDATED);
+                        */
+                        out_test.write(SESSION_UPDATED + "\n");
+                        out_test.flush();
 
+                    }
+                    
                     LOG.info("Cleaning up resources...");
                     clientSocket.close();
+                    /*
                     in.close();
-                    out.close();
+                    out.close();*/
+                    out_test.close();
+                    in_test.close();
 
-                } catch (IOException ex) {
+                } catch (Exception ex) {
                     if (in != null) {
                         try {
                             in.close();

@@ -11,12 +11,12 @@ import java.util.Arrays;
  */
 public class NetworkUtils {
 
-    static public long hashMACAddress() {
+    static public int hashMACAddress() {
         try {
             InetAddress address = InetAddress.getLocalHost();
             NetworkInterface nwi = NetworkInterface.getByInetAddress(address);
             byte mac[] = nwi.getHardwareAddress();
-            return Long.hashCode(concatenateMAC(mac));
+            return Arrays.hashCode(mac);
         } catch (SocketException e) {
             e.printStackTrace();
         } catch (UnknownHostException e) {
@@ -25,12 +25,11 @@ public class NetworkUtils {
         return -1;
     }
 
-    static private long concatenateMAC(byte[] mac) {
-        long result = 0;
-        for(byte b : mac) {
-            result = result << 8;
-            result |= b;
+    static public void wait(int seconde) {
+        try {
+            Thread.sleep(1000 * seconde);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        return result;
     }
 }

@@ -7,17 +7,22 @@ class Test {
         Server server = new Server(8080);
         server.serveClients();
 
-        Client client = new Client();
-        Client client2 = new Client();
+        for(int i = 0; i < 6; ++i) {
+            Client client = new Client();
 
-        client.connect("localhost", 8080);
-        client.connect("localhost", 8080);
+            client.connect("localhost", 8080);
+        }
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }/*
+        client.disconnectClientOnly();
 
-        //client2.connect("localhost", 8080);
+        NetworkUtils.wait(3);
+        client.fullDisconnect();
 
-
-
-        //new Thread(client).start();
-
+        NetworkUtils.wait(4);
+        client.connect("localhost", 8080);*/
     }
 }

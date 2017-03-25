@@ -22,6 +22,8 @@ abstract class NetPort {
 
 
     final static String SEND_ID = "SEND_ID";
+    final static String SESSION_CREATED = "SESSION_CREATED";
+    final static String SESSION_UPDATED = "SESSION_UPDATED";
 
     final static Logger LOG = Logger.getLogger(NetPort.class.getName());
     protected int port = 8080;
