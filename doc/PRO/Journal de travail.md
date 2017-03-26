@@ -1,6 +1,10 @@
 # Journal de travail
 *Le journal de travail débute le 15.03.2017*
 
+## 26.03.2017
+### Denise Gemesio
+* Intergace graphique: modification du .fxml avec Scene Builder
+
 ## 22.03.2017
 ### Denise Gemesio
 * Interface graphique: tutoriel et documentation (2h30)
