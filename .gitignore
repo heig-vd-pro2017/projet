@@ -1,8 +1,11 @@
 .DS_Store
 Thumbs.db
 
+.idea
 *.iml
 *.ipr
 *.iws
 
 target/
+commusica.db
+commusica.log
