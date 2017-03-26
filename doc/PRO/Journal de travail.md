@@ -1,6 +1,11 @@
 # Journal de travail
 *Le journal de travail débute le 15.03.2017*
 
+## 26.03.2017
+### Ludovic Delafontaine
+* Mise en place et configuration des outils de compilation (Maven) (2h00)
+* Début de la classe Track avec sa table dans la base de données à l'aide de Hibernate (1h30)
+
 ## 22.03.2017
 ### Denise Gemesio
 * Interface graphique: tutoriel et documentation (2h30)
