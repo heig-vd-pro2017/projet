@@ -5,6 +5,11 @@
 ### Denise Gemesio
 * Intergace graphique: modification du .fxml avec Scene Builder
 
+## 25.03.2017
+### David Truan
+* Documentation et première implémentation (test) du multicast en Java. (2h)
+* Réévaluation de l'intêret de NetPort en tant que classe. (30min)
+
 ## 22.03.2017
 ### Denise Gemesio
 * Interface graphique: tutoriel et documentation (2h30)
