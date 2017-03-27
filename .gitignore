@@ -7,3 +7,5 @@ Thumbs.db
 *.iws
 
 target/
+commusica.db
+commusica.log
