@@ -1,6 +1,8 @@
 # Journal de travail
 *Le journal de travail débute le 15.03.2017*
 
+
+
 ## 22.03.2017
 ### Denise Gemesio
 * Interface graphique: tutoriel et documentation (2h30)
@@ -11,6 +13,9 @@
 * Player
     * Tests de lecture de fichiers audio
     * Tests de récupération des metadatas des fichiers
+          
+### Thibaut Togue 
+* Tutoriel sur [https://www.jmdoudoux.fr/java/dej/chap-hibernate.htm](https://www.jmdoudoux.fr/java/dej/chap-hibernate.htm) pour la réalisation de la couche persistance de l'application avec **ORM**(2h) 
 
 ## 21.03.2017
 ### Lucas Elisei
@@ -28,6 +33,10 @@
 ## 20.03.2017
 ### David Truan
 * Essais et documentation sur la partie client/serveur (3h).
+ 
+### Thibaut Togue
+          
+* test du fichier Sqlite à travers des conteneurs docker et correction des bugs(2h)                              
 
 ## 18.03.2017
 * Création du schéma de la base de données
