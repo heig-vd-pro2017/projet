@@ -1,4 +1,4 @@
-package ch.tofind.commusica.tests;
+package ch.tofind.commusica.media;
 
 import java.io.File;
 
