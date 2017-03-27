@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="ch.tofind.commusica.media.Track" table="track">
+        <meta attribute="class-description">
+            This class represents an audio track
+        </meta>
+        <id name="id" type="int" column="id">
+            <generator class="increment"/>
+        </id>
+        <property name="title" column="title" type="string"/>
+        <property name="artist" column="artist" type="string"/>
+        <property name="album" column="album" type="string"/>
+        <property name="length" column="length" type="int"/>
+        <property name="uri" column="uri" type="string"/>
+        <property name="dateAdded" column="date_added" type="string"/>
+        <property name="datePlayed" column="date_played" type="string"/>
+    </class>
+</hibernate-mapping>
