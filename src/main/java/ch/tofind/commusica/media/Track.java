@@ -2,7 +2,6 @@ package ch.tofind.commusica.media;
 
 import ch.tofind.commusica.database.DatabaseManager;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Track {
@@ -26,10 +25,10 @@ public class Track {
     private String uri;
 
     //! When was the track added for the first time in the database
-    private String dateAdded;
+    private Date dateAdded;
 
     //! When was the track played for the last time
-    private String datePlayed;
+    private Date datePlayed;
 
     /**
      * Create a track
@@ -45,73 +44,28 @@ public class Track {
         this.album = album;
         this.length = length;
         this.uri = uri;
-        this.dateAdded = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
+        this.dateAdded = new Date();
     }
 
-    public Integer getId() {
-        return id;
+    public boolean equals(Object obj) {
+
+        if (obj == null) {
+            return false;
+        }
+
+        if (!this.getClass().equals(obj.getClass())) {
+            return false;
+        }
+
+        Track obj2 = (Track)obj;
+
+        return this.id == obj2.id ? true : false;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public int hashCode() {
+        return (id + title + artist + album + length).hashCode();
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getArtist() {
-        return artist;
-    }
-
-    public void setArtist(String artist) {
-        this.artist = artist;
-    }
-
-    public String getAlbum() {
-        return album;
-    }
-
-    public void setAlbum(String album) {
-        this.album = album;
-    }
-
-    public Integer getLength() {
-        return length;
-    }
-
-    public void setLength(Integer length) {
-        this.length = length;
-    }
-
-    public String getUri() {
-        return uri;
-    }
-
-    public void setUri(String uri) {
-        this.uri = uri;
-    }
-
-    public String getDateAdded() {
-        return dateAdded;
-    }
-
-    public void setDateAdded(String dateAdded) {
-        this.dateAdded = dateAdded;
-    }
-
-    public String getDatePlayed() {
-        return datePlayed;
-    }
-
-    public void setDatePlayed(String datePlayed) {
-        this.datePlayed = datePlayed;
-    }
-    
     public void save() {
         DatabaseManager.getInstance().save(this);
     }
