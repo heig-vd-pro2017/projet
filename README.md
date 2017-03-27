@@ -11,4 +11,4 @@ David Truan, Denise Gemesio, Lucas Elisei, Ludovic Delafontaine, Thibault To
 ![Diagramme de séquence pour l'envoi de chanson](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/projet/master/doc/commusica/network/activity_diagram.puml)
 
 ## Schéma de la base de données
-![Schéma de la base de données](http://www.plantuml.com/plantuml/proxy?src=https://github.com/heig-vd-pro2017/projet/blob/master/doc/commusica/database/database.puml)
+![Schéma de la base de données](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/projet/master/doc/commusica/database/database.puml)
