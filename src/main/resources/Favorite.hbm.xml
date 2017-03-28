@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="ch.tofind.commusica.media.Favorite" table="playlist">
+        <meta attribute="class-description">
+            This class represents an playlist
+        </meta>
+        <id name="id" type="java.lang.Integer" column="track_id">
+            <column name="track_id"/>
+            <generator class="foreign">
+                <param name="property">track</param>
+            </generator>
+        </id>
+        <one-to-one name="track" class="ch.tofind.commusica.media.Track" constrained="true">
+        </one-to-one>
+    </class>
+</hibernate-mapping>
