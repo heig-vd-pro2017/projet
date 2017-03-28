@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<?import javafx.scene.text.Font?>
+<AnchorPane minHeight="60.0" xmlns:fx="http://javafx.com/fxml"
+            fx:id="trackPane">
+
+    <padding>
+        <Insets bottom="5" left="10" right="10" top="5"/>
+    </padding>
+
+    <GridPane hgap="10" vgap="5"
+              AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"
+              AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+        <columnConstraints>
+            <ColumnConstraints percentWidth="50"/>
+            <ColumnConstraints percentWidth="50"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints percentHeight="60"/>
+            <RowConstraints percentHeight="40"/>
+        </rowConstraints>
+
+        <Label text="Title"
+               GridPane.columnIndex="0" GridPane.rowIndex="0"
+               GridPane.halignment="LEFT" GridPane.valignment="BOTTOM"
+               fx:id="titleLabel">
+            <font>
+                <Font size="22"/>
+            </font>
+        </Label>
+
+        <Label style="-fx-text-fill: #A8A8A8;" text="Artist"
+               GridPane.columnIndex="0" GridPane.rowIndex="1"
+               GridPane.halignment="LEFT" GridPane.valignment="TOP"
+               fx:id="artistLabel">
+            <font>
+                <Font size="14"/>
+            </font>
+        </Label>
+
+        <Label text="upvote/downvote" GridPane.columnIndex="1"
+               GridPane.rowIndex="0"
+               GridPane.halignment="RIGHT"
+               GridPane.rowSpan="2" GridPane.columnSpan="1"/>
+
+    </GridPane>
+
+</AnchorPane>
