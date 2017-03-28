@@ -2,18 +2,18 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping default-access="field">
-    <class name="ch.tofind.commusica.media.Track" table="track">
+    <class name="ch.tofind.commusica.media.Playlist" table="playlist">
         <meta attribute="class-description">
-            This class represents an audio track
+            This class represents a playlist composed of many tracks
         </meta>
         <id name="id" type="int" column="id">
             <generator class="increment"/>
         </id>
-        <property name="title" column="title" type="string" length="50" not-null="true"/>
-        <property name="artist" column="artist" type="string" length="50" not-null="true"/>
-        <property name="album" column="album" type="string" length="50" not-null="true"/>
-        <property name="length" column="length" type="int" not-null="true"/>
-        <property name="uri" column="uri" type="string" length="500" not-null="true" unique="true"/>
+        <set name="tracks" cascade="save-update" table="playlist_tracks">
+            <key column="playlist_id"/>
+            <many-to-many column="track_id" class="ch.tofind.commusica.media.Track"/>
+        </set>
+        <property name="name" column="name" type="string" length="50" not-null="true"/>
         <property name="dateAdded" column="date_added" type="timestamp" length="50" not-null="true"/>
         <property name="datePlayed" column="date_played" type="timestamp" length="50" not-null="false"/>
     </class>

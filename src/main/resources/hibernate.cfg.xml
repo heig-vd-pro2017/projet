@@ -15,11 +15,9 @@
 
         <property name="hibernate.hbm2ddl.auto">update</property>
 
-        <!-- Logging level -->
-        <property name="log4j.logger.org.hibernate">warning</property>
-
         <!-- List of mapping classes -->
         <mapping resource="Track.hbm.xml"/>
+        <mapping resource="Playlist.hbm.xml"/>
 
     </session-factory>
 </hibernate-configuration>
