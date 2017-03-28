@@ -1,6 +1,7 @@
 package ch.tofind.commusica;
 
 import ch.tofind.commusica.database.DatabaseManager;
+import ch.tofind.commusica.media.Player;
 import ch.tofind.commusica.media.Playlist;
 import ch.tofind.commusica.media.Track;
 import org.hibernate.HibernateException;
@@ -60,12 +61,16 @@ public class Commusica {
         HashSet tracks1 = new HashSet();
         HashSet tracks2 = new HashSet();
 
-        tracks1.add(new Track("Track1", "Track", "Tracks", 43, "/tmp/test1"));
-        tracks1.add(new Track("Track2", "Track", "Tracks", 43, "/tmp/test2"));
-        tracks1.add(new Track("Track3", "Track", "Tracks", 43, "/tmp/test3"));
+        Track track1 = new Track("Track1", "Track", "Tracks", 43, "/tmp/test1");
+        Track track2 = new Track("Track2", "Track", "Tracks", 43, "/tmp/test2");
+        Track track3 = new Track("Track3", "Track", "Tracks", 43, "/tmp/test3");
 
-        tracks2.add(new Track("Track1", "Track", "Tracks", 43, "/tmp/test1"));
-        tracks2.add(new Track("Track3", "Track", "Tracks", 43, "/tmp/test3"));
+        tracks1.add(track1);
+        tracks1.add(track2);
+        tracks1.add(track3);
+
+        tracks2.add(track1);
+        tracks2.add(track3);
 
         commusica.addPlaylist("Test1", tracks1);
         commusica.addPlaylist("Test2", tracks2);
@@ -73,6 +78,7 @@ public class Commusica {
         commusica.listPlaylist();
 
         DatabaseManager.getInstance().close();
+
     }
 
     /* Method to add an employee record in the database */

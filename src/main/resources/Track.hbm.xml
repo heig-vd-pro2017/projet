@@ -9,6 +9,7 @@
         <id name="id" type="int" column="id">
             <generator class="increment"/>
         </id>
+        <version name="version" column="version"/>
         <property name="title" column="title" type="string" length="50" not-null="true"/>
         <property name="artist" column="artist" type="string" length="50" not-null="true"/>
         <property name="album" column="album" type="string" length="50" not-null="true"/>

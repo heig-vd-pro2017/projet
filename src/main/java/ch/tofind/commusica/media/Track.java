@@ -30,6 +30,9 @@ public class Track {
     //! When was the track played for the last time
     private Date datePlayed;
 
+    //! Version control for concurrency
+    private Integer version;
+
     /**
      * Create a track
      * @param title
