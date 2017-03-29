@@ -1,6 +1,13 @@
 # Journal de travail
 *Le journal de travail débute le 15.03.2017*
 
+## 29.03.2017
+### Lucas Elisei (1h)
+* Ajout des actions d'*upvote* et *downvote* pour les chansons (seulement graphique).
+
+## 28.03.2017
+### Lucas Elisei (4h)
+* Ajout du style des cellules représentant des chansons dans la playlist en cours de lecture (panneau central).
 
 
 ## 26.03.2017
