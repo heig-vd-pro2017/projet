@@ -8,6 +8,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <AnchorPane minHeight="60.0" xmlns:fx="http://javafx.com/fxml"
             fx:id="trackPane">
 
@@ -45,10 +47,32 @@
             </font>
         </Label>
 
-        <Label text="upvote/downvote" GridPane.columnIndex="1"
-               GridPane.rowIndex="0"
-               GridPane.halignment="RIGHT"
-               GridPane.rowSpan="2" GridPane.columnSpan="1"/>
+        <ImageView fitHeight="20.0" preserveRatio="true"
+                   onMouseClicked="#upvote"
+                   GridPane.columnIndex="1" GridPane.rowIndex="0"
+                   GridPane.halignment="RIGHT" GridPane.valignment="TOP"
+                   fx:id="upvoteImageView">
+            <image>
+                <Image url="@icons/upvote.png"/>
+            </image>
+        </ImageView>
+
+        <ImageView fitHeight="20.0" preserveRatio="true"
+                   onMouseClicked="#downvote"
+                   GridPane.columnIndex="1" GridPane.rowIndex="1"
+                   GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM"
+                   fx:id="downvoteImageView">
+            <image>
+                <Image url="@icons/downvote.png"/>
+            </image>
+        </ImageView>
+
+        <Label alignment="CENTER" minWidth="20.0"
+               text="0" textAlignment="CENTER"
+               GridPane.columnIndex="1" GridPane.rowIndex="0"
+               GridPane.columnSpan="1" GridPane.rowSpan="2"
+               GridPane.halignment="RIGHT" GridPane.valignment="CENTER"
+               fx:id="votesLabel"/>
 
     </GridPane>
 
