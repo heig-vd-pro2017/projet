@@ -124,7 +124,8 @@ public class Commusica {
 
                 PlaylistTrack playlistTrack = (PlaylistTrack) playlistIterator.next();
 
-                System.out.println("coucou");
+                Track track = session.load(Track.class, playlistTrack.getTrackId());
+                System.out.println(track);
             }
             transaction.commit();
         } catch (HibernateException e) {

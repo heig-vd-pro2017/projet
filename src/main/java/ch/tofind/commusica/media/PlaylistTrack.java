@@ -1,7 +1,9 @@
+/* https://blog.axopen.com/2013/11/les-cles-primaires-composees-avec-hibernate-4/ */
 package ch.tofind.commusica.media;
 
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 
 @Entity
 @Table(name="playlist_track")
@@ -34,5 +36,13 @@ public class PlaylistTrack {
 
     public void downvote() {
         votes--;
+    }
+
+    public Integer getPlaylistId() {
+        return id.getPlaylistId();
+    }
+
+    public Integer getTrackId() {
+        return id.getTrackId();
     }
 }

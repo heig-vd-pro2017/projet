@@ -34,4 +34,14 @@ public class Playlist {
     public Integer getId() {
         return id;
     }
+
+
+    /**
+     * Format the track to be displayed
+     * @return The formatted String
+     */
+    @Override
+    public String toString() {
+        return String.format("%s", name);
+    }
 }
