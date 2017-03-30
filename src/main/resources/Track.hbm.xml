@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping default-access="field">
     <class name="ch.tofind.commusica.media.Track" table="track">
@@ -15,6 +17,14 @@
         <property name="album" column="album" type="string" length="50" not-null="true"/>
         <property name="length" column="length" type="int" not-null="true"/>
         <property name="uri" column="uri" type="string" length="500" not-null="true" unique="true"/>
+        <set name="playlists" table="playlist_track" cascade="all">
+            <key>
+                <column name="track_id" not-null="true" />
+            </key>
+            <many-to-many entity-name="ch.tofind.commusica.media.Playlist">
+                <column name="playlist_id" not-null="true" />
+            </many-to-many>
+        </set>
         <property name="dateAdded" column="date_added" type="timestamp" length="50" not-null="true"/>
         <property name="datePlayed" column="date_played" type="timestamp" length="50" not-null="false"/>
     </class>

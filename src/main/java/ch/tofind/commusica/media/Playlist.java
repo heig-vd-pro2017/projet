@@ -1,6 +1,7 @@
 package ch.tofind.commusica.media;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 public class Playlist {
@@ -11,8 +12,8 @@ public class Playlist {
     //! Name of the playlist
     private String name;
 
-    //! Tracks of the playlist
-    private Set tracks;
+    //! Tracks to which the playlist is associated
+    private Set<Track> tracks = new HashSet<>(0);
 
     //! When was the playlist added for the first time in the database
     private Date dateAdded;
