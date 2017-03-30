@@ -2,9 +2,9 @@ package ch.tofind.commusica.media;
 
 import ch.tofind.commusica.database.DatabaseManager;
 
+import javax.persistence.OneToMany;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 public class Track {
 
@@ -26,8 +26,8 @@ public class Track {
     //! URI of the file
     private String uri;
 
-    //! Playlists to which the track is associated
-    private Set<Playlist> playlists = new HashSet<>(0);
+    @OneToMany(mappedBy = "id.playlistId")
+    private List playlists;
 
     //! When was the track added for the first time in the database
     private Date dateAdded;
@@ -53,6 +53,10 @@ public class Track {
         this.length = length;
         this.uri = uri;
         this.dateAdded = new Date();
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public boolean equals(Object obj) {

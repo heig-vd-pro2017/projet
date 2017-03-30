@@ -1,7 +1,9 @@
 package ch.tofind.commusica.media;
 
+import javax.persistence.OneToMany;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Playlist {
@@ -12,8 +14,8 @@ public class Playlist {
     //! Name of the playlist
     private String name;
 
-    //! Tracks to which the playlist is associated
-    private Set<Track> tracks = new HashSet<>(0);
+    @OneToMany(mappedBy = "id.trackId")
+    private List tracks;
 
     //! When was the playlist added for the first time in the database
     private Date dateAdded;
@@ -24,17 +26,12 @@ public class Playlist {
     //! Version control for concurrency
     private Integer version;
 
-    public Playlist(String name, Set tracks) {
+    public Playlist(String name) {
         this.name = name;
-        this.tracks = tracks;
         this.dateAdded = new Date();
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public Set getTracks() {
-        return tracks;
+    public Integer getId() {
+        return id;
     }
 }
