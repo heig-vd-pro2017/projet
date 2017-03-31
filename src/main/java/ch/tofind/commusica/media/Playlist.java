@@ -14,9 +14,6 @@ public class Playlist {
     //! Name of the playlist
     private String name;
 
-    @OneToMany(mappedBy = "id.trackId")
-    private List tracks;
-
     //! When was the playlist added for the first time in the database
     private Date dateAdded;
 
@@ -34,7 +31,6 @@ public class Playlist {
     public Integer getId() {
         return id;
     }
-
 
     /**
      * Format the track to be displayed

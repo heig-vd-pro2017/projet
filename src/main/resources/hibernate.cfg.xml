@@ -19,8 +19,7 @@
 
         <!-- List of mapping classes -->
         <mapping resource="Playlist.hbm.xml"/>
-        <mapping class="ch.tofind.commusica.media.PlaylistTrackPK"/>
-        <mapping class="ch.tofind.commusica.media.PlaylistTrack"/>
+        <mapping resource="PlaylistTrack.hbm.xml"/>
         <mapping resource="Track.hbm.xml"/>
 
     </session-factory>

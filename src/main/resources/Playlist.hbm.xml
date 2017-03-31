@@ -13,14 +13,6 @@
         </id>
         <version name="version" column="version"/>
         <property name="name" column="name" type="string" length="50" not-null="true"/>
-        <set name="tracks" table="playlist_track" cascade="all">
-            <key>
-                <column name="playlist_id" not-null="true" />
-            </key>
-            <many-to-many entity-name="ch.tofind.commusica.media.Track">
-                <column name="track_id" not-null="true"/>
-            </many-to-many>
-        </set>
         <property name="dateAdded" column="date_added" type="timestamp" length="50" not-null="true"/>
         <property name="datePlayed" column="date_played" type="timestamp" length="50" not-null="false"/>
     </class>

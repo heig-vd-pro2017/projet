@@ -8,9 +8,9 @@
         <meta attribute="class-description">
             This class represents the link between a playlist and a track
         </meta>
-        <composite-id name="id" class="ch.tofind.commusica.media.PlaylistTrackPK">
-            <key-property name="playlistId" column="playlist_id" />
-            <key-property name="trackId" column="track_id" />
+        <composite-id name="id" class="ch.tofind.commusica.media.PlaylistTrack$PlaylistTrackId">
+            <key-many-to-one name="playlist" column="playlist_id"/>
+            <key-many-to-one name="track" column="track_id"/>
         </composite-id>
         <property name="votes" column="votes" type="int" not-null="true"/>
     </class>

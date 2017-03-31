@@ -25,39 +25,9 @@ public class Commusica {
 
     public static void main(String[] args) {
 
-        /*
-        dropDatabase();
-
-        Track track1 = new Track("Track1", "Track", "Tracks", 98, "/tmp/test1");
-        Track track2 = new Track("Track2", "Track", "Tracks", 98, "/tmp/test2");
-        Track track3 = new Track("Track3", "Track", "Tracks", 234, "/tmp/test3");
-
-        track1.save();
-        track2.save();
-        track3.save();
-
-
-        track2.update();
-
-        track3.delete();
-
-        Session session = DatabaseManager.getInstance().getSession();
-
-        List<Track> tracks = session.createQuery("from Track").list();
-
-        for (Track track : tracks) {
-            System.out.println(track);
-        }
-
-        DatabaseManager.getInstance().close();
-        */
-
         dropDatabase();
 
         Commusica commusica = new Commusica();
-
-        HashSet tracks1 = new HashSet();
-        HashSet tracks2 = new HashSet();
 
         Playlist playlist1 = new Playlist("Test1");
         Playlist playlist2 = new Playlist("Test2");
@@ -73,17 +43,15 @@ public class Commusica {
         DatabaseManager.getInstance().save(track2);
         DatabaseManager.getInstance().save(track3);
 
-        PlaylistTrackPK playlistTrackPK1 = new PlaylistTrackPK(playlist1.getId(), track1.getId());
-        PlaylistTrackPK playlistTrackPK2 = new PlaylistTrackPK(playlist1.getId(), track2.getId());
-        PlaylistTrack playlistTrack1 = new PlaylistTrack(playlistTrackPK1);
-        PlaylistTrack playlistTrack2 = new PlaylistTrack(playlistTrackPK2);
-
+        PlaylistTrack playlistTrack1 = new PlaylistTrack(playlist1, track1);
         playlistTrack1.upvote();
-        playlistTrack1.upvote();
-        playlistTrack2.downvote();
 
         DatabaseManager.getInstance().save(playlistTrack1);
-        DatabaseManager.getInstance().save(playlistTrack2);
+        DatabaseManager.getInstance().save(new PlaylistTrack(playlist1, track2));
+        DatabaseManager.getInstance().save(new PlaylistTrack(playlist1, track3));
+        DatabaseManager.getInstance().save(new PlaylistTrack(playlist2, track2));
+        DatabaseManager.getInstance().save(new PlaylistTrack(playlist2, track3));
+        DatabaseManager.getInstance().save(new PlaylistTrack(playlist2, track1));
 
         commusica.listPlaylist();
 
@@ -116,16 +84,15 @@ public class Commusica {
 
         try {
             transaction = session.beginTransaction();
-            List playlists = session.createQuery("FROM PlaylistTrack").getResultList();
+            List playlists = session.createQuery("FROM Playlist").getResultList();
 
             Iterator playlistIterator = playlists.iterator();
 
             while (playlistIterator.hasNext()) {
 
-                PlaylistTrack playlistTrack = (PlaylistTrack) playlistIterator.next();
+                Playlist playlist = (Playlist)playlistIterator.next();
+                System.out.println(playlist);
 
-                Track track = session.load(Track.class, playlistTrack.getTrackId());
-                System.out.println(track);
             }
             transaction.commit();
         } catch (HibernateException e) {

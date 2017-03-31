@@ -1,10 +1,6 @@
 package ch.tofind.commusica.media;
 
-import ch.tofind.commusica.database.DatabaseManager;
-
-import javax.persistence.OneToMany;
 import java.util.Date;
-import java.util.List;
 
 public class Track {
 
@@ -25,9 +21,6 @@ public class Track {
 
     //! URI of the file
     private String uri;
-
-    @OneToMany(mappedBy = "id.playlistId")
-    private List playlists;
 
     //! When was the track added for the first time in the database
     private Date dateAdded;
@@ -53,41 +46,6 @@ public class Track {
         this.length = length;
         this.uri = uri;
         this.dateAdded = new Date();
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public boolean equals(Object obj) {
-
-        if (obj == null) {
-            return false;
-        }
-
-        if (!this.getClass().equals(obj.getClass())) {
-            return false;
-        }
-
-        Track obj2 = (Track)obj;
-
-        return this.id == obj2.id ? true : false;
-    }
-
-    public int hashCode() {
-        return (id + title + artist + album + length).hashCode();
-    }
-
-    public void save() {
-        DatabaseManager.getInstance().save(this);
-    }
-
-    public void update() {
-        DatabaseManager.getInstance().update(this);
-    }
-
-    public void delete() {
-        DatabaseManager.getInstance().delete(this);
     }
 
     /**
