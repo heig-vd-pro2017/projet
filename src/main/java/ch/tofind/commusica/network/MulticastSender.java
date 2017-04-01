@@ -1,18 +1,20 @@
 package ch.tofind.commusica.network;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.*;
 
 /**
- * Created by David on 25.03.2017.
+ * Created by David on 30.03.2017.
  */
-public class MulticastSocketServer implements Runnable {
 
-    final static String INET_ADDR = "224.0.0.3";
-    final static int PORT = 8888;
+/**
+ * Class used to send data using Multicast
+ */
+public class MulticastSender extends Thread {
+
+    final static String INET_ADDR = "239.192.0.1";
+
+    MulticastSocket serverSocket;
 
     public void run() {
         // Get the address that we are going to connect to.
@@ -23,25 +25,34 @@ public class MulticastSocketServer implements Runnable {
             e.printStackTrace();
         }
 
-        // Open a new DatagramSocket, which will be used to send the data.
-        try (DatagramSocket serverSocket = new DatagramSocket()) {
+        // Open a new MulticastSocket, which will be used to send the data.
+        try {
+            serverSocket = new MulticastSocket();
+
+            serverSocket.setBroadcast(true);
+
+            // if I set it manually it works (here goes the IP of my PC n°1)
+            //serverSocket.setInterface(InetAddress.getByName("IP of my first PC"));
+
+            serverSocket.joinGroup(addr);
+
             for (int i = 0; i < 100; i++) {
-                String msg = "Message no " + i;
+                String msg = "Sent message no " + i;
 
                 // Create a packet that will contain the data
                 // (in the form of bytes) and send it.
                 DatagramPacket msgPacket = new DatagramPacket(msg.getBytes(),
-                        msg.getBytes().length, addr, PORT);
+                        msg.getBytes().length, addr, 8080);
                 serverSocket.send(msgPacket);
 
-                System.out.println("SERVER SENT: " + msg);
+                System.out.println("Server sent packet with msg: " + msg);
                 try {
-                    // every seconde it sends a datagram
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
+            serverSocket.close();
         } catch (IOException ex) {
             ex.printStackTrace();
         }

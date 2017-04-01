@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 
 
 /**
- * For now you a client can connet to the server (by using telnet for example), say its id (for test) and the session
+ * For now you a client can connect to the server (by using telnet for example), say its id (for test) and the session
  * will be created or not if the id is already stored
  * The management of obsolete sessions doesn't work well. It only runs one time.
  */
@@ -122,7 +122,7 @@ public class NetworkManager {
                 String line;
                 boolean shouldRun = true;
 
-                out.println("Welcome to the Multi-Threaded Server.");
+                out.println("Welcome to the Multi-Threaded ServerDiscovery.");
                 out.flush();
                 try {
                     out.println("What is your id?");

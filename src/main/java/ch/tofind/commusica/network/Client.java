@@ -1,12 +1,14 @@
 package ch.tofind.commusica.network;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * Created by David on 21.03.2017.
  */
-public class Client extends NetPort {
+public class Client implements NetPort {
 
     // id used to distinguish clients
     static int globalId = 0;
@@ -14,26 +16,31 @@ public class Client extends NetPort {
     private Socket serverSocket;
     // see if we can do better than a boolean
     private boolean isConnected = false;
-    private boolean multicastClientConnected = false;
-    private MulticastSocketClient multicastSocketClient;
+
+    private int port;
+
+    private ClientDiscovery clientDiscovery;
+
+    private ArrayList<InetAddress> serversList = new ArrayList<>();
+
+    BufferedReader in;
+    PrintWriter out;
 
     public Client() {
-        multicastSocketClient = new MulticastSocketClient(id);
-        new Thread(multicastSocketClient).start();
-        multicastClientConnected = true;
+        clientDiscovery = new ClientDiscovery();
     }
 
 
     /**
      * Connect to a server of name 'serverName' and on port 'port'. It also send an id (the hash of the MAC address)
      * to the server to allow the latter creating a session for the client
-     * @param serverName
+     * @param serverIP
      * @param port
      */
-    public void connect(String serverName, int port) {
+    public void connect(InetAddress serverIP, int port) {
         try {
             if (!isConnected) {
-                serverSocket = new Socket(serverName, port);
+                serverSocket = new Socket(serverIP, port);
                 this.port = port;
 
                 in = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
@@ -57,12 +64,7 @@ public class Client extends NetPort {
                 }
                 isConnected = true;
 
-                System.out.println("Client " + id + " connected");
-            }
-            if(!multicastClientConnected) {
-                multicastSocketClient = new MulticastSocketClient(id);
-                new Thread(multicastSocketClient).start();
-                multicastClientConnected = true;
+                System.out.println("ClientDiscovery " + id + " connected");
             }
 
         } catch (IOException e) {
@@ -70,6 +72,9 @@ public class Client extends NetPort {
         }
     }
 
+    public ArrayList<InetAddress> getServersList() {
+        return clientDiscovery.getServersList();
+    }
 
     /**
      * Disconnect only the client, thus letting the multicast receive informations
@@ -80,7 +85,7 @@ public class Client extends NetPort {
             in.close();
             out.close();
             isConnected = false;
-            System.out.println("Client " + id + " is disconnected (client only)");
+            System.out.println("ClientDiscovery " + id + " is disconnected (client only)");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -96,12 +101,29 @@ public class Client extends NetPort {
             in.close();
             out.close();
             isConnected = false;
-            multicastClientConnected = false;
-            multicastSocketClient.stop();
-            System.out.println("Client " + id + " is fully disconnected");
+            System.out.println("ClientDiscovery " + id + " is fully disconnected");
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void send(String str) {
+        out.write(str);
+        out.write('\n');
+        out.flush();
+    }
+
+    public String receive() {
+        try {
+            return in.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public void refreshServers() {
+        new Thread(clientDiscovery).start();
     }
 }

@@ -13,48 +13,20 @@ import java.util.logging.Logger;
 
 
 /**
- * For now you a client can connet to the server (by using telnet for example), say its id (for test) and the session
- * will be created or not if the id is already stored
- * The management of obsolete sessions doesn't work well. It only runs one time.
+ * SEE IF STILL NEEDED
+ *
+ * Interface used for the abstraction of the client/server over a socket and provide simple send and receive methods
+ *
  */
 
-abstract class NetPort {
+interface NetPort {
 
 
-    final static String SEND_ID = "SEND_ID";
-    final static String SESSION_CREATED = "SESSION_CREATED";
-    final static String SESSION_UPDATED = "SESSION_UPDATED";
+    String SEND_ID = "SEND_ID";
+    String SESSION_CREATED = "SESSION_CREATED";
+    String SESSION_UPDATED = "SESSION_UPDATED";
 
-    final static Logger LOG = Logger.getLogger(NetPort.class.getName());
-    protected int port = 8080;
+    void send(String str);
+    String receive();
 
-    protected PrintWriter out;
-    protected  BufferedReader in;
-
-
-    public NetPort() {
-    }
-
-    public NetPort(int port) {
-        this.port = port;
-    }
-
-
-    protected void send(String str) {
-
-        out.write(str);
-        out.write('\n');
-        out.flush();
-    }
-
-
-    protected String receive() {
-
-        try {
-            return in.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
 }
