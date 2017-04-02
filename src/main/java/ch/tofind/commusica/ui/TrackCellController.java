@@ -3,6 +3,7 @@ package ch.tofind.commusica.ui;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -18,6 +19,7 @@ public class TrackCellController {
 
     private String track;
     private int votes;
+    private boolean fav;
 
     @FXML
     private AnchorPane trackPane;
@@ -30,6 +32,9 @@ public class TrackCellController {
 
     @FXML
     private Label votesLabel;
+
+    @FXML
+    private ImageView favoriteImageView;
 
     public TrackCellController(String track) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource(FXML_FILE));
@@ -44,6 +49,12 @@ public class TrackCellController {
         this.track = track;
 
         titleLabel.setText(track);
+
+        if(fav) {
+            favoriteImageView.setImage(new Image("icons/fav_full.png"));
+        } else {
+            favoriteImageView.setImage(new Image("icons/fav_empty.png"));
+        }
     }
 
     public AnchorPane getPane() {
@@ -60,5 +71,18 @@ public class TrackCellController {
     private void downvote(MouseEvent event) {
         votesLabel.setText(String.valueOf(--votes));
         LOG.info(String.format("%s downvoted :(", track));
+    }
+
+    @FXML
+    private void favorite(MouseEvent event) {
+        fav = !fav;
+
+        if(fav) {
+            favoriteImageView.setImage(new Image("icons/fav_full.png"));
+        } else {
+            favoriteImageView.setImage(new Image("icons/fav_empty.png"));
+        }
+
+        LOG.info(String.format("%s favorited!", track));
     }
 }
