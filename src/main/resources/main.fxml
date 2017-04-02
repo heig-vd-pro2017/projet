@@ -4,6 +4,7 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.SplitPane?>
@@ -16,60 +17,34 @@
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.control.ListView?>
-<SplitPane dividerPositions="0.7" orientation="VERTICAL" prefHeight="600.0"
-           prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.111"
-           xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="ch.tofind.commusica.ui.UIController">
+<SplitPane dividerPositions="0.8184818481848185" minHeight="600.0" minWidth="1080.0" orientation="VERTICAL" prefHeight="600.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.tofind.commusica.ui.UIController">
     <items>
-        <AnchorPane prefHeight="420.0" prefWidth="1080.0">
+        <AnchorPane prefHeight="500.0" prefWidth="1080.0">
             <children>
-                <HBox focusTraversable="false" prefHeight="420.0"
-                      prefWidth="1080.0" AnchorPane.bottomAnchor="0.0"
-                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                      AnchorPane.topAnchor="0.0">
+                <HBox focusTraversable="false" minHeight="500.0" minWidth="1080.0" prefHeight="500.0" prefWidth="1080.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <children>
 
                         <!-- Playlists view (upper left) -->
-                        <AnchorPane focusTraversable="false" prefHeight="420.0"
-                                    prefWidth="270.0">
+                        <AnchorPane focusTraversable="false" minHeight="500.0" minWidth="270.0" prefHeight="500.0" prefWidth="270.0">
                             <children>
-                                <GridPane layoutX="35.0" layoutY="95.0"
-                                          prefHeight="420.0" prefWidth="270.0"
-                                          AnchorPane.bottomAnchor="0.0"
-                                          AnchorPane.leftAnchor="0.0"
-                                          AnchorPane.rightAnchor="0.0"
-                                          AnchorPane.topAnchor="0.0">
+                                <GridPane layoutX="35.0" layoutY="95.0" prefHeight="500.0" prefWidth="270.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES"
-                                                           minWidth="100.0"
-                                                           prefWidth="100.0"/>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
                                     </columnConstraints>
                                     <rowConstraints>
-                                        <RowConstraints maxHeight="40.0"
-                                                        minHeight="40.0"
-                                                        prefHeight="40.0"
-                                                        vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="422.0"
-                                                        prefHeight="422.0"
-                                                        vgrow="SOMETIMES"/>
+                                        <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="422.0" prefHeight="422.0" vgrow="SOMETIMES" />
                                     </rowConstraints>
                                     <children>
-                                        <Label prefHeight="40.0"
-                                               prefWidth="270.0"
-                                               text="Playlists">
+                                        <Label prefHeight="40.0" prefWidth="270.0" text="Playlists">
                                             <font>
-                                                <Font name="System Bold"
-                                                      size="27.0"/>
+                                                <Font name="System Bold" size="27.0" />
                                             </font>
                                             <padding>
-                                                <Insets left="10.0"/>
+                                                <Insets left="10.0" />
                                             </padding>
                                         </Label>
-                                        <ListView GridPane.rowIndex="1"
-                                                  GridPane.fillWidth="true"
-                                                  GridPane.fillHeight="true"
-                                                  fx:id="playlistsListView"></ListView>
+                                        <ListView fx:id="playlistsListView" GridPane.fillHeight="true" GridPane.fillWidth="true" GridPane.rowIndex="1" />
                                     </children>
                                 </GridPane>
                             </children>
@@ -77,82 +52,48 @@
                         </AnchorPane>
 
                         <!-- Songs view (upper center) -->
-                        <AnchorPane focusTraversable="false"
-                                    prefHeight="420.0" prefWidth="540.0"
-                                    HBox.hgrow="ALWAYS">
+                        <AnchorPane focusTraversable="false" minHeight="500.0" minWidth="540.0" prefHeight="500.0" prefWidth="540.0" HBox.hgrow="ALWAYS">
                             <children>
-                            <ListView AnchorPane.bottomAnchor="0.0"
-                                      AnchorPane.leftAnchor="0.0"
-                                      AnchorPane.rightAnchor="0.0"
-                                      AnchorPane.topAnchor="0.0"
-                                      fx:id="songsListView">
+                            <ListView fx:id="songsListView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             </ListView>
                             </children>
                         </AnchorPane>
 
                         <!-- Settings view (upper right) -->
-                        <AnchorPane focusTraversable="false" prefHeight="370.0"
-                                    prefWidth="270.0">
+                        <AnchorPane focusTraversable="false" minHeight="500.0" minWidth="270.0" prefHeight="500.0" prefWidth="270.0">
                             <children>
-                                <GridPane prefHeight="370.0" prefWidth="270.0">
+                                <GridPane minHeight="500.0" minWidth="270.0" prefHeight="500.0" prefWidth="270.0">
                                     <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES"
-                                                           minWidth="10.0"
-                                                           prefWidth="100.0"/>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                     </columnConstraints>
                                     <rowConstraints>
-                                        <RowConstraints maxHeight="40.0"
-                                                        minHeight="40.0"
-                                                        prefHeight="40.0"
-                                                        vgrow="SOMETIMES"/>
-                                        <RowConstraints minHeight="422.0"
-                                                        prefHeight="422.0"
-                                                        vgrow="SOMETIMES"/>
+                                        <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="422.0" prefHeight="422.0" vgrow="SOMETIMES" />
                                     </rowConstraints>
                                     <children>
-                                        <Label prefHeight="40.0"
-                                               prefWidth="270.0"
-                                               text="Réglages">
+                                        <Label minHeight="40.0" minWidth="270.0" prefHeight="40.0" prefWidth="270.0" text="Réglages">
                                             <font>
-                                                <Font name="System Bold"
-                                                      size="27.0"/>
+                                                <Font name="System Bold" size="27.0" />
                                             </font>
                                             <padding>
-                                                <Insets left="10.0"/>
+                                                <Insets left="10.0" />
                                             </padding>
                                         </Label>
-                                        <Accordion prefHeight="370.0"
-                                                   prefWidth="270.0"
-                                                   GridPane.rowIndex="1">
+                                        <Accordion minHeight="460.0" minWidth="270.0" prefHeight="460.0" prefWidth="270.0" GridPane.rowIndex="1">
                                             <panes>
-                                                <TitledPane animated="false"
-                                                            text="untitled 1">
+                                                <TitledPane animated="false" text="untitled 1">
                                                     <content>
-                                                        <AnchorPane
-                                                                minHeight="0.0"
-                                                                minWidth="0.0"
-                                                                prefHeight="180.0"
-                                                                prefWidth="200.0"/>
+                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                                                     </content>
                                                 </TitledPane>
-                                                <TitledPane animated="false"
-                                                            text="untitled 2">
+                                                <TitledPane animated="false" text="untitled 2">
                                                     <content>
-                                                        <AnchorPane
-                                                                minHeight="0.0"
-                                                                minWidth="0.0"
-                                                                prefHeight="180.0"
-                                                                prefWidth="200.0"/>
+                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                                                     </content>
                                                 </TitledPane>
-                                                <TitledPane animated="false"
-                                                            text="untitled 3">
+                                                <TitledPane animated="false" text="untitled 3">
                                                     <content>
-                                                        <AnchorPane
-                                                                minHeight="0.0"
-                                                                minWidth="0.0"
-                                                                prefHeight="180.0"
-                                                                prefWidth="200.0"/>
+                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                                                     </content>
                                                 </TitledPane>
                                             </panes>
@@ -165,394 +106,198 @@
                 </HBox>
             </children>
         </AnchorPane>
-        <AnchorPane minHeight="80.0" prefHeight="180.0" prefWidth="1080.0">
+        <AnchorPane maxHeight="100.0" minHeight="100.0" prefHeight="100.0" prefWidth="1078.0">
             <children>
-                <SplitPane dividerPositions="0.3"
-                           layoutX="150.0" layoutY="-11.0" maxHeight="120.0"
-                           minHeight="120.0" prefHeight="120.0"
-                           prefWidth="1080.0" AnchorPane.bottomAnchor="0.0"
-                           AnchorPane.leftAnchor="0.0"
-                           AnchorPane.rightAnchor="0.0"
-                           AnchorPane.topAnchor="0.0">
-                    <items>
-                        <AnchorPane maxHeight="120.0" minHeight="120.0"
-                                    minWidth="100.0" prefHeight="120.0"
-                                    prefWidth="100.0">
-                            <children>
-                                <GridPane layoutX="52.0" layoutY="19.0"
-                                          minWidth="270.0" prefHeight="180.0"
-                                          prefWidth="270.0"
-                                          AnchorPane.bottomAnchor="0.0"
-                                          AnchorPane.leftAnchor="0.0"
-                                          AnchorPane.rightAnchor="0.0"
-                                          AnchorPane.topAnchor="0.0">
-                                    <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES"
-                                                           maxWidth="50.0"
-                                                           minWidth="50.0"
-                                                           prefWidth="50.0"/>
-                                        <ColumnConstraints hgrow="SOMETIMES"
-                                                           maxWidth="212.0"
-                                                           minWidth="10.0"
-                                                           prefWidth="212.0"/>
-                                    </columnConstraints>
-                                    <rowConstraints>
-                                        <RowConstraints minHeight="10.0"
-                                                        prefHeight="30.0"
-                                                        vgrow="SOMETIMES"/>
-                                    </rowConstraints>
-                                    <children>
-                                        <AnchorPane minHeight="128.0"
-                                                    minWidth="220.0"
-                                                    prefHeight="128.0"
-                                                    prefWidth="220.0"
-                                                    GridPane.columnIndex="1">
-                                            <children>
-                                                <GridPane layoutX="-31.0"
-                                                          layoutY="19.0"
-                                                          prefHeight="111.0"
-                                                          prefWidth="220.0"
-                                                          AnchorPane.bottomAnchor="17.0"
-                                                          AnchorPane.leftAnchor="0.0"
-                                                          AnchorPane.rightAnchor="0.0"
-                                                          AnchorPane.topAnchor="0.0">
-                                                    <columnConstraints>
-                                                        <ColumnConstraints
-                                                                hgrow="SOMETIMES"
-                                                                minWidth="10.0"
-                                                                prefWidth="100.0"/>
-                                                    </columnConstraints>
-                                                    <rowConstraints>
-                                                        <RowConstraints
-                                                                maxHeight="86.0"
-                                                                minHeight="10.0"
-                                                                percentHeight="30.0"
-                                                                prefHeight="41.0"
-                                                                vgrow="SOMETIMES"/>
-                                                        <RowConstraints
-                                                                maxHeight="101.0"
-                                                                minHeight="0.0"
-                                                                percentHeight="25.0"
-                                                                prefHeight="32.0"
-                                                                vgrow="SOMETIMES"/>
-                                                        <RowConstraints
-                                                                maxHeight="101.0"
-                                                                minHeight="0.0"
-                                                                percentHeight="25.0"
-                                                                prefHeight="22.0"
-                                                                vgrow="SOMETIMES"/>
-                                                        <RowConstraints
-                                                                maxHeight="101.0"
-                                                                minHeight="10.0"
-                                                                percentHeight="25.0"
-                                                                prefHeight="34.0"
-                                                                vgrow="SOMETIMES"/>
-                                                    </rowConstraints>
-                                                    <children>
-                                                        <Label text="Chanson précédente"
-                                                               textAlignment="CENTER">
-                                                            <font>
-                                                                <Font size="20.0"/>
-                                                            </font>
-                                                        </Label>
-                                                        <Label text="Titre"
-                                                               GridPane.rowIndex="1">
-                                                            <padding>
-                                                                <Insets left="20.0"/>
-                                                            </padding>
-                                                        </Label>
-                                                        <Label text="Artiste"
-                                                               GridPane.rowIndex="2">
-                                                            <padding>
-                                                                <Insets left="20.0"/>
-                                                            </padding>
-                                                        </Label>
-                                                        <Label text="Album"
-                                                               GridPane.rowIndex="3">
-                                                            <padding>
-                                                                <Insets left="20.0"/>
-                                                            </padding>
-                                                        </Label>
-                                                    </children>
+            <HBox focusTraversable="false" maxHeight="100.0" minHeight="100.0" prefHeight="100.0" prefWidth="1080.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <AnchorPane maxHeight="100.0" maxWidth="270.0" minHeight="100.0" minWidth="270.0" prefHeight="100.0" prefWidth="270.0">
+                     <children>
+                        <GridPane layoutX="52.0" layoutY="19.0" maxHeight="100.0" minHeight="100.0" prefHeight="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="212.0" minWidth="10.0" prefWidth="212.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="100.0" minHeight="100.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <AnchorPane maxHeight="100.0" minHeight="100.0" prefHeight="100.0" GridPane.columnIndex="1">
+                                 <children>
+                                    <GridPane layoutX="-31.0" layoutY="2.0" maxHeight="80.0" minHeight="80.0" prefHeight="80.0" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="2.0">
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints maxHeight="86.0" minHeight="10.0" percentHeight="25.0" prefHeight="41.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="101.0" minHeight="0.0" percentHeight="25.0" prefHeight="32.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="101.0" minHeight="0.0" percentHeight="25.0" prefHeight="22.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="101.0" minHeight="10.0" percentHeight="25.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <children>
+                                          <Label prefHeight="18.0" prefWidth="182.0" text="Chanson précédente" textAlignment="CENTER">
+                                             <font>
+                                                <Font size="20.0" />
+                                             </font>
+                                          </Label>
+                                          <Label text="Titre" GridPane.rowIndex="1">
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label text="Artiste" GridPane.rowIndex="2">
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                          <Label text="Album" GridPane.rowIndex="3">
+                                             <padding>
+                                                <Insets left="20.0" />
+                                             </padding>
+                                          </Label>
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane maxHeight="100.0" minHeight="100.0" prefHeight="100.0">
+                                 <children>
+                                    <SVGPath fx:id="favoriteButton2" content="M 119 129 L 131 135 L 129 122 L 138 113 L 125 111 L 119 99 L 113 111 L 100 113 L 109 122 L 107 135 L 119 129" fill="#f7cf02ab" layoutX="-94.0" layoutY="-67.0" stroke="BLACK" strokeWidth="2.0" AnchorPane.bottomAnchor="29.740753173828125" AnchorPane.leftAnchor="3.3974838256835938" AnchorPane.rightAnchor="3.3974761962890625" AnchorPane.topAnchor="29.263938903808594">
+                                       <cursor>
+                                          <Cursor fx:constant="DEFAULT" />
+                                       </cursor>
+                                    </SVGPath>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </GridPane>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane maxHeight="100.0" maxWidth="1.7976931348623157E308" minHeight="100.0" prefHeight="100.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <GridPane layoutX="170.0" maxHeight="100.0" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="810.0" prefHeight="100.0" prefWidth="810.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="270.0" prefWidth="270.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="540.0" prefWidth="540.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="100.0" minHeight="100.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <AnchorPane maxHeight="100.0" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="270.0" prefHeight="100.0" prefWidth="270.0">
+                                 <children>
+                                    <GridPane maxHeight="100.0" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="270.0" prefHeight="100.0" prefWidth="270.0">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="270.0" minWidth="270.0" prefWidth="270.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints maxHeight="80.0" minHeight="80.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <AnchorPane maxHeight="80.0" maxWidth="270.0" minHeight="80.0" minWidth="270.0" prefHeight="80.0" prefWidth="270.0">
+                                             <children>
+                                                <SVGPath fx:id="beforeButton11" content="M 0, 0 L 0, 20 L 2, 20 L 2, 0 Z M 2, 10 L 17, 20 L 17, 0 Z" fill="#05bc1b" layoutX="76.0" layoutY="29.0" stroke="BLACK" />
+                                                <SVGPath fx:id="playButton1" content="M0 35 L30 17.5 L0 0 Z" fill="#05bc1b" layoutX="127.0" layoutY="22.0" stroke="#0a0a0a" strokeWidth="2.0" />
+                                                <SVGPath fx:id="nextButton1" content="M 0 20 L15 10 L0 0 Z M 15, 0 L 15, 20 L 17, 20 L 17, 0 Z" fill="#05bc1b" layoutX="184.0" layoutY="29.0" stroke="BLACK" />
+                                             </children>
+                                          </AnchorPane>
+                                          <AnchorPane maxHeight="20.0" maxWidth="270.0" minHeight="20.0" minWidth="270.0" prefHeight="20.0" prefWidth="270.0" GridPane.rowIndex="1">
+                                             <children>
+                                                <Slider fx:id="soundSlider1" layoutX="54.0" layoutY="3.0" maxHeight="14.0" maxWidth="160.0" minHeight="14.0" minWidth="160.0" prefHeight="14.0" prefWidth="160.0" />
+                                             </children>
+                                          </AnchorPane>
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane maxHeight="100.0" maxWidth="1.7976931348623157E308" minHeight="100.0" prefHeight="100.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
+                                 <children>
+                                    <GridPane layoutX="67.0" layoutY="19.0" maxHeight="100.0" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="540.0" prefHeight="100.0" prefWidth="540.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <columnConstraints>
+                                          <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="540.0" prefWidth="540.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints maxHeight="128.0" minHeight="10.0" prefHeight="89.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <children>
+                                          <AnchorPane maxHeight="80.0" maxWidth="1.7976931348623157E308" minHeight="80.0" minWidth="540.0" prefHeight="80.0" prefWidth="540.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS">
+                                             <children>
+                                                <GridPane layoutX="84.0" maxHeight="80.0" maxWidth="1.7976931348623157E308" minHeight="80.0" minWidth="540.0" prefHeight="80.0" prefWidth="540.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" />
+                                                      <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="270.0" minWidth="270.0" prefWidth="270.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints maxHeight="80.0" minHeight="80.0" prefHeight="80.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <AnchorPane maxHeight="80.0" maxWidth="1.7976931348623157E308" minHeight="80.0" minWidth="270.0" prefHeight="80.0" prefWidth="270.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS">
+                                                         <children>
+                                                            <GridPane maxHeight="80.0" maxWidth="1.7976931348623157E308" minHeight="80.0" minWidth="270.0" prefHeight="80.0" prefWidth="270.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                               <columnConstraints>
+                                                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" />
+                                                               </columnConstraints>
+                                                               <rowConstraints>
+                                                                  <RowConstraints maxHeight="86.0" minHeight="10.0" percentHeight="40.0" prefHeight="41.0" vgrow="SOMETIMES" />
+                                                                  <RowConstraints maxHeight="101.0" minHeight="0.0" percentHeight="20.0" prefHeight="32.0" vgrow="SOMETIMES" />
+                                                                  <RowConstraints maxHeight="101.0" minHeight="0.0" percentHeight="20.0" prefHeight="22.0" vgrow="SOMETIMES" />
+                                                                  <RowConstraints maxHeight="101.0" minHeight="10.0" percentHeight="20.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                                                               </rowConstraints>
+                                                               <children>
+                                                                  <Label maxWidth="1.7976931348623157E308" text="Chanson en écoute" textAlignment="CENTER" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS">
+                                                                     <font>
+                                                                        <Font size="20.0" />
+                                                                     </font>
+                                                                  </Label>
+                                                                  <Label maxWidth="1.7976931348623157E308" text="Titre" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+                                                                     <padding>
+                                                                        <Insets left="20.0" />
+                                                                     </padding>
+                                                                  </Label>
+                                                                  <Label maxWidth="1.7976931348623157E308" text="Artiste" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
+                                                                     <padding>
+                                                                        <Insets left="20.0" />
+                                                                     </padding>
+                                                                  </Label>
+                                                                  <Label maxWidth="1.7976931348623157E308" text="Album" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
+                                                                     <padding>
+                                                                        <Insets left="20.0" />
+                                                                     </padding>
+                                                                  </Label>
+                                                               </children>
+                                                            </GridPane>
+                                                         </children>
+                                                      </AnchorPane>
+                                                      <AnchorPane maxHeight="80.0" maxWidth="270.0" minHeight="80.0" minWidth="270.0" prefHeight="80.0" prefWidth="270.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS">
+                                                         <children>
+                                                            <SVGPath content="M 0, 20 L 15, 35 L 30, 20 L 23, 20 L 23, 0, L 7 0 L 7 20 Z" fill="RED" layoutX="120.0" layoutY="25.0" stroke="BLACK" strokeLineCap="ROUND" strokeWidth="2.0" />
+                                                            <SVGPath content="M 15, 0 L 0, 15 L 7, 15 L 7, 35 L 23 35, L 23, 15 L 30, 15 Z" fill="#05bc1b" layoutX="180.0" layoutY="25.0" stroke="BLACK" strokeWidth="2.0" />
+                                                            <SVGPath fx:id="favoriteButton11" content="M 119 129 L 131 135 L 129 122 L 138 113 L 125 111 L 119 99 L 113 111 L 100 113 L 109 122 L 107 135 L 119 129" fill="#f7cf02ab" layoutX="-45.0" layoutY="-75.0" stroke="BLACK" strokeWidth="2.0">
+                                                               <cursor>
+                                                                  <Cursor fx:constant="DEFAULT" />
+                                                               </cursor>
+                                                            </SVGPath>
+                                                         </children>
+                                                      </AnchorPane>
+                                                   </children>
                                                 </GridPane>
-                                            </children>
-                                        </AnchorPane>
-                                        <AnchorPane maxWidth="50.0"
-                                                    minWidth="50.0"
-                                                    prefHeight="180.0"
-                                                    prefWidth="50.0">
-                                            <children>
-                                                <SVGPath fx:id="favoriteButton"
-                                                         content="M 119 129 L 131 135 L 129 122 L 138 113 L 125 111 L 119 99 L 113 111 L 100 113 L 109 122 L 107 135 L 119 129"
-                                                         fill="#f7cf02ab"
-                                                         layoutX="-94.0"
-                                                         layoutY="-48.0"
-                                                         stroke="BLACK"
-                                                         strokeWidth="2.0"
-                                                         AnchorPane.bottomAnchor="49.49208068847656"
-                                                         AnchorPane.leftAnchor="3.3300704956054688"
-                                                         AnchorPane.rightAnchor="3.330078125"
-                                                         AnchorPane.topAnchor="48.24046325683594">
-                                                    <cursor>
-                                                        <Cursor fx:constant="DEFAULT"/>
-                                                    </cursor>
-                                                </SVGPath>
-                                            </children>
-                                        </AnchorPane>
-                                    </children>
-                                </GridPane>
-                            </children>
-                        </AnchorPane>
-                        <AnchorPane minHeight="0.0" minWidth="0.0"
-                                    prefHeight="128.0" prefWidth="804.0">
-                            <children>
-                                <GridPane layoutX="170.0" prefHeight="128.0"
-                                          prefWidth="805.0"
-                                          AnchorPane.bottomAnchor="0.0"
-                                          AnchorPane.leftAnchor="0.0"
-                                          AnchorPane.rightAnchor="0.0"
-                                          AnchorPane.topAnchor="0.0">
-                                    <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES"
-                                                           maxWidth="368.0"
-                                                           minWidth="10.0"
-                                                           prefWidth="271.0"/>
-                                        <ColumnConstraints hgrow="SOMETIMES"
-                                                           maxWidth="587.0"
-                                                           minWidth="10.0"
-                                                           prefWidth="534.0"/>
-                                    </columnConstraints>
-                                    <rowConstraints>
-                                        <RowConstraints minHeight="10.0"
-                                                        prefHeight="30.0"
-                                                        vgrow="SOMETIMES"/>
-                                    </rowConstraints>
-                                    <children>
-                                        <AnchorPane prefHeight="200.0"
-                                                    prefWidth="200.0">
-                                            <children>
-                                                <SVGPath fx:id="beforeButton1"
-                                                         content="M 0, 0 L 0, 20 L 2, 20 L 2, 0 Z M 2, 10 L 17, 20 L 17, 0 Z"
-                                                         fill="#05bc1b"
-                                                         layoutX="63.0"
-                                                         layoutY="39.0"
-                                                         stroke="BLACK"/>
-                                                <SVGPath fx:id="playButton"
-                                                         content="M0 35 L30 17.5 L0 0 Z"
-                                                         fill="#05bc1b"
-                                                         layoutX="120.0"
-                                                         layoutY="32.0"
-                                                         stroke="#0a0a0a"
-                                                         strokeWidth="2.0"/>
-                                                <SVGPath fx:id="nextButton"
-                                                         content="M 0 20 L15 10 L0 0 Z M 15, 0 L 15, 20 L 17, 20 L 17, 0 Z"
-                                                         fill="#05bc1b"
-                                                         layoutX="180.0"
-                                                         layoutY="40.0"
-                                                         stroke="BLACK"/>
-                                                <Slider fx:id="soundSlider"
-                                                        layoutX="51.0"
-                                                        layoutY="93.0"
-                                                        prefHeight="14.0"
-                                                        prefWidth="158.0"/>
-                                            </children>
-                                        </AnchorPane>
-                                        <AnchorPane prefHeight="200.0"
-                                                    prefWidth="200.0"
-                                                    GridPane.columnIndex="1">
-                                            <children>
-                                                <GridPane layoutX="67.0"
-                                                          layoutY="19.0"
-                                                          prefHeight="128.0"
-                                                          prefWidth="587.0"
-                                                          AnchorPane.bottomAnchor="0.0"
-                                                          AnchorPane.leftAnchor="0.0"
-                                                          AnchorPane.rightAnchor="0.0"
-                                                          AnchorPane.topAnchor="0.0">
-                                                    <columnConstraints>
-                                                        <ColumnConstraints
-                                                                hgrow="SOMETIMES"
-                                                                minWidth="10.0"
-                                                                prefWidth="100.0"/>
-                                                    </columnConstraints>
-                                                    <rowConstraints>
-                                                        <RowConstraints
-                                                                maxHeight="128.0"
-                                                                minHeight="10.0"
-                                                                prefHeight="89.0"
-                                                                vgrow="SOMETIMES"/>
-                                                        <RowConstraints
-                                                                maxHeight="69.0"
-                                                                minHeight="0.0"
-                                                                prefHeight="39.0"
-                                                                vgrow="SOMETIMES"/>
-                                                    </rowConstraints>
-                                                    <children>
-                                                        <AnchorPane
-                                                                prefHeight="200.0"
-                                                                prefWidth="200.0">
-                                                            <children>
-                                                                <GridPane
-                                                                        layoutX="84.0"
-                                                                        prefHeight="90.0"
-                                                                        prefWidth="587.0"
-                                                                        AnchorPane.bottomAnchor="0.0"
-                                                                        AnchorPane.leftAnchor="0.0"
-                                                                        AnchorPane.rightAnchor="0.0"
-                                                                        AnchorPane.topAnchor="0.0">
-                                                                    <columnConstraints>
-                                                                        <ColumnConstraints
-                                                                                hgrow="SOMETIMES"
-                                                                                maxWidth="431.0"
-                                                                                minWidth="10.0"
-                                                                                prefWidth="319.0"/>
-                                                                        <ColumnConstraints
-                                                                                hgrow="SOMETIMES"
-                                                                                maxWidth="268.0"
-                                                                                minWidth="10.0"
-                                                                                prefWidth="268.0"/>
-                                                                    </columnConstraints>
-                                                                    <rowConstraints>
-                                                                        <RowConstraints
-                                                                                minHeight="10.0"
-                                                                                prefHeight="30.0"
-                                                                                vgrow="SOMETIMES"/>
-                                                                    </rowConstraints>
-                                                                    <children>
-                                                                        <AnchorPane
-                                                                                prefHeight="89.0"
-                                                                                prefWidth="288.0">
-                                                                            <children>
-                                                                                <GridPane
-                                                                                        prefHeight="111.0"
-                                                                                        prefWidth="394.0"
-                                                                                        AnchorPane.bottomAnchor="0.0"
-                                                                                        AnchorPane.leftAnchor="0.0"
-                                                                                        AnchorPane.rightAnchor="0.0"
-                                                                                        AnchorPane.topAnchor="0.0">
-                                                                                    <columnConstraints>
-                                                                                        <ColumnConstraints
-                                                                                                hgrow="SOMETIMES"
-                                                                                                minWidth="10.0"
-                                                                                                prefWidth="100.0"/>
-                                                                                    </columnConstraints>
-                                                                                    <rowConstraints>
-                                                                                        <RowConstraints
-                                                                                                maxHeight="86.0"
-                                                                                                minHeight="10.0"
-                                                                                                percentHeight="40.0"
-                                                                                                prefHeight="41.0"
-                                                                                                vgrow="SOMETIMES"/>
-                                                                                        <RowConstraints
-                                                                                                maxHeight="101.0"
-                                                                                                minHeight="0.0"
-                                                                                                percentHeight="20.0"
-                                                                                                prefHeight="32.0"
-                                                                                                vgrow="SOMETIMES"/>
-                                                                                        <RowConstraints
-                                                                                                maxHeight="101.0"
-                                                                                                minHeight="0.0"
-                                                                                                percentHeight="20.0"
-                                                                                                prefHeight="22.0"
-                                                                                                vgrow="SOMETIMES"/>
-                                                                                        <RowConstraints
-                                                                                                maxHeight="101.0"
-                                                                                                minHeight="10.0"
-                                                                                                percentHeight="20.0"
-                                                                                                prefHeight="34.0"
-                                                                                                vgrow="SOMETIMES"/>
-                                                                                    </rowConstraints>
-                                                                                    <children>
-                                                                                        <Label text="Chanson en écoute"
-                                                                                               textAlignment="CENTER">
-                                                                                            <font>
-                                                                                                <Font size="20.0"/>
-                                                                                            </font>
-                                                                                        </Label>
-                                                                                        <Label text="Titre"
-                                                                                               GridPane.rowIndex="1">
-                                                                                            <padding>
-                                                                                                <Insets left="20.0"/>
-                                                                                            </padding>
-                                                                                        </Label>
-                                                                                        <Label text="Artiste"
-                                                                                               GridPane.rowIndex="2">
-                                                                                            <padding>
-                                                                                                <Insets left="20.0"/>
-                                                                                            </padding>
-                                                                                        </Label>
-                                                                                        <Label text="Album"
-                                                                                               GridPane.rowIndex="3">
-                                                                                            <padding>
-                                                                                                <Insets left="20.0"/>
-                                                                                            </padding>
-                                                                                        </Label>
-                                                                                    </children>
-                                                                                </GridPane>
-                                                                            </children>
-                                                                        </AnchorPane>
-                                                                        <AnchorPane
-                                                                                prefHeight="113.0"
-                                                                                prefWidth="268.0"
-                                                                                GridPane.columnIndex="1">
-                                                                            <children>
-                                                                                <SVGPath
-                                                                                        fx:id="favoriteButton1"
-                                                                                        content="M 119 129 L 131 135 L 129 122 L 138 113 L 125 111 L 119 99 L 113 111 L 100 113 L 109 122 L 107 135 L 119 129"
-                                                                                        fill="#f7cf02ab"
-                                                                                        layoutX="-83.0"
-                                                                                        layoutY="-63.0"
-                                                                                        stroke="BLACK"
-                                                                                        strokeWidth="2.0">
-                                                                                    <cursor>
-                                                                                        <Cursor fx:constant="DEFAULT"/>
-                                                                                    </cursor>
-                                                                                </SVGPath>
-                                                                                <SVGPath
-                                                                                        content="M 0, 20 L 15, 35 L 30, 20 L 23, 20 L 23, 0, L 7 0 L 7 20 Z"
-                                                                                        fill="RED"
-                                                                                        layoutX="88.0"
-                                                                                        layoutY="36.0"
-                                                                                        stroke="BLACK"
-                                                                                        strokeLineCap="ROUND"
-                                                                                        strokeWidth="2.0"/>
-                                                                                <SVGPath
-                                                                                        content="M 15, 0 L 0, 15 L 7, 15 L 7, 35 L 23 35, L 23, 15 L 30, 15 Z"
-                                                                                        fill="#05bc1b"
-                                                                                        layoutX="153.0"
-                                                                                        layoutY="36.0"
-                                                                                        stroke="BLACK"
-                                                                                        strokeWidth="2.0"/>
-                                                                            </children>
-                                                                        </AnchorPane>
-                                                                    </children>
-                                                                </GridPane>
-                                                            </children>
-                                                        </AnchorPane>
-                                                        <AnchorPane
-                                                                prefHeight="200.0"
-                                                                prefWidth="600.0"
-                                                                GridPane.rowIndex="1">
-                                                            <children>
-                                                                <ProgressBar
-                                                                        layoutX="14.0"
-                                                                        layoutY="11.0"
-                                                                        minHeight="5.0"
-                                                                        prefHeight="7.0"
-                                                                        prefWidth="576.0"
-                                                                        progress="0.0"/>
-                                                            </children>
-                                                        </AnchorPane>
-                                                    </children>
-                                                </GridPane>
-                                            </children>
-                                        </AnchorPane>
-                                    </children>
-                                </GridPane>
-                            </children>
-                        </AnchorPane>
-                    </items>
-                </SplitPane>
+                                             </children>
+                                          </AnchorPane>
+                                          <AnchorPane maxHeight="20.0" maxWidth="1.7976931348623157E308" minHeight="20.0" minWidth="540.0" prefHeight="20.0" prefWidth="540.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+                                             <children>
+                                                <ProgressBar layoutY="9.0" maxHeight="7.0" maxWidth="1.7976931348623157E308" minHeight="7.0" minWidth="540.0" prefHeight="7.0" prefWidth="525.0" progress="0.0" />
+                                             </children>
+                                          </AnchorPane>
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </GridPane>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </HBox>
             </children>
         </AnchorPane>
     </items>
