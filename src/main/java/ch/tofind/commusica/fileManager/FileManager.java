@@ -11,7 +11,7 @@ import java.nio.file.Path;
  */
 public class FileManager {
 
-
+    private static FileManager instance = null;
 
 
 
@@ -20,7 +20,7 @@ public class FileManager {
 
 
 
-    
+
     /**
      *
      * @param path
@@ -70,7 +70,7 @@ public class FileManager {
      */
 
 
-public static boolean save(String path ,String fileName, File file) throws Exception, FileNotFoundException {
+public boolean save(String path ,String fileName, File file) throws Exception, FileNotFoundException {
 
         String pathFile = path.toString() + File.separator + fileName;
     File infile = null;
@@ -128,7 +128,7 @@ public static boolean save(String path ,String fileName, File file) throws Excep
      */
 
 
-public static boolean eraseFile(String path, String filename)  throws Exception{
+public boolean eraseFile(String path, String filename)  throws Exception{
 
     File file = new File(path + File.separator+ filename);
 
@@ -151,7 +151,18 @@ return file.delete();
 }
 
 
+    public static FileManager getInstance() {
 
+        if(instance == null) {
+            synchronized (FileManager.class) {
+                if (instance == null) {
+                    instance = new FileManager();
+                }
+            }
+        }
+
+        return instance;
+    }
 
 }
 
