@@ -5,6 +5,10 @@
 ### Ludovic Delafontaine
 * Finalisation de la classe Track avec l'ajout de l'interface DatabaseObject
 
+## 02.04.2017
+### Denise Gemesio
+* Fenêtre rendue "redimensionnable" au niveau de la partie player de l'interface (2h)
+
 ## 31.03.2017
 ### Ludovic Delafontaine
 * Suite de la base de données avec les classes Playlist, PlaylistTrack et PlaylistTrackId (2h30)
