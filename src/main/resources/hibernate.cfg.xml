@@ -19,7 +19,7 @@
         <property name="log4j.logger.org.hibernate">warning</property>
 
         <!-- List of mapping classes -->
-        <mapping class="ch.tofind.commusica.track.Track" />
+        <mapping resource="Track.hbm.xml" />
 
     </session-factory>
 </hibernate-configuration>
