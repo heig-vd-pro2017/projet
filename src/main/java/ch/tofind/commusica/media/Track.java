@@ -139,12 +139,15 @@ public class Track implements DatabaseObject {
     public String toString() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-        return "Title:       " + title                         + '\n' +
-               "Artist:      " + artist                        + '\n' +
-               "Album:       " + album                         + '\n' +
-               "Length:      " + length                        + '\n' +
-               "URI:         " + uri                           + '\n' +
-               "Date added:  " + dateFormat.format(dateAdded)  + '\n' +
-               "Date played: " + dateFormat.format(datePlayed) + '\n';
+        String dateAddedString = dateAdded == null ? "N/A" : dateFormat.format(dateAdded);
+        String datePlayedString = datePlayed == null ? "N/A" : dateFormat.format(datePlayed);
+
+        return "Title:       " + title            + '\n' +
+               "Artist:      " + artist           + '\n' +
+               "Album:       " + album            + '\n' +
+               "Length:      " + length           + '\n' +
+               "URI:         " + uri              + '\n' +
+               "Date added:  " + dateAddedString  + '\n' +
+               "Date played: " + datePlayedString + '\n';
     }
 }
