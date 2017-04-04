@@ -8,7 +8,7 @@ import org.hibernate.cfg.Configuration;
 
 public class DatabaseManager {
 
-    //! Shared instance of the database between all the application
+    //! Shared instance of the database for all the application
     private static DatabaseManager instance = null;
 
     //! SessionFactory (Hibernate related)
@@ -21,7 +21,7 @@ public class DatabaseManager {
     private Transaction transaction = null;
 
     /**
-     * DatabaseManger single constructor. Avoid the instantiation.
+     * DatabaseManager single constructor. Avoid the instantiation.
      */
     private DatabaseManager() {
         try {
@@ -52,10 +52,12 @@ public class DatabaseManager {
         return session;
     }
 
-    public void save(Object object) {
+    public Object save(Object object) {
+        Object id = null;
+
         try {
             transaction = session.beginTransaction();
-            session.save(object);
+            id = session.save(object);
             transaction.commit();
         } catch (HibernateException e) {
             if (transaction != null) {
@@ -63,6 +65,8 @@ public class DatabaseManager {
             }
             e.printStackTrace();
         }
+
+        return id;
     }
 
     public void delete(Object object) {

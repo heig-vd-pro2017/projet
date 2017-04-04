@@ -1,12 +1,10 @@
 package ch.tofind.commusica.media;
 
-import javax.persistence.OneToMany;
+import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 
-public class Playlist {
+public class Playlist implements Serializable {
 
     //! ID of the playlist
     private Integer id;
@@ -32,12 +30,25 @@ public class Playlist {
         return id;
     }
 
-    /**
-     * Format the track to be displayed
-     * @return The formatted String
-     */
+
     @Override
-    public String toString() {
-        return String.format("%s", name);
+    public boolean equals(Object object) {
+
+        if (object == this) {
+            return true;
+        }
+
+        if (!(object instanceof Playlist)) {
+            return false;
+        }
+
+        Playlist playlist = (Playlist) object;
+
+        return Objects.equals(name, playlist.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }
