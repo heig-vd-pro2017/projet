@@ -1,4 +1,4 @@
-package ch.tofind.commusica.interfaces;
+package ch.tofind.commusica.database;
 
 import java.util.Date;
 

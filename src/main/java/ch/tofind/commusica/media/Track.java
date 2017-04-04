@@ -1,6 +1,6 @@
 package ch.tofind.commusica.media;
 
-import ch.tofind.commusica.interfaces.DatabaseObject;
+import ch.tofind.commusica.database.DatabaseObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
