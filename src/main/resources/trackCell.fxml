@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<?import java.lang.Double?>
+<AnchorPane fx:id="trackPane" minHeight="60.0" prefHeight="63.0" prefWidth="401.0" xmlns:fx="http://javafx.com/fxml/1"
+            xmlns="http://javafx.com/javafx/8.0.112">
+
+    <fx:define>
+        <Double fx:id="ICONS_SIZE" fx:value="20.0"/>
+    </fx:define>
+
+    <padding>
+        <Insets bottom="5" left="10" right="10" top="5"/>
+    </padding>
+
+    <GridPane hgap="10" vgap="5" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+              AnchorPane.topAnchor="0">
+        <columnConstraints>
+            <ColumnConstraints percentWidth="50"/>
+            <ColumnConstraints percentWidth="50"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints percentHeight="60"/>
+            <RowConstraints percentHeight="40"/>
+        </rowConstraints>
+
+        <Label fx:id="titleLabel" text="Title" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.rowIndex="0"
+               GridPane.valignment="BOTTOM">
+            <font>
+                <Font size="22"/>
+            </font>
+        </Label>
+
+        <Label fx:id="artistLabel" style="-fx-text-fill: #A8A8A8;" text="Artist" GridPane.columnIndex="0"
+               GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+            <font>
+                <Font size="14"/>
+            </font>
+        </Label>
+
+        <ImageView fx:id="upvoteImageView" fitHeight="$ICONS_SIZE" onMouseClicked="#upvote" pickOnBounds="true"
+                   preserveRatio="true"
+                   GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="0" GridPane.valignment="TOP">
+            <image>
+                <Image url="@icons/upvote.png"/>
+            </image>
+        </ImageView>
+
+        <ImageView fx:id="downvoteImageView" fitHeight="$ICONS_SIZE" onMouseClicked="#downvote" pickOnBounds="true"
+                   preserveRatio="true"
+                   GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1"
+                   GridPane.valignment="BOTTOM">
+            <image>
+                <Image url="@icons/downvote.png"/>
+            </image>
+        </ImageView>
+
+        <Label fx:id="votesLabel" alignment="CENTER" maxWidth="$ICONS_SIZE" minWidth="$ICONS_SIZE" text="0"
+               textAlignment="CENTER"
+               GridPane.columnIndex="1" GridPane.columnSpan="1" GridPane.halignment="RIGHT" GridPane.rowIndex="0"
+               GridPane.rowSpan="2" GridPane.valignment="CENTER"/>
+
+        <ImageView fx:id="favoriteImageView" fitHeight="$ICONS_SIZE" onMouseClicked="#favorite" pickOnBounds="true"
+                   preserveRatio="true"
+                   GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="0"
+                   GridPane.valignment="CENTER" GridPane.rowSpan="2">
+            <GridPane.margin>
+                <!-- TODO: Find a workaround to use $ICONS_SIZE constant. -->
+                <Insets right="25.0"/>
+            </GridPane.margin>
+        </ImageView>
+    </GridPane>
+
+</AnchorPane>

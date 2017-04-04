@@ -1,6 +1,23 @@
 # Journal de travail
 *Le journal de travail débute le 15.03.2017*
 
+## 03.04.2017
+### Ludovic Delafontaine
+* Finalisation de la classe Track avec l'ajout de l'interface DatabaseObject
+
+## 31.03.2017
+### Ludovic Delafontaine
+* Suite de la base de données avec les classes Playlist, PlaylistTrack et PlaylistTrackId (2h30)
+
+## 29.03.2017
+### Lucas Elisei (1h)
+* Ajout des actions d'*upvote* et *downvote* pour les chansons (seulement graphique).
+
+## 28.03.2017
+### Lucas Elisei (4h)
+* Ajout du style des cellules représentant des chansons dans la playlist en cours de lecture (panneau central).
+* Tests du player et suite de la base de données (2h00)
+
 ## 27.03.2017
 ### Ludovic Delafontaine
 * Création de la classe Playlist et tests avec la base de données associée (5h00)
