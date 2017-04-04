@@ -4,6 +4,7 @@
 ## 03.04.2017
 ### Ludovic Delafontaine
 * Finalisation de la classe Track avec l'ajout de l'interface DatabaseObject
+* Merge avec master pour Track
 
 ## 31.03.2017
 ### Ludovic Delafontaine
