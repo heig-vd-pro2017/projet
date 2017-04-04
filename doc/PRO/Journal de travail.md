@@ -9,9 +9,17 @@
 ### Denise Gemesio
 * Fenêtre rendue "redimensionnable" au niveau de la partie player de l'interface (2h)
 
+## 01.04.2017
+### David Truan
+* Tests pour le Multicast. Toujours des problèmes (2h)
+
 ## 31.03.2017
 ### Ludovic Delafontaine
 * Suite de la base de données avec les classes Playlist, PlaylistTrack et PlaylistTrackId (2h30)
+
+## 30.03.2017
+### David Truan
+* Réflexion sur l'implémentation et début de code pour la découverte de serveurs par les clients (2h)
 
 ## 29.03.2017
 ### Lucas Elisei (1h)
