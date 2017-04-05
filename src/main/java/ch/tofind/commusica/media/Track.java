@@ -112,6 +112,11 @@ public class Track implements DatabaseObject {
     }
 
     @Override
+    public void update() {
+        this.datePlayed = new Date();
+    }
+
+    @Override
     public boolean equals(Object object) {
 
         if (object == this) {
@@ -127,7 +132,7 @@ public class Track implements DatabaseObject {
         return Objects.equals(title, track.title) &&
                Objects.equals(artist, track.artist) &&
                Objects.equals(album, track.album) &&
-               (length == length + 10 || length == length - 10);
+               length == track.length;
     }
 
     @Override
@@ -142,12 +147,13 @@ public class Track implements DatabaseObject {
         String dateAddedString = dateAdded == null ? "N/A" : dateFormat.format(dateAdded);
         String datePlayedString = datePlayed == null ? "N/A" : dateFormat.format(datePlayed);
 
-        return "Title:       " + title            + '\n' +
-               "Artist:      " + artist           + '\n' +
-               "Album:       " + album            + '\n' +
-               "Length:      " + length           + '\n' +
-               "URI:         " + uri              + '\n' +
-               "Date added:  " + dateAddedString  + '\n' +
+        return "Track"                           + '\n' + '\t' +
+               "Title......: " + title            + '\n' + '\t' +
+               "Artist.....: " + artist           + '\n' + '\t' +
+               "Album......: " + album            + '\n' + '\t' +
+               "Length.....: " + length           + '\n' + '\t' +
+               "URI........: " + uri              + '\n' + '\t' +
+               "Date added.: " + dateAddedString  + '\n' + '\t' +
                "Date played: " + datePlayedString + '\n';
     }
 }
