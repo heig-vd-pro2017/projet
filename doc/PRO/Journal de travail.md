@@ -1,6 +1,12 @@
 # Journal de travail
 *Le journal de travail débute le 15.03.2017*
 
+## 05.04.2017
+### Ludovic Delafontaine
+* Ajout de la classe Playlist et de sa table associée pour la base de données (01:00)
+* Ajout de la classe permettant de récupérer des propriétés depuis un fichier de configuration (00:30)
+* Documentation des différentes classes (00:30)
+
 ## 03.04.2017
 ### Ludovic Delafontaine
 * Finalisation de la classe Track avec l'ajout de l'interface DatabaseObject

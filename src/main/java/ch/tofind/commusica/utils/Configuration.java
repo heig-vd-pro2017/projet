@@ -4,6 +4,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+/**
+ * @brief This class can get properties from a configuration file
+ */
 public class Configuration {
 
     //! Shared instance of the object for all the application
