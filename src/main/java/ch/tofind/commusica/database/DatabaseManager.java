@@ -8,7 +8,7 @@ import org.hibernate.cfg.Configuration;
 
 public class DatabaseManager {
 
-    //! Shared instance of the database for all the application
+    //! Shared instance of the object for all the application
     private static DatabaseManager instance = null;
 
     //! SessionFactory (Hibernate related)
@@ -21,7 +21,7 @@ public class DatabaseManager {
     private Transaction transaction = null;
 
     /**
-     * DatabaseManager single constructor. Avoid the instantiation.
+     * @brief DatabaseManager single constructor. Avoid the instantiation.
      */
     private DatabaseManager() {
         try {
@@ -35,6 +35,10 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * @brief Get the object instance
+     * @return The instance of the object
+     */
     public static DatabaseManager getInstance() {
 
         if(instance == null) {

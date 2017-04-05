@@ -1,11 +1,13 @@
 package ch.tofind.commusica;
 
+import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.media.Playlist;
 import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.ui.UIController;
 
 import java.io.File;
+import java.io.IOException;
 
 public class Commusica {
 
@@ -21,6 +23,12 @@ public class Commusica {
     public static void main(String[] args) {
         
         System.out.println("App démarrée :)");
+
+        try {
+            Configuration.getInstance().load("commusica.cfg");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         dropDatabase();
 

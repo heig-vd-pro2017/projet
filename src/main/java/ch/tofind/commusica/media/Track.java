@@ -1,6 +1,7 @@
 package ch.tofind.commusica.media;
 
 import ch.tofind.commusica.database.DatabaseObject;
+import ch.tofind.commusica.utils.Configuration;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -142,7 +143,10 @@ public class Track implements DatabaseObject {
 
     @Override
     public String toString() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+        String format = (String) Configuration.getInstance().get("DEFAULT_DATE_FORMAT");
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format);
 
         String dateAddedString = dateAdded == null ? "N/A" : dateFormat.format(dateAdded);
         String datePlayedString = datePlayed == null ? "N/A" : dateFormat.format(datePlayed);
