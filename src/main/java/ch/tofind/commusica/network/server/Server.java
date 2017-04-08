@@ -1,4 +1,8 @@
-package ch.tofind.commusica.network;
+package ch.tofind.commusica.network.server;
+
+import ch.tofind.commusica.network.Protocol;
+import ch.tofind.commusica.network.Session;
+import ch.tofind.commusica.network.SessionManager;
 
 import java.io.*;
 import java.net.*;
@@ -10,11 +14,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-
 public class Server {
     private static int nextId = 0;
     private SessionManager sm = new SessionManager();
     private int port;
+
+    private InetAddress addressOfInterface;
 
 
     final static Logger LOG = Logger.getLogger(Server.class.getName());
@@ -24,9 +29,9 @@ public class Server {
      *
      * @param port the port to listen on
      */
-    public Server(int port) {
+    public Server(int port, InetAddress addressOfInterface) {
         this.port = port;
-
+        this.addressOfInterface = addressOfInterface;
     }
 
     /**
@@ -46,10 +51,10 @@ public class Server {
                     e.printStackTrace();
                 }
             }
-        },0, 1, TimeUnit.SECONDS);
+        }, 0, 1, TimeUnit.SECONDS);
 
         new Thread(new ReceptionistWorker()).start();
-        new Thread(ServerDiscovery.getSharedInstance()).start();
+        new Thread(ServerDiscovery.getSharedInstance(addressOfInterface)).start();
     }
 
 
@@ -92,7 +97,7 @@ public class Server {
          * is where we implement the application protocol logic, i.e. where we read
          * data sent by the client and where we generate the responses.
          */
-        private class ServantWorker implements Runnable, NetPort {
+        private class ServantWorker implements Runnable {
             private PrintWriter out;
             private BufferedReader in;
 
@@ -101,7 +106,7 @@ public class Server {
             public ServantWorker(Socket clientSocket) {
                 try {
                     this.clientSocket = clientSocket;
-                    in = new BufferedReader (new InputStreamReader(clientSocket.getInputStream()));
+                    in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                     out = new PrintWriter(clientSocket.getOutputStream());
 
                 } catch (IOException ex) {
@@ -111,26 +116,34 @@ public class Server {
 
             @Override
             public void run() {
-                out.println("Welcome to the Multi-Threaded ServerDiscovery.");
-                out.flush();
                 try {
-                    send(SEND_ID);
-                    int id = Integer.parseInt(receive());
+                    switch (in.readLine()) {
+                        case Protocol.CONNECTION_REQUEST:
+                            send(Protocol.SEND_ID);
+                            int id = Integer.parseInt(in.readLine());
 
-                    if (!sm.idAlreadyStored(id)) {
-                        sm.storeSession(new Session(id, new Timestamp(System.currentTimeMillis())));
+                            System.out.println("BRUHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+                            if (!sm.idAlreadyStored(id)) {
+                                sm.storeSession(new Session(id, new Timestamp(System.currentTimeMillis())));
+                                send(Protocol.SESSION_CREATED);
 
-                        send(Integer.toString(id));
-                        send(SESSION_CREATED);
+                            } else {
+                                sm.updateSession(id);
 
-                    } else {
-                        sm.updateSession(id);
+                                send(Protocol.SESSION_UPDATED);
+                            }
+                            break;
 
-                        send(SESSION_UPDATED);
+
+                        case Protocol.SEND_INFO:
+                            String infoReceived = receive();
+                            // TODO: transfer the info to the main Controller
+                            break;
+
+                        default:
 
 
                     }
-
                     LOG.info("Cleaning up resources...");
                     clientSocket.close();
                     out.close();
@@ -157,6 +170,7 @@ public class Server {
                     LOG.log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }
+
             public void send(String str) {
                 out.write(str);
                 out.write('\n');
@@ -172,8 +186,12 @@ public class Server {
                 return "";
             }
         }
-        
+
     }
-    
-    
+
+    public void sendPlaylistUpdate() {
+        new Thread(new MulticastSender(addressOfInterface)).start();
+    }
+
+
 }
