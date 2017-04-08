@@ -3,9 +3,9 @@
 
 ## 08.04.2017
 ### David Truan
-* Ajout d'une méthode pour choisir sa bonne interface et modification du code pour prendre en compte cela.
-* Ajout de fonctionnalités au programme de test.
-* Mise au propre rapide des classes et création de a classe Protocol et de packages client/server.
+* Ajout d'une méthode pour choisir sa bonne interface et modification du code pour prendre en compte cela. (2h)
+* Ajout de fonctionnalités au programme de test. (10min)
+* Mise au propre rapide des classes et création de a classe Protocol et de packages client/server. (1h)
 
 ## 05.04.2017
 ### Ludovic Delafontaine
