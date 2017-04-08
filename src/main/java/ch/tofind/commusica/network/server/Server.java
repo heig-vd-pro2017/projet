@@ -122,7 +122,6 @@ public class Server {
                             send(Protocol.SEND_ID);
                             int id = Integer.parseInt(in.readLine());
 
-                            System.out.println("BRUHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
                             if (!sm.idAlreadyStored(id)) {
                                 sm.storeSession(new Session(id, new Timestamp(System.currentTimeMillis())));
                                 send(Protocol.SESSION_CREATED);
