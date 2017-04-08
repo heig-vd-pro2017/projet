@@ -1,6 +1,12 @@
 # Journal de travail
 *Le journal de travail débute le 15.03.2017*
 
+## 08.04.2017
+### David Truan
+* Ajout d'une méthode pour choisir sa bonne interface et modification du code pour prendre en compte cela.
+* Ajout de fonctionnalités au programme de test.
+* Mise au propre rapide des classes et création de a classe Protocol et de packages client/server.
+
 ## 05.04.2017
 ### Ludovic Delafontaine
 * Ajout de la classe Playlist et de sa table associée pour la base de données (01:00)
