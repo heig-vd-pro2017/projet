@@ -18,25 +18,33 @@ import java.util.ResourceBundle;
 
 public class UIController extends Application implements Initializable {
 
-    private final String FXFILE = "main.fxml";
+    private static final String FXFILE = "main.fxml";
 
     //! JavaFX components.
     @FXML
     private ListView<String> playlistsListView;
+
     @FXML
     private ListView<String> songsListView;
 
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource(FXFILE));
+        URL fileURL = getClass().getClassLoader().getResource(FXFILE);
+
+        if (fileURL == null) {
+            throw new NullPointerException("FXML file not found.");
+        }
+
+        Parent root = FXMLLoader.load(fileURL);
 
         Scene scene = new Scene(root);
 
         stage.setTitle("Commusica");
         stage.setScene(scene);
-        stage.setMinHeight(600.0);
-        stage.setMinWidth(1080.0);
+        stage.sizeToScene();
 
         stage.show();
+
+        stage.setMinHeight(stage.getHeight());
     }
 
     public void initialize(URL location, ResourceBundle resources) {
@@ -54,7 +62,7 @@ public class UIController extends Application implements Initializable {
         playlistsListView.setItems(items);
     }
 
-    private void populateSongs(){
+    private void populateSongs() {
         ObservableList<String> items = FXCollections.observableArrayList();
 
         for (int i = 1; i <= 8; ++i) {
@@ -66,7 +74,7 @@ public class UIController extends Application implements Initializable {
             public void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
 
-                if(item != null) {
+                if (item != null) {
                     try {
                         TrackCellController cellController = new TrackCellController(item);
                         setGraphic(cellController.getPane());
