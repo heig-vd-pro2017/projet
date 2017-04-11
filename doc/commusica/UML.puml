@@ -59,7 +59,7 @@ note left of Session
 endnote
 
 note left of Controller
-    "Routeur" qui rédirige
+    "Routeur" qui redirige
     les demandes du client
 endnote
 
