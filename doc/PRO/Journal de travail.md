@@ -30,6 +30,9 @@
 ### Ludovic Delafontaine
 * Suite de la base de données avec les classes Playlist, PlaylistTrack et PlaylistTrackId (2h30)
 
+### Yosra Harbaoui 
+* Implémentation simple d'une connexion client/serveur pour tester la connectivité. 
+
 ## 30.03.2017
 ### David Truan
 * Réflexion sur l'implémentation et début de code pour la découverte de serveurs par les clients (2h)
@@ -55,6 +58,9 @@
 ### David Truan
 * Documentation et première implémentation (test) du multicast en Java. (2h)
 * Réévaluation de l'intêret de NetPort en tant que classe. (30min)
+
+### Yosra Harbaoui
+* Documentation sur les différents "types" de communications entre un serveur et un client.
 
 ## 22.03.2017
 ### Denise Gemesio
@@ -82,6 +88,9 @@
 ### Ludovic Delafontaine
 * Avancement dans la base de données
     * Corrections et améliorations
+ 
+### Yosra Harbaoui
+* Documentation sur l'implémentation client/serveur.
 
 ## 20.03.2017
 ### David Truan
