@@ -2,81 +2,27 @@
 
 skinparam classAttributeIconSize 0
 
-class Logger {
-    -print(String) : void
-    +info(String) : void
-    +warning(String) : void
-    +alert(String) : void
-}
+class Configuration
 
-class NetworkManager {
-    -clients : Array of Threads
+class NetworkManager
 
-    -addClient() : Integer
+class SessionManager
 
-}
+class Session
 
-class SessionManager {
-    array of Session
-}
+class Controller
 
-class Session {
-    -id : Integer
-    -ipAddress : String
-    -macAddress : String
-    -token : String
-    -dateAdded : Timestamp
-}
+class FileManager
 
-class Controller {
-    -id : Integer
-    -name : String
-}
+class DatabaseManager
 
-class FileManager {
+class PlaylistManager
 
-}
+class Playlist
 
-class DatabaseManager {
+class Player
 
-}
-
-class PlaylistManager {
-    -playlists : Array of playlists
-}
-
-class FavoriteManager {
-    favorites : Map of track/favorites
-}
-
-class VoteManager {
-    -votes : Map of track/votes
-}
-
-class Playlist {
-    -id : Integer
-    -name : String
-    -tracks : Array of tracks
-    -dateAdded : Timestamp
-    -datePlayed : Timestamp
-}
-
-class Player {
-    +play(Track) : void
-    +stop() : void
-    +pause() : void
-}
-
-class Track {
-    -id : Integer
-    -title : String
-    -artist : String
-    -album : String
-    -length : Duration
-    -uri : String
-    -dateAdded : Timestamp
-    -datePlayed : Timestamp
-}
+class Track
 
 NetworkManager -- Controller
 
@@ -88,17 +34,15 @@ Controller -- FileManager
 Controller -- DatabaseManager
 Controller -- PlaylistManager
 
-PlaylistManager -- FavoriteManager
-PlaylistManager -- VoteManager
 PlaylistManager -- Playlist
 
 Playlist -- Player
 Playlist -- Track
 
-note left of Logger
-    Permet de logger
-    les activités du
-    programme
+note left of Configuration
+    Permet de charger la
+    configuration depuis
+    un fichier texte
 endnote
 
 note left of NetworkManager
@@ -121,21 +65,6 @@ note left of Controller
     les demandes du client
 endnote
 
-note  right of Controller
-    Le client demande une requête au servuer. Si une requête n'a
-    pas de correspondance avec une classe/méthode, le serveur
-    renvoie une erreur.
-    Exemple:
-    192.168.1.45:4004/PlaylistManager/VoteManager/upvote/1302
-    Le controlleur demande au PlaylistManager s'il a la méthode
-    VoteManager(). Le PlaylistManager n'a pas cette fonction,
-    mais a la classe VoteManager et renvoie la requête à cette
-    dernière. Elle demande si la méthode 'upvote()' existe.
-    Si c'est le cas, on appelle cette fonction en passant l'id
-    '1302' en paramètre à la fonction. Son résultat est retourné
-    jusqu'au contrôleur qui renverra au client le résultat
-endnote
-
 note left of FileManager
     Gestionnaire de
     fichiers au niveau
@@ -151,16 +80,6 @@ note left of PlaylistManager
     Gestionnaire
     de playlists
 
-endnote
-
-note left of FavoriteManager
-    Gestionnaire
-    de favoris
-endnote
-
-note left of VoteManager
-    Gestionnaire
-    de votes
 endnote
 
 note left of Playlist
