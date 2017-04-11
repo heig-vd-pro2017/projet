@@ -1,6 +1,8 @@
 package ch.tofind.commusica.ui;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -10,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -33,10 +36,11 @@ public class UIController extends Application implements Initializable {
 
         stage.setTitle("Commusica");
         stage.setScene(scene);
-        stage.setMinHeight(600.0);
-        stage.setMinWidth(1080.0);
+        stage.sizeToScene();
 
         stage.show();
+
+        stage.setMinHeight(stage.getHeight());
     }
 
     public void initialize(URL location, ResourceBundle resources) {
