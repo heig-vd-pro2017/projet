@@ -9,13 +9,22 @@
 ### Ludovic Delafontaine
 * Réalisation de la présentation (2h00)
 
+### Thibaut Togue Kamga 
+* Implémentation du player sans playlistManager et test  (3h)		                                                       
+
+									
+
 ## 08.04.2017
 ### David Truan
 * Ajout d'une méthode pour choisir sa bonne interface et modification du code pour prendre en compte cela. (2h)
 * Ajout de fonctionnalités au programme de test. (10min)
 * Mise au propre rapide des classes et création de a classe Protocol et de packages client/server. (1h)
+## 06.04.2017
 
+### Thibaut Togue Kamga
+* Tuto playerMedia pour l'implémentation du player(2h)
 ## 05.04.2017
+                     
 ### Ludovic Delafontaine
 * Ajout de la classe Playlist et de sa table associée pour la base de données (01:00)
 * Ajout de la classe permettant de récupérer des propriétés depuis un fichier de configuration (00:30)
@@ -25,6 +34,10 @@
 ### Ludovic Delafontaine
 * Finalisation de la classe Track avec l'ajout de l'interface DatabaseObject
 * Merge avec master pour Track
+
+### Togue Kamga Thibaut
+ * Implémentation du player avec SourceDataline mais 
+  inutile cas impossible de lire les mp3 (4h)
 
 ## 02.04.2017
 ### Denise Gemesio
@@ -45,6 +58,10 @@
 ### David Truan
 * Réflexion sur l'implémentation et début de code pour la découverte de serveurs par les clients (2h)
 
+### Togue Kamga Thibaut
+* Tuto sur les file poperties de java et implémentation 
+du fichier de configuration, modification du file Manager d'après la discussion avec le group pour la réservation de la mémoire et test(3h)
+
 ## 29.03.2017
 ### Lucas Elisei (1h)
 * Ajout des actions d'*upvote* et *downvote* pour les chansons (seulement graphique).
@@ -57,6 +74,9 @@
 ## 27.03.2017
 ### Ludovic Delafontaine
 * Création de la classe Playlist et tests avec la base de données associée (5h00)
+
+### Togue Kamga Thibaut
+* implémentation du fileManager(2h)
 
 ## 26.03.2017
 ### Denise Gemesio
