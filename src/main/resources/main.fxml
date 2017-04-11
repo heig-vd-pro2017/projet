@@ -20,11 +20,14 @@
 <?import javafx.scene.Cursor?>
 <GridPane minHeight="608.0" minWidth="1080.0" gridLinesVisible="true" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.tofind.commusica.ui.UIController">
     <rowConstraints>
-        <RowConstraints minHeight="500.0" prefHeight="500.0" vgrow="ALWAYS" />
-        <RowConstraints maxHeight="108.0" minHeight="108.0" prefHeight="108.0" vgrow="NEVER" />
+        <RowConstraints minHeight="500.0" prefHeight="500.0" vgrow="ALWAYS"/>
+        <RowConstraints maxHeight="108.0" minHeight="108.0" prefHeight="108.0"/>
     </rowConstraints>
+    <columnConstraints>
+        <ColumnConstraints minWidth="1080.0" hgrow="ALWAYS"/>
+    </columnConstraints>
     <children>
-        <AnchorPane prefHeight="500.0" prefWidth="1080.0" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.vgrow="ALWAYS">
+        <AnchorPane prefHeight="500.0" prefWidth="1080.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
             <children>
                 <HBox focusTraversable="false" minHeight="500.0" minWidth="1080.0" prefHeight="500.0" prefWidth="1080.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <children>
@@ -108,7 +111,7 @@
                 </HBox>
             </children>
         </AnchorPane>
-        <AnchorPane maxHeight="108.0" minHeight="108.0" prefHeight="108.0" prefWidth="1080.0" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.vgrow="NEVER">
+        <AnchorPane maxHeight="108.0" minHeight="108.0" prefHeight="108.0" prefWidth="1080.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
             <children>
             <HBox focusTraversable="false" maxHeight="100.0" minHeight="100.0" prefHeight="100.0" prefWidth="1080.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>

@@ -45,6 +45,7 @@ public class UIController extends Application implements Initializable {
         stage.show();
 
         stage.setMinHeight(stage.getHeight());
+        stage.setMinWidth(stage.getWidth());
     }
 
     public void initialize(URL location, ResourceBundle resources) {
