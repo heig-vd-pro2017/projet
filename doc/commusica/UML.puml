@@ -1,7 +1,5 @@
 @startuml
 
-skinparam objectAttributeIconSize 0
-
 object Configuration
 
 object NetworkManager
