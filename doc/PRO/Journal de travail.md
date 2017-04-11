@@ -1,6 +1,14 @@
 # Journal de travail
 *Le journal de travail débute le 15.03.2017*
 
+## 11.04.2017
+### Ludovic Delafontaine
+* Début de la mise à jour du schéma UML selon la réelle implémentation (1h00)
+
+## 10.04.2017
+### Ludovic Delafontaine
+* Réalisation de la présentation (2h00)
+
 ## 08.04.2017
 ### David Truan
 * Ajout d'une méthode pour choisir sa bonne interface et modification du code pour prendre en compte cela. (2h)
@@ -30,8 +38,8 @@
 ### Ludovic Delafontaine
 * Suite de la base de données avec les classes Playlist, PlaylistTrack et PlaylistTrackId (2h30)
 
-### Yosra Harbaoui 
-* Implémentation simple d'une connexion client/serveur pour tester la connectivité. 
+### Yosra Harbaoui
+* Implémentation simple d'une connexion client/serveur pour tester la connectivité.
 
 ## 30.03.2017
 ### David Truan
@@ -88,7 +96,7 @@
 ### Ludovic Delafontaine
 * Avancement dans la base de données
     * Corrections et améliorations
- 
+
 ### Yosra Harbaoui
 * Documentation sur l'implémentation client/serveur.
 
