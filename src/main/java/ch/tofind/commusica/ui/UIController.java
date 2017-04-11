@@ -30,7 +30,7 @@ public class UIController extends Application implements Initializable {
     public void start(Stage stage) throws Exception {
         URL fileURL = getClass().getClassLoader().getResource(FXFILE);
 
-        if(fileURL == null) {
+        if (fileURL == null) {
             throw new NullPointerException("FXML file not found.");
         }
 
