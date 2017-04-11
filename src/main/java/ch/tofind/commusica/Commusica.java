@@ -21,7 +21,7 @@ public class Commusica {
     }
 
     public static void main(String[] args) {
-        
+
         System.out.println("App démarrée :)");
 
         try {
@@ -53,5 +53,7 @@ public class Commusica {
         System.out.println(track3);
 
         UIController.launch(UIController.class);
+
+        DatabaseManager.getInstance().close();
     }
 }

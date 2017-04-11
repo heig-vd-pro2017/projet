@@ -1,30 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.ProgressBar?>
-<?import javafx.scene.control.Slider?>
-<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.8184818481848185" minHeight="600.0" minWidth="1080.0" orientation="VERTICAL" prefHeight="600.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.tofind.commusica.ui.UIController">
-    <items>
-        <AnchorPane prefHeight="500.0" prefWidth="1080.0">
+<!--<SplitPane dividerPositions="0.8184818481848185" minHeight="600.0" minWidth="1080.0" orientation="VERTICAL" prefHeight="600.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.tofind.commusica.ui.UIController">-->
+
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.Cursor?>
+<GridPane minHeight="608.0" minWidth="1080.0" gridLinesVisible="true" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.tofind.commusica.ui.UIController">
+    <rowConstraints>
+        <RowConstraints minHeight="500.0" prefHeight="500.0" vgrow="ALWAYS"/>
+        <RowConstraints maxHeight="108.0" minHeight="108.0" prefHeight="108.0"/>
+    </rowConstraints>
+    <columnConstraints>
+        <ColumnConstraints minWidth="1080.0" hgrow="ALWAYS"/>
+    </columnConstraints>
+    <children>
+        <AnchorPane prefHeight="500.0" prefWidth="1080.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
             <children>
                 <HBox focusTraversable="false" minHeight="500.0" minWidth="1080.0" prefHeight="500.0" prefWidth="1080.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <children>
 
-                        <!-- Playlists view (upper left) -->
                         <AnchorPane focusTraversable="false" minHeight="500.0" minWidth="270.0" prefHeight="500.0" prefWidth="270.0">
                             <children>
                                 <GridPane layoutX="35.0" layoutY="95.0" prefHeight="500.0" prefWidth="270.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -51,7 +58,6 @@
 
                         </AnchorPane>
 
-                        <!-- Songs view (upper center) -->
                         <AnchorPane focusTraversable="false" minHeight="500.0" minWidth="540.0" prefHeight="500.0" prefWidth="540.0" HBox.hgrow="ALWAYS">
                             <children>
                             <ListView fx:id="songsListView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -59,7 +65,6 @@
                             </children>
                         </AnchorPane>
 
-                        <!-- Settings view (upper right) -->
                         <AnchorPane focusTraversable="false" minHeight="500.0" minWidth="270.0" prefHeight="500.0" prefWidth="270.0">
                             <children>
                                 <GridPane minHeight="500.0" minWidth="270.0" prefHeight="500.0" prefWidth="270.0">
@@ -106,7 +111,7 @@
                 </HBox>
             </children>
         </AnchorPane>
-        <AnchorPane maxHeight="100.0" minHeight="100.0" prefHeight="100.0" prefWidth="1078.0">
+        <AnchorPane maxHeight="108.0" minHeight="108.0" prefHeight="108.0" prefWidth="1080.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
             <children>
             <HBox focusTraversable="false" maxHeight="100.0" minHeight="100.0" prefHeight="100.0" prefWidth="1080.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
@@ -300,5 +305,5 @@
             </HBox>
             </children>
         </AnchorPane>
-    </items>
-</SplitPane>
+    </children>
+</GridPane>
