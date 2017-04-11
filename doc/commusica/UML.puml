@@ -1,28 +1,28 @@
 @startuml
 
-skinparam classAttributeIconSize 0
+skinparam objectAttributeIconSize 0
 
-class Configuration
+object Configuration
 
-class NetworkManager
+object NetworkManager
 
-class SessionManager
+object SessionManager
 
-class Session
+object Session
 
-class Controller
+object Controller
 
-class FileManager
+object FileManager
 
-class DatabaseManager
+object DatabaseManager
 
-class PlaylistManager
+object PlaylistManager
 
-class Playlist
+object Playlist
 
-class Player
+object Player
 
-class Track
+object Track
 
 NetworkManager -- Controller
 
