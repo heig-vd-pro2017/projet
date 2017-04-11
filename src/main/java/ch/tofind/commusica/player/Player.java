@@ -1,140 +1,127 @@
 package ch.tofind.commusica.player;
 
 import ch.tofind.commusica.media.Track;
+import ch.tofind.commusica.util.TrackListUtil;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.scene.Group;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Logger;
+
+import static javafx.application.Application.launch;
 
 /**
  * Created by Thibaut-PC on 02.04.17.
  */
-public class Player  {
+
+
+public class Player{
 
     public final Logger logger = Logger.getLogger(getClass().getName());
-    private static final int BUFFER_SIZE = (int) Math.pow(2, 18);
-
-    private PlayingThread playingThread;
-    private PlayerManager playerManager;
 
 
-    public Player(){
+    private MediaPlayer player;
+    private Track currentTrack;
+    int currentindex;
+    private Track prevTrack;
+    private Track nextTrack;
+    private Media currentMedia;
+    final MediaView view = new MediaView();
+    Iterator<Track> itr;
+    List<Track> list = new ArrayList<Track>();
 
-        Buffer buffer = new Buffer(BUFFER_SIZE);
-        playingThread  = new PlayingThread(this, buffer);
-        Thread t1 = new Thread(playingThread, "Playing Thread");
-        t1.setPriority(Thread.MAX_PRIORITY);
+    private final boolean repeat = false;
+    private boolean stopRequested = false;
+    private boolean atEndOfMedia = false;
 
-        t1.start();
 
-        //inntancié le playerManager et demarré playermanager.start()
+    public Player(List<Track> list) {
+
+        itr = list.iterator();
+        this.list = list;
 
     }
 
-    public void open(Track track){
-        // playermanager.send(Message.OPEN, track)
+    public Track prev(int index) {
 
+        Track track = list.get(index);
+
+        if (track != null) {
+            player(track);
+            return track;
+        }
+        return null;
     }
 
-public void play(){
+    public Track Next(int index) {
 
-        if(!isPaused()){
-            Track track = getTrack();
-            if(track == null){
-                next();
-            } else{
-                //if() le track recupéré est le prochain track
-                // playerMAnager.send(Message.OPEN, track)
-                //else next();
+        Track track = list.get(index);
+        if (track != null) {
+            player(track);
+            return track;
+        }
+        return null;
+    }
 
-            }
+    public void playPause() {
 
+        if (player == null) {
+
+            player(currentTrack);
+        } else if (player.getStatus() == player.getStatus().PLAYING) {
+
+            player.pause();
+        } else {
+            player.play();
         }
 
 
-
-}
-
-public void pause(){
-
-    playingThread.send(Actor.Message.PAUSE);
-}
-
-public void seek(long sample){
-
-    //playerManager.send(Message.SEEK, sample)
-}
-
-
-public void stop(){
-    //playerManager.send(Message.STOP);
-
-}
-
-public void next(){
-
-    /* Track s = reupéré le prochain track à jouer
-     if(s != null)
-
-     open(s)
-     else
-     stop();
-
-
-
-     */
-
-}
-
-public void prev(){
-
-   /* Track s = recupéré la musique précédent
-
-     if(s != null)
-     open(s);
-     else
-     stop();
-
-
-
-    */
-
-}
-
-public AudioOutput getAudioOutput(){
-    return playingThread.getOutput();
-}
-
-
-
-    public boolean isPaused() {
-        return !isPlaying() && !isStopped();
     }
 
 
-    public boolean isPlaying() {
-        return playingThread.isActive() && getTrack() != null;
+    public void stop() {
+        if (player != null) {
+            player.stop();
+        }
+        Platform.exit();
     }
 
-    public boolean isStopped() {
-       // return !playerManager.isActive();
-        return true;
+
+    public void setVolume(double volume) {
+        if (player != null) {
+            player.setVolume(volume);
+        }
     }
 
-    public Track getTrack() {
-        return playingThread.getCurrentTrack();
+
+    private void player(Track track) {
+
+        System.out.println(track.getUri().toString());
+        if (player != null) {
+            player.stop();
+            player.setAudioSpectrumListener(null);
+        }
+
+        final Media media = new Media(track.getUri());
+        player = new MediaPlayer(media);
+        player.setAutoPlay(true);
+        player.setOnError(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("player.getErro() =" + player.getError());
+            }
+        });
     }
 
-    public void setStopAfterCurrent(boolean stopAfterCurrent) {
-
-    }
-
-    public long getCurrentSample() {
-        return playingThread.getCurrentSample();
-    }
-
-    /*public getPlaybackOrder() {
-
-    }*/
 
 }
 

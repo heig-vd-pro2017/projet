@@ -48,6 +48,20 @@ public class Track {
         this.dateAdded = new Date();
     }
 
+    public Track(){
+
+    }
+
+    public String getUri(){
+
+        return this.uri;
+    }
+
+
+    public void setUri(String uri){
+        this.uri = uri;
+    }
+
     /**
      * Format the track to be displayed
      * @return The formatted String
