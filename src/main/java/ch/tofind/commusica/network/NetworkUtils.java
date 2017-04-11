@@ -69,4 +69,6 @@ public class NetworkUtils {
         }
         return listInetAddress.get(type - 1);
     }
+
+
 }

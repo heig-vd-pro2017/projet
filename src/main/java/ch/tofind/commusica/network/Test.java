@@ -4,8 +4,12 @@ package ch.tofind.commusica.network;
 import ch.tofind.commusica.network.client.Client;
 import ch.tofind.commusica.network.server.Server;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 
 class Test {
@@ -15,11 +19,15 @@ class Test {
 
         InetAddress addressOfInterface = null;
 
+
         try {
-            addressOfInterface = NetworkUtils.networkInterfaceChoser();
+
+                addressOfInterface = NetworkUtils.networkInterfaceChoser();
+
         } catch (SocketException e) {
             e.printStackTrace();
         }
+
 
         while (type != 1 && type != 2) {
             System.out.println("[1] server");
