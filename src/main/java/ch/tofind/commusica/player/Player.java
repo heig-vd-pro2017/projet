@@ -104,8 +104,6 @@ public class Player{
 
 
     private void player(Track track) {
-
-        System.out.println(track.getUri().toString());
         if (player != null) {
             player.stop();
             player.setAudioSpectrumListener(null);

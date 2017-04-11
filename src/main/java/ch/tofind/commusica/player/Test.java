@@ -43,11 +43,11 @@ public class Test extends Application {
 
 Player player = new Player(list);
 
-  player.playPause();
+  player.Next(0);
+       // player.handleChange();
+       mediaplayer = player.getplayer();
+        int i = 0;
 
-        mediaplayer = player.getplayer();
-
-        player.handleChange();
 
     }
 
