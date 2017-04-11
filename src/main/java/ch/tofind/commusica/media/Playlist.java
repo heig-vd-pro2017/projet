@@ -44,6 +44,22 @@ public class Playlist implements DatabaseObject {
         return name;
     }
 
+    /**
+     * @brief Get the date when the playlist was added
+     * @return The added date
+     */
+    public Date getDateAdded() {
+        return dateAdded;
+    }
+
+    /**
+     * @brief Get the date when the playlist was played
+     * @return The played date
+     */
+    public Date getDatePlayed() {
+        return datePlayed;
+    }
+
     @Override
     public void update() {
         this.datePlayed = new Date();

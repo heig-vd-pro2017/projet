@@ -150,6 +150,7 @@ endnote
 note left of PlaylistManager
     Gestionnaire
     de playlists
+
 endnote
 
 note left of FavoriteManager
