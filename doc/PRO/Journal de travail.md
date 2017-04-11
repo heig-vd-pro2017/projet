@@ -1,6 +1,12 @@
 # Journal de travail
 *Le journal de travail débute le 15.03.2017*
 
+## 08.04.2017
+### David Truan
+* Ajout d'une méthode pour choisir sa bonne interface et modification du code pour prendre en compte cela. (2h)
+* Ajout de fonctionnalités au programme de test. (10min)
+* Mise au propre rapide des classes et création de a classe Protocol et de packages client/server. (1h)
+
 ## 05.04.2017
 ### Ludovic Delafontaine
 * Ajout de la classe Playlist et de sa table associée pour la base de données (01:00)
@@ -23,6 +29,9 @@
 ## 31.03.2017
 ### Ludovic Delafontaine
 * Suite de la base de données avec les classes Playlist, PlaylistTrack et PlaylistTrackId (2h30)
+
+### Yosra Harbaoui 
+* Implémentation simple d'une connexion client/serveur pour tester la connectivité. 
 
 ## 30.03.2017
 ### David Truan
@@ -50,6 +59,9 @@
 * Documentation et première implémentation (test) du multicast en Java. (2h)
 * Réévaluation de l'intêret de NetPort en tant que classe. (30min)
 
+### Yosra Harbaoui
+* Documentation sur les différents "types" de communications entre un serveur et un client.
+
 ## 22.03.2017
 ### Denise Gemesio
 * Interface graphique: tutoriel et documentation (2h30)
@@ -76,6 +88,9 @@
 ### Ludovic Delafontaine
 * Avancement dans la base de données
     * Corrections et améliorations
+ 
+### Yosra Harbaoui
+* Documentation sur l'implémentation client/serveur.
 
 ## 20.03.2017
 ### David Truan
