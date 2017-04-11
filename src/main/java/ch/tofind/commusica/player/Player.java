@@ -122,6 +122,42 @@ public class Player{
         });
     }
 
+ public MediaPlayer getplayer(){
+
+        return this.player;
+ }
+
+ public void handleChange(){
+      if(player != null){
+          player.setOnEndOfMedia( new Runnable()
+          {
+              @Override
+              public void run()
+              {
+                  player.stop();
+
+                  System.out.println("playing the second audio file...");
+
+                  Next(1);
+                  player.setOnError(new Runnable()
+                  {
+                      @Override public void run()
+                      {
+                          System.out.println("mediaPlayer.getError() = " +  player.getError());
+                      }
+                  });
+              }
+          });
+
+
+
+
+
+
+      }
+
+
+ }
 
 }
 

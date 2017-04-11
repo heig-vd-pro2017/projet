@@ -3,6 +3,8 @@ package ch.tofind.commusica.player;
 import ch.tofind.commusica.media.Track;
 import javafx.application.Application;
 import javafx.scene.Group;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -10,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Test extends Application {
-
+ private MediaPlayer mediaplayer;
 
      public Test(){};
     public static void main(String[] args) {
@@ -40,13 +42,13 @@ public class Test extends Application {
         list.add(track1);
 
 Player player = new Player(list);
-  player.Next(0);
 
-  player.Next(1);
+  player.playPause();
 
+        mediaplayer = player.getplayer();
+
+        player.handleChange();
 
     }
-
-
 
 }
