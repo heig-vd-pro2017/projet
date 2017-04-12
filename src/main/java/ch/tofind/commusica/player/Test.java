@@ -44,10 +44,9 @@ public class Test extends Application {
 Player player = new Player(list);
 
   player.Next(0);
-       // player.handleChange();
+        player.handleChange();
        mediaplayer = player.getplayer();
-        int i = 0;
-
+        
 
     }
 
