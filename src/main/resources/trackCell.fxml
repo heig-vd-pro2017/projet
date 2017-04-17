@@ -40,7 +40,7 @@
             </font>
         </Label>
 
-        <Label fx:id="artistLabel" style="-fx-text-fill: #A8A8A8;" text="Artist" GridPane.columnIndex="0"
+        <Label fx:id="artistLabel" style="-fx-text-fill: #A8A8A8;" text="Artist - Album - Duration" GridPane.columnIndex="0"
                GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
             <font>
                 <Font size="14"/>
