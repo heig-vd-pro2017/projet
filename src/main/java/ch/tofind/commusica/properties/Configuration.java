@@ -13,16 +13,18 @@ public class Configuration implements Iconfiguration {
     private int portServer;
     private String nameDatabase;
     private String namedefaultplaylist;
-    private String  path;
+    private String path;
 
     public Configuration() throws IOException {
 
         loadPropertie("configuration.");
 
-
     }
 
     @Override
+    /**
+     *
+     */
     public int getServerport() {
         return portServer;
     }
@@ -33,23 +35,26 @@ public class Configuration implements Iconfiguration {
         Properties properpties = new Properties();
         properpties.load(f);
 
-         this.path = properpties.getProperty("path");
-         this.portServer = Integer.parseInt(properpties.getProperty("Serverport"));
-         //this.nameDatabase = properpties.getProperty("nameDatabase");
+        this.path = properpties.getProperty("path");
+        this.portServer = Integer.parseInt(properpties.getProperty("Serverport"));
+        this.nameDatabase = properpties.getProperty("nameDatabase");
     }
 
     @Override
     public String getServerAddress() {
-       return null;
+
+        return null;
     }
 
     @Override
     public String getNamedefualtplaylist() {
+
         return namedefaultplaylist;
     }
 
     @Override
     public String getNameDatabase() {
+
         return nameDatabase;
     }
 

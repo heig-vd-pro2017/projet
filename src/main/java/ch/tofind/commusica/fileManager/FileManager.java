@@ -14,39 +14,35 @@ public class FileManager {
     private static FileManager instance = null;
 
 
-
-    public FileManager(){
+    public FileManager() {
     }
 
 
-
-
     /**
-     *
      * @param path
      * @return
      */
 
 
-    public static long freeSpace(String path){
+    public static long freeSpace(String path) {
 
 
         long GoFree = 0L;
         try {
-                // prints file and directory paths
-                File file = new File(path.toString());
-                //capacité de la partition
-                long totalSpace = file.getTotalSpace();
+            // prints file and directory paths
+            File file = new File(path.toString());
+            //capacité de la partition
+            long totalSpace = file.getTotalSpace();
 
-                //Espace disponible
-                long freeSpace = file.getFreeSpace();
+            //Espace disponible
+            long freeSpace = file.getFreeSpace();
 
 
-                long Go = totalSpace / (1024 * 1024 * 1024);
+            long Go = totalSpace / (1024 * 1024 * 1024);
 
-                 GoFree = freeSpace ;
+            GoFree = freeSpace;
 
-        } catch(Exception e) {
+        } catch (Exception e) {
 
             // if any error occurs
             e.printStackTrace();
@@ -56,11 +52,7 @@ public class FileManager {
     }
 
 
-
-
-
     /**
-     *
      * @param path
      * @param fileName
      * @param file
@@ -70,29 +62,29 @@ public class FileManager {
      */
 
 
-public boolean save(String path ,String fileName, File file) throws Exception, FileNotFoundException {
+    public boolean save(String path, String fileName, File file) throws Exception, FileNotFoundException {
 
         String pathFile = path.toString() + File.separator + fileName;
-    File infile = null;
-    File oFile  = null;
+        File infile = null;
+        File oFile = null;
 
-    if(file.length() > freeSpace(path)){
+        if (file.length() > freeSpace(path)) {
 
             throw new Exception("no free space");
         }
-    file = new File(file.getPath());
-    oFile = new File(pathFile);
+        file = new File(file.getPath());
+        oFile = new File(pathFile);
 
-    FileInputStream is = new FileInputStream(file);
-    FileOutputStream fos = new FileOutputStream(oFile);
-    FileChannel f = is.getChannel();
-    FileChannel f2 = fos.getChannel();
+        FileInputStream is = new FileInputStream(file);
+        FileOutputStream fos = new FileOutputStream(oFile);
+        FileChannel f = is.getChannel();
+        FileChannel f2 = fos.getChannel();
 
-        try{
+        try {
 
             ByteBuffer buf = ByteBuffer.allocateDirect(64 * 1024);
             long len = 0;
-            while((len = f.read(buf)) != -1) {
+            while ((len = f.read(buf)) != -1) {
                 buf.flip();
                 f2.write(buf);
                 buf.clear();
@@ -100,8 +92,7 @@ public boolean save(String path ,String fileName, File file) throws Exception, F
             f.close();
             f2.close();
 
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             System.out.println("Oops Unable to proceed file write Operation due to ->" + ex.getMessage());
         } finally {
             try {
@@ -112,48 +103,43 @@ public boolean save(String path ,String fileName, File file) throws Exception, F
             }
 
         }
-    return true;
-   }
-
-
-
-
+        return true;
+    }
 
 
     /**
-     *
-      * @param filename
+     * @param filename
      * @return
      * @throws Exception
      */
 
 
-public boolean eraseFile(String path, String filename)  throws Exception{
+    public boolean eraseFile(String path, String filename) throws Exception {
 
-    File file = new File(path + File.separator+ filename);
+        File file = new File(path + File.separator + filename);
 
-    System.out.println(path + filename);
-    // Check if the file exists
+        System.out.println(path + filename);
+        // Check if the file exists
 
-    if(!file.exists()) {
+        if (!file.exists()) {
 
-        throw new Exception("file not found");
+            throw new Exception("file not found");
+        }
+
+        //Test properties and rights to the file
+
+        if (!file.canWrite()) {
+
+            throw new Exception("Insufficient right to access file");
+        }
+
+        return file.delete();
     }
-
-    //Test properties and rights to the file
-
-    if(!file.canWrite()){
-
-        throw new Exception( "Insufficient right to access file");
-    }
-
-return file.delete();
-}
 
 
     public static FileManager getInstance() {
 
-        if(instance == null) {
+        if (instance == null) {
             synchronized (FileManager.class) {
                 if (instance == null) {
                     instance = new FileManager();

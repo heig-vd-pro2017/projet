@@ -24,32 +24,59 @@ import static javafx.application.Application.launch;
  */
 
 
-public class Player{
+public class Player {
 
     public final Logger logger = Logger.getLogger(getClass().getName());
 
+//
+
+
+    //media player
 
     private MediaPlayer player;
+
+    //current track
     private Track currentTrack;
+
     int currentindex;
+
     private Track prevTrack;
+
     private Track nextTrack;
+
     private Media currentMedia;
+
     final MediaView view = new MediaView();
+
     Iterator<Track> itr;
+
     List<Track> list = new ArrayList<Track>();
 
     private final boolean repeat = false;
+
     private boolean stopRequested = false;
+
     private boolean atEndOfMedia = false;
 
+    private static int i = 0;
+
+
+    /**
+     * @param list
+     */
 
     public Player(List<Track> list) {
 
         itr = list.iterator();
         this.list = list;
-
     }
+
+
+    /**
+     * @param index
+     * @return
+     */
+
 
     public Track prev(int index) {
 
@@ -62,6 +89,11 @@ public class Player{
         return null;
     }
 
+    /**
+     * @param index
+     * @return
+     */
+
     public Track Next(int index) {
 
         Track track = list.get(index);
@@ -72,11 +104,16 @@ public class Player{
         return null;
     }
 
+
+    /**
+     *
+     */
+
     public void playPause() {
 
         if (player == null) {
 
-            player(currentTrack);
+            player(list.get(0));
         } else if (player.getStatus() == player.getStatus().PLAYING) {
 
             player.pause();
@@ -88,6 +125,10 @@ public class Player{
     }
 
 
+    /**
+     *
+     */
+
     public void stop() {
         if (player != null) {
             player.stop();
@@ -96,12 +137,19 @@ public class Player{
     }
 
 
+    /**
+     * @param volume
+     */
+
     public void setVolume(double volume) {
         if (player != null) {
             player.setVolume(volume);
         }
     }
 
+    /**
+     * @param track
+     */
 
     private void player(Track track) {
         if (player != null) {
@@ -120,42 +168,37 @@ public class Player{
         });
     }
 
- public MediaPlayer getplayer(){
+
+    public MediaPlayer getplayer() {
 
         return this.player;
- }
-
- public void handleChange(){
-      if(player != null){
-          player.setOnEndOfMedia( new Runnable()
-          {
-              @Override
-              public void run()
-              {
-                  player.stop();
-
-                  System.out.println("playing the second audio file...");
-
-                  Next(1);
-                  player.setOnError(new Runnable()
-                  {
-                      @Override public void run()
-                      {
-                          System.out.println("mediaPlayer.getError() = " +  player.getError());
-                      }
-                  });
-              }
-          });
+    }
 
 
+    public void handleChange() {
+        if (player != null) {
+            player.setOnEndOfMedia(new Runnable() {
+                @Override
+                public void run() {
+                    player.stop();
+
+                    System.out.println("playing the second audio file...");
+                    if (i < list.size())
+                        Next(i);
+                    player.setOnError(new Runnable() {
+                        @Override
+                        public void run() {
+                            System.out.println("mediaPlayer.getError() = " + player.getError());
+                        }
+                    });
+                }
+            });
 
 
+        }
 
 
-      }
-
-
- }
+    }
 
 }
 
