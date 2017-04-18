@@ -1,6 +1,10 @@
 # Journal de travail
 *Le journal de travail débute le 15.03.2017*
 
+## 17.04.2017
+### Lucas Elisei
+* Mise à jour de l'interface graphique (panneau central) selon les choix retenus lors de la précédente réunion. (1h00)
+
 ## 11.04.2017
 ### Ludovic Delafontaine
 * Début de la mise à jour du schéma UML selon la réelle implémentation (1h00)
