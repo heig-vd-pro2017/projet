@@ -15,7 +15,7 @@ public class TrackCellController {
 
     private static final Logger LOG = Logger.getLogger(TrackCellController.class.getName());
 
-    private final String FXML_FILE = "trackCell.fxml";
+    private final String FXML_FILE = "ui/trackCell.fxml";
 
     private String track;
     private int votes;

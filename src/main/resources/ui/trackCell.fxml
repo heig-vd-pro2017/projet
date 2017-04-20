@@ -51,7 +51,7 @@
                    preserveRatio="true"
                    GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="0" GridPane.valignment="TOP">
             <image>
-                <Image url="@icons/upvote.png"/>
+                <Image url="@../icons/upvote.png"/>
             </image>
         </ImageView>
 
@@ -60,7 +60,7 @@
                    GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1"
                    GridPane.valignment="BOTTOM">
             <image>
-                <Image url="@icons/downvote.png"/>
+                <Image url="@../icons/downvote.png"/>
             </image>
         </ImageView>
 
