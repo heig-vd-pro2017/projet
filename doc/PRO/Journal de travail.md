@@ -1,6 +1,14 @@
 # Journal de travail
 *Le journal de travail débute le 15.03.2017*
 
+## 20.04.2017
+### Ludovic Delafontaine
+* Suite des tests et version fonctionnelle du player (1h30)
+
+## 19.04.2017
+### Ludovic Delafontaine
+* Reprise du player, playlist manager et filemanager et intégration avec le reste du projet (4h00)
+
 ## 17.04.2017
 ### Lucas Elisei
 * Mise à jour de l'interface graphique (panneau central) selon les choix retenus lors de la précédente réunion. (1h00)
@@ -13,10 +21,10 @@
 ### Ludovic Delafontaine
 * Réalisation de la présentation (2h00)
 
-### Thibaut Togue Kamga 
+### Thibaut Togue Kamga
 * Implémentation du player sans playlistManager et test  (3h)		                                                       
 
-									
+
 
 ## 08.04.2017
 ### David Truan
@@ -28,7 +36,7 @@
 ### Thibaut Togue Kamga
 * Tuto playerMedia pour l'implémentation du player(2h)
 ## 05.04.2017
-                     
+
 ### Ludovic Delafontaine
 * Ajout de la classe Playlist et de sa table associée pour la base de données (01:00)
 * Ajout de la classe permettant de récupérer des propriétés depuis un fichier de configuration (00:30)
@@ -40,7 +48,7 @@
 * Merge avec master pour Track
 
 ### Togue Kamga Thibaut
- * Implémentation du player avec SourceDataline mais 
+ * Implémentation du player avec SourceDataline mais
   inutile cas impossible de lire les mp3 (4h)
 
 ## 02.04.2017
@@ -63,7 +71,7 @@
 * Réflexion sur l'implémentation et début de code pour la découverte de serveurs par les clients (2h)
 
 ### Togue Kamga Thibaut
-* Tuto sur les file poperties de java et implémentation 
+* Tuto sur les file poperties de java et implémentation
 du fichier de configuration, modification du file Manager d'après la discussion avec le group pour la réservation de la mémoire et test(3h)
 
 ## 29.03.2017
