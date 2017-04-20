@@ -18,8 +18,9 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <!-- List of mapping classes -->
-        <mapping resource="Playlist.hbm.xml"/>
-        <mapping resource="Track.hbm.xml"/>
+        <mapping resource="models/Playlist.hbm.xml"/>
+        <mapping resource="models/Track.hbm.xml"/>
+        <mapping resource="models/PlaylistTrack.hbm.xml"/>
 
     </session-factory>
 </hibernate-configuration>

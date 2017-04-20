@@ -39,6 +39,14 @@ public class Track implements DatabaseObject {
     //! Version control for concurrency
     private Integer version;
 
+
+    /**
+     * @brief Empty constructor for Hibernate
+     */
+    protected Track() {
+
+    }
+
     /**
      * @brief Create a track
      * @param title Title of the track
@@ -144,7 +152,7 @@ public class Track implements DatabaseObject {
     @Override
     public String toString() {
 
-        String format = (String) Configuration.getInstance().get("DEFAULT_DATE_FORMAT");
+        String format = Configuration.getInstance().get("DEFAULT_DATE_FORMAT");
 
         SimpleDateFormat dateFormat = new SimpleDateFormat(format);
 

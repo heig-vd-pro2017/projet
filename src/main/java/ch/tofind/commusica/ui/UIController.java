@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
 
 public class UIController extends Application implements Initializable {
 
-    private static final String FXFILE = "main.fxml";
+    private static final String FXFILE = "ui/main.fxml";
 
     //! JavaFX components.
     @FXML
