@@ -3,6 +3,7 @@ package ch.tofind.commusica;
 import ch.tofind.commusica.media.Player;
 import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.playlist.PlaylistTrack;
+import ch.tofind.commusica.ui.UIController;
 import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.media.Playlist;
@@ -20,11 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class Commusica extends Application {
-
-    public static void main(String[] args) {
-        launch(args);
-    }
+public class Commusica {
 
     public static void dropDatabase() {
         String filePath = "commusica.db";
@@ -35,8 +32,7 @@ public class Commusica extends Application {
         }
     }
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
+    public static void main(String... args) throws Exception {
 
         System.out.println("App démarrée :)");
 
@@ -89,7 +85,7 @@ public class Commusica extends Application {
         playlistManager.addPlaylistTrack(pt11);
         playlistManager.addPlaylistTrack(pt12);
 
-        BorderPane root = new BorderPane() {{
+        /*BorderPane root = new BorderPane() {{
             VBox vbox = new VBox() {{
 
                 HBox hbox = new HBox() {{
@@ -143,11 +139,10 @@ public class Commusica extends Application {
         Scene scene = new Scene(root, 400, 100);
 
         primaryStage.setScene(scene);
-        primaryStage.show();
+        primaryStage.show();*/
 
-        //UIController.launch(UIController.class);
+        UIController.launch(UIController.class);
 
-        System.out.println("Bisoir");
         DatabaseManager.getInstance().close();
     }
 }

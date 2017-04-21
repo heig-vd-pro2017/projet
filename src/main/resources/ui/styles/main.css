@@ -1,0 +1,5 @@
+/* Tooltips */
+.tooltip {
+    -fx-background-radius: 0;
+    -fx-padding: 4px;
+}

@@ -9,8 +9,10 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
-
 <?import java.lang.Double?>
+
+<?language javascript?>
+
 <AnchorPane fx:id="trackPane" minHeight="60.0" prefHeight="63.0" prefWidth="401.0" xmlns:fx="http://javafx.com/fxml/1"
             xmlns="http://javafx.com/javafx/8.0.112">
 
@@ -51,8 +53,12 @@
                    preserveRatio="true"
                    GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="0" GridPane.valignment="TOP">
             <image>
-                <Image url="@../icons/upvote.png"/>
+                <Image url="@icons/upvote.png"/>
             </image>
+            <fx:script>
+                var tooltip = new javafx.scene.control.Tooltip('Upvote');
+                javafx.scene.control.Tooltip.install(upvoteImageView, tooltip);
+            </fx:script>
         </ImageView>
 
         <ImageView fx:id="downvoteImageView" fitHeight="$ICONS_SIZE" onMouseClicked="#downvote" pickOnBounds="true"
@@ -60,23 +66,35 @@
                    GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1"
                    GridPane.valignment="BOTTOM">
             <image>
-                <Image url="@../icons/downvote.png"/>
+                <Image url="@icons/downvote.png"/>
             </image>
+            <fx:script>
+                var tooltip = new javafx.scene.control.Tooltip('Downvote');
+                javafx.scene.control.Tooltip.install(downvoteImageView, tooltip);
+            </fx:script>
         </ImageView>
 
         <Label fx:id="votesLabel" alignment="CENTER" maxWidth="$ICONS_SIZE" minWidth="$ICONS_SIZE" text="0"
                textAlignment="CENTER"
                GridPane.columnIndex="1" GridPane.columnSpan="1" GridPane.halignment="RIGHT" GridPane.rowIndex="0"
-               GridPane.rowSpan="2" GridPane.valignment="CENTER"/>
+               GridPane.rowSpan="2" GridPane.valignment="CENTER">
+            <fx:script>
+                var tooltip = new javafx.scene.control.Tooltip('Votes');
+                javafx.scene.control.Tooltip.install(votesLabel, tooltip);
+            </fx:script>
+        </Label>
 
         <ImageView fx:id="favoriteImageView" fitHeight="$ICONS_SIZE" onMouseClicked="#favorite" pickOnBounds="true"
                    preserveRatio="true"
                    GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="0"
                    GridPane.valignment="CENTER" GridPane.rowSpan="2">
             <GridPane.margin>
-                <!-- TODO: Find a workaround to use $ICONS_SIZE constant. -->
                 <Insets right="25.0"/>
             </GridPane.margin>
+            <fx:script>
+                var tooltip = new javafx.scene.control.Tooltip('Favorite');
+                javafx.scene.control.Tooltip.install(favoriteImageView, tooltip);
+            </fx:script>
         </ImageView>
     </GridPane>
 

@@ -1,0 +1,12 @@
+.list-cell {
+    -fx-background-color: #F3F3F3;
+
+    -fx-border-color: #C4C4C4;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.list-cell:empty {
+    -fx-background-color: #FFFFFF;
+
+    -fx-border-width: 0;
+}

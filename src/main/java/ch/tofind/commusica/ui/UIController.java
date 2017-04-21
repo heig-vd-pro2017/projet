@@ -1,8 +1,10 @@
 package ch.tofind.commusica.ui;
 
+import ch.tofind.commusica.media.Playlist;
+import ch.tofind.commusica.playlist.PlaylistManager;
+import ch.tofind.commusica.playlist.PlaylistTrack;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,20 +14,25 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 public class UIController extends Application implements Initializable {
+
+    private static FXMLLoader loader = new FXMLLoader();
+
+    private static Logger LOG = Logger.getLogger(UIController.class.getName());
 
     private static final String FXFILE = "ui/main.fxml";
 
     //! JavaFX components.
     @FXML
-    private ListView<String> playlistsListView;
+    private ListView<PlaylistTrack> tracksListView;
 
-    @FXML
-    private ListView<String> songsListView;
+    public static UIController getController() {
+        return loader.getController();
+    }
 
     public void start(Stage stage) throws Exception {
         URL fileURL = getClass().getClassLoader().getResource(FXFILE);
@@ -34,9 +41,10 @@ public class UIController extends Application implements Initializable {
             throw new NullPointerException("FXML file not found.");
         }
 
-        Parent root = FXMLLoader.load(fileURL);
+        Parent root = loader.load(fileURL);
 
         Scene scene = new Scene(root);
+        scene.getStylesheets().add("ui/styles/main.css");
 
         stage.setTitle("Commusica");
         stage.setScene(scene);
@@ -48,43 +56,31 @@ public class UIController extends Application implements Initializable {
         stage.setMinWidth(stage.getWidth());
     }
 
-    public void initialize(URL location, ResourceBundle resources) {
-        populatePlaylists();
-        populateSongs();
-    }
+    void loadPlaylist(Playlist playlist) {
+        tracksListView.setItems(FXCollections.observableArrayList());
 
-    private void populatePlaylists() {
-        ObservableList<String> items = FXCollections.observableArrayList();
-
-        for (int i = 1; i <= 3; ++i) {
-            items.add(String.format("Playlist %d", i));
+        if(playlist != null) {
+            PlaylistManager.getInstance().loadPlaylist(playlist);
+            tracksListView.setItems(FXCollections.observableArrayList(PlaylistManager.getInstance().getPlaylistTracks()));
         }
 
-        playlistsListView.setItems(items);
-    }
-
-    private void populateSongs() {
-        ObservableList<String> items = FXCollections.observableArrayList();
-
-        for (int i = 1; i <= 8; ++i) {
-            items.add(String.format("Song %d", i));
-        }
-
-        songsListView.setItems(items);
-        songsListView.setCellFactory((ListView<String> cell) -> new ListCell<String>() {
-            public void updateItem(String item, boolean empty) {
+        tracksListView.setCellFactory((ListView<PlaylistTrack> view) -> new ListCell<PlaylistTrack>() {
+            @Override
+            public void updateItem(PlaylistTrack item, boolean empty) {
                 super.updateItem(item, empty);
 
                 if (item != null) {
-                    try {
-                        TrackCellController cellController = new TrackCellController(item);
-                        setGraphic(cellController.getPane());
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    PlaylistTrackCell cell = new PlaylistTrackCell(item);
+                    setGraphic(cell.getPane());
                 }
             }
         });
     }
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        loader.setController(this);
+
+        loadPlaylist(null);
+    }
 }
