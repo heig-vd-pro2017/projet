@@ -2,6 +2,7 @@ package ch.tofind.commusica.media;
 
 import ch.tofind.commusica.playlist.PlaylistManager;
 
+import ch.tofind.commusica.utils.Configuration;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -15,15 +16,30 @@ public class Player {
 
     private double volumeStep;
 
+    private static Player currentPlayer;
+
+    private boolean isPlaying = false;
+
     /**
      * @brief Player single constructor. Avoid the instantiation.
      */
-    public Player(double volumeStep) {
+    private Player(double volumeStep) {
         this.volumeStep = volumeStep;
     }
 
+    public static Player getCurrentPlayer() {
+        if (currentPlayer == null) {
+            synchronized (Player.class) {
+                if (currentPlayer == null) {
+                    currentPlayer = new Player(Double.parseDouble(Configuration.getInstance().get("DEFAULT_VOLUME_STEP")));
+                }
+            }
+        }
+
+        return currentPlayer;
+    }
+
     public void load() {
-        
         track = PlaylistManager.getInstance().nextTrack();
 
         if (track != null) {
@@ -43,19 +59,30 @@ public class Player {
         }
     }
 
+    public Track getCurrentTrack() {
+        return track;
+    }
+
+    public boolean isPlaying() {
+        return isPlaying;
+    }
+
     public void play() {
         if (track == null) {
             load();
         }
         player.play();
+        isPlaying = true;
     }
 
     public void pause() {
         player.pause();
+        isPlaying = false;
     }
 
     public void stop() {
         player.stop();
+        isPlaying = false;
     }
 
     public void riseVolume() {
@@ -66,6 +93,14 @@ public class Player {
     public void lowerVolume() {
         double currentVolume = player.getVolume();
         player.setVolume(currentVolume - volumeStep);
+    }
+
+    public double getVolume() {
+        return player.getVolume();
+    }
+
+    public void setVolume(double volume) {
+        player.setVolume(volume);
     }
 }
 

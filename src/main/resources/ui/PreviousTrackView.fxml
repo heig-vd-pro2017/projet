@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.image.Image?>
+
+<fx:root type="javafx.scene.layout.AnchorPane" xmlns:fx="http://javafx.com/fxml/1">
+    <GridPane hgap="10.0" vgap="4.0" fx:id="gridPane">
+
+        <columnConstraints>
+            <ColumnConstraints hgrow="NEVER" maxWidth="28.0" minWidth="28.0" />
+            <ColumnConstraints hgrow="ALWAYS" />
+            <ColumnConstraints hgrow="NEVER" maxWidth="20.0" minWidth="30.0" />
+        </columnConstraints>
+
+        <rowConstraints>
+            <RowConstraints minHeight="44.0" maxHeight="44.0" />
+            <RowConstraints minHeight="20.0" maxHeight="20.0" />
+            <RowConstraints vgrow="ALWAYS" />
+        </rowConstraints>
+
+        <ImageView fitWidth="20.0" preserveRatio="true" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.rowSpan="3" GridPane.valignment="CENTER">
+            <Image url="@icons/back_arrow.png" />
+        </ImageView>
+        <Label text="Title" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
+            <font>
+                <Font size="22" />
+            </font>
+        </Label>
+        <Label text="Artist" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
+            <font>
+                <Font size="14" />
+            </font>
+        </Label>
+        <Label text="Album" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+            <font>
+                <Font size="14" />
+            </font>
+        </Label>
+        <ImageView fitWidth="25.0" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="0" GridPane.rowSpan="3" GridPane.valignment="CENTER" GridPane.halignment="LEFT">
+            <Image url="@icons/fav_empty.png" />
+        </ImageView>
+
+    </GridPane>
+</fx:root>

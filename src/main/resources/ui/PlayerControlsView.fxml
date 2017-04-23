@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.control.Slider?>
+
+<fx:root type="javafx.scene.layout.AnchorPane" xmlns:fx="http://javafx.com/fxml/1">
+    <GridPane maxHeight="108.0" maxWidth="200.0" minHeight="108.0" minWidth="108.0" vgap="8.0">
+
+        <rowConstraints>
+            <RowConstraints maxHeight="70.0" minHeight="70.0" />
+            <RowConstraints maxHeight="30.0" minHeight="30.0" />
+        </rowConstraints>
+
+        <AnchorPane maxHeight="70.0" maxWidth="200.0" minHeight="70.0" minWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
+
+                <columnConstraints>
+                    <ColumnConstraints hgrow="NEVER" maxWidth="75.0" minWidth="75.0" />
+                    <ColumnConstraints hgrow="NEVER" maxWidth="50.0" minWidth="50.0" />
+                    <ColumnConstraints hgrow="NEVER" maxWidth="75.0" minWidth="75.0" />
+                </columnConstraints>
+
+                <rowConstraints>
+                    <RowConstraints vgrow="ALWAYS" />
+                </rowConstraints>
+
+                <!-- Previous track button -->
+                <ImageView fitWidth="20.0" onMouseClicked="#previous" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+                    <Image url="@icons/back.png" />
+                </ImageView>
+
+                <!-- Play/pause buttons -->
+                <ImageView fx:id="playPauseImageView" fitWidth="30.0" onMouseClicked="#playPause" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+
+                <!-- Next track button -->
+                <ImageView fitWidth="20.0" onMouseClicked="#next" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+                    <Image url="@icons/next.png" />
+                </ImageView>
+
+            </GridPane>
+        </AnchorPane>
+
+        <Slider fx:id="volumeSlider" focusTraversable="false" max="1.0" maxHeight="15.0" maxWidth="160.0" min="0.0" minHeight="15.0" minWidth="160.0" value="0.8" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+
+    </GridPane>
+</fx:root>

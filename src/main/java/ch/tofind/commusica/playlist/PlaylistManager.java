@@ -119,4 +119,8 @@ public class PlaylistManager {
     public Track nextTrack() {
         return playlistTracksPriorityQueue.poll().getTrack();
     }
+
+    public PriorityQueue<PlaylistTrack> getOrderedPlaylistTracks() {
+        return playlistTracksPriorityQueue;
+    }
 }

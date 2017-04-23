@@ -23,7 +23,10 @@
 
 <?language javascript?>
 
-<GridPane gridLinesVisible="true" minHeight="608.0" minWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.tofind.commusica.ui.UIController">
+<?import ch.tofind.commusica.ui.TracksListView?>
+<?import ch.tofind.commusica.ui.PlayerControlsView?>
+<?import ch.tofind.commusica.ui.PreviousTrackView?>
+<GridPane gridLinesVisible="true" minHeight="608.0" minWidth="1080.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.tofind.commusica.ui.UIController">
     <rowConstraints>
         <RowConstraints minHeight="500.0" prefHeight="500.0" vgrow="ALWAYS" />
         <RowConstraints maxHeight="108.0" minHeight="108.0" prefHeight="108.0" />
@@ -34,12 +37,12 @@
     <children>
         <AnchorPane prefHeight="500.0" prefWidth="1080.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
             <children>
-                <HBox focusTraversable="false" minHeight="500.0" minWidth="1080.0" prefHeight="500.0" prefWidth="1080.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <HBox minHeight="500.0" minWidth="1080.0" prefHeight="500.0" prefWidth="1080.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <children>
 
-                        <AnchorPane focusTraversable="false" minHeight="500.0" minWidth="270.0" prefHeight="500.0" prefWidth="270.0">
+                        <AnchorPane minHeight="500.0" minWidth="270.0" prefHeight="500.0" prefWidth="270.0">
                             <children>
-                                <GridPane layoutX="35.0" layoutY="95.0" prefHeight="500.0" prefWidth="270.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <GridPane prefHeight="500.0" prefWidth="270.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <columnConstraints>
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0" />
                                     </columnConstraints>
@@ -63,20 +66,12 @@
 
                         </AnchorPane>
 
-                        <AnchorPane focusTraversable="false" minHeight="500.0" minWidth="540.0" prefHeight="500.0" prefWidth="540.0" HBox.hgrow="ALWAYS">
-                            <ListView fx:id="tracksListView" focusTraversable="false" AnchorPane.topAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.bottomAnchor="0">
-                                <stylesheets>
-                                    <URL value="@styles/track-cell.css" />
-                                </stylesheets>
-                                <placeholder>
-                                    <Label text="No playlist loaded." />
-                                </placeholder>
-                            </ListView>
+                        <AnchorPane minHeight="500.0" minWidth="540.0" prefHeight="500.0" prefWidth="540.0" HBox.hgrow="ALWAYS">
+                            <TracksListView fx:id="tracksListView" focusTraversable="false" AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0" />
                         </AnchorPane>
 
-                        <AnchorPane focusTraversable="false" minHeight="500.0" minWidth="270.0" prefHeight="500.0" prefWidth="270.0">
-                            <children>
-                                <GridPane minHeight="500.0" minWidth="270.0" prefHeight="500.0" prefWidth="270.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane minHeight="500.0" minWidth="270.0" prefHeight="500.0" prefWidth="270.0">
+                            <GridPane minHeight="500.0" minWidth="270.0" prefHeight="500.0" prefWidth="270.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <columnConstraints>
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                     </columnConstraints>
@@ -114,7 +109,6 @@
                                         </Accordion>
                                     </children>
                                 </GridPane>
-                            </children>
                         </AnchorPane>
                     </children>
                 </HBox>
@@ -131,87 +125,19 @@
                         <RowConstraints maxHeight="108.0" minHeight="108.0" vgrow="NEVER" />
                     </rowConstraints>
                     <children>
-                        <AnchorPane maxHeight="108.0" maxWidth="270.0" minHeight="108.0" minWidth="270.0">
+                        <PreviousTrackView maxHeight="108.0" maxWidth="270.0" minHeight="108.0" minWidth="270.0" />
+                        <AnchorPane maxHeight="108.0" minHeight="108.0" GridPane.columnIndex="1">
                             <children>
-                                <GridPane hgap="10.0" vgap="4.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <GridPane maxHeight="108.0" minHeight="108.0" minWidth="810.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <columnConstraints>
-                                        <ColumnConstraints hgrow="NEVER" maxWidth="28.0" minWidth="28.0" />
-                                        <ColumnConstraints hgrow="ALWAYS" />
-                                        <ColumnConstraints hgrow="NEVER" maxWidth="20.0" minWidth="30.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="610.0" />
                                     </columnConstraints>
                                     <rowConstraints>
-                                        <RowConstraints minHeight="44.0" maxHeight="44.0" />
-                                        <RowConstraints minHeight="20.0" maxHeight="20.0" />
-                                        <RowConstraints vgrow="ALWAYS" />
+                                        <RowConstraints maxHeight="108.0" minHeight="108.0" vgrow="NEVER" />
                                     </rowConstraints>
                                     <children>
-                                        <ImageView fitWidth="20.0" preserveRatio="true" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.rowSpan="3" GridPane.valignment="CENTER">
-                                            <image>
-                                                <Image url="@icons/back_arrow.png" />
-                                            </image>
-                                        </ImageView>
-                                        <Label text="Title" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
-                                            <font>
-                                                <Font size="22" />
-                                            </font>
-                                        </Label>
-                                        <Label text="Artist" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
-                                            <font>
-                                                <Font size="14" />
-                                            </font>
-                                        </Label>
-                                        <Label text="Album" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.halignment="LEFT" GridPane.valignment="TOP">
-                                            <font>
-                                                <Font size="14" />
-                                            </font>
-                                        </Label>
-                                        <ImageView fitWidth="25.0" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="0" GridPane.rowSpan="3" GridPane.valignment="CENTER" GridPane.halignment="LEFT">
-                                            <image>
-                                                <Image url="@icons/fav_empty.png" />
-                                            </image>
-                                        </ImageView>
-                                    </children>
-                                </GridPane>
-                            </children>
-                        </AnchorPane>
-                        <AnchorPane maxHeight="100.0" maxWidth="1.7976931348623157E308" minHeight="100.0" prefHeight="100.0" style="-fx-border-width: 0 0 0 1px; -fx-border-color: #C4C4C4;" GridPane.columnIndex="1">
-                            <children>
-                                <GridPane layoutX="170.0" maxHeight="100.0" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="810.0" prefHeight="100.0" prefWidth="810.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                    <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="270.0" prefWidth="270.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="540.0" prefWidth="540.0" />
-                                    </columnConstraints>
-                                    <rowConstraints>
-                                        <RowConstraints maxHeight="100.0" minHeight="100.0" prefHeight="100.0" vgrow="SOMETIMES" />
-                                    </rowConstraints>
-                                    <children>
-                                        <AnchorPane maxHeight="100.0" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="270.0" prefHeight="100.0" prefWidth="270.0">
-                                            <children>
-                                                <GridPane maxHeight="100.0" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="270.0" prefHeight="100.0" prefWidth="270.0">
-                                                    <columnConstraints>
-                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="270.0" minWidth="270.0" prefWidth="270.0" />
-                                                    </columnConstraints>
-                                                    <rowConstraints>
-                                                        <RowConstraints maxHeight="80.0" minHeight="80.0" prefHeight="80.0" vgrow="SOMETIMES" />
-                                                        <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
-                                                    </rowConstraints>
-                                                    <children>
-                                                        <AnchorPane maxHeight="80.0" maxWidth="270.0" minHeight="80.0" minWidth="270.0" prefHeight="80.0" prefWidth="270.0">
-                                                            <children>
-                                                                <SVGPath fx:id="beforeButton11" content="M 0, 0 L 0, 20 L 2, 20 L 2, 0 Z M 2, 10 L 17, 20 L 17, 0 Z" fill="#05bc1b" layoutX="74.0" layoutY="37.0" stroke="BLACK" />
-                                                                <SVGPath fx:id="playButton1" content="M0 35 L30 17.5 L0 0 Z" fill="#05bc1b" layoutX="124.0" layoutY="26.0" stroke="#0a0a0a" strokeWidth="2.0" />
-                                                                <SVGPath fx:id="nextButton1" content="M 0 20 L15 10 L0 0 Z M 15, 0 L 15, 20 L 17, 20 L 17, 0 Z" fill="#05bc1b" layoutX="182.0" layoutY="37.0" stroke="BLACK" />
-                                                            </children>
-                                                        </AnchorPane>
-                                                        <AnchorPane maxHeight="20.0" maxWidth="270.0" minHeight="20.0" minWidth="270.0" prefHeight="20.0" prefWidth="270.0" GridPane.rowIndex="1">
-                                                            <children>
-                                                                <Slider fx:id="soundSlider1" layoutX="55.0" layoutY="3.0" maxHeight="14.0" maxWidth="160.0" minHeight="14.0" minWidth="160.0" prefHeight="14.0" prefWidth="160.0" />
-                                                            </children>
-                                                        </AnchorPane>
-                                                    </children>
-                                                </GridPane>
-                                            </children>
-                                        </AnchorPane>
+                                        <PlayerControlsView maxHeight="108.0" maxWidth="200.0" minHeight="108.0" minWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                                         <AnchorPane maxHeight="100.0" maxWidth="1.7976931348623157E308" minHeight="100.0" prefHeight="100.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
                                             <children>
                                                 <GridPane layoutX="67.0" layoutY="19.0" maxHeight="100.0" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="540.0" prefHeight="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

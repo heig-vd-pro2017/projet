@@ -17,7 +17,7 @@ public class PlaylistTrackCell {
 
     private static final Logger LOG = Logger.getLogger(PlaylistTrackCell.class.getName());
 
-    private final String FXML_FILE = "ui/trackCell.fxml";
+    private static final String FXML_FILE = "ui/PlaylistTrackCell.fxml";
 
     private PlaylistTrack playlistTrack;
     private Track track;
