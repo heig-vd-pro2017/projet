@@ -1,6 +1,15 @@
 # Journal de travail
 *Le journal de travail débute le 15.03.2017*
 
+## 23.04.2017
+### Lucas Elisei
+* Implémentation du player dans l'interface graphique (1h00)
+* Découpage de l'interface graphique en modules (2h00)
+
+## 21.04.2017
+### Lucas Elisei
+* Implémentation de chargement de playlists dans l'interface graphique (4h)
+
 ## 20.04.2017
 ### Ludovic Delafontaine
 * Suite des tests et version fonctionnelle du player (1h30)
@@ -10,6 +19,9 @@
 * Reprise du player, playlist manager et filemanager et intégration avec le reste du projet (4h00)
 
 ## 17.04.2017
+### Thibaut Togue Kamga
+* Finalisation du player et filemanage valider par ludovic.(1h30)
+
 ### Lucas Elisei
 * Mise à jour de l'interface graphique (panneau central) selon les choix retenus lors de la précédente réunion. (1h00)
 
