@@ -19,6 +19,9 @@
 * Reprise du player, playlist manager et filemanager et intégration avec le reste du projet (4h00)
 
 ## 17.04.2017
+### Thibaut Togue Kamga
+* Finalisation du player et filemanage valider par ludovic.(1h30)
+
 ### Lucas Elisei
 * Mise à jour de l'interface graphique (panneau central) selon les choix retenus lors de la précédente réunion. (1h00)
 
