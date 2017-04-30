@@ -1,5 +1,7 @@
 package ch.tofind.commusica.network.client;
 
+import ch.tofind.commusica.network.Protocol;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
@@ -10,7 +12,7 @@ import java.net.MulticastSocket;
  */
 public class MulticastReceiver implements Runnable {
 
-    final static String INET_ADDR = "239.192.0.1";
+    final static String INET_ADDR = Protocol.IP_MULTICAST_PLAYLIST_UPDATE;
 
     private boolean isRunning;
 
@@ -27,26 +29,21 @@ public class MulticastReceiver implements Runnable {
         InetAddress address = null;
         try {
             address = InetAddress.getByName(INET_ADDR);
-            MulticastSocket clientSocket = new MulticastSocket(8080);
+            MulticastSocket clientSocket = new MulticastSocket(Protocol.PORT_MULTICAST_PLAYLIST_UPDATE);
 
             // clientSocket.setBroadcast(true);
             clientSocket.setInterface(addressOfInterface);
 
 
             // Create a buffer of bytes, which will be used to store
-            // the incoming bytes containing the information from the server.
-            // Since the message is small here, 256 bytes should be enough.
-
-
+            // the incoming bytes containing the information from the server
             byte[] buf = new byte[256];
 
             //Join the Multicast group.
             clientSocket.joinGroup(address);
 
-            int count = 0;
-
             while (isRunning) {
-
+                // TODO: PUT THE PLAYLIST HERE
                 // Receive the information and print it.
                 DatagramPacket msgPacket = new DatagramPacket(buf, buf.length);
 

@@ -6,13 +6,13 @@ import java.io.IOException;
 import java.net.*;
 
 /**
- * Created by David on 30.03.2017.
+ * Runnable used to send by Multicast the current state of the Playlist
  */
-public class MulticastSender extends Thread {
+public class MulticastSender implements Runnable {
 
-    final static String INET_ADDR = "239.192.0.1";
+    final static String INET_ADDR = Protocol.IP_MULTICAST_PLAYLIST_UPDATE;
 
-    MulticastSocket serverSocket;
+    private MulticastSocket serverSocket;
 
     private InetAddress addressOfInterface;
 
@@ -31,12 +31,7 @@ public class MulticastSender extends Thread {
 
         // Open a new MulticastSocket, which will be used to send the data.
         try {
-            serverSocket = new MulticastSocket(8181);
-
-            //serverSocket.setBroadcast(true);
-
-            // if I set it manually it works (here goes the IP of my PC n°1)
-            serverSocket.setInterface(addressOfInterface);
+            serverSocket = new MulticastSocket(Protocol.PORT_MULTICAST_PLAYLIST_UPDATE);
 
             serverSocket.joinGroup(addr);
 
@@ -45,7 +40,7 @@ public class MulticastSender extends Thread {
             // Create a packet that will contain the data
             // (in the form of bytes) and send it.
             DatagramPacket msgPacket = new DatagramPacket(msg.getBytes(),
-                    msg.getBytes().length, addr, 8080);
+                    msg.getBytes().length, addr, Protocol.PORT_MULTICAST_PLAYLIST_UPDATE);
             serverSocket.send(msgPacket);
             System.out.println("Server sent packet with msg: " + msg);
 

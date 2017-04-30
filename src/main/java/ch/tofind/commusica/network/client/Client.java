@@ -51,7 +51,7 @@ public class Client {
      * @param serverIP
      * @param port
      */
-    public void connect(InetAddress serverIP, int port) {
+    public void firstConnect(InetAddress serverIP, int port) {
         try {
             serverSocket = new Socket(serverIP, port);
 
@@ -98,6 +98,17 @@ public class Client {
         }
     }
 
+    // used to reconect without the identification phase
+    public void reconnect() {
+        try {
+            serverSocket = new Socket(serverIP, port);
+            in = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
+            out = new PrintWriter(new OutputStreamWriter(serverSocket.getOutputStream()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public ArrayList<InetAddress> getServersList() {
         return clientDiscovery.getServersList();
     }
@@ -117,9 +128,13 @@ public class Client {
     }
 
 
-    public void sendInfo(String info) {
+    public void sendString(String info) {
         if (isBinded) {
-            connect(serverIP, port);
+            try {
+                serverSocket = new Socket(serverIP, port);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             out.write(Protocol.SEND_INFO + "\n");
             out.flush();
             out.write(info + "\n");
@@ -127,7 +142,7 @@ public class Client {
 
             disconnectTCPSocket();
         } else {
-            LOG.info("No server set, connot send info");
+            LOG.info("No server set, cannot send info");
         }
     }
 
@@ -153,4 +168,57 @@ public class Client {
     public void refreshServers() {
         new Thread(clientDiscovery).start();
     }
+
+
+    public void sendSong(String path) {
+        if (isBinded) {
+            try {
+                reconnect();
+
+                out.write(Protocol.SEND_MUSIC + "\n");
+                out.flush();
+
+
+                File file = new File(path);
+                FileInputStream fis = new FileInputStream(file);
+                BufferedInputStream bis = new BufferedInputStream(fis);
+
+                BufferedOutputStream bos = new BufferedOutputStream(serverSocket.getOutputStream());
+
+                byte[] contents = new byte[8192];
+                int in;
+
+                while ((in = bis.read(contents)) != -1) {
+                    bos.write(contents, 0, in);
+                }
+                bos.flush();
+
+                LOG.info("Music sent!");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            disconnectTCPSocket();
+        } else {
+            LOG.info("No server set, cannot send song.");
+        }
+    }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -40,6 +40,20 @@ class Test {
         }
 
         if (type == 1) {
+            Server server = new Server(8080, addressOfInterface);
+            server.serveClients();
+        } else {
+            Client client = new Client(addressOfInterface);
+            try {
+                client.firstConnect(InetAddress.getByName("localhost"), 8080);
+
+                client.sendSong("C:\\Users\\David\\Documents\\YourFuckingMother_x_EHDE_-_Pocket_Monsters_VIP.mp3");
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            }
+        }
+/*
+        if (type == 1) {
             Server server = new Server(8081, addressOfInterface);
             server.serveClients();
 
@@ -66,6 +80,7 @@ class Test {
                 System.out.println("[2] connect to server");
                 System.out.println("[3] Display available servers");
                 System.out.println("[4] Disconnect");
+
                 System.out.print("> ");
 
                 actionClient = scanner.nextInt();
@@ -89,7 +104,7 @@ class Test {
                 }
             }
 
-        }
+        }*/
     }
 
 

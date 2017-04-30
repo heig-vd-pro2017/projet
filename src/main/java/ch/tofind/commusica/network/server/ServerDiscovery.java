@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 public class ServerDiscovery implements Runnable {
 
-    private String address = "239.192.0.2";
+    private String address = Protocol.IP_MULTICAST_DISCOVERY;
 
     private static ServerDiscovery _sharedInstance = null;
 
@@ -39,7 +39,7 @@ public class ServerDiscovery implements Runnable {
         try {
             _logger.info("Launching server...");
 
-            _socket = new MulticastSocket(8484);
+            _socket = new MulticastSocket(Protocol.PORT_MULTICAST_DISCOVERY);
             _socket.setInterface(addressOfInterface);
 
             InetAddress addr = InetAddress.getByName(address);
@@ -62,7 +62,7 @@ public class ServerDiscovery implements Runnable {
                     // Send ACK packet to client.
                     byte[] sentPacketBuffer = Protocol.DISCOVER_RESPONSE.getBytes();
                     _socket.setBroadcast(false);
-                    DatagramPacket sentPacket = new DatagramPacket(sentPacketBuffer, sentPacketBuffer.length, addr, 8484);
+                    DatagramPacket sentPacket = new DatagramPacket(sentPacketBuffer, sentPacketBuffer.length, addr, Protocol.PORT_MULTICAST_DISCOVERY);
                     _socket.send(sentPacket);
                     _logger.info("Packet sent to " + rcvPacket.getAddress().getHostAddress());
                 }

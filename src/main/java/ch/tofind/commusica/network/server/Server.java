@@ -15,12 +15,10 @@ import java.util.logging.Logger;
 
 
 public class Server {
-    private static int nextId = 0;
     private SessionManager sm = new SessionManager();
     private int port;
 
     private InetAddress addressOfInterface;
-
 
     final static Logger LOG = Logger.getLogger(Server.class.getName());
 
@@ -137,6 +135,27 @@ public class Server {
                         case Protocol.SEND_INFO:
                             String infoReceived = receive();
                             // TODO: transfer the info to the main Controller
+                            break;
+
+                        case Protocol.SEND_MUSIC:
+
+                            byte[] receivedMusic = new byte[8192];
+                            File result = new File("C:\\Users\\David\\Documents\\Test\\test.mp3");
+                            FileOutputStream fos  = new FileOutputStream(result);
+                            BufferedOutputStream bos = new BufferedOutputStream(fos);
+                            InputStream is = clientSocket.getInputStream();
+
+                            System.out.println("READY TO RECEIVE");
+
+                            int bytesRead = 0;
+
+                            while ((bytesRead = is.read(receivedMusic)) != -1) {
+                                bos.write(receivedMusic, 0, bytesRead);
+                            }
+                            bos.flush();
+
+                            LOG.info("Music received!");
+
                             break;
 
                         default:

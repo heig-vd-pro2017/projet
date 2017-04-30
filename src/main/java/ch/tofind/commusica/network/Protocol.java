@@ -21,6 +21,16 @@ import java.util.logging.Logger;
 
 public class Protocol {
 
+    // IPs for Multicast
+    public static final String IP_MULTICAST_DISCOVERY = "239.192.0.2";
+    public static final String IP_MULTICAST_PLAYLIST_UPDATE = "239.192.0.1";
+
+    // Ports for Multicast
+    public static final int PORT_MULTICAST_DISCOVERY = 8484;
+    public static final int PORT_MULTICAST_PLAYLIST_UPDATE = 8181;
+
+
+    // constants for the protocol
     public static final String CONNECTION_REQUEST = "CONNECTION_REQUEST";
 
     public static final String PLAYLIST_UPDATED = "PLAYLIST_UPDATED";
@@ -34,4 +44,7 @@ public class Protocol {
 
     public static final String DISCOVER_REQUEST = "DISCOVER_REQUEST";
     public static final String DISCOVER_RESPONSE = "DISCOVER_RESPONSE";
+
+
+
 }

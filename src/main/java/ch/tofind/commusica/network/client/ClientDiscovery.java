@@ -12,7 +12,7 @@ public class ClientDiscovery implements Runnable {
 
     private static Logger _logger = Logger.getLogger(ClientDiscovery.class.getName());
 
-    private String address = "239.192.0.2";
+    private String address = Protocol.IP_MULTICAST_DISCOVERY;
 
     private MulticastSocket _socket = null;
 
@@ -27,7 +27,7 @@ public class ClientDiscovery implements Runnable {
     public void run() {
 
         try {
-            _socket = new MulticastSocket(8484);
+            _socket = new MulticastSocket(Protocol.PORT_MULTICAST_DISCOVERY);
 
             _socket.setInterface(addressOfInterface);
 
@@ -37,7 +37,7 @@ public class ClientDiscovery implements Runnable {
 
             byte[] message = Protocol.DISCOVER_REQUEST.getBytes();
 
-            DatagramPacket packet = new DatagramPacket(message, message.length, addr, 8484);
+            DatagramPacket packet = new DatagramPacket(message, message.length, addr, Protocol.PORT_MULTICAST_DISCOVERY);
             _socket.send(packet);
 
             _logger.info("Waiting for response from server(s) - 3s");
