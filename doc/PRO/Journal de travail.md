@@ -1,6 +1,125 @@
 # Journal de travail
 *Le journal de travail débute le 15.03.2017*
 
+## 30.04.2017
+### David Truan
+* Transfert de fichier .mp3 et implémentation dans le projet (2h)
+* Mise au propre des classes du package network et finition du protocole (1h)
+* Mise en place de la mise à jour de la playlist (1h)
+
+## 23.04.2017
+### Lucas Elisei
+* Implémentation du player dans l'interface graphique (1h00)
+* Découpage de l'interface graphique en modules (2h00)
+
+## 21.04.2017
+### Lucas Elisei
+* Implémentation de chargement de playlists dans l'interface graphique (4h)
+
+## 20.04.2017
+### Ludovic Delafontaine
+* Suite des tests et version fonctionnelle du player (1h30)
+
+## 19.04.2017
+### Ludovic Delafontaine
+* Reprise du player, playlist manager et filemanager et intégration avec le reste du projet (4h00)
+
+## 17.04.2017
+### Thibaut Togue Kamga
+* Finalisation du player et filemanage valider par ludovic.(1h30)
+
+### Lucas Elisei
+* Mise à jour de l'interface graphique (panneau central) selon les choix retenus lors de la précédente réunion. (1h00)
+
+## 11.04.2017
+### Ludovic Delafontaine
+* Début de la mise à jour du schéma UML selon la réelle implémentation (1h00)
+
+## 10.04.2017
+### Ludovic Delafontaine
+* Réalisation de la présentation (2h00)
+
+### Thibaut Togue Kamga
+* Implémentation du player sans playlistManager et test  (3h)		                                                       
+
+
+
+## 08.04.2017
+### David Truan
+* Ajout d'une méthode pour choisir sa bonne interface et modification du code pour prendre en compte cela. (2h)
+* Ajout de fonctionnalités au programme de test. (10min)
+* Mise au propre rapide des classes et création de a classe Protocol et de packages client/server. (1h)
+## 06.04.2017
+
+### Thibaut Togue Kamga
+* Tuto playerMedia pour l'implémentation du player(2h)
+## 05.04.2017
+
+### Ludovic Delafontaine
+* Ajout de la classe Playlist et de sa table associée pour la base de données (01:00)
+* Ajout de la classe permettant de récupérer des propriétés depuis un fichier de configuration (00:30)
+* Documentation des différentes classes (00:30)
+
+## 03.04.2017
+### Ludovic Delafontaine
+* Finalisation de la classe Track avec l'ajout de l'interface DatabaseObject
+* Merge avec master pour Track
+
+### Togue Kamga Thibaut
+ * Implémentation du player avec SourceDataline mais
+  inutile cas impossible de lire les mp3 (4h)
+
+## 02.04.2017
+### Denise Gemesio
+* Fenêtre rendue "redimensionnable" au niveau de la partie player de l'interface (2h)
+
+## 01.04.2017
+### David Truan
+* Tests pour le Multicast. Toujours des problèmes (2h)
+
+## 31.03.2017
+### Ludovic Delafontaine
+* Suite de la base de données avec les classes Playlist, PlaylistTrack et PlaylistTrackId (2h30)
+
+### Yosra Harbaoui
+* Implémentation simple d'une connexion client/serveur pour tester la connectivité.
+
+## 30.03.2017
+### David Truan
+* Réflexion sur l'implémentation et début de code pour la découverte de serveurs par les clients (2h)
+
+### Togue Kamga Thibaut
+* Tuto sur les file poperties de java et implémentation
+du fichier de configuration, modification du file Manager d'après la discussion avec le group pour la réservation de la mémoire et test(3h)
+
+## 29.03.2017
+### Lucas Elisei (1h)
+* Ajout des actions d'*upvote* et *downvote* pour les chansons (seulement graphique).
+
+## 28.03.2017
+### Lucas Elisei (4h)
+* Ajout du style des cellules représentant des chansons dans la playlist en cours de lecture (panneau central).
+* Tests du player et suite de la base de données (2h00)
+
+## 27.03.2017
+### Ludovic Delafontaine
+* Création de la classe Playlist et tests avec la base de données associée (5h00)
+
+### Togue Kamga Thibaut
+* implémentation du fileManager(2h)
+
+## 26.03.2017
+### Denise Gemesio
+* Intergace graphique: modification du .fxml avec Scene Builder
+
+## 25.03.2017
+### David Truan
+* Documentation et première implémentation (test) du multicast en Java. (2h)
+* Réévaluation de l'intêret de NetPort en tant que classe. (30min)
+
+### Yosra Harbaoui
+* Documentation sur les différents "types" de communications entre un serveur et un client.
+
 ## 22.03.2017
 ### Denise Gemesio
 * Interface graphique: tutoriel et documentation (2h30)
@@ -11,6 +130,9 @@
 * Player
     * Tests de lecture de fichiers audio
     * Tests de récupération des metadatas des fichiers
+
+### Thibaut Togue
+* Tutoriel sur [https://www.jmdoudoux.fr/java/dej/chap-hibernate.htm](https://www.jmdoudoux.fr/java/dej/chap-hibernate.htm) pour la réalisation de la couche persistance de l'application avec **ORM**(2h)
 
 ## 21.03.2017
 ### Lucas Elisei
@@ -25,9 +147,16 @@
 * Avancement dans la base de données
     * Corrections et améliorations
 
+### Yosra Harbaoui
+* Documentation sur l'implémentation client/serveur.
+
 ## 20.03.2017
 ### David Truan
 * Essais et documentation sur la partie client/serveur (3h).
+
+### Thibaut Togue
+
+* test du fichier Sqlite à travers des conteneurs docker et correction des bugs(2h)                              
 
 ## 18.03.2017
 * Création du schéma de la base de données

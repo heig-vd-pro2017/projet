@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 
-public class PlaylistManager {
+public class
+PlaylistManager {
 
     //! Shared instance of the playlist for all the application
     private static PlaylistManager instance = null;

@@ -1,6 +1,53 @@
 # Procès verbaux
 *Les PV sont en ordre anti-chronologique afin d'avoir accès aux dernières nouvelles plus rapidement !*
 
+## 04.04.2017
+* Interface
+    * Overall : remplacer le SplitPane par une VBox (devrait régler le problème de padding au-dessus de la partie du as lors du redimensionnement
+    * (Overall : repenser les couleurs)
+    * Upper-center : ajouter l'album et la durée
+    * Upper-right : pouvoir allonger la liste accordéon
+    * Lower-center-right : allonger la ProgressBar quand en plein écran
+    * Peupler la partie playlist avec les valeurs réelles
+* Track / Playlist / Playlist Manager
+    * Difficulté à lier les tracks avec une playlist au moment d'aller chercher l'information dans la base de données (ok au niveau de la BD mais pas au moment de charger)
+    * Nécessité d'une table intermédiaire pour faire le lien entre les tracks et playlists
+    * Track terminé mis à part la fonction hash() et la fonction equals()
+    * A faire pour que ce soit plus propre : depuis la table playlist-track, récupérer en regard de la playlist toutes les tracks de ladite playlist
+    * Vote et Favorite sont directement liés à Playlist
+* Player
+    * Player enverra un message au Playlist Manager pour lui demander de changer la chanson lorsqu'elle sera sur le point de se finir
+* Network Manager
+    * Essai de mise en place du système automatique selon Liechti
+    * Système automatique trop compliqué? Tester la connexion à Google et si ça marche pas automatiquement -> choisir interface. Si ça marche, prendre la même interface de connexion qu'à Google
+    * Si trop long ? Mettre en brut et passer à la suite
+* Présentation
+    * Bonne entente au niveau du groupe
+    * Nous sommes dans les temps, voire en avance sur le programme.
+    * Nos choix de développement ont mené à ce que le travail effectué jusqu'à maintenant ne suive pas exactement l'ordre de planification du Gantt. Néanmoins, les thématiques de développement restent les mêmes, mais les heures et périodes destinées à ces thématiques ne sont pas dans le bon ordre.
+
+## 28.03.2017
+* Définition de la hiérarchie des fichiers concernant l'interface graphique: un fichier `.css` global permettant de styliser la globalité des éléments graphiques. Ce fichier sera sûrement généré à l'aide d'un compilateur **SASS** ou **LESS**.
+* Il faut trouver des icônes plus adaptées que du SVG pur.
+* Définition des différentes méthodes de la classe `FileManager`:
+    * Méthode privée `freeSpace(path)` permettant de connaître l'espace disque disponible selon un chemin de fichier/dossier.
+    * Méthode privée `reserve(size)` permettant de réserver de l'espace pour sauvegarder une chanson (enlève l'espace nécessaire à l'espace disque disponible).
+    * Méthode publique `save(filename, file)` permettant de sauvegarder un fichier dans l'espace de stockage.
+    * Méthode publique `delete(filename)` permettant de supprimer un fichier de l'espace de stockage.
+    * Un *URI* est relatif et non absolu.
+* Définition des différentes méthodes de la classe `PlaylistsManager`:
+    * Méthode publique `save(playlist)` permettant de créer/sauvegarder une playlist.
+    * Méthode publique `delete(playlist)` permettant de supprimer une playlist existante.
+    * Méthode publique `rename(playlist)` permettant de renommer une playlist existante.
+    * Méthode publique `load(playlist)` permettant de charger une playlist.
+* Fichier de configuration:
+    * Une variable contenant le chemin du dossier de stockage des fichiers.
+* Hiérarchie des fichiers du programme:  
+    * `./commusica.jar` (*à voir*: contient le fichier `.db`)
+    * `./commusica.db`
+    * `./configuration.properties` (l'extension reste à définir)
+    * `./tracks/`: contient les chansons (défini par le fichier de configuration).
+
 ## 21.03.2017
 Nous avons décidé d'utiliser maven et avons mis en place la hiérarchie de dossiers du projet.
 On va abandonner l'idée de GitBook et utiliser Markdown tout de même, pour la documentation.
@@ -32,7 +79,7 @@ Nous avons décidé de mettre en place le projet selon une architecture RESTful.
 * Discussions autour de l'interface du programme:
     * Connexion : Au niveau de l'interface, on pourra se connecter en tant que serveur ou utilisateur. On aura une boîte
   en accordéon qui nous permettra de choisir le réglage désiré. La fenêtre "Se connecter" sera ouverte par défaut.
-  * Interface : **Sandbuilder: une personne pour faire l'interface et la prendre comme exemple de façon à pouvoir
+  * Interface : **SceneBuilder: une personne pour faire l'interface et la prendre comme exemple de façon à pouvoir
   faire le mockup ainsi que l'implémentation.** Donnera la possibilité de redimensionner la fenêtre.
   * Communication réseau (cours RES) : Protocole à définir, mais l'implémentation sera apprise en classe d'ici
   là. **Prendre de l'avance sur le cours RES pour mettre en place le protocole.**
