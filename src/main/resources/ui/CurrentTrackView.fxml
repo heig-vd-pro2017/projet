@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
+<fx:root type="javafx.scene.layout.GridPane" xmlns:fx="http://javafx.com/fxml/1" hgap="5.0" maxHeight="100.0" minHeight="100.0" minWidth="360.0" vgap="5.0">
+
+    <padding>
+        <Insets bottom="10.0" left="0.0" right="10.0" top="10.0"/>
+    </padding>
+
+    <columnConstraints>
+        <ColumnConstraints hgrow="ALWAYS"/>
+        <ColumnConstraints hgrow="NEVER" maxWidth="20.0" minWidth="20.0"/>
+        <ColumnConstraints hgrow="NEVER" maxWidth="20.0" minWidth="20.0"/>
+    </columnConstraints>
+
+    <rowConstraints>
+        <RowConstraints minHeight="22.0" maxHeight="22.0" vgrow="NEVER"/>
+        <RowConstraints minHeight="14.0" maxHeight="14.0" vgrow="NEVER"/>
+        <RowConstraints minHeight="14.0" maxHeight="14.0" vgrow="NEVER"/>
+        <RowConstraints minHeight="15.0" maxHeight="15.0" vgrow="NEVER"/>
+    </rowConstraints>
+
+    <Label fx:id="titleLabel" text="Title" GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <font>
+            <Font size="22"/>
+        </font>
+    </Label>
+
+    <Label fx:id="artistLabel" style="-fx-text-fill: #A8A8A8;" text="Artist" GridPane.columnIndex="0" GridPane.rowIndex="1">
+        <padding>
+            <Insets left="5.0"/>
+        </padding>
+        <font>
+            <Font size="14"/>
+        </font>
+    </Label>
+
+    <Label fx:id="albumLabel" style="-fx-text-fill: #A8A8A8;" text="Album" GridPane.columnIndex="0" GridPane.rowIndex="2">
+        <padding>
+            <Insets left="5.0"/>
+        </padding>
+        <font>
+            <Font size="14"/>
+        </font>
+    </Label>
+
+    <ImageView fitWidth="20.0" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="0" GridPane.valignment="TOP">
+        <Image url="@icons/upvote.png"/>
+    </ImageView>
+
+    <Label alignment="CENTER" maxWidth="20.0" minWidth="20.0" text="0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.rowSpan="3" GridPane.valignment="CENTER">
+    </Label>
+
+    <ImageView fitWidth="20.0" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+        <Image url="@icons/downvote.png"/>
+    </ImageView>
+
+    <ImageView fitWidth="20.0" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.rowSpan="3" GridPane.valignment="CENTER">
+        <Image url="@icons/fav_empty.png"/>
+    </ImageView>
+
+    <AnchorPane maxHeight="10.0" minHeight="10.0" GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
+        <ProgressBar fx:id="durationBar" progress="0.5" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0"/>
+    </AnchorPane>
+
+    <Label fx:id="durationLabel" text="00:00" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
+        <font>
+            <Font size="10"/>
+        </font>
+    </Label>
+
+</fx:root>

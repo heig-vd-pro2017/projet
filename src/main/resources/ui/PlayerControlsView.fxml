@@ -9,20 +9,20 @@
 <?import javafx.scene.control.Slider?>
 
 <fx:root type="javafx.scene.layout.AnchorPane" xmlns:fx="http://javafx.com/fxml/1">
-    <GridPane maxHeight="108.0" maxWidth="200.0" minHeight="108.0" minWidth="108.0" vgap="8.0">
+    <GridPane maxHeight="108.0" maxWidth="160.0" minHeight="108.0" minWidth="108.0" vgap="8.0">
 
         <rowConstraints>
             <RowConstraints maxHeight="70.0" minHeight="70.0" />
             <RowConstraints maxHeight="30.0" minHeight="30.0" />
         </rowConstraints>
 
-        <AnchorPane maxHeight="70.0" maxWidth="200.0" minHeight="70.0" minWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <AnchorPane maxHeight="70.0" maxWidth="160.0" minHeight="70.0" minWidth="160.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
             <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0">
 
                 <columnConstraints>
-                    <ColumnConstraints hgrow="NEVER" maxWidth="75.0" minWidth="75.0" />
+                    <ColumnConstraints hgrow="NEVER" maxWidth="55.0" minWidth="55.0" />
                     <ColumnConstraints hgrow="NEVER" maxWidth="50.0" minWidth="50.0" />
-                    <ColumnConstraints hgrow="NEVER" maxWidth="75.0" minWidth="75.0" />
+                    <ColumnConstraints hgrow="NEVER" maxWidth="55.0" minWidth="55.0" />
                 </columnConstraints>
 
                 <rowConstraints>
@@ -45,7 +45,7 @@
             </GridPane>
         </AnchorPane>
 
-        <Slider fx:id="volumeSlider" focusTraversable="false" max="1.0" maxHeight="15.0" maxWidth="160.0" min="0.0" minHeight="15.0" minWidth="160.0" value="0.8" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+        <Slider fx:id="volumeSlider" focusTraversable="false" max="1.0" maxHeight="15.0" maxWidth="130.0" min="0.0" minHeight="15.0" minWidth="130.0" value="0.8" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
 
     </GridPane>
 </fx:root>
