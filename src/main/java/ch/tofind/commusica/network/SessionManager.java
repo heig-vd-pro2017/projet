@@ -2,6 +2,7 @@ package ch.tofind.commusica.network;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
@@ -14,7 +15,7 @@ public class SessionManager {
 
     final static Logger LOG = Logger.getLogger(SessionManager.class.getName());
 
-    private List<Session> sessions = new ArrayList<>();
+    private Set<Session> sessions = new HashSet<Session>();
     private int hoursOfSession = 1;
 
     public void storeSession(Session s) {
@@ -23,6 +24,9 @@ public class SessionManager {
         LOG.info("New session with id " + s.getId() + " stored.");
     }
 
+    public int countSessions() {
+        return sessions.size();
+    }
     /**
      * Remove session with the id passed in parameter
      *
