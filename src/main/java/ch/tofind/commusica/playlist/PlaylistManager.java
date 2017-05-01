@@ -3,7 +3,6 @@ package ch.tofind.commusica.playlist;
 import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.media.Playlist;
 import ch.tofind.commusica.media.Track;
-
 import org.hibernate.Session;
 
 import java.util.ArrayList;

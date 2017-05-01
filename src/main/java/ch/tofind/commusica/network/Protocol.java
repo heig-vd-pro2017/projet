@@ -45,6 +45,9 @@ public class Protocol {
     public static final String DISCOVER_REQUEST = "DISCOVER_REQUEST";
     public static final String DISCOVER_RESPONSE = "DISCOVER_RESPONSE";
 
+    // time betwwen each playlist update from the server in ms
+    public static final int TIME_PLAYLIST_UPDATE = 1000;
+
 
 
 }

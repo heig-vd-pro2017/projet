@@ -1,5 +1,6 @@
 package ch.tofind.commusica.network.server;
 
+import ch.tofind.commusica.file.FileManager;
 import ch.tofind.commusica.network.Protocol;
 import ch.tofind.commusica.network.Session;
 import ch.tofind.commusica.network.SessionManager;
@@ -19,6 +20,10 @@ public class Server {
     private int port;
 
     private InetAddress addressOfInterface;
+
+    private ReceptionistWorker receptionist;
+    private Runnable serverDiscovery;
+    private Runnable playlistUpdater;
 
     final static Logger LOG = Logger.getLogger(Server.class.getName());
 
@@ -51,8 +56,12 @@ public class Server {
             }
         }, 0, 1, TimeUnit.SECONDS);
 
-        new Thread(new ReceptionistWorker()).start();
-        new Thread(ServerDiscovery.getSharedInstance(addressOfInterface)).start();
+        receptionist = new ReceptionistWorker();
+        new Thread(receptionist).start();
+
+
+        new Thread(ServerDiscovery.getSharedInstance()).start();
+        new Thread(PlaylistUpdateSender.getSharedInstance()).start();
     }
 
 
@@ -64,8 +73,13 @@ public class Server {
      */
     private class ReceptionistWorker implements Runnable {
 
+        private boolean isRunning;
+
         @Override
         public void run() {
+
+            isRunning = true;
+
             ServerSocket serverSocket;
 
             try {
@@ -75,7 +89,7 @@ public class Server {
                 return;
             }
 
-            while (true) {
+            while (isRunning) {
                 LOG.log(Level.INFO, "Waiting (blocking) for a new client on port {0}", port);
                 try {
                     Socket clientSocket = serverSocket.accept();
@@ -84,6 +98,12 @@ public class Server {
                 } catch (IOException ex) {
                     Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }
+
+            try {
+                serverSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
         }
@@ -115,47 +135,31 @@ public class Server {
             @Override
             public void run() {
                 try {
+
+                    // Authentication phase (check if the session is already created for the client connecting
+                    while ((in.readLine()) != Protocol.CONNECTION_REQUEST) ;
+                    send(Protocol.SEND_ID);
+                    int id = Integer.parseInt(in.readLine());
+
+                    if (!sm.idAlreadyStored(id)) {
+                        sm.storeSession(new Session(id, new Timestamp(System.currentTimeMillis())));
+                        send(Protocol.SESSION_CREATED);
+
+                    } else {
+                        sm.updateSession(id);
+                        send(Protocol.SESSION_UPDATED);
+                    }
+
+
                     switch (in.readLine()) {
-                        case Protocol.CONNECTION_REQUEST:
-                            send(Protocol.SEND_ID);
-                            int id = Integer.parseInt(in.readLine());
-
-                            if (!sm.idAlreadyStored(id)) {
-                                sm.storeSession(new Session(id, new Timestamp(System.currentTimeMillis())));
-                                send(Protocol.SESSION_CREATED);
-
-                            } else {
-                                sm.updateSession(id);
-
-                                send(Protocol.SESSION_UPDATED);
-                            }
-                            break;
-
-
                         case Protocol.SEND_INFO:
                             String infoReceived = receive();
                             // TODO: transfer the info to the main Controller
                             break;
 
                         case Protocol.SEND_MUSIC:
-
-                            byte[] receivedMusic = new byte[8192];
-                            File result = new File("C:\\Users\\David\\Documents\\Test\\test.mp3");
-                            FileOutputStream fos  = new FileOutputStream(result);
-                            BufferedOutputStream bos = new BufferedOutputStream(fos);
-                            InputStream is = clientSocket.getInputStream();
-
-                            System.out.println("READY TO RECEIVE");
-
-                            int bytesRead = 0;
-
-                            while ((bytesRead = is.read(receivedMusic)) != -1) {
-                                bos.write(receivedMusic, 0, bytesRead);
-                            }
-                            bos.flush();
-
+                            FileManager.getInstance().retrieveFile(clientSocket.getInputStream());
                             LOG.info("Music received!");
-
                             break;
 
                         default:
@@ -205,11 +209,19 @@ public class Server {
             }
         }
 
+        public void stop() {
+            isRunning = false;
+        }
     }
 
-    public void sendPlaylistUpdate() {
-        new Thread(new MulticastSender(addressOfInterface)).start();
+    /**
+     * Disconnect the server and its threads.
+     */
+    public void disconnect() {
+        receptionist.stop();
+        PlaylistUpdateSender.getSharedInstance().stop();
+        ServerDiscovery.getSharedInstance().stop();
+
+        LOG.log(Level.INFO, "Server disconnected.");
     }
-
-
 }

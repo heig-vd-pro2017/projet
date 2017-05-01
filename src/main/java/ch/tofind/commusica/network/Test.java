@@ -12,6 +12,9 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
+/**
+ * Test class
+ */
 class Test {
     public static void main(String... args) {
         Scanner scanner = new Scanner(System.in);
@@ -19,14 +22,7 @@ class Test {
 
         InetAddress addressOfInterface = null;
 
-
-        try {
-
-                addressOfInterface = NetworkUtils.networkInterfaceChoser();
-
-        } catch (SocketException e) {
-            e.printStackTrace();
-        }
+        NetworkUtils.networkInterfaceChooser();
 
 
         while (type != 1 && type != 2) {
@@ -45,7 +41,7 @@ class Test {
         } else {
             Client client = new Client(addressOfInterface);
             try {
-                client.firstConnect(InetAddress.getByName("localhost"), 8080);
+                client.connect(InetAddress.getByName("10.192.115.83"), 8080);
 
                 client.sendSong("C:\\Users\\David\\Documents\\YourFuckingMother_x_EHDE_-_Pocket_Monsters_VIP.mp3");
             } catch (UnknownHostException e) {

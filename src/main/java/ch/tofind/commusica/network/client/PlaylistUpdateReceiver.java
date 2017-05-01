@@ -1,10 +1,11 @@
 package ch.tofind.commusica.network.client;
 
 import ch.tofind.commusica.media.Playlist;
+import ch.tofind.commusica.network.NetworkUtils;
 import ch.tofind.commusica.network.Protocol;
+import ch.tofind.commusica.playlist.PlaylistManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import ch.tofind.commusica.playlist.PlaylistManager;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -15,7 +16,7 @@ import java.net.MulticastSocket;
 /**
  * Created by David on 30.03.2017.
  */
-public class MulticastReceiver implements Runnable {
+public class PlaylistUpdateReceiver implements Runnable {
 
     final static String INET_ADDR = Protocol.IP_MULTICAST_PLAYLIST_UPDATE;
 
@@ -26,8 +27,8 @@ public class MulticastReceiver implements Runnable {
 
     private InetAddress addressOfInterface;
 
-    public MulticastReceiver(InetAddress addressOfInterface) {
-        this.addressOfInterface = addressOfInterface;
+    public PlaylistUpdateReceiver() {
+        this.addressOfInterface = NetworkUtils.addressOfInterface;
         isRunning = true;
     }
 

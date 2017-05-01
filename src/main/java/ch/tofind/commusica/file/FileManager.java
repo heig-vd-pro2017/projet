@@ -1,6 +1,6 @@
 package ch.tofind.commusica.file;
 
-import java.io.File;
+import java.io.*;
 
 public class FileManager {
 
@@ -30,6 +30,28 @@ public class FileManager {
      */
     public void save(File file, String path, String fileName) {
         file.renameTo(new File(path + File.separator + fileName));
+    }
+
+    public void retrieveFile(InputStream is) {
+        try {
+            byte[] receivedMusic = new byte[8192];
+            // TODO: change the path/name corresponding to our specs
+            File result = new File("C:\\Users\\David\\Documents\\Test\\test.mp3");
+            FileOutputStream fos = new FileOutputStream(result);
+            BufferedOutputStream bos = new BufferedOutputStream(fos);
+
+            int bytesRead = 0;
+
+            while ((bytesRead = is.read(receivedMusic)) != -1) {
+                bos.write(receivedMusic, 0, bytesRead);
+            }
+
+            // TODO: save  it with  good name and a good path
+            // save(result, aPathToDefine, aNameToDefine);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

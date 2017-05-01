@@ -1,13 +1,20 @@
 package ch.tofind.commusica.network.client;
 
 
+import ch.tofind.commusica.network.NetworkUtils;
 import ch.tofind.commusica.network.Protocol;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.DatagramPacket;
+import java.net.InetAddress;
+import java.net.MulticastSocket;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+/**
+ * Class implementing the Runnable interface which allows a client to discover the available servers
+ */
 public class ClientDiscovery implements Runnable {
 
     private static Logger _logger = Logger.getLogger(ClientDiscovery.class.getName());
@@ -20,12 +27,11 @@ public class ClientDiscovery implements Runnable {
 
     private InetAddress addressOfInterface;
 
-    public ClientDiscovery(InetAddress addressOfInterface) {
-        this.addressOfInterface = addressOfInterface;
+    public ClientDiscovery() {
+        this.addressOfInterface = NetworkUtils.addressOfInterface;
     }
 
     public void run() {
-
         try {
             _socket = new MulticastSocket(Protocol.PORT_MULTICAST_DISCOVERY);
 

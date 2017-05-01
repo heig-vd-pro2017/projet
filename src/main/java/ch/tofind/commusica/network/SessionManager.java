@@ -1,7 +1,5 @@
 package ch.tofind.commusica.network;
 
-import ch.tofind.commusica.network.Session;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;

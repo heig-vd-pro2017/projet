@@ -27,7 +27,7 @@ public class Client {
 
     private ClientDiscovery clientDiscovery;
 
-    private MulticastReceiver multicastReceiver = null;
+    private PlaylistUpdateReceiver playlistUpdateReceiver = null;
 
     private ArrayList<InetAddress> serversList = new ArrayList<>();
 
@@ -37,78 +37,99 @@ public class Client {
     PrintWriter out;
 
     public Client(InetAddress addressOfInterface) {
-        clientDiscovery = new ClientDiscovery(addressOfInterface);
+        clientDiscovery = new ClientDiscovery();
         this.addressOfInterface = addressOfInterface;
-        multicastReceiver = new MulticastReceiver(addressOfInterface);
-
+        playlistUpdateReceiver = new PlaylistUpdateReceiver();
     }
 
 
     /**
      * Connect to a server of name 'serverName' and on port 'port'. It also send an id (the hash of the MAC address)
-     * to the server to allow the latter creating a session for the client
+     * to the server to allow the latter creating a session for the client.
+     * It is used only once to connect to the server and set the port and IP if the server.
+     * If you want to reconnect once you used this method, use the connect() method (which just call this method
+     * but with the port and IP already saved in the Client
      *
      * @param serverIP
      * @param port
      */
-    public void firstConnect(InetAddress serverIP, int port) {
+    public void connect(InetAddress serverIP, int port) {
         try {
+            // Create the socket and the IOs
             serverSocket = new Socket(serverIP, port);
+            in = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
+            out = new PrintWriter(new OutputStreamWriter(serverSocket.getOutputStream()));
 
             this.serverIP = serverIP;
             this.port = port;
 
-            in = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
-            out = new PrintWriter(new OutputStreamWriter(serverSocket.getOutputStream()));
-
+            // send the CONNECTION_REQUEST
             out.write(Protocol.CONNECTION_REQUEST + "\n");
             out.flush();
 
+            // Wait for the SEND_ID request
             String input;
             while ((input = in.readLine()) != null) {
                 if (input.equals(Protocol.SEND_ID)) {
                     break;
                 }
             }
-
-            // we need to send MAC address here but for now we send id so we can test multiple clients on the same
-            // computer
+            // Send the hash of our MAC address
             //out.write(Integer.toString(id));
             out.write(Integer.toString(NetworkUtils.hashMACAddress()) + "\n");
             out.flush();
 
-
-
+            // wait for the acknowledge that the session is created or updated
             while ((input = in.readLine()) != null) {
                 if (input.equals(Protocol.SESSION_CREATED) || input.equals(Protocol.SESSION_UPDATED)) {
                     break;
                 }
             }
-
+            // create the playlistUpdate receiver thread and start it
             if (!isBinded) {
-                new Thread(multicastReceiver).start();
+                new Thread(playlistUpdateReceiver).start();
             }
-
+            // We connected to the server once
             isBinded = true;
 
-            System.out.println("Client " + id + " connected");
+            System.out.println("Client " + id + " connected and binded.");
+
 
         } catch (IOException e) {
-            e.printStackTrace();
+            // we check if a resources should be closed
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            if (out != null) {
+                out.close();
+            }
+
+            if (serverSocket != null) {
+                try {
+                    serverSocket.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
         }
     }
 
-    // used to reconect without the identification phase
-    public void reconnect() {
-        try {
-            serverSocket = new Socket(serverIP, port);
-            in = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
-            out = new PrintWriter(new OutputStreamWriter(serverSocket.getOutputStream()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    /**
+     * Used to reconnect to the server once you called the connect(InetAddress serverIP, int port) method
+     */
+    public void connect() {
+        connect(serverIP, port);
     }
 
+    /**
+     * Retrive a list of IPs of available servers.
+     *
+     * @return the list of IPs of available servers.
+     */
     public ArrayList<InetAddress> getServersList() {
         return clientDiscovery.getServersList();
     }
@@ -128,83 +149,76 @@ public class Client {
     }
 
 
-    public void sendString(String info) {
-        if (isBinded) {
-            try {
-                serverSocket = new Socket(serverIP, port);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            out.write(Protocol.SEND_INFO + "\n");
-            out.flush();
-            out.write(info + "\n");
-            out.flush();
-
-            disconnectTCPSocket();
-        } else {
-            LOG.info("No server set, cannot send info");
-        }
+    /**
+     * Send a String to the server
+     * It must be called only once you already connected to the server and set the server port and IP
+     *
+     * @param msg
+     */
+    public void sendString(String msg) {
+        connect();
+        out.write(Protocol.SEND_INFO + "\n");
+        out.flush();
+        out.write(msg + "\n");
+        out.flush();
+        disconnectTCPSocket();
     }
 
     /**
-     * Disconnect the client and it's multicast client
+     * Disconnect the client and it's playlist receiver thread
      */
     public void fullDisconnect() {
-        try {
-            serverSocket.close();
-            in.close();
-            out.close();
-
-            multicastReceiver.stop();
-            isBinded = false;
-            System.out.println("Client " + id + " is fully disconnected");
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        disconnectTCPSocket();
+        playlistUpdateReceiver.stop();
+        isBinded = false;
+        System.out.println("Client " + id + " is fully disconnected");
     }
 
 
+    /**
+     * refresh the servers list
+     */
     public void refreshServers() {
         new Thread(clientDiscovery).start();
     }
 
 
+    /**
+     * Send a song to the server.
+     * It must be called only once you already connected to the server and set the server port and IP
+     *
+     * @param path
+     */
     public void sendSong(String path) {
-        if (isBinded) {
-            try {
-                reconnect();
+        try {
+            connect();
 
-                out.write(Protocol.SEND_MUSIC + "\n");
-                out.flush();
+            out.write(Protocol.SEND_MUSIC + "\n");
+            out.flush();
 
 
-                File file = new File(path);
-                FileInputStream fis = new FileInputStream(file);
-                BufferedInputStream bis = new BufferedInputStream(fis);
+            File file = new File(path);
+            FileInputStream fis = new FileInputStream(file);
+            BufferedInputStream bis = new BufferedInputStream(fis);
 
-                BufferedOutputStream bos = new BufferedOutputStream(serverSocket.getOutputStream());
+            BufferedOutputStream bos = new BufferedOutputStream(serverSocket.getOutputStream());
 
-                byte[] contents = new byte[8192];
-                int in;
+            byte[] contents = new byte[8192];
+            int in;
 
-                while ((in = bis.read(contents)) != -1) {
-                    bos.write(contents, 0, in);
-                }
-                bos.flush();
-
-                LOG.info("Music sent!");
-            } catch (IOException e) {
-                e.printStackTrace();
+            while ((in = bis.read(contents)) != -1) {
+                bos.write(contents, 0, in);
             }
+            bos.flush();
 
-            disconnectTCPSocket();
-        } else {
-            LOG.info("No server set, cannot send song.");
+            LOG.info("Music sent!");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+        disconnectTCPSocket();
+
     }
-
-
 }
 
 

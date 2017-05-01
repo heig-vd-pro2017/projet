@@ -1,6 +1,7 @@
 package ch.tofind.commusica.network.server;
 
 
+import ch.tofind.commusica.network.NetworkUtils;
 import ch.tofind.commusica.network.Protocol;
 
 import java.io.IOException;
@@ -9,6 +10,10 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.util.logging.Logger;
 
+/**
+ * Class implementing the Runnable interface which send the IP address of the server by Multicast to the clients who
+ * send the DISCOVER_REQUEST message. It then send a DISCOVER_RESPONSE message with it's IP.
+ */
 public class ServerDiscovery implements Runnable {
 
     private String address = Protocol.IP_MULTICAST_DISCOVERY;
@@ -21,20 +26,24 @@ public class ServerDiscovery implements Runnable {
 
     private InetAddress addressOfInterface;
 
+    private boolean isRunning;
+
     private ServerDiscovery(InetAddress addressOfInterface) {
         this.addressOfInterface = addressOfInterface;
     }
 
-    public static ServerDiscovery getSharedInstance(InetAddress addressOfInterface) {
+    public static ServerDiscovery getSharedInstance() {
 
         if (_sharedInstance == null) {
-            _sharedInstance = new ServerDiscovery(addressOfInterface);
+            _sharedInstance = new ServerDiscovery(NetworkUtils.addressOfInterface);
         }
 
         return _sharedInstance;
     }
 
     public void run() {
+
+        isRunning = true;
 
         try {
             _logger.info("Launching server...");
@@ -48,7 +57,7 @@ public class ServerDiscovery implements Runnable {
 
             _logger.info("ServerDiscovery launched!");
 
-            while (true) {
+            while (isRunning) {
                 _logger.info("Waiting for packet...");
 
                 // We wait for a packet.
@@ -70,5 +79,9 @@ public class ServerDiscovery implements Runnable {
         } catch (IOException e) {
             _logger.severe(e.getMessage());
         }
+    }
+
+    public void stop() {
+        isRunning = false;
     }
 }
