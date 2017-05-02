@@ -36,19 +36,13 @@
         </font>
     </Label>
 
-    <Label fx:id="artistLabel" style="-fx-text-fill: #A8A8A8;" text="Artist" GridPane.columnIndex="0" GridPane.rowIndex="1">
-        <padding>
-            <Insets left="5.0"/>
-        </padding>
+    <Label fx:id="artistLabel" styleClass="subtitle" text="Artist" GridPane.columnIndex="0" GridPane.rowIndex="1">
         <font>
             <Font size="14"/>
         </font>
     </Label>
 
-    <Label fx:id="albumLabel" style="-fx-text-fill: #A8A8A8;" text="Album" GridPane.columnIndex="0" GridPane.rowIndex="2">
-        <padding>
-            <Insets left="5.0"/>
-        </padding>
+    <Label fx:id="albumLabel" styleClass="subtitle" text="Album" GridPane.columnIndex="0" GridPane.rowIndex="2">
         <font>
             <Font size="14"/>
         </font>
