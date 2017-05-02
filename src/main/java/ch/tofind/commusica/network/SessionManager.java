@@ -36,7 +36,7 @@ public class SessionManager {
         while(iterator.hasNext()) {
         //for (Iterator<Session> iterator = sessions.iterator() && iterator.hasNext(); ) {
             Session s = iterator.next();
-            if (now.getTime() - s.getActiveSince().getTime() > /*60 **/ 1000 * minutesOfSession) {
+            if (now.getTime() - s.getActiveSince().getTime() > 60 * 1000 * minutesOfSession) {
                 // for tests you can uncomment this line and comment the line on top of this comment
                 //if (now.getTime() - s.getDateAdded().getTime() > 3000) {
                 activeSessions.remove(s.getId());
