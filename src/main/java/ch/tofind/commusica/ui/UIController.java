@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Logger;
 
 /**
  * @brief UI controller.
@@ -23,8 +22,6 @@ import java.util.logging.Logger;
 public class UIController extends Application implements Initializable {
 
     private static FXMLLoader loader = new FXMLLoader();
-
-    private static Logger LOG = Logger.getLogger(UIController.class.getName());
 
     private static final String FXFILE = "ui/main.fxml";
 

@@ -1,8 +1,7 @@
 package ch.tofind.commusica.ui;
 
 import ch.tofind.commusica.media.Player;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import ch.tofind.commusica.utils.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -10,13 +9,11 @@ import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Logger;
 
 public class PlayerControlsView extends GridPane implements Initializable {
 
@@ -29,7 +26,7 @@ public class PlayerControlsView extends GridPane implements Initializable {
 
     private static final Double VOLUME_STEP = 1.0 / 16.0;
 
-    private static final Logger LOG = Logger.getLogger(PlayerControlsView.class.getName());
+    private static final Logger LOG = new Logger(PlayerControlsView.class.getSimpleName());
 
     private static Player player = Player.getCurrentPlayer();
 

@@ -9,6 +9,7 @@ import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.media.Playlist;
 import ch.tofind.commusica.media.Track;
 
+import ch.tofind.commusica.utils.Logger;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -23,6 +24,8 @@ import java.util.List;
 
 public class Commusica {
 
+    private static final Logger LOG = new Logger(Commusica.class.getSimpleName());
+
     public static void dropDatabase() {
         String filePath = "commusica.db";
         File dbFile = new File(filePath);
@@ -33,14 +36,7 @@ public class Commusica {
     }
 
     public static void main(String... args) throws Exception {
-
-        System.out.println("App démarrée :)");
-
-        try {
-            Configuration.getInstance().load("commusica.properties");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        LOG.info("Starting application...");
 
         dropDatabase();
 

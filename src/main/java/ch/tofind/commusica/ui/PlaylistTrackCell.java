@@ -2,9 +2,9 @@ package ch.tofind.commusica.ui;
 
 import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.playlist.PlaylistTrack;
+import ch.tofind.commusica.utils.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,13 +12,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-import java.util.logging.Logger;
 
 public class PlaylistTrackCell {
 
-    private static final Logger LOG = Logger.getLogger(PlaylistTrackCell.class.getName());
+    private static final Logger LOG = new Logger(PlaylistTrackCell.class.getSimpleName());
 
     private static final String FXML_FILE = "ui/PlaylistTrackCell.fxml";
 
@@ -59,9 +56,8 @@ public class PlaylistTrackCell {
         this.track = playlistTrack.getTrack();
 
         titleLabel.setText(track.getTitle());
-        //artistLabel.setText(track.getArtist());
-        //albumLabel.setText(track.getAlbum());
-        artistLabel.setText(String.format("%s - %s", track.getArtist(), track.getAlbum()));
+        artistLabel.setText(track.getArtist());
+        albumLabel.setText(track.getAlbum());
 
         votesLabel.setText(String.valueOf(playlistTrack.getVotes()));
 
