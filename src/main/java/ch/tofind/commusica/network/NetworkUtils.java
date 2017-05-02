@@ -1,5 +1,7 @@
 package ch.tofind.commusica.network;
 
+import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.*;
 import java.util.*;
 
@@ -8,7 +10,7 @@ import java.util.*;
  */
 public class NetworkUtils {
 
-    static public InetAddress addressOfInterface = null;
+    private static InetAddress addressOfInterface = null;
 
     static public int hashMACAddress() {
         try {
@@ -35,11 +37,10 @@ public class NetworkUtils {
     /**
      * Method used to choose which network interface you want to use. It set the static variable addressOfInterface
      */
-    static public void networkInterfaceChooser() {
-        ArrayList<InetAddress> listInetAddress = new ArrayList<>();
+    static public ArrayList<NetworkInterface> networkInterfaceChooser() {
+        ArrayList<NetworkInterface> networkInterfaces = new ArrayList<>();
 
         try {
-            System.out.println("What interface do you want to choose?");
             Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
             for (NetworkInterface interface_ : Collections.list(interfaces)) {
                 // we shouldn't care about loopback addresses
@@ -50,36 +51,70 @@ public class NetworkUtils {
                 // though it would question the usability of the rest of the code
                 if (!interface_.isUp())
                     continue;
-
-                // iterate over the addresses associated with the interface
-                Enumeration<InetAddress> addresses = interface_.getInetAddresses();
-                for (InetAddress addr : Collections.list(addresses)) {
-                    // look only for ipv4 addresses
-                    if (addr instanceof Inet6Address)
-                        continue;
-                    System.out.println(addr);
-                    System.out.println(interface_.getName());
-                    listInetAddress.add(addr);
-                }
+                if (getInet4Address(interface_) == null)
+                    continue;
+                networkInterfaces.add(interface_);
             }
         } catch (SocketException e) {
             e.printStackTrace();
         }
 
-        if (listInetAddress.size() == 0) {
-            return;
+        if (networkInterfaces.size() == 0) {
+            return null;
         }
-        Scanner scanner = new Scanner(System.in);
-        int type = 0;
-
-        System.out.println(listInetAddress);
-
-        while (type == 0 || type > listInetAddress.size()) {
-            type = scanner.nextInt();
-        }
-        addressOfInterface = listInetAddress.get(type - 1);
-        return;
+        return networkInterfaces;
     }
 
 
+    /*
+        The following methods are use to change and display the network interfaces used
+     */
+
+    /**
+     * Return the Inet4Address of the interface
+     *
+     * @param networkInterface
+     * @return Inet4Address of the interface
+     */
+    static public InetAddress getInet4Address(NetworkInterface networkInterface) {
+        Enumeration<InetAddress> addresses = networkInterface.getInetAddresses();
+        for (InetAddress addr : Collections.list(addresses)) {
+            if (addr instanceof Inet4Address) {
+                // remove de '/' of the address String
+                return addr;
+            }
+        }
+        return null;
+    }
+
+    public static String getInet4AddressString(InetAddress address) {
+        return address.toString().substring(1);
+    }
+
+    public static InetAddress getAddressOfInterface() {
+        return addressOfInterface;
+    }
+
+    public static void setAddressOfInterface(InetAddress addr) {
+        addressOfInterface = addr;
+    }
+
+    public static NetworkInterface getCurrentNetworkInterface() {
+        try {
+            if (addressOfInterface == null) {
+                return new MulticastSocket(8585).getNetworkInterface();
+            } else {
+                return NetworkInterface.getByInetAddress(addressOfInterface);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
+
+
+
+
+
+

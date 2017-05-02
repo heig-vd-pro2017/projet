@@ -35,7 +35,7 @@ public class ServerDiscovery implements Runnable {
     public static ServerDiscovery getSharedInstance() {
 
         if (_sharedInstance == null) {
-            _sharedInstance = new ServerDiscovery(NetworkUtils.addressOfInterface);
+            _sharedInstance = new ServerDiscovery(NetworkUtils.getAddressOfInterface());
         }
 
         return _sharedInstance;

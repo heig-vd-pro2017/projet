@@ -28,7 +28,7 @@ public class ClientDiscovery implements Runnable {
     private InetAddress addressOfInterface;
 
     public ClientDiscovery() {
-        this.addressOfInterface = NetworkUtils.addressOfInterface;
+        this.addressOfInterface = NetworkUtils.getAddressOfInterface();
     }
 
     public void run() {

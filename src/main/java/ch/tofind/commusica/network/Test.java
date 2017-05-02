@@ -8,8 +8,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -23,7 +25,13 @@ class Test {
 
         InetAddress addressOfInterface = null;
 
-        NetworkUtils.networkInterfaceChooser();
+        System.out.println("Which interface do you want to use?");
+        ArrayList<NetworkInterface> interfaces = NetworkUtils.networkInterfaceChooser();
+        for (int i = 1; i < interfaces.size(); ++i) {
+            System.out.println("[" + i + "] " + interfaces.get(i-1).getName() + ": " + NetworkUtils.getInet4AddressString(NetworkUtils.getInet4Address(interfaces.get(i-1))));
+        }
+
+        NetworkUtils.setAddressOfInterface(NetworkUtils.getInet4Address(interfaces.get(scanner.nextInt() - 1)));
 
         while (true) {
             int type = 0;
@@ -40,7 +48,7 @@ class Test {
 
 
             if (type == 1) {
-                Server server = new Server(8081, addressOfInterface);
+                Server server = new Server(8081);
                 server.serveClients();
 
                 int actionServer = 0;
@@ -91,7 +99,7 @@ class Test {
                             client = null;
                             break;
                         case 5:
-                            client.sendSong("C:\\Users\\David\\Documents\\YourFuckingMother_x_EHDE_-_Pocket_Monsters_VIP.mp3");
+                            client.sendSong("C:\\Users\\David\\Documents\\Report.pdf");
                             break;
                         default:
                             System.out.println("Action not supported ");

@@ -1,5 +1,6 @@
 package ch.tofind.commusica.network.client;
 
+import ch.tofind.commusica.file.FileManager;
 import ch.tofind.commusica.network.NetworkUtils;
 import ch.tofind.commusica.network.Protocol;
 
@@ -38,7 +39,7 @@ public class Client {
 
     public Client() {
         clientDiscovery = new ClientDiscovery();
-        this.addressOfInterface = NetworkUtils.addressOfInterface;
+        this.addressOfInterface = NetworkUtils.getAddressOfInterface();
         playlistUpdateReceiver = new PlaylistUpdateReceiver();
     }
 
@@ -207,12 +208,21 @@ public class Client {
             BufferedOutputStream bos = new BufferedOutputStream(serverSocket.getOutputStream());
 
             byte[] contents = new byte[8192];
-            int in;
+            int size;
 
-            while ((in = bis.read(contents)) != -1) {
-                bos.write(contents, 0, in);
+            bis.read(contents, 0, 16);
+
+            if (FileManager.signatureChecker(contents)) {
+                System.out.println("File OK");
+                bos.write(contents, 0, 16);
+                bos.flush();
+                while ((size = bis.read(contents)) != -1) {
+                    bos.write(contents, 0, size);
+                }
+                bos.flush();
+            } else {
+                System.out.println("File NOT OK!");
             }
-            bos.flush();
 
             fis.close();
             bis.close();

@@ -28,7 +28,7 @@ public class PlaylistUpdateReceiver implements Runnable {
     private InetAddress addressOfInterface;
 
     public PlaylistUpdateReceiver() {
-        this.addressOfInterface = NetworkUtils.addressOfInterface;
+        this.addressOfInterface = NetworkUtils.getAddressOfInterface();
         isRunning = true;
     }
 

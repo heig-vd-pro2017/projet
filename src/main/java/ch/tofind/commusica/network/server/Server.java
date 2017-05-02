@@ -1,6 +1,7 @@
 package ch.tofind.commusica.network.server;
 
 import ch.tofind.commusica.file.FileManager;
+import ch.tofind.commusica.network.NetworkUtils;
 import ch.tofind.commusica.network.Protocol;
 import ch.tofind.commusica.network.Session;
 import ch.tofind.commusica.network.SessionManager;
@@ -33,9 +34,9 @@ public class Server {
      *
      * @param port the port to listen on
      */
-    public Server(int port, InetAddress addressOfInterface) {
+    public Server(int port) {
         this.port = port;
-        this.addressOfInterface = addressOfInterface;
+        this.addressOfInterface = NetworkUtils.getAddressOfInterface();
     }
 
     /**
@@ -164,7 +165,6 @@ public class Server {
                             case Protocol.SEND_MUSIC:
                                 // Delegate the job to the FileManager
                                 FileManager.getInstance().retrieveFile(clientSocket.getInputStream());
-                                LOG.info("Music received!");
                                 break;
 
                             default:

@@ -33,10 +33,10 @@ public class PlaylistUpdateSender implements Runnable {
     public static PlaylistUpdateSender getSharedInstance() {
 
         if (sharedInstance == null) {
-            if (NetworkUtils.addressOfInterface != null) {
-                sharedInstance = new PlaylistUpdateSender(NetworkUtils.addressOfInterface);
+            if (NetworkUtils.getAddressOfInterface() != null) {
+                sharedInstance = new PlaylistUpdateSender(NetworkUtils.getAddressOfInterface());
             } else {
-                System.out.println("No address set...");
+                System.out.println("No interface address set.");
             }
         }
         return sharedInstance;
