@@ -4,6 +4,7 @@ import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.playlist.PlaylistTrack;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,6 +12,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 public class PlaylistTrackCell {
@@ -26,6 +29,9 @@ public class PlaylistTrackCell {
 
     @FXML
     private AnchorPane trackPane;
+
+    @FXML
+    private Label albumLabel;
 
     @FXML
     private Label artistLabel;
@@ -52,8 +58,11 @@ public class PlaylistTrackCell {
         this.playlistTrack = playlistTrack;
         this.track = playlistTrack.getTrack();
 
-        titleLabel.setText(playlistTrack.getTrack().getTitle());
-        artistLabel.setText(String.format("%s - %s - %02d:%02d", track.getArtist(), track.getAlbum(), track.getLength() / 60, track.getLength() % 60));
+        titleLabel.setText(track.getTitle());
+        //artistLabel.setText(track.getArtist());
+        //albumLabel.setText(track.getAlbum());
+        artistLabel.setText(String.format("%s - %s", track.getArtist(), track.getAlbum()));
+
         votesLabel.setText(String.valueOf(playlistTrack.getVotes()));
 
         if(fav) {
@@ -85,7 +94,7 @@ public class PlaylistTrackCell {
     private void favorite(MouseEvent event) {
         fav = !fav;
 
-        if(fav) {
+        if (fav) {
             favoriteImageView.setImage(new Image("ui/icons/fav_full.png"));
         } else {
             favoriteImageView.setImage(new Image("ui/icons/fav_empty.png"));
