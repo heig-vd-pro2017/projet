@@ -50,7 +50,7 @@ public class Configuration {
      * @brief Get the property from the configuration file
      * @return The property
      */
-    public Object get(String property) {
+    public String get(String property) {
         return configuration.getProperty(property);
     }
 }

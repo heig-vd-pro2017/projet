@@ -1,6 +1,7 @@
 # Journal de travail
 *Le journal de travail débute le 15.03.2017*
 
+<<<<<<< HEAD
 ## 02.05.2017
 ### David Truan
 * Finition de quelques bugs du serveur (1h).
@@ -20,6 +21,8 @@
 * Mise au propre des classes du package network et finition du protocole (1h)
 * Mise en place de la mise à jour de la playlist (1h)
 
+=======
+>>>>>>> 0695e970e0288e18cc02c8dcfc9abb914ae5db76
 ## 23.04.2017
 ### Lucas Elisei
 * Implémentation du player dans l'interface graphique (1h00)

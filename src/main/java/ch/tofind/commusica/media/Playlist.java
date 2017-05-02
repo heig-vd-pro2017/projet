@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.Objects;
 
 /**
- * @brief This class represents an audio track and can be stored in a database
+ * @brief This class represents a playlist and can be stored in a database
  */
 public class Playlist implements DatabaseObject {
 
@@ -28,6 +28,13 @@ public class Playlist implements DatabaseObject {
     private Integer version;
 
     /**
+     * @brief Empty constructor for Hibernate
+     */
+    protected Playlist() {
+
+    }
+
+    /**
      * @brief Create a playlist
      * @param name Name of the playlist
      */
@@ -37,11 +44,27 @@ public class Playlist implements DatabaseObject {
     }
 
     /**
+     * @brief Get the playlist's ID
+     * @return The playlist's ID
+     */
+    public Integer getId() {
+        return id;
+    }
+
+    /**
      * @brief Get the playlist's name
      * @return The playlist's name
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * @brief Set the playlist's name
+     * @param name The playlist's name
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -89,7 +112,7 @@ public class Playlist implements DatabaseObject {
     @Override
     public String toString() {
 
-        String format = (String)Configuration.getInstance().get("DEFAULT_DATE_FORMAT");
+        String format = Configuration.getInstance().get("DEFAULT_DATE_FORMAT");
 
         SimpleDateFormat dateFormat = new SimpleDateFormat(format);
 

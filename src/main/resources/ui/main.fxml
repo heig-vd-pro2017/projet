@@ -200,14 +200,14 @@
                                        <children>
                                           <AnchorPane maxHeight="80.0" maxWidth="270.0" minHeight="80.0" minWidth="270.0" prefHeight="80.0" prefWidth="270.0">
                                              <children>
-                                                <SVGPath fx:id="beforeButton11" content="M 0, 0 L 0, 20 L 2, 20 L 2, 0 Z M 2, 10 L 17, 20 L 17, 0 Z" fill="#05bc1b" layoutX="76.0" layoutY="29.0" stroke="BLACK" />
-                                                <SVGPath fx:id="playButton1" content="M0 35 L30 17.5 L0 0 Z" fill="#05bc1b" layoutX="127.0" layoutY="22.0" stroke="#0a0a0a" strokeWidth="2.0" />
-                                                <SVGPath fx:id="nextButton1" content="M 0 20 L15 10 L0 0 Z M 15, 0 L 15, 20 L 17, 20 L 17, 0 Z" fill="#05bc1b" layoutX="184.0" layoutY="29.0" stroke="BLACK" />
+                                                <SVGPath fx:id="beforeButton11" content="M 0, 0 L 0, 20 L 2, 20 L 2, 0 Z M 2, 10 L 17, 20 L 17, 0 Z" fill="#05bc1b" layoutX="74.0" layoutY="37.0" stroke="BLACK" />
+                                                <SVGPath fx:id="playButton1" content="M0 35 L30 17.5 L0 0 Z" fill="#05bc1b" layoutX="124.0" layoutY="26.0" stroke="#0a0a0a" strokeWidth="2.0" />
+                                                <SVGPath fx:id="nextButton1" content="M 0 20 L15 10 L0 0 Z M 15, 0 L 15, 20 L 17, 20 L 17, 0 Z" fill="#05bc1b" layoutX="182.0" layoutY="37.0" stroke="BLACK" />
                                              </children>
                                           </AnchorPane>
                                           <AnchorPane maxHeight="20.0" maxWidth="270.0" minHeight="20.0" minWidth="270.0" prefHeight="20.0" prefWidth="270.0" GridPane.rowIndex="1">
                                              <children>
-                                                <Slider fx:id="soundSlider1" layoutX="54.0" layoutY="3.0" maxHeight="14.0" maxWidth="160.0" minHeight="14.0" minWidth="160.0" prefHeight="14.0" prefWidth="160.0" />
+                                                <Slider fx:id="soundSlider1" layoutX="55.0" layoutY="3.0" maxHeight="14.0" maxWidth="160.0" minHeight="14.0" minWidth="160.0" prefHeight="14.0" prefWidth="160.0" />
                                              </children>
                                           </AnchorPane>
                                        </children>
@@ -216,7 +216,7 @@
                               </AnchorPane>
                               <AnchorPane maxHeight="100.0" maxWidth="1.7976931348623157E308" minHeight="100.0" prefHeight="100.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS">
                                  <children>
-                                    <GridPane layoutX="67.0" layoutY="19.0" maxHeight="100.0" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="540.0" prefHeight="100.0" prefWidth="540.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <GridPane layoutX="67.0" layoutY="19.0" maxHeight="100.0" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="540.0" prefHeight="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <columnConstraints>
                                           <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="540.0" prefWidth="540.0" />
                                        </columnConstraints>
@@ -288,9 +288,9 @@
                                                 </GridPane>
                                              </children>
                                           </AnchorPane>
-                                          <AnchorPane maxHeight="20.0" maxWidth="1.7976931348623157E308" minHeight="20.0" minWidth="540.0" prefHeight="20.0" prefWidth="540.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+                                          <AnchorPane maxHeight="20.0" maxWidth="1.7976931348623157E308" minHeight="20.0" minWidth="532.0" prefHeight="20.0" prefWidth="532.0" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
                                              <children>
-                                                <ProgressBar layoutY="9.0" maxHeight="7.0" maxWidth="1.7976931348623157E308" minHeight="7.0" minWidth="540.0" prefHeight="7.0" prefWidth="525.0" progress="0.0" />
+                                                <ProgressBar layoutY="7.0" maxHeight="8.0" maxWidth="1.7976931348623157E308" minHeight="7.0" minWidth="532.0" prefHeight="8.0" prefWidth="534.0" progress="0.0" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="6.0" />
                                              </children>
                                           </AnchorPane>
                                        </children>
