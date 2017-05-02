@@ -36,9 +36,9 @@ public class Client {
     BufferedReader in;
     PrintWriter out;
 
-    public Client(InetAddress addressOfInterface) {
+    public Client() {
         clientDiscovery = new ClientDiscovery();
-        this.addressOfInterface = addressOfInterface;
+        this.addressOfInterface = NetworkUtils.addressOfInterface;
         playlistUpdateReceiver = new PlaylistUpdateReceiver();
     }
 
@@ -53,7 +53,7 @@ public class Client {
      * @param serverIP
      * @param port
      */
-    public void connect(InetAddress serverIP, int port) {
+    public void connect(InetAddress serverIP, int port, String request) {
         try {
             // Create the socket and the IOs
             serverSocket = new Socket(serverIP, port);
@@ -64,9 +64,10 @@ public class Client {
             this.port = port;
 
             // send the CONNECTION_REQUEST
-            out.write(Protocol.CONNECTION_REQUEST + "\n");
+            out.write(request + "\n");
             out.flush();
 
+            System.out.println("BLAAA");
             // Wait for the SEND_ID request
             String input;
             while ((input = in.readLine()) != null) {
@@ -74,6 +75,8 @@ public class Client {
                     break;
                 }
             }
+
+
             // Send the hash of our MAC address
             //out.write(Integer.toString(id));
             out.write(Integer.toString(NetworkUtils.hashMACAddress()) + "\n");
@@ -88,15 +91,15 @@ public class Client {
             // create the playlistUpdate receiver thread and start it
             if (!isBinded) {
                 new Thread(playlistUpdateReceiver).start();
+                // We connected to the server once
+                isBinded = true;
             }
-            // We connected to the server once
-            isBinded = true;
 
             System.out.println("Client " + id + " connected and binded.");
 
 
         } catch (IOException e) {
-            // we check if a resources should be closed
+            // we check if some resources should be closed
             if (in != null) {
                 try {
                     in.close();
@@ -119,10 +122,12 @@ public class Client {
     }
 
     /**
-     * Used to reconnect to the server once you called the connect(InetAddress serverIP, int port) method
+     * Used to reconnect to the server once you called the connect(InetAddress serverIP, int port, String request)
+     * method. It sends the RECONNECTION_REQUEST request to allow the server to check for a command after the
+     * authentication phase.
      */
-    public void connect() {
-        connect(serverIP, port);
+    public void reconnect() {
+        connect(serverIP, port, Protocol.RECONNECTION_REQUEST);
     }
 
     /**
@@ -135,7 +140,7 @@ public class Client {
     }
 
     /**
-     * Disconnect only the client, thus letting the multicast receive informations
+     * Disconnect only the client, thus letting the multicast receive information.
      */
     public void disconnectTCPSocket() {
         try {
@@ -156,7 +161,7 @@ public class Client {
      * @param msg
      */
     public void sendString(String msg) {
-        connect();
+        reconnect();
         out.write(Protocol.SEND_INFO + "\n");
         out.flush();
         out.write(msg + "\n");
@@ -191,7 +196,7 @@ public class Client {
      */
     public void sendSong(String path) {
         try {
-            connect();
+            reconnect();
 
             out.write(Protocol.SEND_MUSIC + "\n");
             out.flush();
@@ -210,6 +215,10 @@ public class Client {
                 bos.write(contents, 0, in);
             }
             bos.flush();
+
+            fis.close();
+            bis.close();
+            bos.close();
 
             LOG.info("Music sent!");
         } catch (IOException e) {

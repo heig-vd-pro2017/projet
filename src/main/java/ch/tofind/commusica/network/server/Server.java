@@ -135,43 +135,53 @@ public class Server {
             @Override
             public void run() {
                 try {
+                    String request = "";
 
                     // Authentication phase (check if the session is already created for the client connecting
-                    while ((in.readLine()) != Protocol.CONNECTION_REQUEST) ;
+                    while ((request = in.readLine()) != null) {
+                        if (request.equals(Protocol.CONNECTION_REQUEST) || request.equals(Protocol.RECONNECTION_REQUEST))
+                            break;
+                    }
+
+                    // Ask for the client ID
                     send(Protocol.SEND_ID);
                     int id = Integer.parseInt(in.readLine());
 
+                    // check if the session is already stored
                     if (!sm.idAlreadyStored(id)) {
                         sm.storeSession(new Session(id, new Timestamp(System.currentTimeMillis())));
                         send(Protocol.SESSION_CREATED);
-
                     } else {
                         sm.updateSession(id);
                         send(Protocol.SESSION_UPDATED);
                     }
 
+                    // If
+                    if (request.equals(Protocol.RECONNECTION_REQUEST)) {
+                        // after the authentication phase, we
+                        switch (in.readLine()) {
+                            case Protocol.SEND_INFO:
+                                String infoReceived = receive();
+                                // TODO: transfer the info to the main Controller
+                                break;
 
-                    switch (in.readLine()) {
-                        case Protocol.SEND_INFO:
-                            String infoReceived = receive();
-                            // TODO: transfer the info to the main Controller
-                            break;
+                            case Protocol.SEND_MUSIC:
+                                FileManager.getInstance().retrieveFile(clientSocket.getInputStream());
+                                LOG.info("Music received!");
+                                break;
 
-                        case Protocol.SEND_MUSIC:
-                            FileManager.getInstance().retrieveFile(clientSocket.getInputStream());
-                            LOG.info("Music received!");
-                            break;
-
-                        default:
-
-
+                            default:
+                                break;
+                        }
                     }
+
                     LOG.info("Cleaning up resources...");
                     clientSocket.close();
                     out.close();
                     in.close();
 
                 } catch (Exception ex) {
+                    // We check if some resources need to be closed
                     if (in != null) {
                         try {
                             in.close();

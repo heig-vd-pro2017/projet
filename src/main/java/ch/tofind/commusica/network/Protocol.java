@@ -32,6 +32,7 @@ public class Protocol {
 
     // constants for the protocol
     public static final String CONNECTION_REQUEST = "CONNECTION_REQUEST";
+    public static final String RECONNECTION_REQUEST = "RECONNECTION_REQUEST";
 
     public static final String PLAYLIST_UPDATED = "PLAYLIST_UPDATED";
 

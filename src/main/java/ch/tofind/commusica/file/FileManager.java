@@ -45,10 +45,12 @@ public class FileManager {
             while ((bytesRead = is.read(receivedMusic)) != -1) {
                 bos.write(receivedMusic, 0, bytesRead);
             }
-
-            // TODO: save  it with  good name and a good path
+            bos.flush();
+            // TODO: save it with good name and a good path
             // save(result, aPathToDefine, aNameToDefine);
-
+            fos.close();
+            bos.close();
+            is.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

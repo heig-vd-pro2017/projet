@@ -34,7 +34,7 @@ class Test {
 
             type = scanner.nextInt();
         }
-
+/*
         if (type == 1) {
             Server server = new Server(8080, addressOfInterface);
             server.serveClients();
@@ -47,8 +47,8 @@ class Test {
             } catch (UnknownHostException e) {
                 e.printStackTrace();
             }
-        }
-/*
+        }*/
+
         if (type == 1) {
             Server server = new Server(8081, addressOfInterface);
             server.serveClients();
@@ -63,11 +63,10 @@ class Test {
 
                 switch (actionServer) {
                     case 1:
-                        server.sendPlaylistUpdate();
                 }
             }
         } else {
-            Client client = new Client(addressOfInterface);
+            Client client = new Client();
 
             int actionClient = 0;
             while (client != null) {
@@ -88,7 +87,7 @@ class Test {
                     case 2:
                         System.out.println("To which server do you want to connect to?");
                         System.out.println(client.getServersList().toString());
-                        client.connect(client.getServersList().get(scanner.nextInt() - 1), 8081);
+                        client.connect(client.getServersList().get(scanner.nextInt() - 1), 8081, Protocol.CONNECTION_REQUEST);
                         break;
                     case 3:
                         System.out.println("Available servers");
@@ -97,10 +96,17 @@ class Test {
                     case 4:
                         client.fullDisconnect();
                         client = null;
+                        break;
+                    case 5:
+                        client.sendSong("C:\\Users\\David\\Documents\\YourFuckingMother_x_EHDE_-_Pocket_Monsters_VIP.mp3");
+                        break;
+                    default:
+                        System.out.println("Action not supported ");
+
                 }
             }
 
-        }*/
+        }
     }
 
 
