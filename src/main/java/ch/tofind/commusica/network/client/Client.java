@@ -75,7 +75,6 @@ public class Client {
                 }
             }
 
-
             // Send the hash of our MAC address
             //out.write(Integer.toString(id));
             out.write(Integer.toString(NetworkUtils.hashMACAddress()) + "\n");
@@ -83,7 +82,7 @@ public class Client {
 
             // wait for the acknowledge that the session is created or updated
             while ((input = in.readLine()) != null) {
-                if (input.equals(Protocol.SESSION_CREATED) || input.equals(Protocol.SESSION_UPDATED)) {
+                if (input.equals(Protocol.SESSION_STORED)) {
                     break;
                 }
             }

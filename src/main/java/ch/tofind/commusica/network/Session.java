@@ -21,7 +21,7 @@ public class Session {
         return id;
     }
 
-    public Timestamp getDateAdded() {
+    public Timestamp getActiveSince() {
         return activeSince;
     }
 

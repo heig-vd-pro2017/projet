@@ -36,20 +36,8 @@ class Test {
 
                 type = scanner.nextInt();
             }
-/*
-        if (type == 1) {
-            Server server = new Server(8080, addressOfInterface);
-            server.serveClients();
-        } else {
-            Client client = new Client(addressOfInterface);
-            try {
-                client.connect(InetAddress.getByName("10.192.115.83"), 8080);
 
-                client.sendSong("C:\\Users\\David\\Documents\\YourFuckingMother_x_EHDE_-_Pocket_Monsters_VIP.mp3");
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            }
-        }*/
+
 
             if (type == 1) {
                 Server server = new Server(8081, addressOfInterface);

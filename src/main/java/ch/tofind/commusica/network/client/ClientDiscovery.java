@@ -23,7 +23,7 @@ public class ClientDiscovery implements Runnable {
 
     private MulticastSocket _socket = null;
 
-    private ArrayList<InetAddress> serversList = new ArrayList<>();
+    private ArrayList<InetAddress> serversList;
 
     private InetAddress addressOfInterface;
 
@@ -33,6 +33,8 @@ public class ClientDiscovery implements Runnable {
 
     public void run() {
         try {
+            serversList = new ArrayList<>();
+
             _socket = new MulticastSocket(Protocol.PORT_MULTICAST_DISCOVERY);
 
             _socket.setInterface(addressOfInterface);

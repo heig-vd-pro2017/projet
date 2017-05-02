@@ -146,14 +146,10 @@ public class Server {
                     send(Protocol.SEND_ID);
                     int id = Integer.parseInt(in.readLine());
 
-                    // check if the session is already stored
-                    if (!sm.idAlreadyStored(id)) {
-                        sm.storeSession(new Session(id, new Timestamp(System.currentTimeMillis())));
-                        send(Protocol.SESSION_CREATED);
-                    } else {
-                        sm.updateSession(id);
-                        send(Protocol.SESSION_UPDATED);
-                    }
+
+                    sm.storeSession(new Session(id, new Timestamp(System.currentTimeMillis())));
+                    send(Protocol.SESSION_STORED);
+
 
                     // If the client has already connected once and send has send the RECONNECTION_REQUEST
                     // it means that it wants to send another information
