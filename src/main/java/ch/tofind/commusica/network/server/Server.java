@@ -21,6 +21,7 @@ public class Server {
 
     private InetAddress addressOfInterface;
 
+    private ScheduledExecutorService scheduledExecutorService;
     private ReceptionistWorker receptionist;
     private Runnable serverDiscovery;
     private Runnable playlistUpdater;
@@ -44,7 +45,7 @@ public class Server {
      */
     public void serveClients() {
         LOG.info("Starting the Receptionist Worker on a new thread...");
-        ScheduledExecutorService scheduledExecutorService =
+        scheduledExecutorService =
                 Executors.newScheduledThreadPool(1);
         scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
             public void run() {
@@ -58,8 +59,6 @@ public class Server {
 
         receptionist = new ReceptionistWorker();
         new Thread(receptionist).start();
-
-
         new Thread(ServerDiscovery.getSharedInstance()).start();
         new Thread(PlaylistUpdateSender.getSharedInstance()).start();
     }
@@ -75,12 +74,12 @@ public class Server {
 
         private boolean isRunning;
 
+        ServerSocket serverSocket;
+
         @Override
         public void run() {
 
             isRunning = true;
-
-            ServerSocket serverSocket;
 
             try {
                 serverSocket = new ServerSocket(port);
@@ -89,23 +88,23 @@ public class Server {
                 return;
             }
 
-            while (isRunning) {
+            while (true) {
                 LOG.log(Level.INFO, "Waiting (blocking) for a new client on port {0}", port);
                 try {
                     Socket clientSocket = serverSocket.accept();
-
                     new Thread(new ServantWorker(clientSocket)).start();
+
+                } catch (SocketException se) {
+                    if (!isRunning) {
+                        LOG.log(Level.INFO, "Receptionist Thread stopping.");
+                        return;
+                    } else {
+                        se.printStackTrace();
+                    }
                 } catch (IOException ex) {
                     Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-
-            try {
-                serverSocket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
         }
 
 
@@ -156,7 +155,8 @@ public class Server {
                         send(Protocol.SESSION_UPDATED);
                     }
 
-                    // If
+                    // If the client has already connected once and send has send the RECONNECTION_REQUEST
+                    // it means that it wants to send another information
                     if (request.equals(Protocol.RECONNECTION_REQUEST)) {
                         // after the authentication phase, we
                         switch (in.readLine()) {
@@ -166,6 +166,7 @@ public class Server {
                                 break;
 
                             case Protocol.SEND_MUSIC:
+                                // Delegate the job to the FileManager
                                 FileManager.getInstance().retrieveFile(clientSocket.getInputStream());
                                 LOG.info("Music received!");
                                 break;
@@ -221,6 +222,11 @@ public class Server {
 
         public void stop() {
             isRunning = false;
+            try {
+                serverSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -231,6 +237,7 @@ public class Server {
         receptionist.stop();
         PlaylistUpdateSender.getSharedInstance().stop();
         ServerDiscovery.getSharedInstance().stop();
+        scheduledExecutorService.shutdown();
 
         LOG.log(Level.INFO, "Server disconnected.");
     }

@@ -9,31 +9,31 @@ public class Session {
 
     public Session(int id, Timestamp dateAdded) {
         this.id = id;
-        this.dateAdded = dateAdded;
-        this.state = true;
+        this.activeSince = dateAdded;
+        this.active = true;
     }
 
     private int id;
-    private Timestamp dateAdded;
-    private boolean state;
+    private Timestamp activeSince;
+    private boolean active;
 
     public int getId() {
         return id;
     }
 
     public Timestamp getDateAdded() {
-        return dateAdded;
+        return activeSince;
     }
 
-    public boolean isActive(){
-        return state;
+    public boolean getActive(){
+        return active;
     }
 
-    public void setState (boolean state) {
-        this.state = state;
+    public void setActive (boolean state) {
+        this.active = state;
     }
 
-    public void updateDateAdded() {
-        dateAdded = new Timestamp(System.currentTimeMillis());
+    public void setActiveSince(Timestamp timestamp) {
+        activeSince = timestamp;
     }
 }

@@ -67,7 +67,6 @@ public class Client {
             out.write(request + "\n");
             out.flush();
 
-            System.out.println("BLAAA");
             // Wait for the SEND_ID request
             String input;
             while ((input = in.readLine()) != null) {
