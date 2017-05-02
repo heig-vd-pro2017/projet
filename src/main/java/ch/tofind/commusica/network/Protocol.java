@@ -39,6 +39,8 @@ public class Protocol {
     public static final String SEND_ID = "SEND_ID";
     public static final String SESSION_CREATED = "SESSION_CREATED";
     public static final String SESSION_UPDATED = "SESSION_UPDATED";
+    public static final String SESSION_ACTIVATED = "SESSION_ACTIVATED";
+    public static final String SESSION_NOT_ACTIVATED = "SESSION_NOT_ACTIVATED";
     public static final String ERROR = "ERROR";
     public static final String SEND_INFO = "SEND_INFO";
     public static final String SEND_MUSIC = "SEND_MUSIC";
