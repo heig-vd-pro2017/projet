@@ -7,7 +7,7 @@ import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 
-public class PreviousTrackView extends AnchorPane {
+public class PreviousTrackView extends GridPane {
 
     //! CSS class value.
     public static final String CSS_CLASS = "previous-track-view";
@@ -15,9 +15,6 @@ public class PreviousTrackView extends AnchorPane {
     private static final String CSS_FILE = "ui/styles/PreviousTrackView.css";
 
     private static final String FXML_FILE = "ui/PreviousTrackView.fxml";
-
-    @FXML
-    private GridPane gridPane;
 
     public PreviousTrackView() {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource(FXML_FILE));
@@ -32,11 +29,6 @@ public class PreviousTrackView extends AnchorPane {
 
         getStyleClass().add(CSS_CLASS);
         getStylesheets().add(CSS_FILE);
-
-        setBottomAnchor(gridPane, 0.0);
-        setLeftAnchor(gridPane, 0.0);
-        setRightAnchor(gridPane, 0.0);
-        setTopAnchor(gridPane, 0.0);
     }
 
 }

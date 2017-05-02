@@ -11,13 +11,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
-public class PlayerControlsView extends AnchorPane implements Initializable {
+public class PlayerControlsView extends GridPane implements Initializable {
 
     //! CSS class.
     public static final String CSS_CLASS = "player-controls-view";
@@ -25,6 +26,8 @@ public class PlayerControlsView extends AnchorPane implements Initializable {
     private static final String CSS_FILE = "ui/styles/PlayerControlsView.css";
 
     private static final String FXML_FILE = "ui/PlayerControlsView.fxml";
+
+    private static final Double VOLUME_STEP = 1.0 / 16.0;
 
     private static final Logger LOG = Logger.getLogger(PlayerControlsView.class.getName());
 
@@ -58,6 +61,11 @@ public class PlayerControlsView extends AnchorPane implements Initializable {
     }
 
     @FXML
+    private void lowerVolume(MouseEvent e) {
+        volumeSlider.adjustValue(volumeSlider.getValue() - VOLUME_STEP);
+    }
+
+    @FXML
     private void next(MouseEvent e) {
         LOG.info("Asked for next track.");
     }
@@ -80,11 +88,15 @@ public class PlayerControlsView extends AnchorPane implements Initializable {
         LOG.info("Asked for previous track.");
     }
 
+    @FXML
+    private void riseVolume(MouseEvent e) {
+        volumeSlider.adjustValue(volumeSlider.getValue() + VOLUME_STEP);
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        volumeSlider.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+        volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (player != null) {
                 player.setVolume(newValue.doubleValue());
             }
         });
