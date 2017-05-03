@@ -9,6 +9,7 @@ import java.util.UUID;
 public class FileManager {
 
     public static final byte[] MP3 = {0x49, 0x44, 0x33};
+    public static final int OFFSET_MP3_SIGNATURE = 0;
     public static final byte[] M4A = {0x66, 0x74, 0x79, 0x70, 0x4D, 0x34, 0x41, 0x20};
     public static final int OFFSET_M4A_SIGNATURE = 4;
     public static final byte[] WAV = {0x57, 0x41, 0x56, 0x45, 0x66, 0x6D, 0x74, 0x20};
@@ -104,8 +105,7 @@ public class FileManager {
     }
 
     public static boolean signatureChecker(byte[] signature) {
-        byte[] test = Arrays.copyOfRange(signature, 0, MP3.length);
-        if ((Arrays.equals(MP3, Arrays.copyOfRange(signature, 0, MP3.length))) ||
+        if ((Arrays.equals(MP3, Arrays.copyOfRange(signature, OFFSET_MP3_SIGNATURE, MP3.length))) ||
                 Arrays.equals(M4A, Arrays.copyOfRange(signature, OFFSET_M4A_SIGNATURE, M4A.length)) ||
                 Arrays.equals(WAV, Arrays.copyOfRange(signature, OFFSET_WAV_SIGNATURE, WAV.length))) {
             return true;
