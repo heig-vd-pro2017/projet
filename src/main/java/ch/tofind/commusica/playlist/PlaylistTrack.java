@@ -7,11 +7,13 @@ package ch.tofind.commusica.playlist;
 import ch.tofind.commusica.media.Playlist;
 import ch.tofind.commusica.media.Track;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import ch.tofind.commusica.database.DatabaseObject;
+import ch.tofind.commusica.media.Playlist;
+import ch.tofind.commusica.media.Track;
+
 import java.util.Objects;
 
-public class PlaylistTrack implements Serializable {
+public class PlaylistTrack implements DatabaseObject {
 
     private PlaylistTrackId id;
 
@@ -20,8 +22,8 @@ public class PlaylistTrack implements Serializable {
 
     /**
      * Create a link between playlist and track
-     * @param playlistId
-     * @param trackId
+     * @param playlist
+     * @param track
      */
     public PlaylistTrack(Playlist playlist, Track track) {
         this.id = new PlaylistTrackId(playlist, track);
@@ -32,25 +34,12 @@ public class PlaylistTrack implements Serializable {
 
     }
 
-    @Override
-    public boolean equals(Object object) {
-
-        if (object == this) {
-            return true;
-        }
-
-        if (!(object instanceof Track)) {
-            return false;
-        }
-
-        PlaylistTrack playlistTrack = (PlaylistTrack) object;
-
-        return Objects.equals(id, playlistTrack.id);
+    public Playlist getPlaylist() {
+        return id.getPlaylist();
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public Track getTrack() {
+        return id.getTrack();
     }
 
     public Integer getVotes() {
@@ -65,12 +54,38 @@ public class PlaylistTrack implements Serializable {
         votes--;
     }
 
-    public Playlist getPlaylist() {
-        return id.getPlaylist();
+    @Override
+    public boolean equals(Object object) {
+
+        if (object == this) {
+            return true;
+        }
+
+        if (!(object instanceof PlaylistTrack)) {
+            return false;
+        }
+
+        PlaylistTrack playlistTrack = (PlaylistTrack) object;
+
+        return Objects.equals(id, playlistTrack.id);
     }
 
-    public Track getTrack() {
-        return id.getTrack();
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
+    @Override
+    public String toString() {
+
+        return "PlaylistTrack"                           + '\n' + '\t' +
+               "Playlist: " + id.getPlaylist().getName() + '\n' + '\t' +
+               "Track...: " + id.getTrack().getTitle()   + '\n' + '\t' +
+               "Votes...: " + votes                      + '\n';
+    }
+
+    @Override
+    public void update() {
+
+    }
 }

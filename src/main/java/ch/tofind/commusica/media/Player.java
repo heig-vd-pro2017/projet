@@ -1,35 +1,70 @@
 package ch.tofind.commusica.media;
 
-import java.io.File;
+import ch.tofind.commusica.playlist.PlaylistManager;
 
-import javafx.application.Application;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.stage.Stage;
 
-public class Player extends Application {
+import java.io.File;
 
-    private static Media media;
-    private static MediaPlayer mediaPlayer;
+public class Player {
 
-    private File resource;
+    private MediaPlayer player;
 
-    public static void main(String[] args) {
-        launch(args);
+    private Track track;
+
+    private double volumeStep;
+
+    /**
+     * @brief Player single constructor. Avoid the instantiation.
+     */
+    public Player(double volumeStep) {
+        this.volumeStep = volumeStep;
     }
 
-    @Override
-    public void start(Stage primaryStage) {
-        resource = new File("doc/commusica/player/sample.wav");
-        media = new Media(resource.toURI().toString());
+    public void load() {
+        
+        track = PlaylistManager.getInstance().nextTrack();
 
-        // Print the metadata
-        System.out.println(media.getMetadata());
+        if (track != null) {
 
-        // Print the duration
-        System.out.println(media.getDuration());
+            Media media = new Media(new File(track.getUri()).toURI().toString());
 
-        mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.play();
+            player = new MediaPlayer(media);
+
+            player.setOnEndOfMedia(() -> {
+                stop();
+                load();
+                play();
+            });
+
+        } else {
+            stop();
+        }
+    }
+
+    public void play() {
+        if (track == null) {
+            load();
+        }
+        player.play();
+    }
+
+    public void pause() {
+        player.pause();
+    }
+
+    public void stop() {
+        player.stop();
+    }
+
+    public void riseVolume() {
+        double currentVolume = player.getVolume();
+        player.setVolume(currentVolume + volumeStep);
+    }
+
+    public void lowerVolume() {
+        double currentVolume = player.getVolume();
+        player.setVolume(currentVolume - volumeStep);
     }
 }

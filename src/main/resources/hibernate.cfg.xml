@@ -12,15 +12,14 @@
         <property name="connection.username"></property>
         <property name="connection.password"></property>
 
-        <!-- Assume test is the database name -->
         <property name="connection.url">jdbc:sqlite:commusica.db</property>
 
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <!-- List of mapping classes -->
-        <mapping resource="Playlist.hbm.xml"/>
-        <mapping resource="PlaylistTrack.hbm.xml"/>
-        <mapping resource="Track.hbm.xml"/>
+        <mapping resource="models/Playlist.hbm.xml"/>
+        <mapping resource="models/Track.hbm.xml"/>
+        <mapping resource="models/PlaylistTrack.hbm.xml"/>
 
     </session-factory>
 </hibernate-configuration>

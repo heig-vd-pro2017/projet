@@ -68,5 +68,14 @@
             <artifactId>sqlite-jdbc</artifactId>
             <version>3.16.1</version>
         </dependency>
+<<<<<<< HEAD
+=======
+        <!-- http://mvnrepository.com/artifact/com.google.code.gson/gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.0</version>
+        </dependency>
+>>>>>>> 9d5fe7284fac5d639e6076d4a4c97f614aa36351
     </dependencies>
 </project>

@@ -2,7 +2,6 @@ package ch.tofind.commusica.playlist;
 
 import ch.tofind.commusica.media.Playlist;
 import ch.tofind.commusica.media.Track;
-import ch.tofind.commusica.playlist.PlaylistTrackId;
 
 import java.io.Serializable;
 import java.util.Objects;

@@ -1,0 +1,114 @@
+@startuml
+
+skinparam classAttributeIconSize 0
+
+class Commusica {
+    ~main(Array of strings) : void
+}
+
+package ch.tofind.commusica.file {
+    class FileManager {
+
+    }
+}
+
+package ch.tofind.commusica.database {
+    class DatabaseManager {
+        -instance : DatabaseManager
+        -factory : SessionFactory
+        -session : Session
+        -transaction : Transaction
+
+        -DatabaseManager()
+        +getInstance() : DatabaseManager
+        +getSession() : Session
+        +save(Object) : Object
+        +delete(Object) : void
+        +update(Object) : void
+        +close() : void
+    }
+
+    interface DatabaseObject {
+        equals(Object) : boolean
+        hashCode() : int
+        update() : void
+    }
+}
+
+package ch.tofind.commusica.ui {
+    class UIController
+}
+
+package ch.tofind.commusica.utils {
+    class Configuration {
+
+    }
+}
+
+package ch.tofind.commusica.network {
+    class SessionManager {
+        array of Session
+    }
+
+    class Session {
+        -id : Integer
+        -ipAddress : String
+        -macAddress : String
+        -token : String
+        -dateAdded : Timestamp
+    }
+}
+
+package ch.tofind.commusica.playlist {
+
+    class PlaylistManager {
+
+    }
+}
+
+package ch.tofind.commusica.media {
+
+    class Player {
+
+    }
+
+    class Playlist {
+        -id : Integer
+        -name : String
+        -dateAdded : Date
+        -datePlayed : Date
+        -version : Integer
+
+        +Playlist(String)
+        +getName() : String
+        +getDateAdded() : Date
+        +getDatePlayed() : Date
+    }
+
+    class Track {
+        -id : Integer
+        -title : String
+        -artist : String
+        -album : String
+        -length : Integer
+        -uri : String
+        -dateAdded : Date
+        -datePlayed : Date
+        -version : Integer
+
+        +Track(String, String, String, Integer, String)
+        +getTitle() : String
+        +getArtist() : String
+        +getAlbum() : String
+        +getLength() : Integer
+        +getURI() : String
+        +getDateAdded() : Date
+        +getDatePlayed() : Date
+        +update() : void
+        +equals(Object) : boolean
+        +hashCode() : int
+        +toString() : String
+    }
+}
+
+@enduml

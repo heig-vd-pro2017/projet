@@ -1,6 +1,7 @@
 package ch.tofind.commusica.media;
 
 import ch.tofind.commusica.database.DatabaseObject;
+import ch.tofind.commusica.utils.Configuration;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -37,6 +38,13 @@ public class Track implements DatabaseObject {
 
     //! Version control for concurrency
     private Integer version;
+
+    /**
+     * @brief Empty constructor for Hibernate
+     */
+    protected Track() {
+
+    }
 
     /**
      * @brief Create a track
@@ -112,6 +120,11 @@ public class Track implements DatabaseObject {
     }
 
     @Override
+    public void update() {
+        this.datePlayed = new Date();
+    }
+
+    @Override
     public boolean equals(Object object) {
 
         if (object == this) {
@@ -127,7 +140,7 @@ public class Track implements DatabaseObject {
         return Objects.equals(title, track.title) &&
                Objects.equals(artist, track.artist) &&
                Objects.equals(album, track.album) &&
-               (length == length + 10 || length == length - 10);
+               length == track.length;
     }
 
     @Override
@@ -137,14 +150,21 @@ public class Track implements DatabaseObject {
 
     @Override
     public String toString() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-        return "Title:       " + title                         + '\n' +
-               "Artist:      " + artist                        + '\n' +
-               "Album:       " + album                         + '\n' +
-               "Length:      " + length                        + '\n' +
-               "URI:         " + uri                           + '\n' +
-               "Date added:  " + dateFormat.format(dateAdded)  + '\n' +
-               "Date played: " + dateFormat.format(datePlayed) + '\n';
+        String format = Configuration.getInstance().get("DEFAULT_DATE_FORMAT");
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+
+        String dateAddedString = dateAdded == null ? "N/A" : dateFormat.format(dateAdded);
+        String datePlayedString = datePlayed == null ? "N/A" : dateFormat.format(datePlayed);
+
+        return "Track"                           + '\n' + '\t' +
+               "Title......: " + title            + '\n' + '\t' +
+               "Artist.....: " + artist           + '\n' + '\t' +
+               "Album......: " + album            + '\n' + '\t' +
+               "Length.....: " + length           + '\n' + '\t' +
+               "URI........: " + uri              + '\n' + '\t' +
+               "Date added.: " + dateAddedString  + '\n' + '\t' +
+               "Date played: " + datePlayedString + '\n';
     }
 }
