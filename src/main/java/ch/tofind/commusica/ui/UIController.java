@@ -21,13 +21,13 @@ import java.util.ResourceBundle;
  */
 public class UIController extends Application implements Initializable {
 
+    //!
     private static FXMLLoader loader = new FXMLLoader();
 
-    private static final String FXFILE = "ui/main.fxml";
+    //! FXML file to use for the view.
+    private static final String FXML_FILE = "ui/main.fxml";
 
-    /*
-     * JavaFX components.
-     */
+    //!
     @FXML
     private TracksListView tracksListView;
 
@@ -40,8 +40,13 @@ public class UIController extends Application implements Initializable {
         return loader.getController();
     }
 
+    /**
+     * @brief
+     *
+     * @param stage
+     */
     public void start(Stage stage) {
-        URL fileURL = getClass().getClassLoader().getResource(FXFILE);
+        URL fileURL = getClass().getClassLoader().getResource(FXML_FILE);
 
         if (fileURL == null) {
             throw new NullPointerException("FXML file not found.");
@@ -70,6 +75,7 @@ public class UIController extends Application implements Initializable {
 
     /**
      * @brief
+     *
      * @param playlist
      */
     public void loadPlaylist(Playlist playlist) {

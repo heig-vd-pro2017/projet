@@ -1,26 +1,15 @@
 package ch.tofind.commusica;
 
-import ch.tofind.commusica.media.Player;
 import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.playlist.PlaylistTrack;
 import ch.tofind.commusica.ui.UIController;
-import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.media.Playlist;
 import ch.tofind.commusica.media.Track;
 
 import ch.tofind.commusica.utils.Logger;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.List;
 
 public class Commusica {
 
@@ -36,7 +25,7 @@ public class Commusica {
     }
 
     public static void main(String... args) throws Exception {
-        LOG.info("Starting application...");
+        LOG.log(Logger.Level.INFO, "Starting application...");
 
         dropDatabase();
 

@@ -16,19 +16,14 @@ import java.io.IOException;
  *
  * Used to draw the central pane of the application.
  *
- * @author Ludovic Delafontaine
- * @author Lucas Elisei
- * @author Denise Gemesio
- * @author Yosra Harbaoui
- * @author Thibault Togue
- * @author David Truan
  */
 public class TracksListView extends ListView<PlaylistTrack> {
 
+    //! Playlist manager.
     private static PlaylistManager playlistManager = PlaylistManager.getInstance();
 
     /**
-     * @brief Default constructor.
+     * @brief View constructor.
      *
      * Default constructor of the class.
      * Calls \ref ListView default constructor and handles loading of the FXML file.

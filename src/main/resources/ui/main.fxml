@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
 <?import ch.tofind.commusica.ui.PlaylistsListView?>
 <?import ch.tofind.commusica.ui.TracksListView?>
 <?import ch.tofind.commusica.ui.PlayerControlsView?>
 <?import ch.tofind.commusica.ui.PreviousTrackView?>
-
-<?language javascript?>
 
 <?import ch.tofind.commusica.ui.CurrentTrackView?>
 <GridPane minHeight="608.0" minWidth="1080.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.tofind.commusica.ui.UIController">
@@ -35,7 +30,6 @@
             <children>
                 <HBox minHeight="500.0" minWidth="1080.0" prefHeight="500.0" prefWidth="1080.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <children>
-
                         <AnchorPane minHeight="500.0" minWidth="270.0" prefHeight="500.0" prefWidth="270.0">
                             <children>
                                 <GridPane prefHeight="500.0" prefWidth="270.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -59,13 +53,10 @@
                                     </children>
                                 </GridPane>
                             </children>
-
                         </AnchorPane>
-
                         <AnchorPane minHeight="500.0" minWidth="540.0" prefHeight="500.0" prefWidth="540.0" HBox.hgrow="ALWAYS">
                             <TracksListView id="tracks-list" fx:id="tracksListView" focusTraversable="false" AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0" />
                         </AnchorPane>
-
                         <AnchorPane minHeight="500.0" minWidth="270.0" prefHeight="500.0" prefWidth="270.0">
                             <GridPane minHeight="500.0" minWidth="270.0" prefHeight="500.0" prefWidth="270.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <columnConstraints>
