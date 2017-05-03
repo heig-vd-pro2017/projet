@@ -1,6 +1,7 @@
 package ch.tofind.commusica.network.session;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -21,10 +22,10 @@ public class SessionManager {
     private static SessionManager instance = null;
 
     //!
-    private Map<Integer, Session> activeSessions;
+    private Map<String, Session> activeSessions;
 
     //!
-    private Map<Integer, Session> inactiveSessions;
+    private Map<String, Session> inactiveSessions;
 
     //!
     private int minutesOfSession;
@@ -33,7 +34,7 @@ public class SessionManager {
     private ScheduledExecutorService scheduledExecutorService;
 
     /**
-     * PlaylistManager single constructor. Avoid the instantiation.
+     * SessionManager single constructor. Avoid the instantiation.
      */
     private SessionManager() {
 
@@ -62,9 +63,18 @@ public class SessionManager {
         return instance;
     }
 
-    public void storeSession(Session s) {
-        inactiveSessions.remove(s.getId());
-        activeSessions.put(s.getId(), s);
+    public void store(String id) {
+
+        if (activeSessions.containsKey(id)) {
+
+        } else if (inactiveSessions.containsKey(id)) {
+            Session session = inactiveSessions.remove(id);
+            session.update();
+            activeSessions.put(session.getId(), session);
+        } else {
+            Session session = new Session(id);
+            activeSessions.put(session.getId(), session);
+        }
 
         System.out.println("Active sessions:\n" + activeSessions);
         System.out.println("Inactive sessions:\n" + inactiveSessions);
@@ -75,9 +85,10 @@ public class SessionManager {
     }
 
     private void deleteObsoleteSessions() {
-        Timestamp now = new Timestamp(System.currentTimeMillis());
 
-        for (Map.Entry<Integer, Session> entry : activeSessions.entrySet()) {
+        Date now = new Date();
+
+        for (Map.Entry<String, Session> entry : activeSessions.entrySet()) {
 
             Session session = entry.getValue();
 

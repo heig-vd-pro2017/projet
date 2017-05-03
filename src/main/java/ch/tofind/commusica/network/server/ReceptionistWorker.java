@@ -4,32 +4,43 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- * This inner class implements the behavior of the "receptionist", whose
+ * This class implements the behavior of the "receptionist", whose
  * responsibility is to listen for incoming connection requests. As soon as a
  * new client has arrived, the receptionist delegates the processing to a
  * "servant" who will execute on its own thread.
  */
 public class ReceptionistWorker implements Runnable {
 
-    //! Logger for debugging proposes.
-    final static Logger LOG = Logger.getLogger(Server.class.getName());
+    //! Socket to use for the communication
+    private ServerSocket socket;
 
-    //!
-    private boolean isRunning;
-
-    //!
-    private ServerSocket serverSocket;
-
-    //!
+    //! Port to use for the communication
     private int port;
 
+    //! Tells if the receptionist is working
+    private boolean isRunning;
+
+    /**
+     * @brief Constructor.
+     */
     public ReceptionistWorker(int port) {
-        isRunning = false;
         this.port = port;
+    }
+
+    /**
+     * @brief Stop the receptionist.
+     */
+    public void stop() {
+
+        isRunning = false;
+
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -38,37 +49,29 @@ public class ReceptionistWorker implements Runnable {
         isRunning = true;
 
         try {
-            serverSocket = new ServerSocket(port);
-        } catch (IOException ex) {
-            LOG.log(Level.SEVERE, null, ex);
-            return;
-        }
-
-        while (true) {
-            LOG.log(Level.INFO, "Waiting (blocking) for a new client on port {0}", port);
-            try {
-                Socket clientSocket = serverSocket.accept();
-                new Thread(new ServantWorker(clientSocket)).start();
-
-            } catch (SocketException se) {
-                if (!isRunning) {
-                    LOG.log(Level.INFO, "Receptionist Thread stopping.");
-                    return;
-                } else {
-                    se.printStackTrace();
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
-
-    public void stop() {
-        isRunning = false;
-        try {
-            serverSocket.close();
+            socket = new ServerSocket(port);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        while (isRunning) {
+
+            try {
+
+                Socket clientSocket = socket.accept();
+                new Thread(new ServantWorker(clientSocket)).start();
+
+            } catch (SocketException e) {
+
+                if (isRunning) {
+                    e.printStackTrace();
+                } else {
+                    break;
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

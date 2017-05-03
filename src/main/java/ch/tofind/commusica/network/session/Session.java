@@ -1,41 +1,29 @@
 package ch.tofind.commusica.network.session;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 public class Session {
 
     //!
-    private int id;
+    private String id;
 
     //!
-    private Timestamp activeSince;
+    private Date activeSince;
 
-    //!
-    private boolean active;
-
-    public Session(int id, Timestamp dateAdded) {
+    public Session(String id) {
         this.id = id;
-        this.activeSince = dateAdded;
-        this.active = true;
+        this.activeSince = new Date();
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public Timestamp getActiveSince() {
+    public Date getActiveSince() {
         return activeSince;
     }
 
-    public boolean getActive(){
-        return active;
-    }
-
-    public void setActive (boolean state) {
-        this.active = state;
-    }
-
-    public void setActiveSince(Timestamp timestamp) {
-        activeSince = timestamp;
+    public void update() {
+        activeSince = new Date();
     }
 }
