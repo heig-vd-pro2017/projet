@@ -1,13 +1,17 @@
 package ch.tofind.commusica.network;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.net.*;
-import java.util.*;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.MulticastSocket;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Enumeration;
 
-/**
- * Created by David on 23.03.2017.
- */
 public class NetworkUtils {
 
     private static InetAddress addressOfInterface = null;

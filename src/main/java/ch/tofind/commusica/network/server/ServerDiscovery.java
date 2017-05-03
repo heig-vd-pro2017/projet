@@ -1,6 +1,5 @@
 package ch.tofind.commusica.network.server;
 
-
 import ch.tofind.commusica.network.NetworkUtils;
 import ch.tofind.commusica.network.Protocol;
 
@@ -20,7 +19,8 @@ public class ServerDiscovery implements Runnable {
 
     private static ServerDiscovery _sharedInstance = null;
 
-    private static Logger _logger = Logger.getLogger(ServerDiscovery.class.getName());
+    //! Logger for debugging proposes.
+    private static Logger LOG = Logger.getLogger(ServerDiscovery.class.getName());
 
     private MulticastSocket _socket = null;
 
@@ -46,7 +46,7 @@ public class ServerDiscovery implements Runnable {
         isRunning = true;
 
         try {
-            _logger.info("Launching server...");
+            LOG.info("Launching server...");
 
             _socket = new MulticastSocket(Protocol.PORT_MULTICAST_DISCOVERY);
             _socket.setInterface(addressOfInterface);
@@ -55,10 +55,10 @@ public class ServerDiscovery implements Runnable {
 
             _socket.joinGroup(addr);
 
-            _logger.info("ServerDiscovery launched!");
+            LOG.info("ServerDiscovery launched!");
 
             while (isRunning) {
-                _logger.info("Waiting for packet...");
+                LOG.info("Waiting for packet...");
 
                 // We wait for a packet.
                 byte[] rcvPacketBuffer = new byte[64];
@@ -67,17 +67,17 @@ public class ServerDiscovery implements Runnable {
 
 
                 if (new String(rcvPacket.getData()).trim().equals(Protocol.DISCOVER_REQUEST)) {
-                    _logger.info("Received packet from " + rcvPacket.getAddress().getHostAddress());
+                    LOG.info("Received packet from " + rcvPacket.getAddress().getHostAddress());
                     // Send ACK packet to client.
                     byte[] sentPacketBuffer = Protocol.DISCOVER_RESPONSE.getBytes();
                     _socket.setBroadcast(false);
                     DatagramPacket sentPacket = new DatagramPacket(sentPacketBuffer, sentPacketBuffer.length, addr, Protocol.PORT_MULTICAST_DISCOVERY);
                     _socket.send(sentPacket);
-                    _logger.info("Packet sent to " + rcvPacket.getAddress().getHostAddress());
+                    LOG.info("Packet sent to " + rcvPacket.getAddress().getHostAddress());
                 }
             }
         } catch (IOException e) {
-            _logger.severe(e.getMessage());
+            LOG.severe(e.getMessage());
         }
     }
 

@@ -1,6 +1,5 @@
 package ch.tofind.commusica.network.client;
 
-
 import ch.tofind.commusica.network.NetworkUtils;
 import ch.tofind.commusica.network.Protocol;
 
@@ -13,18 +12,23 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**
- * Class implementing the Runnable interface which allows a client to discover the available servers
+ * @brief This class allows a client to discover the available servers.
  */
 public class ClientDiscovery implements Runnable {
 
-    private static Logger _logger = Logger.getLogger(ClientDiscovery.class.getName());
+    //! Logger for debugging proposes.
+    private static Logger LOG = Logger.getLogger(ClientDiscovery.class.getName());
 
+    //!
     private String address = Protocol.IP_MULTICAST_DISCOVERY;
 
-    private MulticastSocket _socket = null;
+    //!
+    private MulticastSocket socket = null;
 
+    //!
     private ArrayList<InetAddress> serversList;
 
+    //!
     private InetAddress addressOfInterface;
 
     public ClientDiscovery() {
@@ -35,28 +39,28 @@ public class ClientDiscovery implements Runnable {
         try {
             serversList = new ArrayList<>();
 
-            _socket = new MulticastSocket(Protocol.PORT_MULTICAST_DISCOVERY);
+            socket = new MulticastSocket(Protocol.PORT_MULTICAST_DISCOVERY);
 
-            _socket.setInterface(addressOfInterface);
+            socket.setInterface(addressOfInterface);
 
             InetAddress addr = InetAddress.getByName(address);
 
-            _socket.joinGroup(addr);
+            socket.joinGroup(addr);
 
             byte[] message = Protocol.DISCOVER_REQUEST.getBytes();
 
             DatagramPacket packet = new DatagramPacket(message, message.length, addr, Protocol.PORT_MULTICAST_DISCOVERY);
-            _socket.send(packet);
+            socket.send(packet);
 
-            _logger.info("Waiting for response from server(s) - 3s");
-            _socket.setSoTimeout(3000);
+            LOG.info("Waiting for response from server(s) - 3s");
+            socket.setSoTimeout(3000);
             while (true) {
                 try {
                     byte[] rcvdPacketBuffer = new byte[64];
                     DatagramPacket rcvdPacket = new DatagramPacket(rcvdPacketBuffer, 64);
-                    _socket.receive(rcvdPacket);
+                    socket.receive(rcvdPacket);
 
-                    _logger.info("Packet received from " + rcvdPacket.getAddress().toString());
+                    LOG.info("Packet received from " + rcvdPacket.getAddress().toString());
 
                     if (new String(rcvdPacket.getData()).trim().equals(Protocol.DISCOVER_RESPONSE)) {
                         InetAddress address = rcvdPacket.getAddress();
@@ -69,10 +73,10 @@ public class ClientDiscovery implements Runnable {
                 }
             }
 
-            _socket.close();
+            socket.close();
 
         } catch (IOException e) {
-            _logger.severe(e.getMessage());
+            LOG.severe(e.getMessage());
         }
     }
 

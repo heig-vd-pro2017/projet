@@ -4,6 +4,7 @@ import ch.tofind.commusica.media.Playlist;
 import ch.tofind.commusica.network.NetworkUtils;
 import ch.tofind.commusica.network.Protocol;
 import ch.tofind.commusica.playlist.PlaylistManager;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -18,17 +19,24 @@ import java.net.UnknownHostException;
  */
 public class PlaylistUpdateSender implements Runnable {
 
+    //!
     final static String INET_ADDR = Protocol.IP_MULTICAST_PLAYLIST_UPDATE;
 
+    //!
     private MulticastSocket serverSocket;
 
+    //!
     private Gson gson;
 
+    //!
     private InetAddress addressOfInterface;
 
+    //!
     private boolean isRunning;
 
+    //!
     private static PlaylistUpdateSender sharedInstance;
+
 
     public static PlaylistUpdateSender getSharedInstance() {
 
