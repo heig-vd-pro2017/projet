@@ -1,7 +1,9 @@
-package ch.tofind.commusica.network;
+package ch.tofind.commusica.network.session;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -9,13 +11,42 @@ import java.util.logging.Logger;
  */
 public class SessionManager {
 
-
+    //!
     final static Logger LOG = Logger.getLogger(SessionManager.class.getName());
 
-    private Map<Integer, Session> activeSessions = new HashMap<>();
-    private Map<Integer, Session> inactiveSessions = new HashMap<>();
+    //! Shared instance of the session manager for all the application
+    private static SessionManager instance = null;
 
-    private int minutesOfSession = 1;
+    //!
+    private Map<Integer, Session> activeSessions;
+
+    //!
+    private Map<Integer, Session> inactiveSessions;
+
+    //!
+    private int minutesOfSession;
+
+    /**
+     * PlaylistManager single constructor. Avoid the instantiation.
+     */
+    private SessionManager() {
+        activeSessions = new HashMap<>(0);
+        inactiveSessions = new HashMap<>(0);
+        minutesOfSession = 1;
+    }
+
+    public static SessionManager getInstance() {
+
+        if(instance == null) {
+            synchronized (SessionManager.class) {
+                if (instance == null) {
+                    instance = new SessionManager();
+                }
+            }
+        }
+
+        return instance;
+    }
 
     public void storeSession(Session s) {
         inactiveSessions.remove(s.getId());

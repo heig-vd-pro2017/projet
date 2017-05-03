@@ -1,21 +1,23 @@
-package ch.tofind.commusica.network;
+package ch.tofind.commusica.network.session;
 
 import java.sql.Timestamp;
 
-/**
- * Created by David on 20.03.2017.
- */
 public class Session {
+
+    //!
+    private int id;
+
+    //!
+    private Timestamp activeSince;
+
+    //!
+    private boolean active;
 
     public Session(int id, Timestamp dateAdded) {
         this.id = id;
         this.activeSince = dateAdded;
         this.active = true;
     }
-
-    private int id;
-    private Timestamp activeSince;
-    private boolean active;
 
     public int getId() {
         return id;

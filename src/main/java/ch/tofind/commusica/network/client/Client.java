@@ -4,48 +4,75 @@ import ch.tofind.commusica.file.FileManager;
 import ch.tofind.commusica.network.NetworkUtils;
 import ch.tofind.commusica.network.Protocol;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**
- * Created by David on 21.03.2017.
+ * @brief This class represents a network client.
  */
 public class Client {
 
+    //! Logger for debugging proposes.
     final static Logger LOG = Logger.getLogger(Client.class.getName());
 
-    // id used to distinguish clients
+    //!
     static int globalId = 0;
+
+    //!
     private int id = ++globalId;
+
+    //!
     private Socket serverSocket;
+
+    //!
     private boolean isBinded = false;
 
+    //!
     private int port;
+
+    //!
     private InetAddress serverIP;
 
+    //!
     private ClientDiscovery clientDiscovery;
 
+    //!
     private PlaylistUpdateReceiver playlistUpdateReceiver = null;
 
+    //!
     private ArrayList<InetAddress> serversList = new ArrayList<>();
 
+    //!
     private InetAddress addressOfInterface;
 
+    //!
     BufferedReader in;
+
+    //!
     PrintWriter out;
 
+    /**
+     * @brief
+     */
     public Client() {
         clientDiscovery = new ClientDiscovery();
         this.addressOfInterface = NetworkUtils.getAddressOfInterface();
         playlistUpdateReceiver = new PlaylistUpdateReceiver();
     }
 
-
     /**
-     * Connect to a server of name 'serverName' and on port 'port'. It also send an id (the hash of the MAC address)
+     * @brief Connect to a server of name 'serverName' and on port 'port'. It also send an id (the hash of the MAC address)
      * to the server to allow the latter creating a session for the client.
      * It is used only once to connect to the server and set the port and IP if the server.
      * If you want to reconnect once you used this method, use the connect() method (which just call this method
@@ -53,6 +80,7 @@ public class Client {
      *
      * @param serverIP
      * @param port
+     * @param request
      */
     public void connect(InetAddress serverIP, int port, String request) {
         try {
@@ -121,7 +149,7 @@ public class Client {
     }
 
     /**
-     * Used to reconnect to the server once you called the connect(InetAddress serverIP, int port, String request)
+     * @brief Used to reconnect to the server once you called the connect(InetAddress serverIP, int port, String request)
      * method. It sends the RECONNECTION_REQUEST request to allow the server to check for a command after the
      * authentication phase.
      */
@@ -130,7 +158,7 @@ public class Client {
     }
 
     /**
-     * Retrive a list of IPs of available servers.
+     * @brief Retrive a list of IPs of available servers.
      *
      * @return the list of IPs of available servers.
      */
@@ -139,7 +167,7 @@ public class Client {
     }
 
     /**
-     * Disconnect only the client, thus letting the multicast receive information.
+     * @brief Disconnect only the client, thus letting the multicast receive information.
      */
     public void disconnectTCPSocket() {
         try {
@@ -152,9 +180,8 @@ public class Client {
         }
     }
 
-
     /**
-     * Send a String to the server
+     * @brief Send a String to the server
      * It must be called only once you already connected to the server and set the server port and IP
      *
      * @param msg
@@ -169,7 +196,7 @@ public class Client {
     }
 
     /**
-     * Disconnect the client and it's playlist receiver thread
+     * @brief Disconnect the client and it's playlist receiver thread
      */
     public void fullDisconnect() {
         disconnectTCPSocket();
@@ -178,14 +205,12 @@ public class Client {
         System.out.println("Client " + id + " is fully disconnected");
     }
 
-
     /**
      * refresh the servers list
      */
     public void refreshServers() {
         new Thread(clientDiscovery).start();
     }
-
 
     /**
      * Send a song to the server.
@@ -237,19 +262,3 @@ public class Client {
 
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
