@@ -4,6 +4,9 @@ import ch.tofind.commusica.playlist.PlaylistManager;
 
 import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
+import ch.tofind.commusica.utils.TrackProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
@@ -15,8 +18,10 @@ public class Player {
     private static final Logger LOG = new Logger(Player.class.getSimpleName());
 
     private MediaPlayer player;
+    
+    private final IntegerProperty currentTimeProperty;
 
-    private Track track;
+    private final TrackProperty currentTrackProperty;
 
     private double volumeStep;
 
@@ -29,6 +34,9 @@ public class Player {
      */
     private Player(double volumeStep) {
         this.volumeStep = volumeStep;
+
+        currentTimeProperty = new SimpleIntegerProperty(0);
+        currentTrackProperty = new TrackProperty();
     }
 
     public static Player getCurrentPlayer() {
@@ -44,24 +52,33 @@ public class Player {
     }
 
     public void load() {
-        track = PlaylistManager.getInstance().nextTrack();
+        if (currentTrackProperty.getValue() == null) {
+            currentTrackProperty.setValue(PlaylistManager.getInstance().nextTrack());
+        }
 
-        if (track != null) {
+        if (currentTrackProperty.getValue() != null) {
             Media media = null;
 
             try {
-                new Media(new File(track.getUri()).toURI().toString());
+                media = new Media(new File(currentTrackProperty.getValue().getUri()).toURI().toString());
             } catch (MediaException e) {
                 LOG.log(Logger.Level.SEVERE, e);
             }
 
             // Stop current player if there is one.
             if(player != null) {
+                LOG.info("Previous player stopped.");
                 player.stop();
             }
 
             // Start the new player.
             player = new MediaPlayer(media);
+
+            // Notify 'currentTimeProperty' each time it changes.
+            // Can't do better (I think?).
+            player.currentTimeProperty().addListener(((observable, oldValue, newValue) -> {
+                currentTimeProperty.setValue(newValue.toSeconds());
+            }));
 
             // Tell what to do when the track is finished.
             player.setOnEndOfMedia(() -> {
@@ -75,8 +92,16 @@ public class Player {
         }
     }
 
+    public IntegerProperty getCurrentTimeProperty() {
+        return currentTimeProperty;
+    }
+
     public Track getCurrentTrack() {
-        return track;
+        return currentTrackProperty.getValue();
+    }
+
+    public TrackProperty getCurrentTrackProperty() {
+        return currentTrackProperty;
     }
 
     public boolean isPlaying() {
@@ -84,7 +109,7 @@ public class Player {
     }
 
     public void play() {
-        if (track == null) {
+        if (currentTrackProperty.getValue() == null) {
             load();
         }
         player.play();

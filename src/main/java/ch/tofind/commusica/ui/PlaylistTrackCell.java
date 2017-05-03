@@ -82,13 +82,16 @@ public class PlaylistTrackCell {
         titleLabel.setText(track.getTitle());
         artistLabel.setText(track.getArtist());
         albumLabel.setText(track.getAlbum());
-
-        votesLabel.setText(String.valueOf(playlistTrack.getVotes()));
+        votesLabel.setText(String.valueOf(playlistTrack.getVotesProperty().intValue()));
 
         favoriteImageView.setImage((new Image(track.getFavoritedProperty().getValue() ? FAV_FULL_IMAGE : FAV_EMPTY_IMAGE)));
 
         track.getFavoritedProperty().addListener(((observable, oldValue, newValue) -> {
             favoriteImageView.setImage(new Image(newValue ? FAV_FULL_IMAGE : FAV_EMPTY_IMAGE));
+        }));
+
+        playlistTrack.getVotesProperty().addListener(((observable, oldValue, newValue) -> {
+            votesLabel.setText(String.valueOf(newValue.intValue()));
         }));
     }
 
@@ -109,8 +112,6 @@ public class PlaylistTrackCell {
     @FXML
     private void downvote(MouseEvent e) {
         playlistTrack.downvote();
-
-        votesLabel.setText(String.valueOf(playlistTrack.getVotes()));
     }
 
     /**
@@ -131,7 +132,5 @@ public class PlaylistTrackCell {
     @FXML
     private void upvote(MouseEvent e) {
         playlistTrack.upvote();
-
-        votesLabel.setText(String.valueOf(playlistTrack.getVotes()));
     }
 }

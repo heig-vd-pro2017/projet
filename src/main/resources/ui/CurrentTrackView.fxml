@@ -30,19 +30,19 @@
         <RowConstraints minHeight="15.0" maxHeight="15.0" vgrow="NEVER"/>
     </rowConstraints>
 
-    <Label fx:id="titleLabel" text="Title" GridPane.columnIndex="0" GridPane.rowIndex="0">
+    <Label fx:id="titleLabel" text="-" GridPane.columnIndex="0" GridPane.rowIndex="0">
         <font>
             <Font size="22"/>
         </font>
     </Label>
 
-    <Label fx:id="artistLabel" styleClass="subtitle" text="Artist" GridPane.columnIndex="0" GridPane.rowIndex="1">
+    <Label fx:id="artistLabel" styleClass="subtitle" text="-" GridPane.columnIndex="0" GridPane.rowIndex="1">
         <font>
             <Font size="14"/>
         </font>
     </Label>
 
-    <Label fx:id="albumLabel" styleClass="subtitle" text="Album" GridPane.columnIndex="0" GridPane.rowIndex="2">
+    <Label fx:id="albumLabel" styleClass="subtitle" text="-" GridPane.columnIndex="0" GridPane.rowIndex="2">
         <font>
             <Font size="14"/>
         </font>
@@ -52,19 +52,19 @@
         <Image url="@icons/upvote.png"/>
     </ImageView>
 
-    <Label alignment="CENTER" maxWidth="20.0" minWidth="20.0" text="0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.rowSpan="3" GridPane.valignment="CENTER">
+    <Label fx:id="votesLabel" alignment="CENTER" maxWidth="20.0" minWidth="20.0" text="0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.rowSpan="3" GridPane.valignment="CENTER">
     </Label>
 
     <ImageView fitWidth="20.0" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
         <Image url="@icons/downvote.png"/>
     </ImageView>
 
-    <ImageView fitWidth="20.0" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.rowSpan="3" GridPane.valignment="CENTER">
+    <ImageView fx:id="favoriteImageView" fitWidth="20.0" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.rowSpan="3" GridPane.valignment="CENTER">
         <Image url="@icons/fav_empty.png"/>
     </ImageView>
 
     <AnchorPane maxHeight="10.0" minHeight="10.0" GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
-        <ProgressBar fx:id="durationBar" progress="0.5" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0"/>
+        <ProgressBar fx:id="durationBar" progress="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0"/>
     </AnchorPane>
 
     <Label fx:id="durationLabel" text="00:00" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
