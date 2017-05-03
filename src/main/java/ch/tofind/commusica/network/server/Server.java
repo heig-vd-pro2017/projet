@@ -4,9 +4,6 @@ import ch.tofind.commusica.network.NetworkUtils;
 import ch.tofind.commusica.network.session.SessionManager;
 
 import java.net.InetAddress;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,16 +14,10 @@ public class Server {
     final static Logger LOG = Logger.getLogger(Server.class.getName());
 
     //!
-    private SessionManager sessionManager = SessionManager.getInstance();
-
-    //!
     private int port;
 
     //!
     private InetAddress addressOfInterface;
-
-    //!
-    private ScheduledExecutorService scheduledExecutorService;
 
     //!
     private ReceptionistWorker receptionist;
@@ -54,25 +45,11 @@ public class Server {
      */
     public void serveClients() {
         LOG.info("Starting the Receptionist Worker on a new thread...");
-        scheduledExecutorService = Executors.newScheduledThreadPool(1);
-        scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
-            public void run() {
-                try {
-                    sessionManager.deleteObsoleteSessions();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }, 0, 1, TimeUnit.SECONDS);
-
         receptionist = new ReceptionistWorker(port);
         new Thread(receptionist).start();
         new Thread(ServerDiscovery.getSharedInstance()).start();
         new Thread(PlaylistUpdateSender.getSharedInstance()).start();
     }
-
-
-
 
     /**
      * Disconnect the server and its threads.
@@ -81,7 +58,7 @@ public class Server {
         receptionist.stop();
         PlaylistUpdateSender.getSharedInstance().stop();
         ServerDiscovery.getSharedInstance().stop();
-        scheduledExecutorService.shutdown();
+        SessionManager.getInstance().stop();
 
         LOG.log(Level.INFO, "Server disconnected.");
     }

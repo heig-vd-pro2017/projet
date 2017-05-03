@@ -4,6 +4,9 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 /**
@@ -26,13 +29,24 @@ public class SessionManager {
     //!
     private int minutesOfSession;
 
+    //!
+    private ScheduledExecutorService scheduledExecutorService;
+
     /**
      * PlaylistManager single constructor. Avoid the instantiation.
      */
     private SessionManager() {
+
         activeSessions = new HashMap<>(0);
         inactiveSessions = new HashMap<>(0);
         minutesOfSession = 1;
+
+        // Crée un thread qui nettoie les sessions toutes les N minutes
+        scheduledExecutorService = Executors.newScheduledThreadPool(1);
+
+        scheduledExecutorService.scheduleAtFixedRate(() -> {
+            deleteObsoleteSessions();
+        }, 0, 1, TimeUnit.SECONDS);
     }
 
     public static SessionManager getInstance() {
@@ -60,27 +74,25 @@ public class SessionManager {
         return activeSessions.size();
     }
 
-    public void deleteObsoleteSessions() {
+    private void deleteObsoleteSessions() {
         Timestamp now = new Timestamp(System.currentTimeMillis());
 
-        Iterator<Session> iterator = activeSessions.values().iterator();
-        while(iterator.hasNext()) {
-        //for (Iterator<Session> iterator = sessions.iterator() && iterator.hasNext(); ) {
-            Session s = iterator.next();
-            if (now.getTime() - s.getActiveSince().getTime() > 60 * 1000 * minutesOfSession) {
-                // for tests you can uncomment this line and comment the line on top of this comment
-                //if (now.getTime() - s.getDateAdded().getTime() > 3000) {
-                activeSessions.remove(s.getId());
-                inactiveSessions.put(s.getId(), s);
-                LOG.info("Session with id " + s.getId() + " became obsolete.");
+        for (Map.Entry<Integer, Session> entry : activeSessions.entrySet()) {
 
-                System.out.println("Active sessions:\n" + activeSessions);
-                System.out.println("Inactive sessions:\n" + inactiveSessions);
+            Session session = entry.getValue();
+
+            if (now.getTime() - session.getActiveSince().getTime() > 60 * 1000 * minutesOfSession) {
+                activeSessions.remove(session.getId());
+                inactiveSessions.put(session.getId(), session);
             }
         }
     }
 
     public void setMinutesOfSession(int hours) {
         minutesOfSession = hours;
+    }
+
+    public void stop() {
+        scheduledExecutorService.shutdown();
     }
 }
