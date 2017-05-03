@@ -22,6 +22,12 @@ public class PlaylistTrackCell {
     //! Logger for debugging.
     private static final Logger LOG = new Logger(PlaylistTrackCell.class.getSimpleName());
 
+    //! Path to the file containing the 'fav_empty' image.
+    private static final String FAV_EMPTY_IMAGE = "ui/icons/fav_empty.png";
+
+    //! Path to the file containing the 'fav_full' image.
+    private static final String FAV_FULL_IMAGE = "ui/icons/fav_full.png";
+
     //! FXML file to use for the view.
     private static final String FXML_FILE = "ui/PlaylistTrackCell.fxml";
 
@@ -30,9 +36,6 @@ public class PlaylistTrackCell {
 
     //! Track associate to the playlistTrack.
     private Track track;
-
-    //! Tell if the track is favorite.
-    private boolean favorite;
 
     //!
     @FXML
@@ -82,11 +85,11 @@ public class PlaylistTrackCell {
 
         votesLabel.setText(String.valueOf(playlistTrack.getVotes()));
 
-        if(favorite) {
-            favoriteImageView.setImage(new Image("ui/icons/fav_full.png"));
-        } else {
-            favoriteImageView.setImage(new Image("ui/icons/fav_empty.png"));
-        }
+        favoriteImageView.setImage((new Image(track.getFavoritedProperty().getValue() ? FAV_FULL_IMAGE : FAV_EMPTY_IMAGE)));
+
+        track.getFavoritedProperty().addListener(((observable, oldValue, newValue) -> {
+            favoriteImageView.setImage(new Image(newValue ? FAV_FULL_IMAGE : FAV_EMPTY_IMAGE));
+        }));
     }
 
     /**
@@ -117,15 +120,7 @@ public class PlaylistTrackCell {
      */
     @FXML
     private void favorite(MouseEvent e) {
-        favorite = !favorite;
-
-        if (favorite) {
-            favoriteImageView.setImage(new Image("ui/icons/fav_full.png"));
-        } else {
-            favoriteImageView.setImage(new Image("ui/icons/fav_empty.png"));
-        }
-
-        LOG.log(Logger.Level.INFO, String.format("%s favorited!", track));
+        track.getFavoritedProperty().setValue(!track.getFavoritedProperty().getValue());
     }
 
     /**
