@@ -1,6 +1,8 @@
 package ch.tofind.commusica;
 
+import ch.tofind.commusica.file.FileManager;
 import ch.tofind.commusica.media.Player;
+import ch.tofind.commusica.network.Protocol;
 import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.playlist.PlaylistTrack;
 import ch.tofind.commusica.utils.Configuration;
@@ -18,6 +20,8 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Commusica extends Application {
@@ -33,6 +37,29 @@ public class Commusica extends Application {
         if (dbFile.exists()) {
             dbFile.delete();
         }
+    }
+
+    public static String execute(String command, ArrayList<Object> args) {
+
+        switch (command) {
+
+            case Protocol.SEND_MUSIC:
+                Socket socket = (Socket)args.remove(0);
+
+                // Delegate the job to the FileManager
+                try {
+                    FileManager.getInstance().retrieveFile(socket.getInputStream());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                break;
+
+            default:
+                break;
+        }
+
+        return "Done";
     }
 
     @Override

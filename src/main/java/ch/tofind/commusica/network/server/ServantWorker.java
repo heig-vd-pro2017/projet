@@ -1,5 +1,6 @@
 package ch.tofind.commusica.network.server;
 
+import ch.tofind.commusica.Commusica;
 import ch.tofind.commusica.file.FileManager;
 import ch.tofind.commusica.network.Protocol;
 import ch.tofind.commusica.network.session.Session;
@@ -11,22 +12,22 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.sql.Timestamp;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * This inner class implements the behavior of the "servants", whose
+ * This class implements the behavior of the "servants", whose
  * responsibility is to take care of clients once they have connected. This
  * is where we implement the application protocol logic, i.e. where we read
  * data sent by the client and where we generate the responses.
  */
 public class ServantWorker implements Runnable {
 
-    //! Logger for debugging proposes.
-    final static Logger LOG = Logger.getLogger(ServantWorker.class.getName());
-
     //!
     private SessionManager sessionManager = SessionManager.getInstance();
+
+    //!
+    private Socket socket;
 
     //!
     private PrintWriter out;
@@ -34,100 +35,72 @@ public class ServantWorker implements Runnable {
     //!
     private BufferedReader in;
 
-    //!
-    Socket clientSocket;
 
-    public ServantWorker(Socket clientSocket) {
+    public ServantWorker(Socket socket) {
+
+        this.socket = socket;
+
         try {
-            this.clientSocket = clientSocket;
-            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            out = new PrintWriter(clientSocket.getOutputStream());
-
-        } catch (IOException ex) {
-            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = new PrintWriter(socket.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     public void run() {
+
+        // Récupère ce qui a été envoyé par le client
+        ArrayList<String> commands = new ArrayList<>();
+
         try {
-            String request = "";
 
-            // Authentication phase (check if the session is already created for the client connecting
-            while ((request = in.readLine()) != null) {
-                if (request.equals(Protocol.CONNECTION_REQUEST) || request.equals(Protocol.RECONNECTION_REQUEST))
-                    break;
+            String input = in.readLine();
+
+            while (input != null) {
+                commands.add(input);
+                input = in.readLine();
             }
 
-            // Ask for the client ID
-            send(Protocol.SEND_ID);
-            int id = Integer.parseInt(in.readLine());
-
-
-            sessionManager.storeSession(new Session(id, new Timestamp(System.currentTimeMillis())));
-            send(Protocol.SESSION_STORED);
-
-
-            // If the client has already connected once and send has send the RECONNECTION_REQUEST
-            // it means that it wants to send another information
-            if (request.equals(Protocol.RECONNECTION_REQUEST)) {
-                // after the authentication phase, we
-                switch (in.readLine()) {
-                    case Protocol.SEND_INFO:
-                        String infoReceived = receive();
-                        // TODO: transfer the info to the main Controller
-                        break;
-
-                    case Protocol.SEND_MUSIC:
-                        // Delegate the job to the FileManager
-                        FileManager.getInstance().retrieveFile(clientSocket.getInputStream());
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-
-            LOG.info("Cleaning up resources...");
-            clientSocket.close();
-            out.close();
-            in.close();
-
-        } catch (Exception ex) {
-            // We check if some resources need to be closed
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException ex1) {
-                    LOG.log(Level.SEVERE, ex1.getMessage(), ex1);
-                }
-            }
-            if (out != null) {
-                out.close();
-            }
-            if (clientSocket != null) {
-                try {
-                    clientSocket.close();
-                } catch (IOException ex1) {
-                    LOG.log(Level.SEVERE, ex1.getMessage(), ex1);
-                }
-            }
-            LOG.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-    }
-
-    public void send(String str) {
-        out.write(str);
-        out.write('\n');
-        out.flush();
-    }
-
-    public String receive() {
-        try {
-            return in.readLine();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "";
+
+        // Récupère la commande
+        String command = commands.remove(0);
+
+        // Récupère l'ID de l'utilisateur ayant effectué la commande
+        String user = commands.remove(1);
+
+        // Vérifie si l'utilisateur a déjà une session ou non et la crée au besoin
+        SessionManager.getInstance().store(user);
+
+        // Prépare les arguments à envoyer au controlleur
+        ArrayList<Object> args = new ArrayList<>();
+
+        // Ajoute les éventuels arguments pour des commandes spécifiques
+        switch (command) {
+            case Protocol.SEND_MUSIC:
+                args.add(socket);
+        }
+
+        // Ajoute le reste des arguments
+        args.addAll(commands);
+
+        // Envoie la commande demandée au contrôleur et en récupère le résultat
+        String result = Commusica.execute(command, args);
+
+        // Renvoie le résultat au client
+        out.write(result + '\n');
+
+        // Ferme la connection
+        try {
+            in.close();
+            out.close();
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
