@@ -3,12 +3,16 @@ package ch.tofind.commusica.media;
 import ch.tofind.commusica.playlist.PlaylistManager;
 
 import ch.tofind.commusica.utils.Configuration;
+import ch.tofind.commusica.utils.Logger;
 import javafx.scene.media.Media;
+import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
 
 import java.io.File;
 
 public class Player {
+
+    private static final Logger LOG = new Logger(Player.class.getSimpleName());
 
     private MediaPlayer player;
 
@@ -43,11 +47,23 @@ public class Player {
         track = PlaylistManager.getInstance().nextTrack();
 
         if (track != null) {
+            Media media = null;
 
-            Media media = new Media(new File(track.getUri()).toURI().toString());
+            try {
+                new Media(new File(track.getUri()).toURI().toString());
+            } catch (MediaException e) {
+                LOG.log(Logger.Level.SEVERE, e);
+            }
 
+            // Stop current player if there is one.
+            if(player != null) {
+                player.stop();
+            }
+
+            // Start the new player.
             player = new MediaPlayer(media);
 
+            // Tell what to do when the track is finished.
             player.setOnEndOfMedia(() -> {
                 stop();
                 load();
