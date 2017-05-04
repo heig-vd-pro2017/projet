@@ -1,9 +1,8 @@
-package ch.tofind.commusica.network.client;
+package ch.tofind.commusica.playlist;
 
 import ch.tofind.commusica.media.Playlist;
-import ch.tofind.commusica.network.NetworkUtils;
+import ch.tofind.commusica.utils.Network;
 import ch.tofind.commusica.network.Protocol;
-import ch.tofind.commusica.playlist.PlaylistManager;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -29,7 +28,7 @@ public class PlaylistUpdateReceiver implements Runnable {
 
 
     public PlaylistUpdateReceiver() {
-        this.addressOfInterface = NetworkUtils.getAddressOfInterface();
+        this.addressOfInterface = Network.getAddressOfInterface();
         isRunning = true;
     }
 

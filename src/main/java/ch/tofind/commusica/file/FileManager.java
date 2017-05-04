@@ -77,6 +77,7 @@ public class FileManager {
                 while ((bytesRead = is.read(receivedMusic)) != -1) {
                     bos.write(receivedMusic, 0, bytesRead);
                 }
+                System.out.println("Music received!");
                 bos.flush();
                 fos.close();
                 bos.close();

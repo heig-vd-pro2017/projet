@@ -17,6 +17,7 @@ public final class Protocol {
     public static final int PORT_MULTICAST_PLAYLIST_UPDATE = 8181;
 
     // constants for the protocol
+    public static final String END_OF_COMMUNICATION = "END_OF_COMMUNICATION";
     public static final String CONNECTION_REQUEST = "CONNECTION_REQUEST";
     public static final String RECONNECTION_REQUEST = "RECONNECTION_REQUEST";
 

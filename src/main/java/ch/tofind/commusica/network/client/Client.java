@@ -1,8 +1,9 @@
 package ch.tofind.commusica.network.client;
 
 import ch.tofind.commusica.file.FileManager;
-import ch.tofind.commusica.network.NetworkUtils;
+import ch.tofind.commusica.utils.Network;
 import ch.tofind.commusica.network.Protocol;
+import ch.tofind.commusica.playlist.PlaylistUpdateReceiver;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -27,12 +28,6 @@ public class Client {
     final static Logger LOG = Logger.getLogger(Client.class.getName());
 
     //!
-    static int globalId = 0;
-
-    //!
-    private int id = ++globalId;
-
-    //!
     private Socket serverSocket;
 
     //!
@@ -45,7 +40,7 @@ public class Client {
     private InetAddress serverIP;
 
     //!
-    private ClientDiscovery clientDiscovery;
+    private ReceiverThread receiverThread;
 
     //!
     private PlaylistUpdateReceiver playlistUpdateReceiver = null;
@@ -57,6 +52,9 @@ public class Client {
     private InetAddress addressOfInterface;
 
     //!
+    private int id;
+
+    //!
     BufferedReader in;
 
     //!
@@ -65,9 +63,12 @@ public class Client {
     /**
      * @brief
      */
-    public Client() {
-        clientDiscovery = new ClientDiscovery();
-        this.addressOfInterface = NetworkUtils.getAddressOfInterface();
+    public Client(InetAddress serverIP, int port) {
+        this.serverIP = serverIP;
+        this.port = port;
+        id = Network.hashMACAddress();
+        receiverThread = new ReceiverThread();
+        this.addressOfInterface = Network.getAddressOfInterface();
         playlistUpdateReceiver = new PlaylistUpdateReceiver();
     }
 
@@ -78,20 +79,19 @@ public class Client {
      * If you want to reconnect once you used this method, use the connect() method (which just call this method
      * but with the port and IP already saved in the Client
      *
-     * @param serverIP
-     * @param port
-     * @param request
      */
-    public void connect(InetAddress serverIP, int port, String request) {
+    public void connect() {
         try {
             // Create the socket and the IOs
             serverSocket = new Socket(serverIP, port);
             in = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
             out = new PrintWriter(new OutputStreamWriter(serverSocket.getOutputStream()));
 
-            this.serverIP = serverIP;
-            this.port = port;
+            System.out.println("Client connected!");
+        } catch (IOException e) {
 
+        }
+/*
             // send the CONNECTION_REQUEST
             out.write(request + "\n");
             out.flush();
@@ -106,7 +106,7 @@ public class Client {
 
             // Send the hash of our MAC address
             //out.write(Integer.toString(id));
-            out.write(Integer.toString(NetworkUtils.hashMACAddress()) + "\n");
+            out.write(Integer.toString(Network.hashMACAddress()) + "\n");
             out.flush();
 
             // wait for the acknowledge that the session is created or updated
@@ -118,6 +118,8 @@ public class Client {
             // create the playlistUpdate receiver thread and start it
             if (!isBinded) {
                 new Thread(playlistUpdateReceiver).start();
+                this.serverIP = serverIP;
+                this.port = port;
                 // We connected to the server once
                 isBinded = true;
             }
@@ -146,6 +148,7 @@ public class Client {
                 }
             }
         }
+        */
     }
 
     /**
@@ -154,7 +157,7 @@ public class Client {
      * authentication phase.
      */
     public void reconnect() {
-        connect(serverIP, port, Protocol.RECONNECTION_REQUEST);
+        connect();
     }
 
     /**
@@ -163,7 +166,7 @@ public class Client {
      * @return the list of IPs of available servers.
      */
     public ArrayList<InetAddress> getServersList() {
-        return clientDiscovery.getServersList();
+        return receiverThread.getServersList();
     }
 
     /**
@@ -187,11 +190,12 @@ public class Client {
      * @param msg
      */
     public void sendString(String msg) {
-        reconnect();
-        out.write(Protocol.SEND_INFO + "\n");
-        out.flush();
-        out.write(msg + "\n");
-        out.flush();
+        connect();
+        send(msg);
+        send(Integer.toString(id));
+        send(Protocol.END_OF_COMMUNICATION);
+        // TODO: do something with the result
+
         disconnectTCPSocket();
     }
 
@@ -209,7 +213,7 @@ public class Client {
      * refresh the servers list
      */
     public void refreshServers() {
-        new Thread(clientDiscovery).start();
+        new Thread(receiverThread).start();
     }
 
     /**
@@ -220,10 +224,9 @@ public class Client {
      */
     public void sendSong(String path) {
         try {
-            reconnect();
+            connect();
 
-            out.write(Protocol.SEND_MUSIC + "\n");
-            out.flush();
+            sendString(Protocol.SEND_MUSIC);
 
 
             File file = new File(path);
@@ -251,6 +254,15 @@ public class Client {
                 System.out.println("File NOT OK!");
             }
 
+            try {
+                String input = in.readLine();
+                while (input != Protocol.END_OF_COMMUNICATION) {
+                    input = in.readLine();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             fis.close();
             bis.close();
             bos.close();
@@ -261,6 +273,10 @@ public class Client {
         }
 
         disconnectTCPSocket();
+    }
 
+    private void send(String msg) {
+        out.write(msg + "\n");
+        out.flush();
     }
 }

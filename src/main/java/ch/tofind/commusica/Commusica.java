@@ -1,45 +1,29 @@
 package ch.tofind.commusica;
 
 import ch.tofind.commusica.file.FileManager;
-import ch.tofind.commusica.media.Player;
+import ch.tofind.commusica.utils.Network;
 import ch.tofind.commusica.network.Protocol;
-import ch.tofind.commusica.playlist.PlaylistManager;
-import ch.tofind.commusica.playlist.PlaylistTrack;
-import ch.tofind.commusica.utils.Configuration;
-import ch.tofind.commusica.database.DatabaseManager;
-import ch.tofind.commusica.media.Playlist;
-import ch.tofind.commusica.media.Track;
+import ch.tofind.commusica.network.client.Client;
+import ch.tofind.commusica.network.server.Server;
+import ch.tofind.commusica.session.SessionManager;
 
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-
-import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Scanner;
 
-public class Commusica extends Application {
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    public static void dropDatabase() {
-        String filePath = "commusica.db";
-        File dbFile = new File(filePath);
-
-        if (dbFile.exists()) {
-            dbFile.delete();
-        }
-    }
+public class Commusica {
 
     public static String execute(String command, ArrayList<Object> args) {
+
+        // Récupère l'ID de l'utilisateur ayant effectué la commande
+        Integer user = (Integer) args.remove(0);
+
+        // Vérifie si l'utilisateur a déjà une session ou non et la crée au besoin
+        SessionManager.getInstance().store(user);
 
         switch (command) {
 
@@ -48,6 +32,7 @@ public class Commusica extends Application {
 
                 // Delegate the job to the FileManager
                 try {
+                    System.out.println("Delegating to FM");
                     FileManager.getInstance().retrieveFile(socket.getInputStream());
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -60,6 +45,115 @@ public class Commusica extends Application {
         }
 
         return "Done";
+    }
+
+    public static void main(String... args) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        InetAddress addressOfInterface = null;
+
+        System.out.println("Which interface do you want to use?");
+        ArrayList<NetworkInterface> interfaces = Network.networkInterfaceChooser();
+        for (int i = 1; i < interfaces.size(); ++i) {
+            System.out.println("[" + i + "] " + interfaces.get(i-1).getName() + ": " + Network.getInet4AddressString(Network.getInet4Address(interfaces.get(i-1))));
+        }
+
+        Network.setAddressOfInterface(Network.getInet4Address(interfaces.get(scanner.nextInt() - 1)));
+
+        while (true) {
+            int type = 0;
+            while (type != 1 && type != 2) {
+                System.out.println("[1] server");
+                System.out.println("[2] client");
+
+                System.out.println("Which one are you?");
+                System.out.print("> ");
+
+                type = scanner.nextInt();
+            }
+
+
+
+            if (type == 1) {
+                Server server = new Server(8081, Network.getAddressOfInterface());
+
+                int actionServer = 0;
+                while (server != null) {
+                    System.out.println("What do you want to do?");
+                    System.out.println("[1] Disconnect");
+                    System.out.print("> ");
+
+                    actionServer = scanner.nextInt();
+
+                    switch (actionServer) {
+                        case 1:
+                            server.stop();
+                            server = null;
+                    }
+                }
+            } else {
+                Client client = null;
+                try {
+                    client = new Client(InetAddress.getByName("localhost"), 8081);
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                }
+
+                int actionClient = 0;
+                while (client != null) {
+                    System.out.println("What do you want to do?");
+                    System.out.println("[1] refresh server list");
+                    System.out.println("[2] connect to server");
+                    System.out.println("[3] Display available servers");
+                    System.out.println("[4] Disconnect");
+                    System.out.println("[5] Send music");
+
+                    System.out.print("> ");
+
+                    actionClient = scanner.nextInt();
+
+                    switch (actionClient) {
+                        case 1:
+                            client.refreshServers();
+                            break;
+                        case 2:
+                            System.out.println("To which server do you want to connect to?");
+                            System.out.println(client.getServersList().toString());
+                            client.connect(client.getServersList().get(scanner.nextInt() - 1), 8081);
+                            break;
+                        case 3:
+                            System.out.println("Available servers");
+                            System.out.println(client.getServersList().toString());
+                            break;
+                        case 4:
+                            client.fullDisconnect();
+                            client = null;
+                            break;
+                        case 5:
+                            client.sendSong("C:\\Users\\David\\Documents\\YourFuckingMother_x_EHDE_-_Pocket_Monsters_VIP.mp3");
+                            break;
+                        default:
+                            System.out.println("Action not supported ");
+
+                    }
+                }
+
+            }
+        }
+    }
+    /*
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    public static void dropDatabase() {
+        String filePath = "commusica.db";
+        File dbFile = new File(filePath);
+
+        if (dbFile.exists()) {
+            dbFile.delete();
+        }
     }
 
     @Override
@@ -177,4 +271,5 @@ public class Commusica extends Application {
         System.out.println("Bisoir");
         DatabaseManager.getInstance().close();
     }
+    */
 }

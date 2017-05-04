@@ -11,7 +11,7 @@ import java.net.SocketException;
  * new client has arrived, the receptionist delegates the processing to a
  * "servant" who will execute on its own thread.
  */
-public class ReceptionistWorker implements Runnable {
+public class FrontendThread implements Runnable {
 
     //! Socket to use for the communication
     private ServerSocket socket;
@@ -25,7 +25,7 @@ public class ReceptionistWorker implements Runnable {
     /**
      * @brief Constructor.
      */
-    public ReceptionistWorker(int port) {
+    public FrontendThread(int port) {
         this.port = port;
     }
 
@@ -59,7 +59,9 @@ public class ReceptionistWorker implements Runnable {
             try {
 
                 Socket clientSocket = socket.accept();
-                new Thread(new ServantWorker(clientSocket)).start();
+
+                // DOIT ENCORE AJOUTER CE THREAD A UN PULL DE THREAD
+                new Thread(new BackendThread(clientSocket)).start();
 
             } catch (SocketException e) {
 
@@ -73,5 +75,7 @@ public class ReceptionistWorker implements Runnable {
                 e.printStackTrace();
             }
         }
+
+        // DOIT NETTOYER LE PULL DE THREAD POUR LES ARRETER CORRECTEMENT
     }
 }

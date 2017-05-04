@@ -1,9 +1,8 @@
-package ch.tofind.commusica.network.server;
+package ch.tofind.commusica.playlist;
 
 import ch.tofind.commusica.media.Playlist;
-import ch.tofind.commusica.network.NetworkUtils;
+import ch.tofind.commusica.utils.Network;
 import ch.tofind.commusica.network.Protocol;
-import ch.tofind.commusica.playlist.PlaylistManager;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -41,8 +40,8 @@ public class PlaylistUpdateSender implements Runnable {
     public static PlaylistUpdateSender getSharedInstance() {
 
         if (sharedInstance == null) {
-            if (NetworkUtils.getAddressOfInterface() != null) {
-                sharedInstance = new PlaylistUpdateSender(NetworkUtils.getAddressOfInterface());
+            if (Network.getAddressOfInterface() != null) {
+                sharedInstance = new PlaylistUpdateSender(Network.getAddressOfInterface());
             } else {
                 System.out.println("No interface address set.");
             }
