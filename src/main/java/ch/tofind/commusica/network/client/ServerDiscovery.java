@@ -1,6 +1,6 @@
 package ch.tofind.commusica.network.client;
 
-import ch.tofind.commusica.network.NetworkUtils;
+import ch.tofind.commusica.utils.Network;
 import ch.tofind.commusica.network.Protocol;
 
 import java.io.IOException;
@@ -14,10 +14,10 @@ import java.util.logging.Logger;
 /**
  * @brief This class allows a client to discover the available servers.
  */
-public class ClientDiscovery implements Runnable {
+public class ServerDiscovery implements Runnable {
 
     //! Logger for debugging proposes.
-    private static Logger LOG = Logger.getLogger(ClientDiscovery.class.getName());
+    private static Logger LOG = Logger.getLogger(ServerDiscovery.class.getName());
 
     //!
     private String address = Protocol.IP_MULTICAST_DISCOVERY;
@@ -31,8 +31,8 @@ public class ClientDiscovery implements Runnable {
     //!
     private InetAddress addressOfInterface;
 
-    public ClientDiscovery() {
-        this.addressOfInterface = NetworkUtils.getAddressOfInterface();
+    public ServerDiscovery() {
+        this.addressOfInterface = Network.getAddressOfInterface();
     }
 
     public void run() {

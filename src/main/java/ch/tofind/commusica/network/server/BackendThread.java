@@ -2,7 +2,6 @@ package ch.tofind.commusica.network.server;
 
 import ch.tofind.commusica.Commusica;
 import ch.tofind.commusica.network.Protocol;
-import ch.tofind.commusica.session.SessionManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,27 +11,24 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 /**
- * This class implements the behavior of the "servants", whose
+ * @brief This class implements the behavior of the "servants", whose
  * responsibility is to take care of clients once they have connected. This
  * is where we implement the application protocol logic, i.e. where we read
  * data sent by the client and where we generate the responses.
  */
-public class ServantWorker implements Runnable {
+public class BackendThread implements Runnable {
 
-    //!
-    private SessionManager sessionManager = SessionManager.getInstance();
-
-    //!
+    //! Socket to use for the communication
     private Socket socket;
 
-    //!
+    //! Where to send the output
     private PrintWriter out;
 
-    //!
+    //! Where to read the input
     private BufferedReader in;
 
 
-    public ServantWorker(Socket socket) {
+    public BackendThread(Socket socket) {
 
         this.socket = socket;
 
@@ -47,14 +43,14 @@ public class ServantWorker implements Runnable {
     @Override
     public void run() {
 
-        // Récupère ce qui a été envoyé par le client
+        // Store the commands sent by the client
         ArrayList<String> commands = new ArrayList<>();
 
         try {
 
             String input = in.readLine();
 
-            while (input != null) {
+            while (input != Protocol.END_OF_COMMUNICATION) {
                 commands.add(input);
                 input = in.readLine();
             }
@@ -63,37 +59,34 @@ public class ServantWorker implements Runnable {
             e.printStackTrace();
         }
 
-        // Récupère la commande
-        String command = commands.remove(0);
+        // Get the requested command
+        String command = commands.get(0);
 
-        // Récupère l'ID de l'utilisateur ayant effectué la commande
-        String user = commands.remove(1);
+        // Prepare the args to send to the controller
+        ArrayList<Object> args = new ArrayList<>(commands);
 
-        // Vérifie si l'utilisateur a déjà une session ou non et la crée au besoin
-        SessionManager.getInstance().store(user);
-
-        // Prépare les arguments à envoyer au controlleur
-        ArrayList<Object> args = new ArrayList<>();
-
-        // Ajoute les éventuels arguments pour des commandes spécifiques
+        // Add the potentially arguments for specific commands
         switch (command) {
             case Protocol.SEND_MUSIC:
-                args.add(socket);
+                args.add(2, socket); // 2 because the 1st is the commande, the 2nd the user
         }
 
-        // Ajoute le reste des arguments
-        args.addAll(commands);
-
-        // Envoie la commande demandée au contrôleur et en récupère le résultat
+        // Send the command and its arguments to the controller and get the result
         String result = Commusica.execute(command, args);
 
-        // Renvoie le résultat au client
-        out.write(result + '\n');
+        // Send the result to the client
+        out.write(result + Protocol.END_OF_COMMUNICATION);
 
-        // Ferme la connection
+        // Close the connexion
         try {
             in.close();
-            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        out.close();
+
+        try {
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();

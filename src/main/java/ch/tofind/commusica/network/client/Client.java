@@ -1,8 +1,9 @@
 package ch.tofind.commusica.network.client;
 
 import ch.tofind.commusica.file.FileManager;
-import ch.tofind.commusica.network.NetworkUtils;
+import ch.tofind.commusica.utils.Network;
 import ch.tofind.commusica.network.Protocol;
+import ch.tofind.commusica.playlist.PlaylistUpdateReceiver;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -45,7 +46,7 @@ public class Client {
     private InetAddress serverIP;
 
     //!
-    private ClientDiscovery clientDiscovery;
+    private ServerDiscovery serverDiscovery;
 
     //!
     private PlaylistUpdateReceiver playlistUpdateReceiver = null;
@@ -66,8 +67,8 @@ public class Client {
      * @brief
      */
     public Client() {
-        clientDiscovery = new ClientDiscovery();
-        this.addressOfInterface = NetworkUtils.getAddressOfInterface();
+        serverDiscovery = new ServerDiscovery();
+        this.addressOfInterface = Network.getAddressOfInterface();
         playlistUpdateReceiver = new PlaylistUpdateReceiver();
     }
 
@@ -106,7 +107,7 @@ public class Client {
 
             // Send the hash of our MAC address
             //out.write(Integer.toString(id));
-            out.write(Integer.toString(NetworkUtils.hashMACAddress()) + "\n");
+            out.write(Integer.toString(Network.hashMACAddress()) + "\n");
             out.flush();
 
             // wait for the acknowledge that the session is created or updated
@@ -163,7 +164,7 @@ public class Client {
      * @return the list of IPs of available servers.
      */
     public ArrayList<InetAddress> getServersList() {
-        return clientDiscovery.getServersList();
+        return serverDiscovery.getServersList();
     }
 
     /**
@@ -209,7 +210,7 @@ public class Client {
      * refresh the servers list
      */
     public void refreshServers() {
-        new Thread(clientDiscovery).start();
+        new Thread(serverDiscovery).start();
     }
 
     /**

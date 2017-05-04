@@ -1,4 +1,4 @@
-package ch.tofind.commusica.network;
+package ch.tofind.commusica.utils;
 
 import java.io.IOException;
 import java.net.Inet4Address;
@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
 
-public class NetworkUtils {
+public class Network {
 
     private static InetAddress addressOfInterface = null;
 

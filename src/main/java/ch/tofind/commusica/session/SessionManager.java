@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 /**
  * Still a lot of work to do but this is a basic implementation of SesionManager with simple features
@@ -16,16 +15,16 @@ public class SessionManager {
     //! Shared instance of the object for all the application
     private static SessionManager instance = null;
 
+    //!
+    private static int SESSION_TIME_BEFORE_INACTIVE = 60 * 1000 * 1;
+
     //! Store the active sessions
     private Map<Integer, Session> activeSessions;
 
     //! Store the inactive sessions
     private Map<Integer, Session> inactiveSessions;
 
-    //!
-    private int minutesOfSession;
-
-    //!
+    //! Clean the old sessions on schedule
     private ScheduledExecutorService scheduledExecutorService;
 
     /**
@@ -35,7 +34,6 @@ public class SessionManager {
 
         activeSessions = new HashMap<>(0);
         inactiveSessions = new HashMap<>(0);
-        minutesOfSession = 1;
 
         // Crée un thread qui nettoie les sessions toutes les N minutes
         scheduledExecutorService = Executors.newScheduledThreadPool(1);
@@ -85,7 +83,7 @@ public class SessionManager {
 
             Session session = entry.getValue();
 
-            if (now.getTime() - session.getUpdate().getTime() > 60 * 1000 * minutesOfSession) {
+            if (session.getUpdate().getTime() > now.getTime() - SESSION_TIME_BEFORE_INACTIVE) {
                 activeSessions.remove(session.getId());
                 inactiveSessions.put(session.getId(), session);
             }

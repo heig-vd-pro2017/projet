@@ -1,65 +1,39 @@
 package ch.tofind.commusica.network.server;
 
-import ch.tofind.commusica.network.NetworkUtils;
-import ch.tofind.commusica.session.SessionManager;
+import ch.tofind.commusica.network.Protocol;
 
 import java.net.InetAddress;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-
+/**
+ * @brief This class represents the server part of the application.
+ */
 public class Server {
 
-    //! Logger for debugging proposes.
-    final static Logger LOG = Logger.getLogger(Server.class.getName());
+    //! The receptionist that will serve the clients
+    private FrontendThread frontendThread;
 
-    //!
-    private int port;
-
-    //!
-    private InetAddress addressOfInterface;
-
-    //!
-    private ReceptionistWorker receptionistWorker;
-
-    //!
-    private Runnable serverDiscovery;
-
-    //!
-    private Runnable playlistUpdater;
+    //! The servant that will manage the client
+    private BroadcastThread broadcastThread;
 
     /**
-     * Constructor
+     * @brief Constructor.
      *
-     * @param port the port to listen on
+     * @param port The port to listen on.
+     * @param inetAddress The address to use.
      */
-    public Server(int port) {
-        this.port = port;
-        this.addressOfInterface = NetworkUtils.getAddressOfInterface();
+    public Server(int port, InetAddress inetAddress) {
+        frontendThread = new FrontendThread(port);
+        broadcastThread = new BroadcastThread(inetAddress, Protocol.IP_MULTICAST_DISCOVERY);
+
+        new Thread(frontendThread).start();
+        new Thread(broadcastThread).start();
     }
 
     /**
-     * This method initiates the process. The server creates a socket and binds it
-     * to the previously specified port. It then waits for clients in a infinite
-     * loop.
+     * @brief Stop the server
      */
-    public void serveClients() {
-        LOG.info("Starting the Receptionist Worker on a new thread...");
-        receptionistWorker = new ReceptionistWorker(port);
-        new Thread(receptionistWorker).start();
-        new Thread(ServerDiscovery.getSharedInstance()).start();
-        new Thread(PlaylistUpdateSender.getSharedInstance()).start();
-    }
-
-    /**
-     * Disconnect the server and its threads.
-     */
-    public void disconnect() {
-        receptionistWorker.stop();
-        PlaylistUpdateSender.getSharedInstance().stop();
-        ServerDiscovery.getSharedInstance().stop();
-        SessionManager.getInstance().stop();
-
-        LOG.log(Level.INFO, "Server disconnected.");
+    public void stop() {
+        frontendThread.stop();
+        broadcastThread.stop();
     }
 }
