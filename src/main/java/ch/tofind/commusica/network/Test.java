@@ -1,6 +1,7 @@
 package ch.tofind.commusica.network;
 
 
+import ch.tofind.commusica.file.FileManager;
 import ch.tofind.commusica.network.client.Client;
 import ch.tofind.commusica.network.server.Server;
 
@@ -22,6 +23,10 @@ class Test {
 
         Scanner scanner = new Scanner(System.in);
 
+        //File file = new File("C:\\Users\\David\\Documents\\YourFuckingMother_x_EHDE_-_Pocket_Monsters_VIP.mp3");
+        //File file = new File("C:\\Users\\David\\Downloads\\03 Heater.m4a");
+        File file = new File("C:\\Users\\David\\Documents\\Natel\\Music\\Tristam Discography_\\Tristam\\00 - Undercat (final).wav");
+        FileManager.displayMetadatas(file);
 
         InetAddress addressOfInterface = null;
 
@@ -99,7 +104,7 @@ class Test {
                             client = null;
                             break;
                         case 5:
-                            client.sendSong("C:\\Users\\David\\Documents\\Report.pdf");
+                            client.sendSong("C:\\Users\\David\\Documents\\YourFuckingMother_x_EHDE_-_Pocket_Monsters_VIP.mp3");
                             break;
                         default:
                             System.out.println("Action not supported ");

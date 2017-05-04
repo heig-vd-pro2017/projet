@@ -235,6 +235,8 @@ public class Client {
             byte[] contents = new byte[8192];
             int size;
 
+            FileManager.displayMetadatas(file);
+
             bis.read(contents, 0, 16);
 
             if (FileManager.signatureChecker(contents)) {

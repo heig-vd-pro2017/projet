@@ -1,8 +1,16 @@
 package ch.tofind.commusica.file;
 
+import org.jaudiotagger.*;
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.audio.exceptions.CannotReadException;
+import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
+import org.jaudiotagger.tag.FieldKey;
+import org.jaudiotagger.tag.TagException;
+
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -19,7 +27,6 @@ public class FileManager {
     private static FileManager instance = null;
 
     private FileManager() {
-
     }
 
     public static FileManager getInstance() {
@@ -50,19 +57,20 @@ public class FileManager {
         BufferedOutputStream bos = null;
         try {
             byte[] receivedMusic = new byte[8192];
-            // TODO: change the path/name corresponding to our specs
             result = new File("." + File.separator + "tracks" + File.separator + UUID.randomUUID() + ".mp3");
             fos = new FileOutputStream(result);
             bos = new BufferedOutputStream(fos);
 
             int bytesRead = 0;
 
+            // We check the 16 first bytes so we can check if it is a compatible file type
             byte[] signature = new byte[16];
-
             is.read(signature, 0, 16);
 
             if (!signatureChecker(signature)) {
                 System.out.println("File not compatible!");
+                fos.close();
+                bos.close();
                 Files.delete(result.toPath());
             } else {
                 bos.write(signature, 0, signature.length);
@@ -70,15 +78,19 @@ public class FileManager {
                     bos.write(receivedMusic, 0, bytesRead);
                 }
                 bos.flush();
-                // TODO: save it with good name and a good path
+                fos.close();
+                bos.close();
             }
-            fos.close();
-            bos.close();
             is.close();
 
         } catch (IOException e) {
+            // we delete the file if an problem occurred
             if (result != null)
-                result.delete();
+                try {
+                    Files.delete(result.toPath());
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
 
             if (fos != null)
                 try {
@@ -112,6 +124,28 @@ public class FileManager {
         }
         return false;
     }
+
+     public static void displayMetadatas(File f) {
+         try {
+             AudioFile af = AudioFileIO.read(f);
+
+             System.out.println(af.getAudioHeader().getTrackLength() / 60 + ":" + af.getAudioHeader().getTrackLength() % 60);
+             System.out.println(af.getAudioHeader().getFormat());
+             System.out.println(af.getTag().getFirst(FieldKey.ARTIST));
+             System.out.println(af.getTag().getFirst(FieldKey.ALBUM));
+             System.out.println(af.getTag().getFirst(FieldKey.TITLE));
+         } catch (CannotReadException e) {
+             e.printStackTrace();
+         } catch (IOException e) {
+             e.printStackTrace();
+         } catch (TagException e) {
+             e.printStackTrace();
+         } catch (ReadOnlyFileException e) {
+             e.printStackTrace();
+         } catch (InvalidAudioFrameException e) {
+             e.printStackTrace();
+         }
+     }
 
     /**
      * @param filePath
