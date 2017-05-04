@@ -6,7 +6,7 @@ package ch.tofind.commusica.network;
  * Interface used for the abstraction of the client/server over a socket and provide simple send and receive methods
  *
  */
-public interface Protocol {
+public final class Protocol {
 
     // IPs for Multicast
     public static final String IP_MULTICAST_DISCOVERY = "239.192.0.2";

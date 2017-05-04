@@ -20,7 +20,7 @@ public class Server {
     private InetAddress addressOfInterface;
 
     //!
-    private ReceptionistWorker receptionist;
+    private ReceptionistWorker receptionistWorker;
 
     //!
     private Runnable serverDiscovery;
@@ -45,8 +45,8 @@ public class Server {
      */
     public void serveClients() {
         LOG.info("Starting the Receptionist Worker on a new thread...");
-        receptionist = new ReceptionistWorker(port);
-        new Thread(receptionist).start();
+        receptionistWorker = new ReceptionistWorker(port);
+        new Thread(receptionistWorker).start();
         new Thread(ServerDiscovery.getSharedInstance()).start();
         new Thread(PlaylistUpdateSender.getSharedInstance()).start();
     }
@@ -55,7 +55,7 @@ public class Server {
      * Disconnect the server and its threads.
      */
     public void disconnect() {
-        receptionist.stop();
+        receptionistWorker.stop();
         PlaylistUpdateSender.getSharedInstance().stop();
         ServerDiscovery.getSharedInstance().stop();
         SessionManager.getInstance().stop();

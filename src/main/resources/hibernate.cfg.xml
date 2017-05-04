@@ -12,7 +12,6 @@
         <property name="connection.username"></property>
         <property name="connection.password"></property>
 
-        <!-- Assume test is the database name -->
         <property name="connection.url">jdbc:sqlite:commusica.db</property>
 
         <property name="hibernate.hbm2ddl.auto">update</property>

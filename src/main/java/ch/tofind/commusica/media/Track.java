@@ -39,7 +39,6 @@ public class Track implements DatabaseObject {
     //! Version control for concurrency
     private Integer version;
 
-
     /**
      * @brief Empty constructor for Hibernate
      */

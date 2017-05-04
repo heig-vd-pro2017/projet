@@ -6,10 +6,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
-/**
- * @brief This class represents the database and allows interaction with the real database
- */
-public class DatabaseManager {
+    //! Shared instance of the database for all the application
+    /**
+     * @brief This class represents the database and allows interaction with the real database
+     */
+    public class DatabaseManager {
 
     //! Shared instance of the object for all the application
     private static DatabaseManager instance = null;

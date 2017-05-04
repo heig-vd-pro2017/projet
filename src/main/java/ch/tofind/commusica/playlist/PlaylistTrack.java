@@ -4,6 +4,9 @@
 */
 package ch.tofind.commusica.playlist;
 
+import ch.tofind.commusica.media.Playlist;
+import ch.tofind.commusica.media.Track;
+
 import ch.tofind.commusica.database.DatabaseObject;
 import ch.tofind.commusica.media.Playlist;
 import ch.tofind.commusica.media.Track;
@@ -73,16 +76,16 @@ public class PlaylistTrack implements DatabaseObject {
     }
 
     @Override
-    public void update() {
-
-    }
-
-    @Override
     public String toString() {
 
         return "PlaylistTrack"                           + '\n' + '\t' +
                "Playlist: " + id.getPlaylist().getName() + '\n' + '\t' +
                "Track...: " + id.getTrack().getTitle()   + '\n' + '\t' +
                "Votes...: " + votes                      + '\n';
+    }
+
+    @Override
+    public void update() {
+
     }
 }

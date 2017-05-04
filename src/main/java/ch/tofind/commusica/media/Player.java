@@ -68,5 +68,3 @@ public class Player {
         player.setVolume(currentVolume - volumeStep);
     }
 }
-
-

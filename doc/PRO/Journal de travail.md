@@ -1,6 +1,12 @@
 # Journal de travail
 *Le journal de travail débute le 15.03.2017*
 
+<<<<<<< HEAD
+## 26.03.2017
+### Ludovic Delafontaine
+* Mise en place et configuration des outils de compilation (Maven) (2h00)
+* Début de la classe Track avec sa table dans la base de données à l'aide de Hibernate (1h30)
+=======
 ## 30.04.2017
 ### David Truan
 * Transfert de fichier .mp3 et implémentation dans le projet (2h)
@@ -119,6 +125,7 @@ du fichier de configuration, modification du file Manager d'après la discussion
 
 ### Yosra Harbaoui
 * Documentation sur les différents "types" de communications entre un serveur et un client.
+>>>>>>> 9d5fe7284fac5d639e6076d4a4c97f614aa36351
 
 ## 22.03.2017
 ### Denise Gemesio
