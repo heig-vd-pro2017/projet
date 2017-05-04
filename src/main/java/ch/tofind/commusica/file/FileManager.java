@@ -51,7 +51,7 @@ public class FileManager {
         file.renameTo(new File(path + File.separator + fileName));
     }
 
-    public void retrieveFile(InputStream is) {
+    public File retrieveFile(InputStream is) {
         File result = null;
         FileOutputStream fos = null;
         BufferedOutputStream bos = null;
@@ -82,6 +82,8 @@ public class FileManager {
                 bos.close();
             }
             is.close();
+
+            return result;
 
         } catch (IOException e) {
             // we delete the file if an problem occurred
@@ -114,6 +116,7 @@ public class FileManager {
                 }
             e.printStackTrace();
         }
+        return null;
     }
 
     public static boolean signatureChecker(byte[] signature) {
