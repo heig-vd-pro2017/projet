@@ -65,7 +65,7 @@ public class SessionManager {
 
     public void store(String id) {
 
-        if (activeSessions.containsKey(id)) {
+        if (activeSessions.containsKey(1)) {
 
         } else if (inactiveSessions.containsKey(id)) {
             Session session = inactiveSessions.remove(id);

@@ -97,7 +97,13 @@ public class ServantWorker implements Runnable {
         // Ferme la connection
         try {
             in.close();
-            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        out.close();
+
+        try {
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
