@@ -1,9 +1,7 @@
-package ch.tofind.commusica.network.session;
+package ch.tofind.commusica.session;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -15,17 +13,14 @@ import java.util.logging.Logger;
  */
 public class SessionManager {
 
-    //!
-    final static Logger LOG = Logger.getLogger(SessionManager.class.getName());
-
-    //! Shared instance of the session manager for all the application
+    //! Shared instance of the object for all the application
     private static SessionManager instance = null;
 
-    //!
-    private Map<String, Session> activeSessions;
+    //! Store the active sessions
+    private Map<Integer, Session> activeSessions;
 
-    //!
-    private Map<String, Session> inactiveSessions;
+    //! Store the inactive sessions
+    private Map<Integer, Session> inactiveSessions;
 
     //!
     private int minutesOfSession;
@@ -63,10 +58,11 @@ public class SessionManager {
         return instance;
     }
 
-    public void store(String id) {
+    public void store(Integer id) {
 
         if (activeSessions.containsKey(id)) {
-
+            Session session = inactiveSessions.get(id);
+            session.update();
         } else if (inactiveSessions.containsKey(id)) {
             Session session = inactiveSessions.remove(id);
             session.update();
@@ -75,9 +71,6 @@ public class SessionManager {
             Session session = new Session(id);
             activeSessions.put(session.getId(), session);
         }
-
-        System.out.println("Active sessions:\n" + activeSessions);
-        System.out.println("Inactive sessions:\n" + inactiveSessions);
     }
 
     public int countActiveSessions() {
@@ -88,19 +81,15 @@ public class SessionManager {
 
         Date now = new Date();
 
-        for (Map.Entry<String, Session> entry : activeSessions.entrySet()) {
+        for (Map.Entry<Integer, Session> entry : activeSessions.entrySet()) {
 
             Session session = entry.getValue();
 
-            if (now.getTime() - session.getActiveSince().getTime() > 60 * 1000 * minutesOfSession) {
+            if (now.getTime() - session.getUpdate().getTime() > 60 * 1000 * minutesOfSession) {
                 activeSessions.remove(session.getId());
                 inactiveSessions.put(session.getId(), session);
             }
         }
-    }
-
-    public void setMinutesOfSession(int hours) {
-        minutesOfSession = hours;
     }
 
     public void stop() {

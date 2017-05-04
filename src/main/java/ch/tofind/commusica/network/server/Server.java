@@ -1,7 +1,7 @@
 package ch.tofind.commusica.network.server;
 
 import ch.tofind.commusica.network.NetworkUtils;
-import ch.tofind.commusica.network.session.SessionManager;
+import ch.tofind.commusica.session.SessionManager;
 
 import java.net.InetAddress;
 import java.util.logging.Level;

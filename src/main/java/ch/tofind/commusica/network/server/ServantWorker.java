@@ -1,19 +1,15 @@
 package ch.tofind.commusica.network.server;
 
 import ch.tofind.commusica.Commusica;
-import ch.tofind.commusica.file.FileManager;
 import ch.tofind.commusica.network.Protocol;
-import ch.tofind.commusica.network.session.Session;
-import ch.tofind.commusica.network.session.SessionManager;
+import ch.tofind.commusica.session.SessionManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class implements the behavior of the "servants", whose
