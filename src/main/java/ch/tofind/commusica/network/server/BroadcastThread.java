@@ -9,8 +9,7 @@ import java.net.MulticastSocket;
 import java.util.logging.Logger;
 
 /**
- * Class implementing the Runnable interface which send the IP address of the server by Multicast to the clients who
- * send the DISCOVER_REQUEST message. It then send a DISCOVER_RESPONSE message with it's IP.
+ * @brief This class sends data to clients by multicast
  */
 public class BroadcastThread implements Runnable {
 

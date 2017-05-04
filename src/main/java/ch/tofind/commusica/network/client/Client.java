@@ -46,7 +46,7 @@ public class Client {
     private InetAddress serverIP;
 
     //!
-    private ServerDiscovery serverDiscovery;
+    private ReceiverThread receiverThread;
 
     //!
     private PlaylistUpdateReceiver playlistUpdateReceiver = null;
@@ -67,7 +67,7 @@ public class Client {
      * @brief
      */
     public Client() {
-        serverDiscovery = new ServerDiscovery();
+        receiverThread = new ReceiverThread();
         this.addressOfInterface = Network.getAddressOfInterface();
         playlistUpdateReceiver = new PlaylistUpdateReceiver();
     }
@@ -164,7 +164,7 @@ public class Client {
      * @return the list of IPs of available servers.
      */
     public ArrayList<InetAddress> getServersList() {
-        return serverDiscovery.getServersList();
+        return receiverThread.getServersList();
     }
 
     /**
@@ -210,7 +210,7 @@ public class Client {
      * refresh the servers list
      */
     public void refreshServers() {
-        new Thread(serverDiscovery).start();
+        new Thread(receiverThread).start();
     }
 
     /**

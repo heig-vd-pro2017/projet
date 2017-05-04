@@ -59,6 +59,8 @@ public class FrontendThread implements Runnable {
             try {
 
                 Socket clientSocket = socket.accept();
+
+                // DOIT ENCORE AJOUTER CE THREAD A UN PULL DE THREAD
                 new Thread(new BackendThread(clientSocket)).start();
 
             } catch (SocketException e) {
@@ -73,5 +75,7 @@ public class FrontendThread implements Runnable {
                 e.printStackTrace();
             }
         }
+
+        // DOIT NETTOYER LE PULL DE THREAD POUR LES ARRETER CORRECTEMENT
     }
 }

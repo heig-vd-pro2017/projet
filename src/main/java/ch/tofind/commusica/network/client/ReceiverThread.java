@@ -12,12 +12,12 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**
- * @brief This class allows a client to discover the available servers.
+ * @brief This class receives data from the server by multicast.
  */
-public class ServerDiscovery implements Runnable {
+public class ReceiverThread implements Runnable {
 
     //! Logger for debugging proposes.
-    private static Logger LOG = Logger.getLogger(ServerDiscovery.class.getName());
+    private static Logger LOG = Logger.getLogger(ReceiverThread.class.getName());
 
     //!
     private String address = Protocol.IP_MULTICAST_DISCOVERY;
@@ -31,7 +31,7 @@ public class ServerDiscovery implements Runnable {
     //!
     private InetAddress addressOfInterface;
 
-    public ServerDiscovery() {
+    public ReceiverThread() {
         this.addressOfInterface = Network.getAddressOfInterface();
     }
 
