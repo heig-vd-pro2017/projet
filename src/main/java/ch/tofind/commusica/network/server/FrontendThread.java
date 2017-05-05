@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class implements the behavior of the "receptionist", whose
@@ -22,11 +24,14 @@ public class FrontendThread implements Runnable {
     //! Tells if the receptionist is working
     private boolean isRunning;
 
+    List<BackendThread> backendThreads;
+
     /**
      * @brief Constructor.
      */
     public FrontendThread(int port) {
         this.port = port;
+        backendThreads = new ArrayList<>();
     }
 
     /**
@@ -61,7 +66,8 @@ public class FrontendThread implements Runnable {
                 Socket clientSocket = socket.accept();
 
                 // DOIT ENCORE AJOUTER CE THREAD A UN PULL DE THREAD
-                new Thread(new BackendThread(clientSocket)).start();
+                BackendThread backendThread = new BackendThread(clientSocket);
+                new Thread(backendThread).start();
 
             } catch (SocketException e) {
 
@@ -77,5 +83,6 @@ public class FrontendThread implements Runnable {
         }
 
         // DOIT NETTOYER LE PULL DE THREAD POUR LES ARRETER CORRECTEMENT
+
     }
 }

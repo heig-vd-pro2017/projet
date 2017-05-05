@@ -43,40 +43,46 @@ public class BackendThread implements Runnable {
     @Override
     public void run() {
 
-        // Store the commands sent by the client
-        ArrayList<String> commands = new ArrayList<>();
+        String command = null;
+        String input = null;
 
-        try {
+        while (!Protocol.END_OF_COMMUNICATION.equals(command)) {
 
-            String input = in.readLine();
+            // Store the commands sent by the client
+            ArrayList<String> commands = new ArrayList<>();
 
-            while (input != Protocol.END_OF_COMMUNICATION) {
-                commands.add(input);
+            try {
+
                 input = in.readLine();
+
+                while (!Protocol.END_OF_COMMAND.equals(input)) {
+                    commands.add(input);
+                    input = in.readLine();
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
-        } catch (IOException e) {
-            e.printStackTrace();
+            // Get the requested command
+            command = commands.remove(0);
+
+            // Prepare the args to send to the controller
+            ArrayList<Object> args = new ArrayList<>(commands);
+
+            // Add the potentially arguments for specific commands
+            switch (command) {
+                case Protocol.SEND_TRACK:
+                    args.add(2, socket); // 2 because the 1st is the commande, the 2nd the user
+            }
+
+            // Send the command and its arguments to the controller and get the result
+            String result = Commusica.execute(command, args);
+
+            // Send the result to the client
+            out.println(result);
+
         }
-
-        // Get the requested command
-        String command = commands.get(0);
-
-        // Prepare the args to send to the controller
-        ArrayList<Object> args = new ArrayList<>(commands);
-
-        // Add the potentially arguments for specific commands
-        switch (command) {
-            case Protocol.SEND_MUSIC:
-                System.out.println("SEND_MUSIC received");
-                args.add(2, socket); // 2 because the 1st is the commande, the 2nd the user
-        }
-
-        // Send the command and its arguments to the controller and get the result
-        String result = Commusica.execute(command, args);
-
-        // Send the result to the client
-        out.write(result + Protocol.END_OF_COMMUNICATION);
 
         // Close the connexion
         try {

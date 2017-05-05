@@ -1,6 +1,7 @@
 package ch.tofind.commusica;
 
 import ch.tofind.commusica.file.FileManager;
+import ch.tofind.commusica.network.MulticastSenderReceiver;
 import ch.tofind.commusica.utils.Network;
 import ch.tofind.commusica.network.Protocol;
 import ch.tofind.commusica.network.client.Client;
@@ -8,26 +9,25 @@ import ch.tofind.commusica.network.server.Server;
 import ch.tofind.commusica.session.SessionManager;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.net.*;
+import java.util.*;
 
 public class Commusica {
 
     public static String execute(String command, ArrayList<Object> args) {
 
+        System.out.println("Controller received the following command: " + command);
+
         // Récupère l'ID de l'utilisateur ayant effectué la commande
-        Integer user = (Integer) args.remove(0);
+        String idString = String.valueOf(args.remove(0));
+        Integer user = Integer.valueOf(idString);
 
         // Vérifie si l'utilisateur a déjà une session ou non et la crée au besoin
         SessionManager.getInstance().store(user);
 
         switch (command) {
 
-            case Protocol.SEND_MUSIC:
+            case Protocol.SEND_TRACK:
                 Socket socket = (Socket)args.remove(0);
 
                 // Delegate the job to the FileManager
@@ -44,105 +44,198 @@ public class Commusica {
                 break;
         }
 
-        return "Done";
+        return "Done" + Protocol.END_OF_LINE;
     }
 
-    public static void main(String... args) {
+    public static void main(String[] args) {
 
+        Integer uniqueID;
         Scanner scanner = new Scanner(System.in);
+        InetAddress interfaceToUse;
 
-        InetAddress addressOfInterface = null;
+        TreeMap<String, InetAddress> networkInterfaces = Network.getIPv4Interfaces();
 
-        System.out.println("Which interface do you want to use?");
-        ArrayList<NetworkInterface> interfaces = Network.networkInterfaceChooser();
-        for (int i = 1; i < interfaces.size(); ++i) {
-            System.out.println("[" + i + "] " + interfaces.get(i-1).getName() + ": " + Network.getInet4AddressString(Network.getInet4Address(interfaces.get(i-1))));
-        }
-
-        Network.setAddressOfInterface(Network.getInet4Address(interfaces.get(scanner.nextInt() - 1)));
-
-        while (true) {
-            int type = 0;
-            while (type != 1 && type != 2) {
-                System.out.println("[1] server");
-                System.out.println("[2] client");
-
-                System.out.println("Which one are you?");
+        if (networkInterfaces.size() > 1) {
+            String interfaceChoice = "";
+            while (!networkInterfaces.containsKey(interfaceChoice)) {
+                System.out.println("Which interface to use for the multicast ?");
+                for (Map.Entry<String, InetAddress> networkInterface : networkInterfaces.entrySet()) {
+                    System.out.println(networkInterface.getKey() + " - " + networkInterface.getValue());
+                }
                 System.out.print("> ");
-
-                type = scanner.nextInt();
+                interfaceChoice = scanner.next();
             }
 
+            interfaceToUse = networkInterfaces.get(interfaceChoice);
+        } else {
+            interfaceToUse = networkInterfaces.firstEntry().getValue();
+        }
 
+        uniqueID = Arrays.hashCode(Network.getMacAddress(interfaceToUse));
 
-            if (type == 1) {
-                Server server = new Server(8081, Network.getAddressOfInterface());
+        int launchChoice = -1;
+        while (launchChoice != 0) {
 
-                int actionServer = 0;
-                while (server != null) {
-                    System.out.println("What do you want to do?");
-                    System.out.println("[1] Disconnect");
+            System.out.println("How would you like to launch the program ?");
+            System.out.println("  [0] Quit.");
+            System.out.println("  [1] As the server.");
+            System.out.println("  [2] As the client.");
+            System.out.print("> ");
+            launchChoice = scanner.nextInt();
+
+            if (launchChoice == 1) { // Launch as server
+
+                MulticastSenderReceiver multicastSenderReceiver = new MulticastSenderReceiver(Protocol.MULTICAST_ADDRESS, Protocol.MULTICAST_PORT, interfaceToUse);
+
+                Server server = new Server(Protocol.UNICAST_PORT, Network.getAddressOfInterface());
+
+                multicastSenderReceiver.start();
+                server.start();
+
+                int actionChoice = -1;
+                while (actionChoice != 0) {
+                    System.out.println("Actions");
+                    System.out.println("  [0] Disconnect");
+                    System.out.println("  [1] Send message via Multicast");
                     System.out.print("> ");
 
-                    actionServer = scanner.nextInt();
+                    actionChoice = scanner.nextInt();
 
-                    switch (actionServer) {
-                        case 1:
+                    switch (actionChoice) {
+                        case 0:
+                            multicastSenderReceiver.stop();
                             server.stop();
-                            server = null;
+                            break;
+                        case 1:
+                            multicastSenderReceiver.send("Coucou");
+                            break;
+                        default:
+                            System.out.println("Action not supported.");
+                            break;
                     }
                 }
-            } else {
-                Client client = null;
+
+            } else if (launchChoice == 2) { // Launch as client
+
+                MulticastSenderReceiver multicastSenderReceiver = new MulticastSenderReceiver(Protocol.MULTICAST_ADDRESS, Protocol.MULTICAST_PORT, interfaceToUse);
+
+                InetAddress hostname = null;
                 try {
-                    client = new Client(InetAddress.getByName("localhost"), 8081);
+                    hostname = InetAddress.getByName("localhost");
                 } catch (UnknownHostException e) {
                     e.printStackTrace();
                 }
 
-                int actionClient = 0;
-                while (client != null) {
-                    System.out.println("What do you want to do?");
-                    System.out.println("[1] refresh server list");
-                    System.out.println("[2] connect to server");
-                    System.out.println("[3] Display available servers");
-                    System.out.println("[4] Disconnect");
-                    System.out.println("[5] Send music");
+                multicastSenderReceiver.start();
 
+                Client client = new Client(hostname, Protocol.UNICAST_PORT);
+
+                client.connect();
+
+                int actionChoice = -1;
+                while (actionChoice != 0) {
+                    System.out.println("Actions");
+                    System.out.println("  [0] Disconnect");
+                    System.out.println("  [1] Receive command from Multicast");
+                    System.out.println("  [2] Send track to Unicast");
                     System.out.print("> ");
 
-                    actionClient = scanner.nextInt();
+                    actionChoice = scanner.nextInt();
 
-                    switch (actionClient) {
+                    switch (actionChoice) {
+                        case 0:
+                            multicastSenderReceiver.stop();
+                            String command = Protocol.END_OF_COMMUNICATION + Protocol.END_OF_LINE +
+                                    uniqueID + Protocol.END_OF_LINE +
+                                    Protocol.END_OF_COMMAND + Protocol.END_OF_LINE;
+                            client.send(command);
+                            client.disconnect();
+                            break;
                         case 1:
-                            client.refreshServers();
+                            String message = multicastSenderReceiver.receive();
+                            System.out.println("Message from multicast: " + message);
                             break;
                         case 2:
-                            System.out.println("To which server do you want to connect to?");
-                            System.out.println(client.getServersList().toString());
-                            client.connect(client.getServersList().get(scanner.nextInt() - 1), 8081);
-                            break;
-                        case 3:
-                            System.out.println("Available servers");
-                            System.out.println(client.getServersList().toString());
-                            break;
-                        case 4:
-                            client.fullDisconnect();
-                            client = null;
-                            break;
-                        case 5:
-                            client.sendSong("C:\\Users\\David\\Documents\\YourFuckingMother_x_EHDE_-_Pocket_Monsters_VIP.mp3");
+                            String exit = Protocol.TRACK_REQUEST + Protocol.END_OF_LINE +
+                                    uniqueID + Protocol.END_OF_LINE +
+                                    "{json représentant la track}" + Protocol.END_OF_LINE +
+                                    Protocol.END_OF_COMMAND + Protocol.END_OF_LINE;
+                            client.send(exit);
+                            String result = client.receive();
+                            System.out.println("Resultat: " + result);
                             break;
                         default:
-                            System.out.println("Action not supported ");
-
+                            System.out.println("Action not supported.");
+                            break;
                     }
                 }
-
             }
         }
     }
-    /*
+
+
+
+
+
+
+/*
+            // send the CONNECTION_REQUEST
+            out.write(request + "\n");
+            out.flush();
+
+            // Wait for the SEND_ID request
+            String input;
+            while ((input = in.readLine()) != null) {
+                if (input.equals(Protocol.SEND_ID)) {
+                    break;
+                }
+            }
+
+            // Send the hash of our MAC address
+            //out.write(Integer.toString(id));
+            out.write(Integer.toString(Network.hashMACAddress()) + "\n");
+            out.flush();
+
+            // wait for the acknowledge that the session is created or updated
+            while ((input = in.readLine()) != null) {
+                if (input.equals(Protocol.SESSION_STORED)) {
+                    break;
+                }
+            }
+            // create the playlistUpdate receiver thread and start it
+            if (!isBinded) {
+                new Thread(playlistUpdateReceiver).start();
+                this.serverIP = serverIP;
+                this.port = port;
+                // We connected to the server once
+                isBinded = true;
+            }
+
+            System.out.println("Client " + id + " connected and binded.");
+
+
+        } catch (IOException e) {
+            // we check if some resources should be closed
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            if (out != null) {
+                out.close();
+            }
+
+            if (socket != null) {
+                try {
+                    socket.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
+
     public static void main(String[] args) {
         launch(args);
     }

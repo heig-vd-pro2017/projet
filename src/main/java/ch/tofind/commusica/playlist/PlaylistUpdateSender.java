@@ -16,8 +16,9 @@ import java.net.UnknownHostException;
 /**
  * Runnable used to send by Multicast the current state of the Playlist
  */
-public class PlaylistUpdateSender implements Runnable {
+public class PlaylistUpdateSender {
 
+    /*
     //!
     final static String INET_ADDR = Protocol.IP_MULTICAST_PLAYLIST_UPDATE;
 
@@ -99,4 +100,5 @@ public class PlaylistUpdateSender implements Runnable {
     public void stop() {
         isRunning = false;
     }
+    */
 }

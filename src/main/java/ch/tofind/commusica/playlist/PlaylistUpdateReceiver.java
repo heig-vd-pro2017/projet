@@ -12,8 +12,9 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
-public class PlaylistUpdateReceiver implements Runnable {
+public class PlaylistUpdateReceiver {
 
+    /*
     //!
     final static String INET_ADDR = Protocol.IP_MULTICAST_PLAYLIST_UPDATE;
 
@@ -75,4 +76,5 @@ public class PlaylistUpdateReceiver implements Runnable {
     public void stop() {
         isRunning = false;
     }
+    */
 }

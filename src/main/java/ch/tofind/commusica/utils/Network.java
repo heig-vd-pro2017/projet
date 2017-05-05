@@ -7,88 +7,79 @@ import java.net.MulticastSocket;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Enumeration;
+import java.util.*;
 
 public class Network {
 
     private static InetAddress addressOfInterface = null;
 
-    static public int hashMACAddress() {
+    static public byte[] getMacAddress(InetAddress hostname) {
+
+        byte[] macAddress = null;
+
+        NetworkInterface networkInterface = null;
         try {
-            InetAddress address = InetAddress.getLocalHost();
-            NetworkInterface nwi = NetworkInterface.getByInetAddress(address);
-            byte mac[] = nwi.getHardwareAddress();
-            return Arrays.hashCode(mac);
+            networkInterface = NetworkInterface.getByInetAddress(hostname);
+            macAddress = networkInterface.getHardwareAddress();
         } catch (SocketException e) {
             e.printStackTrace();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
         }
-        return -1;
+        return macAddress;
     }
 
-    static public void wait(int seconde) {
-        try {
-            Thread.sleep(1000 * seconde);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 
-    /**
-     * Method used to choose which network interface you want to use. It set the static variable addressOfInterface
-     */
-    static public ArrayList<NetworkInterface> networkInterfaceChooser() {
+    static public ArrayList<NetworkInterface> getNetworkInterfaces() {
+
         ArrayList<NetworkInterface> networkInterfaces = new ArrayList<>();
 
         try {
             Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-            for (NetworkInterface interface_ : Collections.list(interfaces)) {
-                // we shouldn't care about loopback addresses
-                if (interface_.isLoopback())
+            for (NetworkInterface networkInterface : Collections.list(interfaces)) {
+
+                // We shouldn't care about loopback addresses
+                if (networkInterface.isLoopback())
                     continue;
 
-                // if you don't expect the interface to be up you can skip this
+                // If you don't expect the interface to be up you can skip this
                 // though it would question the usability of the rest of the code
-                if (!interface_.isUp())
+                if (!networkInterface.isUp())
                     continue;
-                if (getInet4Address(interface_) == null)
-                    continue;
-                networkInterfaces.add(interface_);
+
+                networkInterfaces.add(networkInterface);
             }
         } catch (SocketException e) {
             e.printStackTrace();
         }
 
-        if (networkInterfaces.size() == 0) {
-            return null;
-        }
         return networkInterfaces;
     }
 
+    static public TreeMap<String, InetAddress> getIPv4Interfaces() {
 
-    /*
-        The following methods are use to change and display the network interfaces used
-     */
+        ArrayList<NetworkInterface> networkInterfaces = getNetworkInterfaces();
 
-    /**
-     * Return the Inet4Address of the interface
-     *
-     * @param networkInterface
-     * @return Inet4Address of the interface
-     */
-    static public InetAddress getInet4Address(NetworkInterface networkInterface) {
-        Enumeration<InetAddress> addresses = networkInterface.getInetAddresses();
-        for (InetAddress addr : Collections.list(addresses)) {
-            if (addr instanceof Inet4Address) {
-                // remove de '/' of the address String
-                return addr;
+        TreeMap<String, InetAddress> availableIPv4Interfaces = new TreeMap<>();
+
+        for (NetworkInterface networkInterface : networkInterfaces) {
+
+            String interfaceName = networkInterface.getName();
+
+            ArrayList<InetAddress> inetAddresses = Network.getInetAddresses(networkInterface);
+
+            for (InetAddress address : inetAddresses) {
+
+                if (address instanceof Inet4Address) {
+                    availableIPv4Interfaces.put(interfaceName, address);
+                }
             }
         }
-        return null;
+
+        return availableIPv4Interfaces;
+    }
+
+    static public ArrayList<InetAddress> getInetAddresses(NetworkInterface networkInterface) {
+        Enumeration<InetAddress> addresses = networkInterface.getInetAddresses();
+        return Collections.list(addresses);
     }
 
     public static String getInet4AddressString(InetAddress address) {
@@ -116,9 +107,3 @@ public class Network {
         return null;
     }
 }
-
-
-
-
-
-
