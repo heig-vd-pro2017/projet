@@ -25,7 +25,6 @@ public class BackendThread implements Runnable {
     //! Where to read the input
     private BufferedReader in;
 
-
     public BackendThread(Socket socket) {
 
         this.socket = socket;
@@ -53,13 +52,19 @@ public class BackendThread implements Runnable {
 
                 input = in.readLine();
 
-                while (!Protocol.END_OF_COMMAND.equals(input)) {
+                while (input != null && !Protocol.END_OF_COMMAND.equals(input)) {
                     commands.add(input);
                     input = in.readLine();
                 }
 
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+
+            // If one side closed the connection, we simulate an end of communication
+            if (input == null) {
+                commands.add(Protocol.END_OF_COMMUNICATION);
+                commands.add("-1");
             }
 
             // Get the requested command
@@ -71,16 +76,18 @@ public class BackendThread implements Runnable {
             // Add the potentially arguments for specific commands
             switch (command) {
                 case Protocol.SEND_TRACK:
-                    args.add(2, socket); // 2 because the 1st is the commande, the 2nd the user
+                    args.add(1, socket); // 1 because the 0st is the user
+                    break;
             }
 
             // Send the command and its arguments to the controller and get the result
             String result = Commusica.execute(command, args);
 
-            // Send the result to the client
-            out.write(result);
-            out.flush();
-
+            if (!"".equals(result) && command != Protocol.END_OF_COMMUNICATION) {
+                // Send the result to the client
+                out.println(result);
+                out.flush();
+            }
         }
 
         // Close the connexion

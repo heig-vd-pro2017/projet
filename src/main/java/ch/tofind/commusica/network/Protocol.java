@@ -27,6 +27,7 @@ public final class Protocol {
     public static final String TRACK_ACCEPTED = "TRACK_ACCEPTED";
     public static final String TRACK_REFUSED = "TRACK_REFUSED";
     public static final String SEND_TRACK = "SEND_TRACK";
+    public static final String TRACK_SAVED = "TRACK_SAVED";
 
 
 

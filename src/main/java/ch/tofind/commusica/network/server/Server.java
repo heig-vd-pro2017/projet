@@ -15,10 +15,10 @@ public class Server {
     /**
      * @brief Constructor.
      *
+     * @param hostname The address to use.
      * @param port The port to listen on.
-     * @param inetAddress The address to use.
      */
-    public Server(int port, InetAddress inetAddress) {
+    public Server(InetAddress hostname, int port) {
         frontendThread = new FrontendThread(port);
     }
 

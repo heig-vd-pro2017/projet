@@ -22,16 +22,14 @@ public class FrontendThread implements Runnable {
     private int port;
 
     //! Tells if the receptionist is working
-    private boolean isRunning;
-
-    List<BackendThread> backendThreads;
+    private boolean running;
 
     /**
      * @brief Constructor.
      */
     public FrontendThread(int port) {
         this.port = port;
-        backendThreads = new ArrayList<>();
+        this.running = false;
     }
 
     /**
@@ -39,7 +37,7 @@ public class FrontendThread implements Runnable {
      */
     public void stop() {
 
-        isRunning = false;
+        running = false;
 
         try {
             socket.close();
@@ -51,7 +49,7 @@ public class FrontendThread implements Runnable {
     @Override
     public void run() {
 
-        isRunning = true;
+        this.running = true;
 
         try {
             socket = new ServerSocket(port);
@@ -59,7 +57,7 @@ public class FrontendThread implements Runnable {
             e.printStackTrace();
         }
 
-        while (isRunning) {
+        while (running) {
 
             try {
 
@@ -71,7 +69,7 @@ public class FrontendThread implements Runnable {
 
             } catch (SocketException e) {
 
-                if (isRunning) {
+                if (running) {
                     e.printStackTrace();
                 } else {
                     break;

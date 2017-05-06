@@ -1,5 +1,8 @@
 package ch.tofind.commusica.network.client;
 
+import ch.tofind.commusica.Commusica;
+import ch.tofind.commusica.network.Protocol;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -13,12 +16,13 @@ import java.io.BufferedOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**
  * @brief This class represents a network client.
  */
-public class Client {
+public class Client implements Runnable {
 
     //! Logger for debugging proposes.
     final static Logger LOG = Logger.getLogger(Client.class.getName());
@@ -44,17 +48,6 @@ public class Client {
     public Client(InetAddress hostname, int port) {
         this.hostname = hostname;
         this.port = port;
-    }
-
-    /**
-     * @brief Connect to a server of name 'serverName' and on port 'port'. It also send an id (the hash of the MAC address)
-     * to the server to allow the latter creating a session for the client.
-     * It is used only once to connect to the server and set the port and IP if the server.
-     * If you want to reconnect once you used this method, use the connect() method (which just call this method
-     * but with the port and IP already saved in the Client
-     *
-     */
-    public void connect() {
 
         try {
             socket = new Socket(hostname, port);
@@ -64,47 +57,15 @@ public class Client {
             e.printStackTrace();
         }
     }
-    
-    public void disconnect() {
-
-        out.close();
-
-        try {
-            in.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * @brief Send a message to the server.
      *
-     * @param message
+     * @param command
      */
-    public void send(String message) {
-        out.write(message);
+    public void send(String command) {
+        out.write(command + Protocol.END_OF_LINE);
         out.flush();
-    }
-
-    /**
-     * @brief Receive a message from the server.
-     */
-    public String receive() {
-        String result = new String();
-
-        try {
-            result = in.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return result;
     }
 
     /**
@@ -161,6 +122,75 @@ public class Client {
 
         try {
             fileStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void run() {
+
+        String command = null;
+        String input = null;
+
+        while (!Protocol.END_OF_COMMUNICATION.equals(command)) {
+
+            // Store the commands sent by the client
+            ArrayList<String> commands = new ArrayList<>();
+
+            try {
+
+                input = in.readLine();
+
+                while (input != null && !Protocol.END_OF_COMMAND.equals(input)) {
+                    commands.add(input);
+                    input = in.readLine();
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            // If one side closed the connection, we simulate an end of communication
+            if (input == null) {
+                commands.add(Protocol.END_OF_COMMUNICATION);
+                commands.add("-1");
+            }
+
+            // Get the requested command
+            command = commands.remove(0);
+
+            // Prepare the args to send to the controller
+            ArrayList<Object> args = new ArrayList<>(commands);
+
+            // Add the potentially arguments for specific commands
+            switch (command) {
+                case Protocol.SEND_TRACK:
+                    args.add(1, socket); // 1 because the 0st is the user
+                    break;
+            }
+
+            // Send the command and its arguments to the controller and get the result
+            String result = Commusica.execute(command, args);
+
+            if (!"".equals(result) && command != Protocol.END_OF_COMMUNICATION) {
+                // Send the result to the client
+                out.println(result);
+                out.flush();
+            }
+        }
+
+        // Close the connexion
+        try {
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        out.close();
+
+        try {
+            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

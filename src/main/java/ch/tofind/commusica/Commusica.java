@@ -8,7 +8,9 @@ import ch.tofind.commusica.network.client.Client;
 import ch.tofind.commusica.network.server.Server;
 import ch.tofind.commusica.session.SessionManager;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.*;
 import java.util.*;
 
@@ -23,16 +25,37 @@ public class Commusica {
         Integer user = Integer.valueOf(idString);
 
         // Vérifie si l'utilisateur a déjà une session ou non et la crée au besoin
-        SessionManager.getInstance().store(user);
+        //SessionManager.getInstance().store(user);
 
         String result = new String();
 
         switch (command) {
 
-            case Protocol.TRACK_REQUEST:
+            case Protocol.END_OF_COMMUNICATION:
+                System.out.println("End of communication.");
+                break;
 
+            case Protocol.TRACK_REQUEST:
+                result = Protocol.TRACK_ACCEPTED + Protocol.END_OF_LINE +
+                        user + Protocol.END_OF_LINE +
+                        Protocol.END_OF_COMMAND;
+                break;
+            case Protocol.TRACK_ACCEPTED:
+                result = Protocol.SEND_TRACK + Protocol.END_OF_LINE +
+                        user + Protocol.END_OF_LINE +
+                        Protocol.END_OF_COMMAND;
+                // Le client doit encore envoyer la musique
+                break;
+            case Protocol.TRACK_REFUSED:
+                result = Protocol.END_OF_COMMUNICATION + Protocol.END_OF_LINE +
+                        user + Protocol.END_OF_LINE +
+                        Protocol.END_OF_COMMAND;
                 break;
             case Protocol.SEND_TRACK:
+                result = Protocol.TRACK_SAVED + Protocol.END_OF_LINE +
+                        user + Protocol.END_OF_LINE +
+                        Protocol.END_OF_COMMAND;
+                /*
                 Socket socket = (Socket)args.remove(0);
 
                 // Delegate the job to the FileManager
@@ -42,9 +65,12 @@ public class Commusica {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
+                */
                 break;
-
+            case Protocol.TRACK_SAVED:
+                result = Protocol.END_OF_COMMUNICATION + Protocol.END_OF_LINE +
+                        user + Protocol.END_OF_LINE +
+                        Protocol.END_OF_COMMAND;
             default:
                 break;
         }
@@ -92,7 +118,7 @@ public class Commusica {
 
                 MulticastSenderReceiver multicastSenderReceiver = new MulticastSenderReceiver(Protocol.MULTICAST_ADDRESS, Protocol.MULTICAST_PORT, interfaceToUse);
 
-                Server server = new Server(Protocol.UNICAST_PORT, Network.getAddressOfInterface());
+                Server server = new Server(Network.getAddressOfInterface(), Protocol.UNICAST_PORT);
 
                 multicastSenderReceiver.start();
                 server.start();
@@ -133,14 +159,15 @@ public class Commusica {
 
                 multicastSenderReceiver.start();
 
-                Client client = new Client(hostname, Protocol.UNICAST_PORT);
-
-                client.connect();
-
                 int actionChoice = -1;
                 while (actionChoice != 0) {
+
+                    Client client = new Client(hostname, Protocol.UNICAST_PORT);
+
+                    new Thread(client).start();
+
                     System.out.println("Actions");
-                    System.out.println("  [0] Disconnect");
+                    System.out.println("  [0] Quit");
                     System.out.println("  [1] Receive command from Multicast");
                     System.out.println("  [2] Send track to Unicast");
                     System.out.print("> ");
@@ -152,9 +179,8 @@ public class Commusica {
                             multicastSenderReceiver.stop();
                             String command = Protocol.END_OF_COMMUNICATION + Protocol.END_OF_LINE +
                                     uniqueID + Protocol.END_OF_LINE +
-                                    Protocol.END_OF_COMMAND + Protocol.END_OF_LINE;
+                                    Protocol.END_OF_COMMAND;
                             client.send(command);
-                            client.disconnect();
                             break;
                         case 1:
                             String message = multicastSenderReceiver.receive();
@@ -164,10 +190,8 @@ public class Commusica {
                             String exit = Protocol.TRACK_REQUEST + Protocol.END_OF_LINE +
                                     uniqueID + Protocol.END_OF_LINE +
                                     "{json représentant la track}" + Protocol.END_OF_LINE +
-                                    Protocol.END_OF_COMMAND + Protocol.END_OF_LINE;
+                                    Protocol.END_OF_COMMAND;
                             client.send(exit);
-                            String result = client.receive();
-                            System.out.println("Resultat: " + result);
                             break;
                         default:
                             System.out.println("Action not supported.");
@@ -178,69 +202,7 @@ public class Commusica {
         }
     }
 
-
-
-
-
-
-/*
-            // send the CONNECTION_REQUEST
-            out.write(request + "\n");
-            out.flush();
-
-            // Wait for the SEND_ID request
-            String input;
-            while ((input = in.readLine()) != null) {
-                if (input.equals(Protocol.SEND_ID)) {
-                    break;
-                }
-            }
-
-            // Send the hash of our MAC address
-            //out.write(Integer.toString(id));
-            out.write(Integer.toString(Network.hashMACAddress()) + "\n");
-            out.flush();
-
-            // wait for the acknowledge that the session is created or updated
-            while ((input = in.readLine()) != null) {
-                if (input.equals(Protocol.SESSION_STORED)) {
-                    break;
-                }
-            }
-            // create the playlistUpdate receiver thread and start it
-            if (!isBinded) {
-                new Thread(playlistUpdateReceiver).start();
-                this.serverIP = serverIP;
-                this.port = port;
-                // We connected to the server once
-                isBinded = true;
-            }
-
-            System.out.println("Client " + id + " connected and binded.");
-
-
-        } catch (IOException e) {
-            // we check if some resources should be closed
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-            if (out != null) {
-                out.close();
-            }
-
-            if (socket != null) {
-                try {
-                    socket.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        }
-
+    /*
     public static void main(String[] args) {
         launch(args);
     }
