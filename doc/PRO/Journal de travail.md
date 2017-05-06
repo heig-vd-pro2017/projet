@@ -1,12 +1,25 @@
 # Journal de travail
 *Le journal de travail débute le 15.03.2017*
 
-<<<<<<< HEAD
+## 06.05.2017
+### Lucas Elisei
+* Finalisation de la fusion du panneau "chanson précédente" (0h30).
+* Correction de quelques bugs liés aux précédentes itérations (1h30).
+
+## 03.05.2017
+### Lucas Elisei
+* Fusion du panneau "playlist en cours de lecture" avec le code (1h00).
+* Implémentation d'une structure de données pour le tri des chansons des playlists (2h00).
+* Début de la fusion du panneau "chanson précédente" avec le code (0h15).
+
 ## 02.05.2017
 ### David Truan
 * Finition de quelques bugs du serveur (1h).
 * Délégation du transfert de fichier au FileManager(10min).
 * Refonte de la classe Session (30min).
+
+### Lucas Elisei
+* Fusion du panneau "chanson en cours de lecture" avec le code (1h00).
 
 ## 01.05.2017
 ### David Truan
@@ -15,14 +28,15 @@
     * Singletons des threads.
     * Remise en forme du client.
 
+### Lucas Elisei
+* Documentation quant à la fusion du code et de l'interface graphique (0h30).
+
 ## 30.04.2017
 ### David Truan
 * Transfert de fichier .mp3 et implémentation dans le projet (2h)
 * Mise au propre des classes du package network et finition du protocole (1h)
 * Mise en place de la mise à jour de la playlist (1h)
 
-=======
->>>>>>> 0695e970e0288e18cc02c8dcfc9abb914ae5db76
 ## 23.04.2017
 ### Lucas Elisei
 * Implémentation du player dans l'interface graphique (1h00)
