@@ -30,6 +30,39 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>com.github.chrischristo</groupId>
+                <artifactId>capsule-maven-plugin</artifactId>
+                <version>1.2.0</version>
+                <configuration>
+                    <appClass>ch.tofind.commusica.Commusica</appClass>
+                    <properties>
+                        <property>
+                            <key>java.net.preferIPv4Stack</key>
+                            <value>true</value>
+                        </property>
+                    </properties>
+                    <manifest>
+                        <entry>
+                            <key>JVM-Args</key>
+                            <value>-Djava.net.preferIPv4Stack=true</value>
+                        </entry>
+                        <entry>
+                            <key>Min-Java-Version</key>
+                            <value>1.8.0</value>
+                        </entry>
+                    </manifest>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <properties>
