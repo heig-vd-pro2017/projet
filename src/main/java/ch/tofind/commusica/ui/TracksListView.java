@@ -40,6 +40,22 @@ public class TracksListView extends ListView<PlaylistTrack> {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        setItems(FXCollections.emptyObservableList());
+
+        setCellFactory((ListView<PlaylistTrack> view) -> new ListCell<PlaylistTrack>() {
+            @Override
+            public void updateItem(PlaylistTrack playlistTrack, boolean empty) {
+                super.updateItem(playlistTrack, empty);
+
+                if (playlistTrack != null) {
+                    PlaylistTrackCell cell = new PlaylistTrackCell(playlistTrack);
+                    setGraphic(cell.getPane());
+                } else {
+                    setGraphic(null);
+                }
+            }
+        });
     }
 
     /**
@@ -56,19 +72,7 @@ public class TracksListView extends ListView<PlaylistTrack> {
         setItems(FXCollections.observableArrayList());
 
         playlistManager.loadPlaylist(playlist);
-        setItems(FXCollections.observableArrayList(playlistManager.getPlaylistTracks()));
 
-        setCellFactory((ListView<PlaylistTrack> view) -> new ListCell<PlaylistTrack>() {
-            @Override
-            public void updateItem(PlaylistTrack playlistTrack, boolean empty) {
-                super.updateItem(playlistTrack, empty);
-
-                if (playlistTrack != null) {
-                    PlaylistTrackCell cell = new PlaylistTrackCell(playlistTrack);
-                    setGraphic(cell.getPane());
-                }
-            }
-        });
+        setItems(playlistManager.getObservableTracksList());
     }
-
 }

@@ -1,17 +1,15 @@
 package ch.tofind.commusica.ui;
 
 import ch.tofind.commusica.media.Player;
-import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.playlist.PlaylistTrack;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
@@ -82,30 +80,64 @@ public class CurrentTrackView extends GridPane {
 
         // What to do when the current track changes.
         player.getCurrentTrackProperty().addListener((observable, oldTrack, newTrack) -> {
-            PlaylistTrack playlistTrack = playlistManager.getPlaylistTrack(newTrack);
-            albumLabel.setText(newTrack.getAlbum());
-            artistLabel.setText(newTrack.getArtist());
-            titleLabel.setText(newTrack.getTitle());
-            votesLabel.setText(String.valueOf(playlistTrack.getVotesProperty().intValue()));
+            if (newTrack == null) {
+                albumLabel.setText("-");
+                artistLabel.setText("-");
+                titleLabel.setText("-");
+                votesLabel.setText("-");
+                favoriteImageView.setImage(new Image(FAV_EMPTY_IMAGE));
+            } else {
+                PlaylistTrack playlistTrack = playlistManager.getPlaylistTrack(newTrack);
+                albumLabel.setText(newTrack.getAlbum());
+                artistLabel.setText(newTrack.getArtist());
+                titleLabel.setText(newTrack.getTitle());
+                votesLabel.setText(String.valueOf(playlistTrack.getVotesProperty().intValue()));
 
-            favoriteImageView.setImage((new Image(newTrack.getFavoritedProperty().getValue() ? FAV_FULL_IMAGE : FAV_EMPTY_IMAGE)));
-            newTrack.getFavoritedProperty().addListener(((obs, oldValue, newValue) -> {
-                favoriteImageView.setImage((new Image(newValue ? FAV_FULL_IMAGE : FAV_EMPTY_IMAGE)));
-            }));
+                favoriteImageView.setImage((new Image(newTrack.getFavoritedProperty().getValue() ? FAV_FULL_IMAGE : FAV_EMPTY_IMAGE)));
+                newTrack.getFavoritedProperty().addListener(((obs, oldValue, newValue) -> {
+                    favoriteImageView.setImage((new Image(newValue ? FAV_FULL_IMAGE : FAV_EMPTY_IMAGE)));
+                }));
 
-            playlistTrack.getVotesProperty().addListener((obs, oldValue, newValue) -> {
-                votesLabel.setText(String.valueOf(newValue.intValue()));
-            });
+                playlistTrack.getVotesProperty().addListener((obs, oldValue, newValue) -> {
+                    votesLabel.setText(String.valueOf(newValue.intValue()));
+                });
+            }
         });
 
         // What to do when the elapsed time for the current track changes.
         player.getCurrentTimeProperty().addListener((observable, oldValue, newValue) -> {
-            int total = player.getCurrentTrack().getLength();
-            int current = newValue.intValue();
-            int diff = total - current;
+            if (player.getCurrentTrackProperty().getValue() != null) {
+                int total = player.getCurrentTrack().getLength();
+                int current = newValue.intValue();
+                int diff = total - current;
 
-            durationLabel.setText(String.format("-%02d:%02d", diff / 60, diff % 60));
-            durationBar.setProgress((double)current / (double)total);
+                durationLabel.setText(String.format("-%02d:%02d", diff / 60, diff % 60));
+                durationBar.setProgress((double) current / (double) total);
+            } else {
+                durationLabel.setText("00:00");
+                durationBar.setProgress(0.0);
+            }
         });
+    }
+
+    @FXML
+    private void downvote(MouseEvent e) {
+        if(player.getCurrentTrack() != null) {
+            playlistManager.getPlaylistTrack(player.getCurrentTrack()).downvote();
+        }
+    }
+
+    @FXML
+    private void favorite(MouseEvent e) {
+        if(player.getCurrentTrack() != null) {
+            player.getCurrentTrack().getFavoritedProperty().setValue(!player.getCurrentTrack().getFavoritedProperty().getValue());
+        }
+    }
+
+    @FXML
+    private void upvote(MouseEvent e) {
+        if(player.getCurrentTrack() != null) {
+            playlistManager.getPlaylistTrack(player.getCurrentTrack()).upvote();
+        }
     }
 }

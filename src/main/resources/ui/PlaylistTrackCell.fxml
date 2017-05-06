@@ -12,12 +12,12 @@
 
 <?language javascript?>
 
-<AnchorPane fx:id="trackPane" maxHeight="70.0" minHeight="70.0" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="trackPane" maxHeight="80.0" minHeight="80.0" xmlns:fx="http://javafx.com/fxml/1">
 
     <GridPane hgap="5.0" vgap="5.0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
 
         <padding>
-            <Insets bottom="5.0" left="10.0" right="10.0" top="5.0"/>
+            <Insets bottom="10.0" left="15.0" right="15.0" top="10.0"/>
         </padding>
 
         <columnConstraints>
@@ -69,91 +69,3 @@
     </GridPane>
 
 </AnchorPane>
-
-<!--<?import java.lang.Double?>
-<AnchorPane fx:id="trackPane" maxHeight="60.0" minHeight="60.0" xmlns:fx="http://javafx.com/fxml/1"
-            xmlns="http://javafx.com/javafx/8.0.112">
-
-    <fx:define>
-        <Double fx:id="ICONS_SIZE" fx:value="20.0"/>
-    </fx:define>
-
-    <padding>
-        <Insets bottom="5" left="10" right="10" top="5"/>
-    </padding>
-
-    <GridPane hgap="10" vgap="5" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
-              AnchorPane.topAnchor="0">
-        <columnConstraints>
-            <ColumnConstraints hgrow="ALWAYS" />
-            <ColumnConstraints hgrow="NEVER" maxWidth="65.0" minWidth="65.0" />
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints percentHeight="60"/>
-            <RowConstraints percentHeight="40"/>
-        </rowConstraints>
-
-        <Label fx:id="titleLabel" text="Title" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.rowIndex="0"
-               GridPane.valignment="BOTTOM">
-            <font>
-                <Font size="22"/>
-            </font>
-        </Label>
-
-        <Label fx:id="artistLabel" style="-fx-text-fill: #A8A8A8;" text="Artist - Album - Duration" GridPane.columnIndex="0"
-               GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
-            <font>
-                <Font size="14"/>
-            </font>
-        </Label>
-
-        <ImageView fx:id="upvoteImageView" fitHeight="$ICONS_SIZE" onMouseClicked="#upvote" pickOnBounds="true"
-                   preserveRatio="true"
-                   GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="0" GridPane.valignment="TOP">
-            <image>
-                <Image url="@icons/upvote.png"/>
-            </image>
-            <fx:script>
-                var tooltip = new javafx.scene.control.Tooltip('Upvote');
-                javafx.scene.control.Tooltip.install(upvoteImageView, tooltip);
-            </fx:script>
-        </ImageView>
-
-        <ImageView fx:id="downvoteImageView" fitHeight="$ICONS_SIZE" onMouseClicked="#downvote" pickOnBounds="true"
-                   preserveRatio="true"
-                   GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1"
-                   GridPane.valignment="BOTTOM">
-            <image>
-                <Image url="@icons/downvote.png"/>
-            </image>
-            <fx:script>
-                var tooltip = new javafx.scene.control.Tooltip('Downvote');
-                javafx.scene.control.Tooltip.install(downvoteImageView, tooltip);
-            </fx:script>
-        </ImageView>
-
-        <Label fx:id="votesLabel" alignment="CENTER" maxWidth="$ICONS_SIZE" minWidth="$ICONS_SIZE" text="0"
-               textAlignment="CENTER"
-               GridPane.columnIndex="1" GridPane.columnSpan="1" GridPane.halignment="RIGHT" GridPane.rowIndex="0"
-               GridPane.rowSpan="2" GridPane.valignment="CENTER">
-            <fx:script>
-                var tooltip = new javafx.scene.control.Tooltip('Votes');
-                javafx.scene.control.Tooltip.install(votesLabel, tooltip);
-            </fx:script>
-        </Label>
-
-        <ImageView fx:id="favoriteImageView" fitHeight="$ICONS_SIZE" onMouseClicked="#favorite" pickOnBounds="true"
-                   preserveRatio="true"
-                   GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="0"
-                   GridPane.valignment="CENTER" GridPane.rowSpan="2">
-            <GridPane.margin>
-                <Insets right="25.0"/>
-            </GridPane.margin>
-            <fx:script>
-                var tooltip = new javafx.scene.control.Tooltip('Favorite');
-                javafx.scene.control.Tooltip.install(favoriteImageView, tooltip);
-            </fx:script>
-        </ImageView>
-    </GridPane>
-
-</AnchorPane>-->

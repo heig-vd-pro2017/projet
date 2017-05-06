@@ -32,9 +32,9 @@ public class Commusica {
         Playlist playlist1 = new Playlist("Test1");
         Playlist playlist2 = new Playlist("Test2");
 
-        Track track1 = new Track("Test1", "Test", "Test", 123, "/Users/faku99/Desktop/tmp/BLOOD.mp3", false);
-        Track track2 = new Track("Test2", "Test", "Test", 132, "/Users/faku99/Desktop/tmp/DNA.mp3", true);
-        Track track3 = new Track("Test3", "Test", "Test", 321, "/Users/faku99/Desktop/tmp/HUMBLE.mp3", false);
+        Track track1 = new Track("BLOOD", "Kendrick Lamar", "DAMN.", 119, "/Users/faku99/Desktop/tmp/BLOOD.mp3", false);
+        Track track2 = new Track("DNA", "Kendrick Lamar", "DAMN.", 186, "/Users/faku99/Desktop/tmp/DNA.mp3", true);
+        Track track3 = new Track("HUMBLE", "Kendrick Lamar", "DAMN.", 177, "/Users/faku99/Desktop/tmp/HUMBLE.mp3", false);
 
         PlaylistTrack pt11 = new PlaylistTrack(playlist1, track1);
         PlaylistTrack pt12 = new PlaylistTrack(playlist1, track2);

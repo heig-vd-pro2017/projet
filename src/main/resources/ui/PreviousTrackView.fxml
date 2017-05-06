@@ -31,26 +31,26 @@
         <Image url="@icons/back_arrow.png" />
     </ImageView>
 
-    <Label text="Title" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.halignment="LEFT">
+    <Label fx:id="titleLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.halignment="LEFT">
         <font>
             <Font size="22.0" />
         </font>
     </Label>
 
-    <Label styleClass="subtitle" text="Artist" GridPane.columnIndex="1" GridPane.rowIndex="1">
+    <Label fx:id="artistLabel" styleClass="subtitle" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1">
         <font>
             <Font size="14.0" />
         </font>
     </Label>
 
-    <Label styleClass="subtitle" text="Album" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="TOP">
+    <Label fx:id="albumLabel" styleClass="subtitle" text="-" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="TOP">
         <font>
             <Font size="14.0" />
         </font>
     </Label>
 
-    <ImageView fitWidth="20.0" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.rowSpan="3" GridPane.valignment="CENTER">
-        <Image url="@icons/fav_empty.png" />
+    <ImageView fx:id="favoriteImageView" fitWidth="20.0" onMouseClicked="#favorite" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.rowSpan="3" GridPane.valignment="CENTER">
+        <Image url="@icons/fav_empty.png"/>
     </ImageView>
 
 </fx:root>

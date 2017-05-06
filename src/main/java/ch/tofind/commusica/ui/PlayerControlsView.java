@@ -1,6 +1,7 @@
 package ch.tofind.commusica.ui;
 
 import ch.tofind.commusica.media.Player;
+import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
 
 import javafx.fxml.FXML;
@@ -19,7 +20,7 @@ import java.util.ResourceBundle;
 /**
  * @brief This class represents
  */
-public class PlayerControlsView extends GridPane implements Initializable {
+public class PlayerControlsView extends GridPane {
 
     //! CSS class.
     public static final String CSS_CLASS = "player-controls-view";
@@ -35,6 +36,10 @@ public class PlayerControlsView extends GridPane implements Initializable {
 
     //! Player to use.
     private static Player player = Player.getCurrentPlayer();
+
+    private static final String PLAY_IMAGE = "ui/icons/play.png";
+
+    private static final String PAUSE_IMAGE = "ui/icons/pause.png";
 
     //! Volume step.
     private static final Double VOLUME_STEP = 1.0 / 16.0; // Pourrait être récupéré depuis le fichier de configuration ?
@@ -64,11 +69,16 @@ public class PlayerControlsView extends GridPane implements Initializable {
         getStyleClass().add(CSS_CLASS);
         getStylesheets().add(CSS_FILE);
 
-        if(player.isPlaying()) {
-            playPauseImageView.setImage(new Image("ui/icons/pause.png"));
-        } else {
-            playPauseImageView.setImage(new Image("ui/icons/play.png"));
-        }
+        volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (player != null) {
+                player.setVolume(newValue.doubleValue());
+            }
+        });
+
+        playPauseImageView.setImage(new Image(player.isPlaying() ? PAUSE_IMAGE : PLAY_IMAGE));
+        player.getIsPlayingProperty().addListener(((observable, oldValue, newValue) -> {
+            playPauseImageView.setImage(new Image(newValue ? PAUSE_IMAGE : PLAY_IMAGE));
+        }));
     }
 
     /**
@@ -89,6 +99,10 @@ public class PlayerControlsView extends GridPane implements Initializable {
     @FXML
     private void next(MouseEvent e) {
         LOG.log(Logger.Level.INFO, "Asked for next track.");
+
+        if(Configuration.getInstance().get("DEBUG").equals("1")) {
+            player.load();
+        }
     }
 
     /**
@@ -100,10 +114,8 @@ public class PlayerControlsView extends GridPane implements Initializable {
     private void playPause(MouseEvent e) {
         if(player.isPlaying()) {
             player.pause();
-            playPauseImageView.setImage(new Image("ui/icons/play.png"));
         } else {
             player.play();
-            playPauseImageView.setImage(new Image("ui/icons/pause.png"));
         }
 
         player.setVolume(volumeSlider.getValue());
@@ -127,15 +139,5 @@ public class PlayerControlsView extends GridPane implements Initializable {
     @FXML
     private void riseVolume(MouseEvent e) {
         volumeSlider.adjustValue(volumeSlider.getValue() + VOLUME_STEP);
-    }
-
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (player != null) {
-                player.setVolume(newValue.doubleValue());
-            }
-        });
     }
 }

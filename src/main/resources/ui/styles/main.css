@@ -10,7 +10,7 @@
 }
 
 #tracks-list {
-    -fx-background-insets: 0, 0 1 0 1;
+    -fx-background-insets: 0, 1 1 0 1;
 }
 
 #bottom-center-pane {
@@ -21,4 +21,8 @@
 .subtitle {
     -fx-text-fill: #A8A8A8;
     -fx-padding: 0 0 0 5px;
+}
+
+.played-song {
+    -fx-background-color: #DADADA;
 }

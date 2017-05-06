@@ -5,7 +5,9 @@ import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.TrackProperty;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaException;
@@ -23,11 +25,13 @@ public class Player {
 
     private final TrackProperty currentTrackProperty;
 
+    private final TrackProperty previousTrackProperty;
+
     private double volumeStep;
 
     private static Player currentPlayer;
 
-    private boolean isPlaying = false;
+    private final BooleanProperty isPlayingProperty;
 
     /**
      * @brief Player single constructor. Avoid the instantiation.
@@ -37,6 +41,8 @@ public class Player {
 
         currentTimeProperty = new SimpleIntegerProperty(0);
         currentTrackProperty = new TrackProperty();
+        previousTrackProperty = new TrackProperty();
+        isPlayingProperty = new SimpleBooleanProperty(false);
     }
 
     public static Player getCurrentPlayer() {
@@ -52,12 +58,16 @@ public class Player {
     }
 
     public void load() {
-        if (currentTrackProperty.getValue() == null) {
-            currentTrackProperty.setValue(PlaylistManager.getInstance().nextTrack());
+        if (currentTrackProperty.getValue() != null) {
+            previousTrackProperty.setValue(currentTrackProperty.getValue());
         }
+
+        currentTrackProperty.setValue(PlaylistManager.getInstance().nextTrack());
 
         if (currentTrackProperty.getValue() != null) {
             Media media = null;
+
+            LOG.info("new track: " + currentTrackProperty.getValue().getTitle());
 
             try {
                 media = new Media(new File(currentTrackProperty.getValue().getUri()).toURI().toString());
@@ -68,6 +78,7 @@ public class Player {
             // Stop current player if there is one.
             if(player != null) {
                 LOG.info("Previous player stopped.");
+                isPlayingProperty.setValue(false);
                 player.stop();
             }
 
@@ -84,11 +95,11 @@ public class Player {
             player.setOnEndOfMedia(() -> {
                 stop();
                 load();
-                play();
             });
 
         } else {
             stop();
+            currentTrackProperty.setValue(null);
         }
     }
 
@@ -104,8 +115,16 @@ public class Player {
         return currentTrackProperty;
     }
 
+    public TrackProperty getPreviousTrackProperty() {
+        return previousTrackProperty;
+    }
+
+    public BooleanProperty getIsPlayingProperty() {
+        return isPlayingProperty;
+    }
+
     public boolean isPlaying() {
-        return isPlaying;
+        return isPlayingProperty.getValue();
     }
 
     public void play() {
@@ -113,17 +132,17 @@ public class Player {
             load();
         }
         player.play();
-        isPlaying = true;
+        isPlayingProperty.setValue(true);
     }
 
     public void pause() {
         player.pause();
-        isPlaying = false;
+        isPlayingProperty.setValue(false);
     }
 
     public void stop() {
         player.stop();
-        isPlaying = false;
+        isPlayingProperty.setValue(false);
     }
 
     public void riseVolume() {

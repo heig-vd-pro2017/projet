@@ -6,7 +6,9 @@ import ch.tofind.commusica.utils.Logger;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -92,6 +94,22 @@ public class PlaylistTrackCell {
 
         playlistTrack.getVotesProperty().addListener(((observable, oldValue, newValue) -> {
             votesLabel.setText(String.valueOf(newValue.intValue()));
+        }));
+
+        // Set value at loading.
+        if (playlistTrack.getBeenPlayedProperty().getValue()) {
+            trackPane.getStyleClass().add("played-song");
+        } else {
+            trackPane.getStyleClass().remove("played-song");
+        }
+
+        // Listen to changes.
+        playlistTrack.getBeenPlayedProperty().addListener(((observable, oldValue, newValue) -> {
+            if (newValue) {
+                trackPane.getStyleClass().add("played-song");
+            } else {
+                trackPane.getStyleClass().remove("played-song");
+            }
         }));
     }
 
