@@ -62,7 +62,7 @@ public class Server implements Runnable {
                 Socket clientSocket = socket.accept();
 
                 // DOIT ENCORE AJOUTER CE THREAD A UN PULL DE THREAD
-                Client client = new Client(clientSocket);
+                UnicastClient client = new UnicastClient(clientSocket);
                 new Thread(client).start();
 
             } catch (SocketException e) {

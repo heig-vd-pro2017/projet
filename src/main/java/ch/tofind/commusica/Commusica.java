@@ -1,7 +1,7 @@
 package ch.tofind.commusica;
 
-import ch.tofind.commusica.network.MulticastSenderReceiver;
-import ch.tofind.commusica.network.Client;
+import ch.tofind.commusica.network.MulticastClient;
+import ch.tofind.commusica.network.UnicastClient;
 import ch.tofind.commusica.network.Server;
 import ch.tofind.commusica.utils.Network;
 import ch.tofind.commusica.network.Protocol;
@@ -111,11 +111,11 @@ public class Commusica {
 
             if (launchChoice == 1) { // Launch as server
 
-                MulticastSenderReceiver multicastSenderReceiver = new MulticastSenderReceiver(Protocol.MULTICAST_ADDRESS, Protocol.MULTICAST_PORT, interfaceToUse);
+                MulticastClient multicastClient = new MulticastClient(Protocol.MULTICAST_ADDRESS, Protocol.MULTICAST_PORT, interfaceToUse);
 
                 Server server = new Server(Protocol.UNICAST_PORT);
 
-                multicastSenderReceiver.start();
+                new Thread(multicastClient).start();
                 new Thread(server).start();
 
                 int actionChoice = -1;
@@ -129,11 +129,14 @@ public class Commusica {
 
                     switch (actionChoice) {
                         case 0:
-                            multicastSenderReceiver.stop();
+                            multicastClient.stop();
                             server.stop();
                             break;
                         case 1:
-                            multicastSenderReceiver.send("Coucou");
+                            String command = "Bonsoir" + Protocol.END_OF_LINE +
+                                    uniqueID + Protocol.END_OF_LINE +
+                                    Protocol.END_OF_COMMAND;
+                            multicastClient.send(command);
                             break;
                         default:
                             System.out.println("Action not supported.");
@@ -143,7 +146,9 @@ public class Commusica {
 
             } else if (launchChoice == 2) { // Launch as client
 
-                MulticastSenderReceiver multicastSenderReceiver = new MulticastSenderReceiver(Protocol.MULTICAST_ADDRESS, Protocol.MULTICAST_PORT, interfaceToUse);
+                MulticastClient multicastClient = new MulticastClient(Protocol.MULTICAST_ADDRESS, Protocol.MULTICAST_PORT, interfaceToUse);
+
+                new Thread(multicastClient).start();
 
                 InetAddress hostname = null;
                 try {
@@ -152,36 +157,29 @@ public class Commusica {
                     e.printStackTrace();
                 }
 
-                multicastSenderReceiver.start();
-
                 int actionChoice = -1;
                 while (actionChoice != 0) {
 
-                    Client client = new Client(hostname, Protocol.UNICAST_PORT);
+                    UnicastClient client = new UnicastClient(hostname, Protocol.UNICAST_PORT);
 
                     new Thread(client).start();
 
                     System.out.println("Actions");
                     System.out.println("  [0] Quit");
-                    System.out.println("  [1] Receive command from Multicast");
-                    System.out.println("  [2] Send track to Unicast");
+                    System.out.println("  [1] Send track to Unicast");
                     System.out.print("> ");
 
                     actionChoice = scanner.nextInt();
 
                     switch (actionChoice) {
                         case 0:
-                            multicastSenderReceiver.stop();
+                            multicastClient.stop();
                             String command = Protocol.END_OF_COMMUNICATION + Protocol.END_OF_LINE +
                                     uniqueID + Protocol.END_OF_LINE +
                                     Protocol.END_OF_COMMAND;
                             client.send(command);
                             break;
                         case 1:
-                            String message = multicastSenderReceiver.receive();
-                            System.out.println("Message from multicast: " + message);
-                            break;
-                        case 2:
                             String exit = Protocol.TRACK_REQUEST + Protocol.END_OF_LINE +
                                     uniqueID + Protocol.END_OF_LINE +
                                     "{json représentant la track}" + Protocol.END_OF_LINE +

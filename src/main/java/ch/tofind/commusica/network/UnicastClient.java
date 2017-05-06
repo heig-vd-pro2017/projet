@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * is where we implement the application protocol logic, i.e. where we read
  * data sent by the client and where we generate the responses.
  */
-public class Client implements Runnable {
+public class UnicastClient implements Runnable {
 
     //! Socket to use for the communication
     private Socket socket;
@@ -26,7 +26,7 @@ public class Client implements Runnable {
     //! Where to read the input
     private BufferedReader in;
 
-    public Client(InetAddress hostname, int port) {
+    public UnicastClient(InetAddress hostname, int port) {
 
         try {
             this.socket = new Socket(hostname, port);
@@ -37,7 +37,7 @@ public class Client implements Runnable {
         }
     }
 
-    public Client(Socket socket) {
+    public UnicastClient(Socket socket) {
 
         this.socket = socket;
 

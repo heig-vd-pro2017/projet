@@ -1,7 +1,7 @@
 package ch.tofind.commusica.core;
 
 import ch.tofind.commusica.file.FileManager;
-import ch.tofind.commusica.network.Client;
+import ch.tofind.commusica.network.UnicastClient;
 import ch.tofind.commusica.network.Protocol;
 import ch.tofind.commusica.network.Server;
 
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class Core {
 
     private Server server;
-    private Client client;
+    private UnicastClient client;
     private Integer id;
 
     public Core(Server server, Integer id) {
@@ -21,7 +21,7 @@ public class Core {
         this.id = id;
     }
 
-    public Core(Client client, Integer id) {
+    public Core(UnicastClient client, Integer id) {
         this.client = client;
         this.server = null;
         this.id = id;
