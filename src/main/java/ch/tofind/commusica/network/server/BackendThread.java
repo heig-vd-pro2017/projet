@@ -3,11 +3,9 @@ package ch.tofind.commusica.network.server;
 import ch.tofind.commusica.Commusica;
 import ch.tofind.commusica.network.Protocol;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 /**
@@ -33,8 +31,8 @@ public class BackendThread implements Runnable {
         this.socket = socket;
 
         try {
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            out = new PrintWriter(socket.getOutputStream());
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+            out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -80,7 +78,8 @@ public class BackendThread implements Runnable {
             String result = Commusica.execute(command, args);
 
             // Send the result to the client
-            out.println(result);
+            out.write(result);
+            out.flush();
 
         }
 

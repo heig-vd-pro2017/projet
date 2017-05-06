@@ -25,8 +25,13 @@ public class Commusica {
         // Vérifie si l'utilisateur a déjà une session ou non et la crée au besoin
         SessionManager.getInstance().store(user);
 
+        String result = new String();
+
         switch (command) {
 
+            case Protocol.TRACK_REQUEST:
+
+                break;
             case Protocol.SEND_TRACK:
                 Socket socket = (Socket)args.remove(0);
 
@@ -44,7 +49,7 @@ public class Commusica {
                 break;
         }
 
-        return "Done" + Protocol.END_OF_LINE;
+        return result;
     }
 
     public static void main(String[] args) {

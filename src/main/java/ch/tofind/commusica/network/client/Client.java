@@ -1,7 +1,5 @@
 package ch.tofind.commusica.network.client;
 
-import ch.tofind.commusica.network.Protocol;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -14,6 +12,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
 /**
@@ -59,8 +58,8 @@ public class Client {
 
         try {
             socket = new Socket(hostname, port);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+            out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -68,13 +67,13 @@ public class Client {
     
     public void disconnect() {
 
+        out.close();
+
         try {
             in.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        out.close();
 
         try {
             socket.close();
