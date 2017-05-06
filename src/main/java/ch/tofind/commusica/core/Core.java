@@ -1,9 +1,9 @@
 package ch.tofind.commusica.core;
 
 import ch.tofind.commusica.file.FileManager;
+import ch.tofind.commusica.network.Client;
 import ch.tofind.commusica.network.Protocol;
-import ch.tofind.commusica.network.client.Client;
-import ch.tofind.commusica.network.server.Server;
+import ch.tofind.commusica.network.Server;
 
 import java.io.IOException;
 import java.net.Socket;

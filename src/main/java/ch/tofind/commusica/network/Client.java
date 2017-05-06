@@ -1,9 +1,10 @@
-package ch.tofind.commusica.network.server;
+package ch.tofind.commusica.network;
 
 import ch.tofind.commusica.Commusica;
 import ch.tofind.commusica.network.Protocol;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
  * is where we implement the application protocol logic, i.e. where we read
  * data sent by the client and where we generate the responses.
  */
-public class BackendThread implements Runnable {
+public class Client implements Runnable {
 
     //! Socket to use for the communication
     private Socket socket;
@@ -25,13 +26,93 @@ public class BackendThread implements Runnable {
     //! Where to read the input
     private BufferedReader in;
 
-    public BackendThread(Socket socket) {
+    public Client(InetAddress hostname, int port) {
+
+        try {
+            this.socket = new Socket(hostname, port);
+            this.in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+            this.out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Client(Socket socket) {
 
         this.socket = socket;
 
         try {
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-            out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+            this.in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+            this.out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @brief Send a message to the server.
+     *
+     * @param command
+     */
+    public void send(String command) {
+        out.write(command + Protocol.END_OF_LINE);
+        out.flush();
+    }
+
+    /**
+     * Send a file to the server.
+     *
+     * @param file
+     */
+    public void send(File file) {
+
+        FileInputStream fileStream = null;
+        try {
+            fileStream = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        BufferedInputStream fileBytes = new BufferedInputStream(fileStream);
+
+        BufferedOutputStream out = null;
+        try {
+            out = new BufferedOutputStream(socket.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        byte[] buffer = new byte[8192];
+        int size;
+
+        // Read the file and send it to the server
+        try {
+
+            while ((size = fileBytes.read(buffer)) != -1) {
+                out.write(buffer, 0, size);
+            }
+
+            out.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Close all the streams
+        try {
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            fileBytes.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            fileStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

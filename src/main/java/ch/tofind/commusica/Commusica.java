@@ -1,16 +1,11 @@
 package ch.tofind.commusica;
 
-import ch.tofind.commusica.file.FileManager;
 import ch.tofind.commusica.network.MulticastSenderReceiver;
+import ch.tofind.commusica.network.Client;
+import ch.tofind.commusica.network.Server;
 import ch.tofind.commusica.utils.Network;
 import ch.tofind.commusica.network.Protocol;
-import ch.tofind.commusica.network.client.Client;
-import ch.tofind.commusica.network.server.Server;
-import ch.tofind.commusica.session.SessionManager;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.*;
 import java.util.*;
 
@@ -118,10 +113,10 @@ public class Commusica {
 
                 MulticastSenderReceiver multicastSenderReceiver = new MulticastSenderReceiver(Protocol.MULTICAST_ADDRESS, Protocol.MULTICAST_PORT, interfaceToUse);
 
-                Server server = new Server(Network.getAddressOfInterface(), Protocol.UNICAST_PORT);
+                Server server = new Server(Protocol.UNICAST_PORT);
 
                 multicastSenderReceiver.start();
-                server.start();
+                new Thread(server).start();
 
                 int actionChoice = -1;
                 while (actionChoice != 0) {

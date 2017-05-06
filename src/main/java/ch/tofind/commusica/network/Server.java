@@ -1,11 +1,9 @@
-package ch.tofind.commusica.network.server;
+package ch.tofind.commusica.network;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class implements the behavior of the "receptionist", whose
@@ -13,7 +11,7 @@ import java.util.List;
  * new client has arrived, the receptionist delegates the processing to a
  * "servant" who will execute on its own thread.
  */
-public class FrontendThread implements Runnable {
+public class Server implements Runnable {
 
     //! Socket to use for the communication
     private ServerSocket socket;
@@ -27,7 +25,7 @@ public class FrontendThread implements Runnable {
     /**
      * @brief Constructor.
      */
-    public FrontendThread(int port) {
+    public Server(int port) {
         this.port = port;
         this.running = false;
     }
@@ -64,8 +62,8 @@ public class FrontendThread implements Runnable {
                 Socket clientSocket = socket.accept();
 
                 // DOIT ENCORE AJOUTER CE THREAD A UN PULL DE THREAD
-                BackendThread backendThread = new BackendThread(clientSocket);
-                new Thread(backendThread).start();
+                Client client = new Client(clientSocket);
+                new Thread(client).start();
 
             } catch (SocketException e) {
 
