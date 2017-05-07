@@ -86,7 +86,7 @@ public class PlaylistUpdateSender {
                 msgPacket = new DatagramPacket(msg.getBytes(),
                         msg.getBytes().length, addr, Protocol.PORT_MULTICAST_PLAYLIST_UPDATE);
                 serverSocket.send(msgPacket);
-                //System.out.println("Server sent packet with msg: " + msg);
+                //System.out.println("ServerCore sent packet with msg: " + msg);
                 Thread.sleep(Protocol.TIME_PLAYLIST_UPDATE);
             }
             serverSocket.close();

@@ -59,7 +59,7 @@ public class SessionManager {
     public void store(Integer id) {
 
         if (activeSessions.containsKey(id)) {
-            Session session = inactiveSessions.get(id);
+            Session session = activeSessions.get(id);
             session.update();
         } else if (inactiveSessions.containsKey(id)) {
             Session session = inactiveSessions.remove(id);

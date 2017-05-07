@@ -1,5 +1,6 @@
 package ch.tofind.commusica;
 
+import ch.tofind.commusica.core.Core;
 import ch.tofind.commusica.network.MulticastClient;
 import ch.tofind.commusica.network.UnicastClient;
 import ch.tofind.commusica.network.Server;
@@ -10,68 +11,6 @@ import java.net.*;
 import java.util.*;
 
 public class Commusica {
-
-    public static String execute(String command, ArrayList<Object> args) {
-
-        System.out.println("Controller received the following command: " + command);
-
-        // Récupère l'ID de l'utilisateur ayant effectué la commande
-        String idString = String.valueOf(args.remove(0));
-        Integer user = Integer.valueOf(idString);
-
-        // Vérifie si l'utilisateur a déjà une session ou non et la crée au besoin
-        //SessionManager.getInstance().store(user);
-
-        String result = new String();
-
-        switch (command) {
-
-            case Protocol.END_OF_COMMUNICATION:
-                System.out.println("End of communication.");
-                break;
-
-            case Protocol.TRACK_REQUEST:
-                result = Protocol.TRACK_ACCEPTED + Protocol.END_OF_LINE +
-                        user + Protocol.END_OF_LINE +
-                        Protocol.END_OF_COMMAND;
-                break;
-            case Protocol.TRACK_ACCEPTED:
-                result = Protocol.SEND_TRACK + Protocol.END_OF_LINE +
-                        user + Protocol.END_OF_LINE +
-                        Protocol.END_OF_COMMAND;
-                // Le client doit encore envoyer la musique
-                break;
-            case Protocol.TRACK_REFUSED:
-                result = Protocol.END_OF_COMMUNICATION + Protocol.END_OF_LINE +
-                        user + Protocol.END_OF_LINE +
-                        Protocol.END_OF_COMMAND;
-                break;
-            case Protocol.SEND_TRACK:
-                result = Protocol.TRACK_SAVED + Protocol.END_OF_LINE +
-                        user + Protocol.END_OF_LINE +
-                        Protocol.END_OF_COMMAND;
-                /*
-                Socket socket = (Socket)args.remove(0);
-
-                // Delegate the job to the FileManager
-                try {
-                    System.out.println("Delegating to FM");
-                    FileManager.getInstance().retrieveFile(socket.getInputStream());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                */
-                break;
-            case Protocol.TRACK_SAVED:
-                result = Protocol.END_OF_COMMUNICATION + Protocol.END_OF_LINE +
-                        user + Protocol.END_OF_LINE +
-                        Protocol.END_OF_COMMAND;
-            default:
-                break;
-        }
-
-        return result;
-    }
 
     public static void main(String[] args) {
 
@@ -111,12 +50,8 @@ public class Commusica {
 
             if (launchChoice == 1) { // Launch as server
 
-                MulticastClient multicastClient = new MulticastClient(Protocol.MULTICAST_ADDRESS, Protocol.MULTICAST_PORT, interfaceToUse);
-
-                Server server = new Server(Protocol.UNICAST_PORT);
-
-                new Thread(multicastClient).start();
-                new Thread(server).start();
+                Core core = new Core(uniqueID, "Serveur bonsoir", interfaceToUse);
+                core.setupAsServer();
 
                 int actionChoice = -1;
                 while (actionChoice != 0) {
@@ -129,14 +64,13 @@ public class Commusica {
 
                     switch (actionChoice) {
                         case 0:
-                            multicastClient.stop();
-                            server.stop();
+                            core.stop();
                             break;
                         case 1:
                             String command = "Bonsoir" + Protocol.END_OF_LINE +
                                     uniqueID + Protocol.END_OF_LINE +
                                     Protocol.END_OF_COMMAND;
-                            multicastClient.send(command);
+                            core.send(command);
                             break;
                         default:
                             System.out.println("Action not supported.");
@@ -146,9 +80,8 @@ public class Commusica {
 
             } else if (launchChoice == 2) { // Launch as client
 
-                MulticastClient multicastClient = new MulticastClient(Protocol.MULTICAST_ADDRESS, Protocol.MULTICAST_PORT, interfaceToUse);
-
-                new Thread(multicastClient).start();
+                Core core = new Core(uniqueID, "Client bonjour", interfaceToUse);
+                core.setupAsClient();
 
                 InetAddress hostname = null;
                 try {
@@ -160,10 +93,6 @@ public class Commusica {
                 int actionChoice = -1;
                 while (actionChoice != 0) {
 
-                    UnicastClient client = new UnicastClient(hostname, Protocol.UNICAST_PORT);
-
-                    new Thread(client).start();
-
                     System.out.println("Actions");
                     System.out.println("  [0] Quit");
                     System.out.println("  [1] Send track to Unicast");
@@ -171,13 +100,12 @@ public class Commusica {
 
                     actionChoice = scanner.nextInt();
 
+                    UnicastClient client = new UnicastClient(hostname, Protocol.UNICAST_PORT);
+                    new Thread(client).start();
+
                     switch (actionChoice) {
                         case 0:
-                            multicastClient.stop();
-                            String command = Protocol.END_OF_COMMUNICATION + Protocol.END_OF_LINE +
-                                    uniqueID + Protocol.END_OF_LINE +
-                                    Protocol.END_OF_COMMAND;
-                            client.send(command);
+                            core.stop();
                             break;
                         case 1:
                             String exit = Protocol.TRACK_REQUEST + Protocol.END_OF_LINE +

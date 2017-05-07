@@ -1,6 +1,8 @@
 package ch.tofind.commusica.network;
 
 import ch.tofind.commusica.Commusica;
+import ch.tofind.commusica.core.Core;
+import ch.tofind.commusica.core.ServerCore;
 import ch.tofind.commusica.network.Protocol;
 
 import java.io.*;
@@ -162,7 +164,7 @@ public class UnicastClient implements Runnable {
             }
 
             // Send the command and its arguments to the controller and get the result
-            String result = Commusica.execute(command, args);
+            String result = Core.execute(command, args);
 
             if (!"".equals(result) && command != Protocol.END_OF_COMMUNICATION) {
                 // Send the result to the client

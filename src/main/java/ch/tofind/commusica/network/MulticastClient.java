@@ -1,6 +1,7 @@
 package ch.tofind.commusica.network;
 
 import ch.tofind.commusica.Commusica;
+import ch.tofind.commusica.core.Core;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -115,7 +116,7 @@ public class MulticastClient implements Runnable {
             ArrayList<Object> args = new ArrayList<>(commands);
 
             // Send the command and its arguments to the controller and get the result
-            String result = Commusica.execute(command, args);
+            String result = Core.execute(command, args);
 
             if (!result.equals("") && command != Protocol.END_OF_COMMUNICATION) {
                 send(result);
