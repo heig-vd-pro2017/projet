@@ -2,7 +2,9 @@ package ch.tofind.commusica.network;
 
 import ch.tofind.commusica.Commusica;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
@@ -26,7 +28,7 @@ public class MulticastClient implements Runnable {
     private InetAddress multicastGroup;
 
     //!
-    private MulticastSocket socket = null;
+    private MulticastSocket socket;
 
     //!
     private boolean running;
@@ -80,22 +82,30 @@ public class MulticastClient implements Runnable {
             try {
 
                 socket.receive(in);
-                input = new String(in.getData()).trim();
+
+                byte[] rawData = in.getData();
+
+                String data = new String(rawData).trim();
+
+                BufferedReader reader = new BufferedReader(new StringReader(data));
+
+                input = reader.readLine();
 
                 while (input != null && !input.equals(Protocol.END_OF_COMMAND)) {
                     commands.add(input);
-                    socket.receive(in);
-                    input = new String(in.getData()).trim();
+                    input = reader.readLine();
                 }
 
+                reader.close();
+
+            } catch (SocketException e) {
+                input = null;
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            // If one side closed the connection, we simulate an end of communication
             if (input == null) {
-                commands.add(Protocol.END_OF_COMMUNICATION);
-                commands.add("-1");
+                break;
             }
 
             // Get the requested command
@@ -124,11 +134,11 @@ public class MulticastClient implements Runnable {
         byte[] messageBytes = message.getBytes();
 
         // Prepare the packet
-        DatagramPacket outPacket = new DatagramPacket(messageBytes, messageBytes.length, multicastGroup, port);
+        DatagramPacket out = new DatagramPacket(messageBytes, messageBytes.length, multicastGroup, port);
 
         // Send the packet
         try {
-            socket.send(outPacket);
+            socket.send(out);
         } catch (IOException e) {
             e.printStackTrace();
         }
