@@ -25,7 +25,12 @@ public class ServerCore extends AbstractCore {
     }
 
     @Override
-    public void send(String message) {
+    public void sendUnicast(String message) {
+
+    }
+
+    @Override
+    public void sendMulticast(String message) {
         multicast.send(message);
     }
 
@@ -41,7 +46,6 @@ public class ServerCore extends AbstractCore {
         return "";
     }
 
-    @Override
     public String TRACK_REQUEST(ArrayList<Object> args) {
         String result = Protocol.TRACK_ACCEPTED + Protocol.END_OF_LINE +
                 12345 + Protocol.END_OF_LINE +
@@ -49,17 +53,6 @@ public class ServerCore extends AbstractCore {
         return result;
     }
 
-    @Override
-    public String TRACK_ACCEPTED(ArrayList<Object> args) {
-        return END_OF_COMMUNICATION(args);
-    }
-
-    @Override
-    public String TRACK_REFUSED(ArrayList<Object> args) {
-        return END_OF_COMMUNICATION(args);
-    }
-
-    @Override
     public String SEND_TRACK(ArrayList<Object> args) {
         String result = Protocol.TRACK_SAVED + Protocol.END_OF_LINE +
                 12345 + Protocol.END_OF_LINE +
@@ -76,10 +69,5 @@ public class ServerCore extends AbstractCore {
                 }
                 */
         return result;
-    }
-
-    @Override
-    public String TRACK_SAVED(ArrayList<Object> args) {
-        return END_OF_COMMUNICATION(args);
     }
 }

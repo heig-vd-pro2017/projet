@@ -40,8 +40,12 @@ public class Core {
         instance = new ClientCore(Protocol.MULTICAST_ADDRESS, Protocol.MULTICAST_PORT, interfaceToUse);
     }
 
-    public void send(String message) {
-        instance.send(message);
+    public void sendUnicast(String message) {
+        instance.sendUnicast(message);
+    }
+
+    public void sendMulticast(String message) {
+        instance.sendMulticast(message);
     }
 
     public void stop() {

@@ -38,21 +38,12 @@ abstract class AbstractCore {
         return result;
     }
 
-    abstract void send(String message);
+    abstract void sendUnicast(String message);
+
+    abstract void sendMulticast(String message);
 
     abstract void stop();
 
-    // Protocol commands
+    // Common protocol commands
     abstract String END_OF_COMMUNICATION(ArrayList<Object> args);
-
-    abstract String TRACK_REQUEST(ArrayList<Object> args);
-
-    abstract String TRACK_ACCEPTED(ArrayList<Object> args);
-
-    abstract String TRACK_REFUSED(ArrayList<Object> args);
-
-    abstract String SEND_TRACK(ArrayList<Object> args);
-
-    abstract String TRACK_SAVED(ArrayList<Object> args);
-
 }

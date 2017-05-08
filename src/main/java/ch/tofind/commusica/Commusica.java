@@ -1,9 +1,7 @@
 package ch.tofind.commusica;
 
 import ch.tofind.commusica.core.Core;
-import ch.tofind.commusica.network.MulticastClient;
 import ch.tofind.commusica.network.UnicastClient;
-import ch.tofind.commusica.network.Server;
 import ch.tofind.commusica.utils.Network;
 import ch.tofind.commusica.network.Protocol;
 
@@ -70,7 +68,7 @@ public class Commusica {
                             String command = "Bonsoir" + Protocol.END_OF_LINE +
                                     uniqueID + Protocol.END_OF_LINE +
                                     Protocol.END_OF_COMMAND;
-                            core.send(command);
+                            core.sendUnicast(command);
                             break;
                         default:
                             System.out.println("Action not supported.");
@@ -82,6 +80,9 @@ public class Commusica {
 
                 Core core = new Core(uniqueID, "Client bonjour", interfaceToUse);
                 core.setupAsClient();
+
+                // Discovery servers every 10 seconds
+                
 
                 InetAddress hostname = null;
                 try {

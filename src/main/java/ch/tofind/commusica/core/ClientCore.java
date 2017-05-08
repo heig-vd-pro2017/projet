@@ -17,8 +17,13 @@ public class ClientCore extends AbstractCore {
     }
 
     @Override
-    public void send(String message) {
+    public void sendUnicast(String message) {
 
+    }
+
+    @Override
+    public void sendMulticast(String message) {
+        multicast.send(message);
     }
 
     @Override
@@ -32,12 +37,6 @@ public class ClientCore extends AbstractCore {
         return "";
     }
 
-    @Override
-    public String TRACK_REQUEST(ArrayList<Object> args) {
-        return END_OF_COMMUNICATION(args);
-    }
-
-    @Override
     public String TRACK_ACCEPTED(ArrayList<Object> args) {
         String result = Protocol.SEND_TRACK + Protocol.END_OF_LINE +
                 12345 + Protocol.END_OF_LINE +
@@ -45,7 +44,6 @@ public class ClientCore extends AbstractCore {
         return result;
     }
 
-    @Override
     public String TRACK_REFUSED(ArrayList<Object> args) {
         String result = Protocol.END_OF_COMMUNICATION + Protocol.END_OF_LINE +
                 12345 + Protocol.END_OF_LINE +
@@ -53,12 +51,6 @@ public class ClientCore extends AbstractCore {
         return result;
     }
 
-    @Override
-    public String SEND_TRACK(ArrayList<Object> args) {
-        return END_OF_COMMUNICATION(args);
-    }
-
-    @Override
     public String TRACK_SAVED(ArrayList<Object> args) {
         String result = Protocol.END_OF_COMMUNICATION + Protocol.END_OF_LINE +
                 12345 + Protocol.END_OF_LINE +

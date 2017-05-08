@@ -166,7 +166,7 @@ public class UnicastClient implements Runnable {
             // Send the command and its arguments to the controller and get the result
             String result = Core.execute(command, args);
 
-            if (!"".equals(result) && command != Protocol.END_OF_COMMUNICATION) {
+            if (!result.equals("") && command != Protocol.END_OF_COMMUNICATION) {
                 // Send the result to the client
                 out.println(result);
                 out.flush();

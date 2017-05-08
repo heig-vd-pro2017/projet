@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This class implements the behavior of the "receptionist", whose
@@ -22,12 +25,16 @@ public class Server implements Runnable {
     //! Tells if the receptionist is working
     private boolean running;
 
+    //!
+    private ExecutorService threadPool;
+
     /**
      * @brief Constructor.
      */
     public Server(int port) {
         this.port = port;
         this.running = false;
+        this.threadPool = Executors.newCachedThreadPool();
     }
 
     /**
@@ -41,6 +48,22 @@ public class Server implements Runnable {
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        // Try to stop all remaining threads
+        threadPool.shutdown();
+
+        // Wait 5 seconds before killing everyone
+        try {
+            threadPool.awaitTermination(5, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            if (!threadPool.isTerminated()) {
+                System.err.println("cancel non-finished tasks");
+            }
+            threadPool.shutdownNow();
+            System.out.println("shutdown finished");
         }
     }
 
@@ -61,9 +84,10 @@ public class Server implements Runnable {
 
                 Socket clientSocket = socket.accept();
 
-                // DOIT ENCORE AJOUTER CE THREAD A UN PULL DE THREAD
-                UnicastClient client = new UnicastClient(clientSocket);
-                new Thread(client).start();
+                // Create a client and add it to the thread pool
+                Thread client = new Thread(new UnicastClient(clientSocket));
+                client.start();
+                //threadPool.submit(client);
 
             } catch (SocketException e) {
 
@@ -77,8 +101,5 @@ public class Server implements Runnable {
                 e.printStackTrace();
             }
         }
-
-        // DOIT NETTOYER LE PULL DE THREAD POUR LES ARRETER CORRECTEMENT
-
     }
 }
