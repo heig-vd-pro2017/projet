@@ -1,19 +1,14 @@
 package ch.tofind.commusica.core;
 
-import ch.tofind.commusica.network.Protocol;
+import ch.tofind.commusica.network.NetworkProtocol;
+
 import java.net.InetAddress;
 import java.util.ArrayList;
 
-public class Core {
+public class Core implements ICore {
 
     //! Shared instance of the object for all the application
     private static AbstractCore instance = null;
-
-    //! Unique ID of the Core
-    private Integer id;
-
-    //! Name of the Core
-    private String name;
 
     //! Interface to use for Multicast
     private InetAddress interfaceToUse;
@@ -22,9 +17,7 @@ public class Core {
         return instance.execute(command, args);
     }
 
-    public Core(Integer id, String name, InetAddress interfaceToUse) {
-        this.id = id;
-        this.name = name;
+    public Core(InetAddress interfaceToUse) {
         this.interfaceToUse = interfaceToUse;
     }
 
@@ -32,16 +25,16 @@ public class Core {
         return instance;
     }
 
-    public void setupAsServer() {
-        instance = new ServerCore(Protocol.MULTICAST_ADDRESS, Protocol.MULTICAST_PORT, interfaceToUse, Protocol.UNICAST_PORT);
+    public void setupAsServer(String name) {
+        instance = new ServerCore(name, NetworkProtocol.MULTICAST_ADDRESS, NetworkProtocol.MULTICAST_PORT, interfaceToUse, NetworkProtocol.UNICAST_PORT);
     }
 
     public void setupAsClient() {
-        instance = new ClientCore(Protocol.MULTICAST_ADDRESS, Protocol.MULTICAST_PORT, interfaceToUse);
+        instance = new ClientCore(NetworkProtocol.MULTICAST_ADDRESS, NetworkProtocol.MULTICAST_PORT, interfaceToUse);
     }
 
-    public void sendUnicast(String message) {
-        instance.sendUnicast(message);
+    public void sendUnicast(InetAddress hostname, String message) {
+        instance.sendUnicast(hostname, message);
     }
 
     public void sendMulticast(String message) {

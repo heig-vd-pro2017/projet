@@ -1,18 +1,5 @@
 package ch.tofind.commusica.playlist;
 
-import ch.tofind.commusica.media.Playlist;
-import ch.tofind.commusica.utils.Network;
-import ch.tofind.commusica.network.Protocol;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.net.MulticastSocket;
-import java.net.UnknownHostException;
-
 /**
  * Runnable used to send by Multicast the current state of the Playlist
  */
@@ -20,7 +7,7 @@ public class PlaylistUpdateSender {
 
     /*
     //!
-    final static String INET_ADDR = Protocol.IP_MULTICAST_PLAYLIST_UPDATE;
+    final static String INET_ADDR = ApplicationProtocol.IP_MULTICAST_PLAYLIST_UPDATE;
 
     //!
     private MulticastSocket serverSocket;
@@ -70,13 +57,13 @@ public class PlaylistUpdateSender {
 
         // Open a new MulticastSocket, which will be used to send the data.
         try {
-            serverSocket = new MulticastSocket(Protocol.PORT_MULTICAST_PLAYLIST_UPDATE);
+            serverSocket = new MulticastSocket(ApplicationProtocol.PORT_MULTICAST_PLAYLIST_UPDATE);
 
             serverSocket.joinGroup(addr);
 
             while(isRunning) {
-                DatagramPacket msgPacket = new DatagramPacket(Protocol.PLAYLIST_UPDATED.getBytes(),
-                        Protocol.PLAYLIST_UPDATED.getBytes().length, addr, Protocol.PORT_MULTICAST_PLAYLIST_UPDATE);
+                DatagramPacket msgPacket = new DatagramPacket(ApplicationProtocol.PLAYLIST_UPDATED.getBytes(),
+                        ApplicationProtocol.PLAYLIST_UPDATED.getBytes().length, addr, ApplicationProtocol.PORT_MULTICAST_PLAYLIST_UPDATE);
                 serverSocket.send(msgPacket);
 
                 // We get the current playlist and JSONify it then we send it over Multicast
@@ -84,10 +71,10 @@ public class PlaylistUpdateSender {
                 String msg = gson.toJson(playlist, Playlist.class);
 
                 msgPacket = new DatagramPacket(msg.getBytes(),
-                        msg.getBytes().length, addr, Protocol.PORT_MULTICAST_PLAYLIST_UPDATE);
+                        msg.getBytes().length, addr, ApplicationProtocol.PORT_MULTICAST_PLAYLIST_UPDATE);
                 serverSocket.send(msgPacket);
                 //System.out.println("ServerCore sent packet with msg: " + msg);
-                Thread.sleep(Protocol.TIME_PLAYLIST_UPDATE);
+                Thread.sleep(ApplicationProtocol.TIME_PLAYLIST_UPDATE);
             }
             serverSocket.close();
         } catch (IOException ex) {

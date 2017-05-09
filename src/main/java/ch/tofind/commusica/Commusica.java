@@ -1,9 +1,9 @@
 package ch.tofind.commusica;
 
+import ch.tofind.commusica.core.ApplicationProtocol;
 import ch.tofind.commusica.core.Core;
-import ch.tofind.commusica.network.UnicastClient;
+import ch.tofind.commusica.network.NetworkProtocol;
 import ch.tofind.commusica.utils.Network;
-import ch.tofind.commusica.network.Protocol;
 
 import java.net.*;
 import java.util.*;
@@ -48,8 +48,8 @@ public class Commusica {
 
             if (launchChoice == 1) { // Launch as server
 
-                Core core = new Core(uniqueID, "Serveur bonsoir", interfaceToUse);
-                core.setupAsServer();
+                Core core = new Core(interfaceToUse);
+                core.setupAsServer("Soirée de Lulu 4");
 
                 int actionChoice = -1;
                 while (actionChoice != 0) {
@@ -65,10 +65,10 @@ public class Commusica {
                             core.stop();
                             break;
                         case 1:
-                            String command = "Bonsoir" + Protocol.END_OF_LINE +
-                                    uniqueID + Protocol.END_OF_LINE +
-                                    Protocol.END_OF_COMMAND;
-                            core.sendUnicast(command);
+                            String command = "Bonsoir" + NetworkProtocol.END_OF_LINE +
+                                    uniqueID + NetworkProtocol.END_OF_LINE +
+                                    NetworkProtocol.END_OF_COMMAND;
+                            core.sendMulticast(command);
                             break;
                         default:
                             System.out.println("Action not supported.");
@@ -78,11 +78,16 @@ public class Commusica {
 
             } else if (launchChoice == 2) { // Launch as client
 
-                Core core = new Core(uniqueID, "Client bonjour", interfaceToUse);
+                Core core = new Core(interfaceToUse);
                 core.setupAsClient();
 
                 // Discovery servers every 10 seconds
-                
+                //ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+
+                //scheduledExecutorService.scheduleAtFixedRate(() -> {
+                //    core.execute(ApplicationProtocol.DISCOVER_SERVER, null);
+                //}, 0, 5, TimeUnit.SECONDS);
+
 
                 InetAddress hostname = null;
                 try {
@@ -101,19 +106,16 @@ public class Commusica {
 
                     actionChoice = scanner.nextInt();
 
-                    UnicastClient client = new UnicastClient(hostname, Protocol.UNICAST_PORT);
-                    new Thread(client).start();
-
                     switch (actionChoice) {
                         case 0:
                             core.stop();
                             break;
                         case 1:
-                            String exit = Protocol.TRACK_REQUEST + Protocol.END_OF_LINE +
-                                    uniqueID + Protocol.END_OF_LINE +
-                                    "{json représentant la track}" + Protocol.END_OF_LINE +
-                                    Protocol.END_OF_COMMAND;
-                            client.send(exit);
+                            String command = ApplicationProtocol.TRACK_REQUEST + NetworkProtocol.END_OF_LINE +
+                                    uniqueID + NetworkProtocol.END_OF_LINE +
+                                    "{json représentant la track}" + NetworkProtocol.END_OF_LINE +
+                                    NetworkProtocol.END_OF_COMMAND;
+                            core.sendUnicast(hostname, command);
                             break;
                         default:
                             System.out.println("Action not supported.");

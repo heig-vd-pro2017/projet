@@ -40,7 +40,7 @@ public class SessionManager {
 
         scheduledExecutorService.scheduleAtFixedRate(() -> {
             deleteObsoleteSessions();
-        }, 0, 1, TimeUnit.SECONDS);
+        }, 0, 30, TimeUnit.SECONDS);
     }
 
     public static SessionManager getInstance() {

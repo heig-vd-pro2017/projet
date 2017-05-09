@@ -42,8 +42,8 @@ public class Network {
 
                 // If you don't expect the interface to be up you can skip this
                 // though it would question the usability of the rest of the code
-                if (!networkInterface.isUp())
-                    continue;
+                //if (!networkInterface.isUp())
+                    //continue;
 
                 networkInterfaces.add(networkInterface);
             }

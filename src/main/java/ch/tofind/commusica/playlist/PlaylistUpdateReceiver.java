@@ -1,22 +1,10 @@
 package ch.tofind.commusica.playlist;
 
-import ch.tofind.commusica.media.Playlist;
-import ch.tofind.commusica.utils.Network;
-import ch.tofind.commusica.network.Protocol;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.net.MulticastSocket;
-
 public class PlaylistUpdateReceiver {
 
     /*
     //!
-    final static String INET_ADDR = Protocol.IP_MULTICAST_PLAYLIST_UPDATE;
+    final static String INET_ADDR = ApplicationProtocol.IP_MULTICAST_PLAYLIST_UPDATE;
 
     //!
     private boolean isRunning;
@@ -41,7 +29,7 @@ public class PlaylistUpdateReceiver {
 
         try {
             address = InetAddress.getByName(INET_ADDR);
-            MulticastSocket clientSocket = new MulticastSocket(Protocol.PORT_MULTICAST_PLAYLIST_UPDATE);
+            MulticastSocket clientSocket = new MulticastSocket(ApplicationProtocol.PORT_MULTICAST_PLAYLIST_UPDATE);
 
             clientSocket.setInterface(addressOfInterface);
 
@@ -55,7 +43,7 @@ public class PlaylistUpdateReceiver {
                 DatagramPacket msgPacket = new DatagramPacket(buf, buf.length);
 
                 clientSocket.receive(msgPacket);
-                if (new String(buf, 0, buf.length).equals(Protocol.PLAYLIST_UPDATED)) {
+                if (new String(buf, 0, buf.length).equals(ApplicationProtocol.PLAYLIST_UPDATED)) {
                     buf = new byte[2048];
                     msgPacket = new DatagramPacket(buf, buf.length);
                     clientSocket.receive(msgPacket);

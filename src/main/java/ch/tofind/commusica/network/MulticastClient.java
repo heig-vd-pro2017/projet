@@ -1,6 +1,5 @@
 package ch.tofind.commusica.network;
 
-import ch.tofind.commusica.Commusica;
 import ch.tofind.commusica.core.Core;
 
 import java.io.BufferedReader;
@@ -12,15 +11,13 @@ import java.net.MulticastSocket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 /**
  * @brief This class receives data from the server by multicast.
  */
 public class MulticastClient implements Runnable {
-
-    //! Logger for debugging proposes.
-    private static Logger LOG = Logger.getLogger(MulticastClient.class.getName());
 
     //!
     private int port;
@@ -39,25 +36,26 @@ public class MulticastClient implements Runnable {
         this.running = false;
 
         try {
-            this.socket = new MulticastSocket(port);
+            socket = new MulticastSocket(port);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         try {
-            this.socket.setInterface(interfaceToUse);
+            socket.setInterface(interfaceToUse);
+            socket.setLoopbackMode(false);
         } catch (SocketException e) {
             e.printStackTrace();
         }
 
         try {
-            this.multicastGroup = InetAddress.getByName(multicastAddress);
+            multicastGroup = InetAddress.getByName(multicastAddress);
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
 
         try {
-            this.socket.joinGroup(multicastGroup);
+            socket.joinGroup(multicastGroup);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -72,7 +70,7 @@ public class MulticastClient implements Runnable {
         byte[] reponse = new byte[64];
         DatagramPacket in = new DatagramPacket(reponse, reponse.length);
 
-        String command = null;
+        String command;
         String input = null;
 
         while (running) {
@@ -92,7 +90,7 @@ public class MulticastClient implements Runnable {
 
                 input = reader.readLine();
 
-                while (input != null && !input.equals(Protocol.END_OF_COMMAND)) {
+                while ((input != null) && !Objects.equals(input, NetworkProtocol.END_OF_COMMAND)) {
                     commands.add(input);
                     input = reader.readLine();
                 }
@@ -100,13 +98,9 @@ public class MulticastClient implements Runnable {
                 reader.close();
 
             } catch (SocketException e) {
-                input = null;
+                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
-            }
-
-            if (input == null) {
-                break;
             }
 
             // Get the requested command
@@ -118,8 +112,8 @@ public class MulticastClient implements Runnable {
             // Send the command and its arguments to the controller and get the result
             String result = Core.execute(command, args);
 
-            if (!result.equals("") && command != Protocol.END_OF_COMMUNICATION) {
-                send(result);
+            if (!Objects.equals(result, "")) {
+                send(result + NetworkProtocol.END_OF_LINE);
             }
         }
     }

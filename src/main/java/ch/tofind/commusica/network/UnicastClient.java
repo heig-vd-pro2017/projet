@@ -1,15 +1,14 @@
 package ch.tofind.commusica.network;
 
-import ch.tofind.commusica.Commusica;
+import ch.tofind.commusica.core.ApplicationProtocol;
 import ch.tofind.commusica.core.Core;
-import ch.tofind.commusica.core.ServerCore;
-import ch.tofind.commusica.network.Protocol;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * @brief This class implements the behavior of the "servants", whose
@@ -57,7 +56,7 @@ public class UnicastClient implements Runnable {
      * @param command
      */
     public void send(String command) {
-        out.write(command + Protocol.END_OF_LINE);
+        out.write(command + NetworkProtocol.END_OF_LINE);
         out.flush();
     }
 
@@ -126,7 +125,7 @@ public class UnicastClient implements Runnable {
         String command = null;
         String input = null;
 
-        while (!Protocol.END_OF_COMMUNICATION.equals(command)) {
+        while (!Objects.equals(command, NetworkProtocol.END_OF_COMMUNICATION)) {
 
             // Store the commands sent by the client
             ArrayList<String> commands = new ArrayList<>();
@@ -135,7 +134,7 @@ public class UnicastClient implements Runnable {
 
                 input = in.readLine();
 
-                while (input != null && !Protocol.END_OF_COMMAND.equals(input)) {
+                while (input != null && !Objects.equals(input, NetworkProtocol.END_OF_COMMAND)) {
                     commands.add(input);
                     input = in.readLine();
                 }
@@ -146,8 +145,7 @@ public class UnicastClient implements Runnable {
 
             // If one side closed the connection, we simulate an end of communication
             if (input == null) {
-                commands.add(Protocol.END_OF_COMMUNICATION);
-                commands.add("-1");
+                commands.add(NetworkProtocol.END_OF_COMMUNICATION);
             }
 
             // Get the requested command
@@ -156,9 +154,10 @@ public class UnicastClient implements Runnable {
             // Prepare the args to send to the controller
             ArrayList<Object> args = new ArrayList<>(commands);
 
+            // A VOIR POUR MODIFIER !!
             // Add the potentially arguments for specific commands
             switch (command) {
-                case Protocol.SEND_TRACK:
+                case ApplicationProtocol.SEND_TRACK:
                     args.add(1, socket); // 1 because the 0st is the user
                     break;
             }
@@ -166,9 +165,9 @@ public class UnicastClient implements Runnable {
             // Send the command and its arguments to the controller and get the result
             String result = Core.execute(command, args);
 
-            if (!result.equals("") && command != Protocol.END_OF_COMMUNICATION) {
+            if (!Objects.equals(result, "") && !Objects.equals(command, NetworkProtocol.END_OF_COMMUNICATION)) {
                 // Send the result to the client
-                out.println(result);
+                out.write(result + NetworkProtocol.END_OF_LINE);
                 out.flush();
             }
         }
