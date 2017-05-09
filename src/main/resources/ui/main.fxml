@@ -30,7 +30,7 @@
             <children>
                 <HBox minHeight="500.0" minWidth="1080.0" prefHeight="500.0" prefWidth="1080.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <children>
-                        <AnchorPane minHeight="500.0" minWidth="270.0" prefHeight="500.0" prefWidth="270.0">
+                        <!--<AnchorPane minHeight="500.0" minWidth="270.0" prefHeight="500.0" prefWidth="270.0">
                             <children>
                                 <GridPane prefHeight="500.0" prefWidth="270.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                     <columnConstraints>
@@ -53,7 +53,8 @@
                                     </children>
                                 </GridPane>
                             </children>
-                        </AnchorPane>
+                        </AnchorPane>-->
+                        <PlaylistsListView minHeight="500.0" minWidth="270.0" />
                         <AnchorPane minHeight="500.0" minWidth="540.0" prefHeight="500.0" prefWidth="540.0" HBox.hgrow="ALWAYS">
                             <TracksListView id="tracks-list" fx:id="tracksListView" focusTraversable="false" AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0" />
                         </AnchorPane>

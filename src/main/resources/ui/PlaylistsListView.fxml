@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Font?>
+
+<?import javafx.scene.control.ListView?>
+<fx:root type="javafx.scene.layout.AnchorPane" xmlns:fx="http://javafx.com/fxml/1">
+
+    <GridPane vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
+
+        <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS"/>
+        </columnConstraints>
+
+        <rowConstraints>
+            <RowConstraints maxHeight="50.0" minHeight="50.0" vgrow="NEVER"/>
+            <RowConstraints maxHeight="32.0" minHeight="32.0" vgrow="NEVER"/>
+            <RowConstraints maxHeight="32.0" minHeight="32.0" vgrow="NEVER"/>
+            <RowConstraints vgrow="ALWAYS"/>
+        </rowConstraints>
+
+        <Label maxWidth="Infinity" styleClass="header" text="Playlists" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.valignment="BOTTOM">
+            <font>
+                <Font size="28.0"/>
+            </font>
+        </Label>
+
+        <Label fx:id="playingLabel" maxWidth="Infinity" onMouseClicked="#loadPlayingPlaylist" styleClass="subtitle" text="PLAYING" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+            <font>
+                <Font size="16.0"/>
+            </font>
+        </Label>
+
+        <Label styleClass="subtitle" text="SAVED" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+            <font>
+                <Font size="16.0"/>
+            </font>
+        </Label>
+
+        <ListView fx:id="playlistsView" focusTraversable="false" GridPane.rowIndex="3" GridPane.valignment="TOP"/>
+
+    </GridPane>
+
+</fx:root>
