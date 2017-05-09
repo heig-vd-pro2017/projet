@@ -97,6 +97,7 @@ public class Player {
                 load();
             });
 
+            play();
         } else {
             stop();
             currentTrackProperty.setValue(null);
