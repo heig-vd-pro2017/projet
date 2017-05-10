@@ -18,6 +18,8 @@ import java.io.IOException;
  */
 public class PlaylistsListView extends AnchorPane {
 
+    private static final String CSS_FILE = "ui/styles/PlaylistsListView.css";
+
     private static final String FXML_FILE = "ui/PlaylistsListView.fxml";
 
     //! Playlist manager.
@@ -40,8 +42,15 @@ public class PlaylistsListView extends AnchorPane {
             e.printStackTrace();
         }
 
+        getStylesheets().add(CSS_FILE);
+
         playlistsView.setItems(FXCollections.observableArrayList(manager.getPlaylists()));
         playlistsView.setCellFactory((ListView<Playlist> list) -> new PlaylistCell());
+    }
+
+    @FXML
+    private void loadFavoritesPlaylist(MouseEvent e) {
+        loadPlayingPlaylist(e);
     }
 
     @FXML
@@ -57,6 +66,7 @@ public class PlaylistsListView extends AnchorPane {
 
             if (playlist != null) {
                 setText(playlist.getName());
+                getStyleClass().add("subtitle");
             } else {
                 setGraphic(null);
             }

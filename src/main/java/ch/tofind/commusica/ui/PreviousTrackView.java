@@ -87,6 +87,8 @@ public class PreviousTrackView extends GridPane {
 
     @FXML
     private void favorite(MouseEvent e) {
-        previousTrack.getFavoritedProperty().setValue(!previousTrack.getFavoritedProperty().getValue());
+        if (previousTrack != null) {
+            previousTrack.getFavoritedProperty().setValue(!previousTrack.getFavoritedProperty().getValue());
+        }
     }
 }
