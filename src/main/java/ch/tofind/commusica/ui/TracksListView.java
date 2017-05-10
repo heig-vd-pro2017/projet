@@ -62,17 +62,13 @@ public class TracksListView extends ListView<PlaylistTrack> {
      * @brief Loads a playlist.
      *
      * Loads a playlist in the view.
-     * Calls PlaylistManager#loadPlaylist(Playlist).
+     * Calls PlaylistManager#showPlaylist(Playlist).
      *
      * @param playlist Playlist to load.
      *
-     * @link PlaylistManager#loadPlaylist(Playlist).
+     * @link PlaylistManager#showPlaylist(Playlist).
      */
-    public void loadPlaylist(Playlist playlist) {
-        setItems(FXCollections.observableArrayList());
-
-        playlistManager.loadPlaylist(playlist);
-
-        setItems(playlistManager.getObservableTracksList());
+    public void showPlaylist(Playlist playlist) {
+        setItems(playlistManager.getTracksForPlaylist(playlist));
     }
 }

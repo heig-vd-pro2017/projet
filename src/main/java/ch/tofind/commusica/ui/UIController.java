@@ -78,8 +78,8 @@ public class UIController extends Application implements Initializable {
      *
      * @param playlist
      */
-    public void loadPlaylist(Playlist playlist) {
-        tracksListView.loadPlaylist(playlist);
+    public void showPlaylist(Playlist playlist) {
+        tracksListView.showPlaylist(playlist);
     }
 
     @Override

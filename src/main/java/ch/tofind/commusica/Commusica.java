@@ -32,9 +32,9 @@ public class Commusica {
         Playlist playlist1 = new Playlist("Test1");
         Playlist playlist2 = new Playlist("Test2");
 
-        Track track1 = new Track("BLOOD", "Kendrick Lamar", "DAMN.", 119, "/Users/faku99/Desktop/tmp/BLOOD.mp3", false);
-        Track track2 = new Track("DNA", "Kendrick Lamar", "DAMN.", 186, "/Users/faku99/Desktop/tmp/DNA.mp3", true);
-        Track track3 = new Track("HUMBLE", "Kendrick Lamar", "DAMN.", 177, "/Users/faku99/Desktop/tmp/HUMBLE.mp3", false);
+        Track track1 = new Track("BLOOD", "Kendrick Lamar", "DAMN.", 119, "/Users/faku99/Desktop/tmp/BLOOD.mp3");
+        Track track2 = new Track("DNA", "Kendrick Lamar", "DAMN.", 186, "/Users/faku99/Desktop/tmp/DNA.mp3");
+        Track track3 = new Track("HUMBLE", "Kendrick Lamar", "DAMN.", 177, "/Users/faku99/Desktop/tmp/HUMBLE.mp3");
 
         PlaylistTrack pt11 = new PlaylistTrack(playlist1, track1);
         PlaylistTrack pt12 = new PlaylistTrack(playlist1, track2);
@@ -59,7 +59,7 @@ public class Commusica {
 
         PlaylistManager playlistManager = PlaylistManager.getInstance();
 
-        playlistManager.loadPlaylist(playlist1);
+        //playlistManager.loadPlaylist(playlist1);
 
         pt11.downvote();
         pt11.downvote();

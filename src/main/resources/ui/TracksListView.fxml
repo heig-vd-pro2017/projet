@@ -2,12 +2,19 @@
 
 <?import java.net.URL?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.GridPane?>
 
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 <fx:root type="javafx.scene.control.ListView" xmlns:fx="http://javafx.com/fxml/1">
+
     <placeholder>
-        <Label text="No playlist loaded." />
+        <Label text="No tracks"/>
     </placeholder>
+
     <stylesheets>
-        <URL value="@styles/TracksListView.css" />
+        <URL value="@styles/TracksListView.css"/>
     </stylesheets>
+
 </fx:root>

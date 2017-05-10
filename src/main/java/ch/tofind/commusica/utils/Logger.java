@@ -13,7 +13,7 @@ public class Logger {
 
     //!
     private enum ANSIColor {
-        BLUE(34), GREEN(42), RED(31), RESET(0), YELLOW(43);
+        BLUE(34), GREEN(32), RED(31), RESET(0), YELLOW(33);
 
         int code;
 
@@ -81,5 +81,9 @@ public class Logger {
 
     public void info(String message) {
         log(Level.INFO, message);
+    }
+
+    public void warning(String message) {
+        log(Level.WARNING, message);
     }
 }

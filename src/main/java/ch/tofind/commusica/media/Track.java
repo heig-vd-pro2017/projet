@@ -1,6 +1,7 @@
 package ch.tofind.commusica.media;
 
 import ch.tofind.commusica.database.DatabaseObject;
+import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.utils.Configuration;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -66,16 +67,22 @@ public class Track implements DatabaseObject {
      * @param length Length (in seconds) of the track
      * @param uri URI of the file
      */
-    public Track(String title, String artist, String album, Integer length, String uri, boolean favorited) {
+    public Track(String title, String artist, String album, Integer length, String uri) {
         this.title = title;
         this.artist = artist;
         this.album = album;
         this.length = length;
         this.uri = uri;
         this.dateAdded = new Date();
-        this.favorited = favorited;
-        this.favoritedProperty = new SimpleBooleanProperty(favorited);
-        this.favoritedProperty.addListener(((observable, oldValue, newValue) -> this.favorited = newValue));
+        this.favoritedProperty = new SimpleBooleanProperty(false);
+
+        this.favoritedProperty.addListener(((observable, oldValue, newValue) -> {
+            if (newValue) {
+                PlaylistManager.getInstance().addTrackToFavorites(this);
+            } else {
+                PlaylistManager.getInstance().removeTrackFromFavorites(this);
+            }
+        }));
     }
 
     /**

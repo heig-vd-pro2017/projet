@@ -50,7 +50,9 @@ public class PlaylistsListView extends AnchorPane {
 
     @FXML
     private void loadFavoritesPlaylist(MouseEvent e) {
-        loadPlayingPlaylist(e);
+        // Clear selected playlist if there was one.
+        playlistsView.getSelectionModel().clearSelection();
+        UIController.getController().showPlaylist(manager.getFavoritesPlaylist());
     }
 
     @FXML
@@ -77,7 +79,7 @@ public class PlaylistsListView extends AnchorPane {
             super.updateSelected(value);
 
             if (isSelected() && !isEmpty()) {
-                UIController.getController().loadPlaylist(getItem());
+                UIController.getController().showPlaylist(getItem());
             }
         }
     }
