@@ -7,6 +7,10 @@ package ch.tofind.commusica.playlist;
 import ch.tofind.commusica.database.DatabaseObject;
 import ch.tofind.commusica.media.Playlist;
 import ch.tofind.commusica.media.Track;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 
 import java.util.Objects;
 
@@ -14,8 +18,15 @@ public class PlaylistTrack implements DatabaseObject {
 
     private PlaylistTrackId id;
 
-    //! Number of votes for the track
+    private BooleanProperty beenPlayedProperty;
+
+    /**
+     * Number of votes for the track.
+     * This property is only used for Hibernate integration. For other usages, use the property defined below.
+     */
     private Integer votes;
+
+    private IntegerProperty votesProperty;
 
     /**
      * Create a link between playlist and track
@@ -24,11 +35,17 @@ public class PlaylistTrack implements DatabaseObject {
      */
     public PlaylistTrack(Playlist playlist, Track track) {
         this.id = new PlaylistTrackId(playlist, track);
+        this.beenPlayedProperty = new SimpleBooleanProperty(false);
         this.votes = 0;
+        this.votesProperty = new SimpleIntegerProperty(this.votes);
+
+        this.votesProperty.addListener(((observable, oldValue, newValue) -> {
+            this.votes = newValue.intValue();
+        }));
     }
 
-    public PlaylistTrack() {
-
+    public BooleanProperty getBeenPlayedProperty() {
+        return beenPlayedProperty;
     }
 
     public Playlist getPlaylist() {
@@ -39,16 +56,20 @@ public class PlaylistTrack implements DatabaseObject {
         return id.getTrack();
     }
 
-    public Integer getVotes() {
-        return votes;
+    public IntegerProperty getVotesProperty() {
+        return votesProperty;
     }
 
     public void upvote() {
-        votes++;
+        if (!beenPlayedProperty.getValue()) {
+            votesProperty.setValue(votesProperty.intValue() + 1);
+        }
     }
 
     public void downvote() {
-        votes--;
+        if (!beenPlayedProperty.getValue()) {
+            votesProperty.setValue(votesProperty.intValue() - 1);
+        }
     }
 
     @Override
@@ -74,7 +95,7 @@ public class PlaylistTrack implements DatabaseObject {
 
     @Override
     public void update() {
-
+        beenPlayedProperty.setValue(true);
     }
 
     @Override

@@ -1,30 +1,19 @@
 package ch.tofind.commusica;
 
-import ch.tofind.commusica.media.Player;
 import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.playlist.PlaylistTrack;
-import ch.tofind.commusica.utils.Configuration;
+import ch.tofind.commusica.ui.UIController;
 import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.media.Playlist;
 import ch.tofind.commusica.media.Track;
 
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
+import ch.tofind.commusica.utils.Logger;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.List;
 
-public class Commusica extends Application {
+public class Commusica {
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+    private static final Logger LOG = new Logger(Commusica.class.getSimpleName());
 
     public static void dropDatabase() {
         String filePath = "commusica.db";
@@ -35,25 +24,17 @@ public class Commusica extends Application {
         }
     }
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-
-        System.out.println("App démarrée :)");
-
-        try {
-            Configuration.getInstance().load("commusica.properties");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void main(String... args) throws Exception {
+        LOG.log(Logger.Level.INFO, "Starting application...");
 
         dropDatabase();
 
         Playlist playlist1 = new Playlist("Test1");
         Playlist playlist2 = new Playlist("Test2");
 
-        Track track1 = new Track("Test1", "Test", "Test", 123, "/home/ludelafo/Music/Temp/sample1.wav");
-        Track track2 = new Track("Test2", "Test", "Test", 132, "/home/ludelafo/Music/Temp/sample2.wav");
-        Track track3 = new Track("Test3", "Test", "Test", 321, "/home/ludelafo/Music/Temp/sample3.wav");
+        Track track1 = new Track("BLOOD", "Kendrick Lamar", "DAMN.", 119, "/Users/faku99/Desktop/tmp/BLOOD.mp3", false);
+        Track track2 = new Track("DNA", "Kendrick Lamar", "DAMN.", 186, "/Users/faku99/Desktop/tmp/DNA.mp3", true);
+        Track track3 = new Track("HUMBLE", "Kendrick Lamar", "DAMN.", 177, "/Users/faku99/Desktop/tmp/HUMBLE.mp3", false);
 
         PlaylistTrack pt11 = new PlaylistTrack(playlist1, track1);
         PlaylistTrack pt12 = new PlaylistTrack(playlist1, track2);
@@ -76,8 +57,6 @@ public class Commusica extends Application {
         DatabaseManager.getInstance().save(pt21);
         DatabaseManager.getInstance().save(pt22);
 
-        Player player = new Player(Double.parseDouble(Configuration.getInstance().get("DEFAULT_VOLUME_STEP")));
-
         PlaylistManager playlistManager = PlaylistManager.getInstance();
 
         playlistManager.loadPlaylist(playlist1);
@@ -89,65 +68,8 @@ public class Commusica extends Application {
         playlistManager.addPlaylistTrack(pt11);
         playlistManager.addPlaylistTrack(pt12);
 
-        BorderPane root = new BorderPane() {{
-            VBox vbox = new VBox() {{
+        UIController.launch(UIController.class);
 
-                HBox hbox = new HBox() {{
-
-                    Button playButton = new Button("Play");
-                    Button pauseButton = new Button("Pause");
-                    Button stopButton = new Button("Stop");
-                    Button nextButton = new Button("Next");
-                    Button volUpButton = new Button("Volume up");
-                    Button volDownButton = new Button("Volume down");
-
-                    playButton.setOnAction(e -> {
-                        player.play();
-
-                    });
-
-                    pauseButton.setOnAction(e -> {
-                        player.pause();
-
-                    });
-
-                    nextButton.setOnAction(e -> {
-                        player.stop();
-                        player.load();
-                        player.play();
-                    });
-
-                    stopButton.setOnAction(e -> {
-                        player.stop();
-                    });
-
-                    volUpButton.setOnAction(e -> {
-                        player.riseVolume();
-                    });
-
-                    volDownButton.setOnAction(e -> {
-                        player.lowerVolume();
-                    });
-
-                    getChildren().addAll(playButton, pauseButton, stopButton, nextButton, volUpButton, volDownButton);
-                }};
-
-                getChildren().add(hbox);
-
-            }};
-
-            setCenter(vbox);
-
-        }};
-
-        Scene scene = new Scene(root, 400, 100);
-
-        primaryStage.setScene(scene);
-        primaryStage.show();
-
-        //UIController.launch(UIController.class);
-
-        System.out.println("Bisoir");
         DatabaseManager.getInstance().close();
     }
 }
