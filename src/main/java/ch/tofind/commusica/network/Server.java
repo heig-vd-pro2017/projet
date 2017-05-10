@@ -63,7 +63,6 @@ public class Server implements Runnable {
                 System.err.println("cancel non-finished tasks");
             }
             threadPool.shutdownNow();
-            System.out.println("shutdown finished");
         }
     }
 
@@ -86,8 +85,8 @@ public class Server implements Runnable {
 
                 // Create a client and add it to the thread pool
                 Thread client = new Thread(new UnicastClient(clientSocket));
-                client.start();
-                //threadPool.submit(client);
+                //client.start();
+                threadPool.submit(client);
 
             } catch (SocketException e) {
 

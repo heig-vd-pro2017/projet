@@ -98,7 +98,8 @@ public class MulticastClient implements Runnable {
                 reader.close();
 
             } catch (SocketException e) {
-                e.printStackTrace();
+                // Do nothing and continue
+                continue;
             } catch (IOException e) {
                 e.printStackTrace();
             }
