@@ -7,6 +7,9 @@ import ch.tofind.commusica.utils.Network;
 
 import java.net.*;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Commusica {
 
@@ -81,12 +84,13 @@ public class Commusica {
                 Core core = new Core(interfaceToUse);
                 core.setupAsClient();
 
-                // Discovery servers every 10 seconds
-                //ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+                // Discovery servers every schedule
+                ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
 
-                //scheduledExecutorService.scheduleAtFixedRate(() -> {
-                //    core.execute(ApplicationProtocol.DISCOVER_SERVER, null);
-                //}, 0, 5, TimeUnit.SECONDS);
+                scheduledExecutorService.scheduleAtFixedRate(() -> {
+                    System.out.println(new Date() + " - Coucou");
+                    core.execute(ApplicationProtocol.DISCOVER_SERVER, null);
+                }, 0, 5, TimeUnit.SECONDS);
 
 
                 InetAddress hostname = null;

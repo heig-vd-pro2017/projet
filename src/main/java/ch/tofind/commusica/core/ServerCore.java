@@ -3,9 +3,12 @@ package ch.tofind.commusica.core;
 import ch.tofind.commusica.network.MulticastClient;
 import ch.tofind.commusica.network.NetworkProtocol;
 import ch.tofind.commusica.network.Server;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.File;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 public class ServerCore extends AbstractCore implements ICore {
@@ -19,6 +22,9 @@ public class ServerCore extends AbstractCore implements ICore {
     //! The server.
     Server server;
 
+    //!
+    private Gson json;
+
     public ServerCore(String name, String multicastAddress, int multicastPort, InetAddress interfaceToUse, int unicastPort) {
 
         this.name = name;
@@ -29,6 +35,8 @@ public class ServerCore extends AbstractCore implements ICore {
 
         new Thread(multicast).start();
         new Thread(server).start();
+
+        json = new GsonBuilder().create();
     }
 
     public String END_OF_COMMUNICATION(ArrayList<Object> args) {
@@ -37,9 +45,20 @@ public class ServerCore extends AbstractCore implements ICore {
     }
 
     public String DISCOVER_SERVER(ArrayList<Object> args) {
+
+        InetAddress localhost = null;
+        try {
+            localhost = InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
+        String localhostJson = json.toJson(localhost);
+
         String result = ApplicationProtocol.SERVER_DISCOVERED + NetworkProtocol.END_OF_LINE +
-                "Soirée de ouf malade" + NetworkProtocol.END_OF_LINE +
-                NetworkProtocol.END_OF_COMMAND;
+                    "Soirée de ouf malade" + NetworkProtocol.END_OF_LINE +
+                    localhostJson + NetworkProtocol.END_OF_LINE +
+                    NetworkProtocol.END_OF_COMMAND;
 
         return result;
     }

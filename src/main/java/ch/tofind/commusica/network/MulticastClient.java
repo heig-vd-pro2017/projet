@@ -67,7 +67,7 @@ public class MulticastClient implements Runnable {
         running = true;
 
         // Get the response
-        byte[] reponse = new byte[64];
+        byte[] reponse = new byte[8192];
         DatagramPacket in = new DatagramPacket(reponse, reponse.length);
 
         String command;

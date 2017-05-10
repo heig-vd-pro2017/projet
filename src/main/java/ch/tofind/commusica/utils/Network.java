@@ -27,7 +27,6 @@ public class Network {
         return macAddress;
     }
 
-
     static public ArrayList<NetworkInterface> getNetworkInterfaces() {
 
         ArrayList<NetworkInterface> networkInterfaces = new ArrayList<>();
@@ -39,11 +38,6 @@ public class Network {
                 // We shouldn't care about loopback addresses
                 if (networkInterface.isLoopback())
                     continue;
-
-                // If you don't expect the interface to be up you can skip this
-                // though it would question the usability of the rest of the code
-                //if (!networkInterface.isUp())
-                    //continue;
 
                 networkInterfaces.add(networkInterface);
             }

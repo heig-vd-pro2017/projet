@@ -90,10 +90,14 @@ public class UnicastClient implements Runnable {
         try {
 
             while ((size = fileBytes.read(buffer)) != -1) {
-                out.write(buffer, 0, size);
+                if (out != null) {
+                    out.write(buffer, 0, size);
+                }
             }
 
-            out.flush();
+            if (out != null) {
+                out.flush();
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -101,7 +105,9 @@ public class UnicastClient implements Runnable {
 
         // Close all the streams
         try {
-            out.close();
+            if (out != null) {
+                out.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -172,7 +178,7 @@ public class UnicastClient implements Runnable {
             }
         }
 
-        // Close the connexion
+        // Close the connection
         try {
             in.close();
         } catch (IOException e) {
