@@ -44,7 +44,7 @@ public class ServerCore extends AbstractCore implements ICore {
         return "";
     }
 
-    public String DISCOVER_SERVER(ArrayList<Object> args) {
+    public String DISCOVER_REQUEST(ArrayList<Object> args) {
 
         InetAddress localhost = null;
         try {

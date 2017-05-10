@@ -5,6 +5,7 @@ public final class ApplicationProtocol {
     public static final String SUCCESS = "SUCCESS";
     public static final String ERROR = "ERROR";
 
+    public static final String DISCOVER_REQUEST = "DISCOVER_REQUEST";
     public static final String DISCOVER_SERVER = "DISCOVER_SERVER";
     public static final String SERVER_DISCOVERED = "SERVER_DISCOVERED";
 

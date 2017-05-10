@@ -43,7 +43,7 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     public String DISCOVER_SERVER(ArrayList<Object> args) {
-        String command = ApplicationProtocol.DISCOVER_SERVER + NetworkProtocol.END_OF_LINE +
+        String command = ApplicationProtocol.DISCOVER_REQUEST + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
         sendMulticast(command);
 
