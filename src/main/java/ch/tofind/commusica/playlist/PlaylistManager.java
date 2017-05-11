@@ -3,12 +3,11 @@ package ch.tofind.commusica.playlist;
 import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.media.Playlist;
 import ch.tofind.commusica.media.Track;
+import ch.tofind.commusica.utils.ObservableSortedPlaylistTrackList;
+
+import java.util.List;
 
 import org.hibernate.Session;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
 
 public class PlaylistManager {
 
@@ -21,11 +20,7 @@ public class PlaylistManager {
     //! Playlist currently running
     private Playlist playlist;
 
-    //! PlaylistTracks composed by the current playlist
-    private List<PlaylistTrack> playlistTracksList;
-
-    //! PlaylistTracks composed by the current playlist
-    private PriorityQueue<PlaylistTrack> playlistTracksPriorityQueue;
+    private final ObservableSortedPlaylistTrackList playlistTracksList;
 
     /**
      * PlaylistManager single constructor. Avoid the instantiation.
@@ -34,9 +29,7 @@ public class PlaylistManager {
 
         Session session = DatabaseManager.getInstance().getSession();
         playlists = session.createQuery("from Playlist").list();
-        playlistTracksList = new ArrayList<>(0);
-        playlistTracksPriorityQueue = new PriorityQueue<>(1, new VoteComparator());
-
+        playlistTracksList = new ObservableSortedPlaylistTrackList();
     }
 
     public static PlaylistManager getInstance() {
@@ -68,20 +61,17 @@ public class PlaylistManager {
 
         this.playlist = playlist;
 
+        // Update timestamp.
+        playlist.update();
+
         Session session = DatabaseManager.getInstance().getSession();
 
-        playlistTracksList = session.createQuery(String.format("from PlaylistTrack where playlist_id = '%d'", playlist.getId())).list();
-
-        playlistTracksPriorityQueue.addAll(playlistTracksList);
-
+        playlistTracksList.clear();
+        playlistTracksList.addAll(session.createQuery(String.format("from PlaylistTrack where playlist_id = '%d'", playlist.getId())).list());
     }
 
     public List<Playlist> getPlaylists() {
         return playlists;
-    }
-
-    public List<PlaylistTrack> getPlaylistTracks() {
-        return playlistTracksList;
     }
 
     public PlaylistTrack addTrack(Track track) {
@@ -94,14 +84,7 @@ public class PlaylistManager {
     }
 
     public void addPlaylistTrack(PlaylistTrack playlistTrack) {
-
-        if (playlistTracksList.contains(playlistTrack)) {
-            playlistTracksPriorityQueue.remove(playlistTrack);
-        } else {
-            playlistTracksList.add(playlistTrack);
-        }
-
-        playlistTracksPriorityQueue.add(playlistTrack);
+        playlistTracksList.add(playlistTrack);
     }
 
     public PlaylistTrack getPlaylistTrack(Track track) {
@@ -117,6 +100,11 @@ public class PlaylistManager {
     }
 
     public Track nextTrack() {
-        return playlistTracksPriorityQueue.poll().getTrack();
+        PlaylistTrack nextTrack = playlistTracksList.getNextTrack();
+        return nextTrack != null ? nextTrack.getTrack() : null;
+    }
+
+    public ObservableSortedPlaylistTrackList getObservableTracksList() {
+        return playlistTracksList;
     }
 }

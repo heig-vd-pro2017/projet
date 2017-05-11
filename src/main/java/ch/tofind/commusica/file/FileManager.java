@@ -1,6 +1,5 @@
 package ch.tofind.commusica.file;
 
-import org.jaudiotagger.*;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
@@ -27,6 +26,7 @@ public class FileManager {
     private static FileManager instance = null;
 
     private FileManager() {
+
     }
 
     public static FileManager getInstance() {

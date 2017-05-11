@@ -12,7 +12,6 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 /**
  * @brief This class receives data from the server by multicast.

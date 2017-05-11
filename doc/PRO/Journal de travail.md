@@ -1,12 +1,52 @@
 # Journal de travail
 *Le journal de travail débute le 15.03.2017*
 
-<<<<<<< HEAD
-## 26.03.2017
+## 10.05.2017
 ### Ludovic Delafontaine
-* Mise en place et configuration des outils de compilation (Maven) (2h00)
-* Début de la classe Track avec sa table dans la base de données à l'aide de Hibernate (1h30)
-=======
+* Fusion du travail de tout le monde sur la branche master (0h45)
+
+## 07.05.2017
+### Ludovic Delafontaine
+* Améliorations aux notions de client/serveur (3h00)
+
+## 06.05.2017
+### Lucas Elisei
+* Finalisation de la fusion du panneau "chanson précédente" (0h30).
+* Correction de quelques bugs liés aux précédentes itérations (1h30).
+
+### Ludovic Delafontaine
+* Améliorations aux notions de client/serveur (6h00)
+
+## 05.05.2017
+### Ludovic Delafontaine
+* Revue de code afin de pouvoir tout fusionner (2h00)
+* Améliorations aux notions de client/serveur (2h00)
+
+## 03.05.2017
+### Lucas Elisei
+* Fusion du panneau "playlist en cours de lecture" avec le code (1h00).
+* Implémentation d'une structure de données pour le tri des chansons des playlists (2h00).
+* Début de la fusion du panneau "chanson précédente" avec le code (0h15).
+
+## 02.05.2017
+### David Truan
+* Finition de quelques bugs du serveur (1h).
+* Délégation du transfert de fichier au FileManager(10min).
+* Refonte de la classe Session (30min).
+
+### Lucas Elisei
+* Fusion du panneau "chanson en cours de lecture" avec le code (1h00).
+
+## 01.05.2017
+### David Truan
+* Mise au propre du network (2h)
+    * Déconnexion client/serveur.
+    * Singletons des threads.
+    * Remise en forme du client.
+
+### Lucas Elisei
+* Documentation quant à la fusion du code et de l'interface graphique (0h30).
+
 ## 30.04.2017
 ### David Truan
 * Transfert de fichier .mp3 et implémentation dans le projet (2h)
@@ -48,19 +88,17 @@
 ### Thibaut Togue Kamga
 * Implémentation du player sans playlistManager et test  (3h)		                                                       
 
-
-
 ## 08.04.2017
 ### David Truan
 * Ajout d'une méthode pour choisir sa bonne interface et modification du code pour prendre en compte cela. (2h)
 * Ajout de fonctionnalités au programme de test. (10min)
 * Mise au propre rapide des classes et création de a classe Protocol et de packages client/server. (1h)
-## 06.04.2017
 
+## 06.04.2017
 ### Thibaut Togue Kamga
 * Tuto playerMedia pour l'implémentation du player(2h)
-## 05.04.2017
 
+## 05.04.2017
 ### Ludovic Delafontaine
 * Ajout de la classe Playlist et de sa table associée pour la base de données (01:00)
 * Ajout de la classe permettant de récupérer des propriétés depuis un fichier de configuration (00:30)
@@ -118,6 +156,10 @@ du fichier de configuration, modification du file Manager d'après la discussion
 ### Denise Gemesio
 * Intergace graphique: modification du .fxml avec Scene Builder
 
+### Ludovic Delafontaine
+* Mise en place et configuration des outils de compilation (Maven) (2h00)
+* Début de la classe Track avec sa table dans la base de données à l'aide de Hibernate (1h30)
+
 ## 25.03.2017
 ### David Truan
 * Documentation et première implémentation (test) du multicast en Java. (2h)
@@ -125,7 +167,6 @@ du fichier de configuration, modification du file Manager d'après la discussion
 
 ### Yosra Harbaoui
 * Documentation sur les différents "types" de communications entre un serveur et un client.
->>>>>>> 9d5fe7284fac5d639e6076d4a4c97f614aa36351
 
 ## 22.03.2017
 ### Denise Gemesio
@@ -162,10 +203,10 @@ du fichier de configuration, modification du file Manager d'après la discussion
 * Essais et documentation sur la partie client/serveur (3h).
 
 ### Thibaut Togue
-
 * test du fichier Sqlite à travers des conteneurs docker et correction des bugs(2h)                              
 
 ## 18.03.2017
+### Ludovic Delafontaine
 * Création du schéma de la base de données
 * Mise à jour du diagramme UML
 

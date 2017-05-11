@@ -1,0 +1,20 @@
+.saved-playlists-list {
+    -fx-background-color: #F3F3F3;
+    -fx-background-insets: 0, 0;
+}
+
+.saved-playlists-list .list-cell {
+    -fx-background-color: #F3F3F3;
+    -fx-cell-size: 28px;
+}
+
+.saved-playlists-list .list-cell:filled:hover {
+    -fx-background-color: #DADADA;
+    -fx-cursor: hand;
+}
+
+.saved-playlists-list .list-cell:selected {
+    -fx-background-color: #DADADA;
+    -fx-cursor: hand;
+    -fx-text-fill: #F3F3F3;
+}

@@ -1,42 +1,67 @@
 package ch.tofind.commusica.ui;
 
+import ch.tofind.commusica.media.Playlist;
+
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * @brief UI controller.
+ *
+ * Controller meant to interact with the interface.
+ */
 public class UIController extends Application implements Initializable {
 
-    private static final String FXFILE = "ui/main.fxml";
+    //!
+    private static FXMLLoader loader = new FXMLLoader();
 
-    //! JavaFX components.
+    //! FXML file to use for the view.
+    private static final String FXML_FILE = "ui/main.fxml";
+
+    //!
     @FXML
-    private ListView<String> playlistsListView;
+    private TracksListView tracksListView;
 
-    @FXML
-    private ListView<String> songsListView;
+    /**
+     * @brief Returns the controller for the current interface.
+     *
+     * @return The controller for the current interface.
+     */
+    public static UIController getController() {
+        return loader.getController();
+    }
 
-    public void start(Stage stage) throws Exception {
-        URL fileURL = getClass().getClassLoader().getResource(FXFILE);
+    /**
+     * @brief
+     *
+     * @param stage
+     */
+    public void start(Stage stage) {
+        URL fileURL = getClass().getClassLoader().getResource(FXML_FILE);
 
         if (fileURL == null) {
             throw new NullPointerException("FXML file not found.");
         }
 
-        Parent root = FXMLLoader.load(fileURL);
+        Parent root = null;
+
+        try {
+            root = loader.load(fileURL);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         Scene scene = new Scene(root);
+        scene.getStylesheets().add("ui/styles/main.css");
 
         stage.setTitle("Commusica");
         stage.setScene(scene);
@@ -48,43 +73,17 @@ public class UIController extends Application implements Initializable {
         stage.setMinWidth(stage.getWidth());
     }
 
+    /**
+     * @brief
+     *
+     * @param playlist
+     */
+    public void loadPlaylist(Playlist playlist) {
+        tracksListView.loadPlaylist(playlist);
+    }
+
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
-        populatePlaylists();
-        populateSongs();
+        loader.setController(this);
     }
-
-    private void populatePlaylists() {
-        ObservableList<String> items = FXCollections.observableArrayList();
-
-        for (int i = 1; i <= 3; ++i) {
-            items.add(String.format("Playlist %d", i));
-        }
-
-        playlistsListView.setItems(items);
-    }
-
-    private void populateSongs() {
-        ObservableList<String> items = FXCollections.observableArrayList();
-
-        for (int i = 1; i <= 8; ++i) {
-            items.add(String.format("Song %d", i));
-        }
-
-        songsListView.setItems(items);
-        songsListView.setCellFactory((ListView<String> cell) -> new ListCell<String>() {
-            public void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (item != null) {
-                    try {
-                        TrackCellController cellController = new TrackCellController(item);
-                        setGraphic(cellController.getPane());
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }
-        });
-    }
-
 }

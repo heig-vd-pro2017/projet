@@ -6,7 +6,6 @@ public class VoteComparator implements Comparator<PlaylistTrack> {
 
     @Override
     public int compare(PlaylistTrack x, PlaylistTrack y) {
-        return y.getVotes() - x.getVotes();
+        return y.getVotesProperty().intValue() - x.getVotesProperty().intValue();
     }
-
 }
