@@ -82,7 +82,7 @@ public class FileManager {
                 fos.close();
                 bos.close();
             }
-            is.close();
+            //is.close();
 
             return result;
 
@@ -133,11 +133,15 @@ public class FileManager {
          try {
              AudioFile af = AudioFileIO.read(f);
 
+             System.out.println("toString: " + af.toString());
+             System.out.println("getFile: " + af.getFile());
+             System.out.println("getBaseFileName: " + af.getBaseFilename(f));
+/*
              System.out.println(af.getAudioHeader().getTrackLength() / 60 + ":" + af.getAudioHeader().getTrackLength() % 60);
              System.out.println(af.getAudioHeader().getFormat());
              System.out.println(af.getTag().getFirst(FieldKey.ARTIST));
              System.out.println(af.getTag().getFirst(FieldKey.ALBUM));
-             System.out.println(af.getTag().getFirst(FieldKey.TITLE));
+             System.out.println(af.getTag().getFirst(FieldKey.TITLE));*/
          } catch (CannotReadException e) {
              e.printStackTrace();
          } catch (IOException e) {

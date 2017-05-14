@@ -1,9 +1,12 @@
 package ch.tofind.commusica.core;
 
+import ch.tofind.commusica.session.ServerSession;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Map;
 
 abstract class AbstractCore {
 

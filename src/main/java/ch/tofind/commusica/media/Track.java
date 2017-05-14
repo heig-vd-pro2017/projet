@@ -2,6 +2,10 @@ package ch.tofind.commusica.media;
 
 import ch.tofind.commusica.database.DatabaseObject;
 import ch.tofind.commusica.utils.Configuration;
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioHeader;
+import org.jaudiotagger.tag.FieldKey;
+import org.jaudiotagger.tag.Tag;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -61,6 +65,33 @@ public class Track implements DatabaseObject {
         this.length = length;
         this.uri = uri;
         this.dateAdded = new Date();
+    }
+
+    public Track(AudioFile audioFile) {
+        AudioHeader header = audioFile.getAudioHeader();
+        Tag tags = audioFile.getTag();
+
+        if (tags.getFirst(FieldKey.TITLE) == "") {
+            this.title = AudioFile.getBaseFilename(audioFile.getFile());
+        } else {
+            this.title = tags.getFirst(FieldKey.TITLE);
+        }
+
+        if (tags.getFirst(FieldKey.ARTIST) == "") {
+            this.artist = "unknown";
+        } else {
+            this.artist = tags.getFirst(FieldKey.ARTIST);
+        }
+
+        if (tags.getFirst(FieldKey.ALBUM) == "") {
+            this.album = "unknown";
+        } else {
+            this.album = tags.getFirst(FieldKey.ALBUM);
+        }
+
+        this.uri = audioFile.getFile().toString();
+
+        this.length = header.getTrackLength();
     }
 
     /**

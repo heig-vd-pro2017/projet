@@ -83,6 +83,7 @@ public class Server implements Runnable {
 
                 Socket clientSocket = socket.accept();
 
+                System.out.println("New client arrived");
                 // Create a client and add it to the thread pool
                 Thread client = new Thread(new UnicastClient(clientSocket));
                 //client.start();

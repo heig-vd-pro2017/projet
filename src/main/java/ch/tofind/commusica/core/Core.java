@@ -1,9 +1,11 @@
 package ch.tofind.commusica.core;
 
 import ch.tofind.commusica.network.NetworkProtocol;
+import ch.tofind.commusica.session.ServerSession;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Core implements ICore {
 

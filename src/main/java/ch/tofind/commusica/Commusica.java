@@ -1,23 +1,45 @@
 package ch.tofind.commusica;
 
 import ch.tofind.commusica.core.ApplicationProtocol;
+import ch.tofind.commusica.core.ClientCore;
 import ch.tofind.commusica.core.Core;
+import ch.tofind.commusica.file.FileManager;
+import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.network.NetworkProtocol;
+import ch.tofind.commusica.network.NetworkUtils;
+import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Network;
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.audio.exceptions.CannotReadException;
+import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
+import org.jaudiotagger.tag.TagException;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.*;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import static ch.tofind.commusica.network.NetworkUtils.INTERFACE_TO_USE;
+
 public class Commusica {
 
     public static void main(String[] args) {
 
+
+        try {
+            Configuration.getInstance().load("commusica.properties");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         Integer uniqueID;
         Scanner scanner = new Scanner(System.in);
-        InetAddress interfaceToUse;
 
         TreeMap<String, InetAddress> networkInterfaces = Network.getIPv4Interfaces();
 
@@ -32,12 +54,12 @@ public class Commusica {
                 interfaceChoice = scanner.next();
             }
 
-            interfaceToUse = networkInterfaces.get(interfaceChoice);
+            NetworkUtils.INTERFACE_TO_USE = networkInterfaces.get(interfaceChoice);
         } else {
-            interfaceToUse = networkInterfaces.firstEntry().getValue();
+            NetworkUtils.INTERFACE_TO_USE = networkInterfaces.firstEntry().getValue();
         }
 
-        uniqueID = Arrays.hashCode(Network.getMacAddress(interfaceToUse));
+        ApplicationProtocol.myId = Arrays.hashCode(Network.getMacAddress(NetworkUtils.INTERFACE_TO_USE));
 
         int launchChoice = -1;
         while (launchChoice != 0) {
@@ -51,8 +73,14 @@ public class Commusica {
 
             if (launchChoice == 1) { // Launch as server
 
-                Core core = new Core(interfaceToUse);
+                Core core = new Core(NetworkUtils.INTERFACE_TO_USE);
                 core.setupAsServer("Soirée de Lulu 4");
+
+                ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+                scheduledExecutorService.scheduleAtFixedRate(() -> {
+                    //System.out.println(new Date() + " - Coucou");
+                    core.execute(ApplicationProtocol.SEND_PLAYLIST_UPDATE, null);
+                }, 0, 5, TimeUnit.SECONDS);
 
                 int actionChoice = -1;
                 while (actionChoice != 0) {
@@ -69,7 +97,7 @@ public class Commusica {
                             break;
                         case 1:
                             String command = "Bonsoir" + NetworkProtocol.END_OF_LINE +
-                                    uniqueID + NetworkProtocol.END_OF_LINE +
+                                    ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                                     NetworkProtocol.END_OF_COMMAND;
                             core.sendMulticast(command);
                             break;
@@ -77,20 +105,16 @@ public class Commusica {
                             System.out.println("Action not supported.");
                             break;
                     }
+
                 }
 
             } else if (launchChoice == 2) { // Launch as client
 
-                Core core = new Core(interfaceToUse);
+                Core core = new Core(NetworkUtils.INTERFACE_TO_USE);
                 core.setupAsClient();
 
                 // Discovery servers every schedule
-                ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
 
-                scheduledExecutorService.scheduleAtFixedRate(() -> {
-                    System.out.println(new Date() + " - Coucou");
-                    core.execute(ApplicationProtocol.DISCOVER_SERVER, null);
-                }, 0, 5, TimeUnit.SECONDS);
 
 
                 InetAddress hostname = null;
@@ -106,6 +130,7 @@ public class Commusica {
                     System.out.println("Actions");
                     System.out.println("  [0] Quit");
                     System.out.println("  [1] Send track to Unicast");
+                    System.out.println("  [2] Connect to a server");
                     System.out.print("> ");
 
                     actionChoice = scanner.nextInt();
@@ -115,11 +140,13 @@ public class Commusica {
                             core.stop();
                             break;
                         case 1:
-                            String command = ApplicationProtocol.TRACK_REQUEST + NetworkProtocol.END_OF_LINE +
-                                    uniqueID + NetworkProtocol.END_OF_LINE +
-                                    "{json représentant la track}" + NetworkProtocol.END_OF_LINE +
-                                    NetworkProtocol.END_OF_COMMAND;
-                            core.sendUnicast(hostname, command);
+                            ArrayList<Object> uri = new ArrayList<>();
+                            uri.add("C:\\Users\\David\\Documents\\YourFuckingMother_x_EHDE_-_Pocket_Monsters_VIP.mp3");
+                            core.execute(ApplicationProtocol.SEND_TRACK_REQUEST, uri);
+                            break;
+
+                        case 2:
+                            ApplicationProtocol.serverChooser(Network.getAvailableServers());
                             break;
                         default:
                             System.out.println("Action not supported.");
