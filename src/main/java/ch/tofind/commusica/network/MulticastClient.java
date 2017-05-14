@@ -1,6 +1,7 @@
 package ch.tofind.commusica.network;
 
 import ch.tofind.commusica.core.Core;
+import ch.tofind.commusica.utils.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,16 +19,19 @@ import java.util.Objects;
  */
 public class MulticastClient implements Runnable {
 
-    //!
+    //! Logger for debugging.
+    private static final Logger LOG = new Logger(MulticastClient.class.getSimpleName());
+
+    //! Port to use.
     private int port;
 
-    //!
+    //! Multicast address.
     private InetAddress multicastGroup;
 
-    //!
+    //! Socket to use.
     private MulticastSocket socket;
 
-    //!
+    //! Tells if the client is running.
     private boolean running;
 
     public MulticastClient(String multicastAddress, int port, InetAddress interfaceToUse) {
@@ -37,26 +41,26 @@ public class MulticastClient implements Runnable {
         try {
             socket = new MulticastSocket(port);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         }
 
         try {
             socket.setInterface(interfaceToUse);
             socket.setLoopbackMode(false);
         } catch (SocketException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         }
 
         try {
             multicastGroup = InetAddress.getByName(multicastAddress);
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         }
 
         try {
             socket.joinGroup(multicastGroup);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         }
     }
 
@@ -100,7 +104,7 @@ public class MulticastClient implements Runnable {
                 // Do nothing and continue
                 continue;
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.severe(e);
             }
 
             // Get the requested command
@@ -135,7 +139,7 @@ public class MulticastClient implements Runnable {
         try {
             socket.send(out);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         }
     }
 }

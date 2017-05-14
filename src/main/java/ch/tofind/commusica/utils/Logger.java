@@ -82,4 +82,12 @@ public class Logger {
     public void info(String message) {
         log(Level.INFO, message);
     }
+
+    public void severe(String message) {
+        log(Level.SEVERE, message);
+    }
+
+    public void severe(Exception e) {
+        log(Level.SEVERE, e);
+    }
 }

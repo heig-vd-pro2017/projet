@@ -7,10 +7,10 @@ import java.util.ArrayList;
 
 public class Core implements ICore {
 
-    //! Shared instance of the object for all the application
+    //! Shared instance of the object for all the application.
     private static AbstractCore instance = null;
 
-    //! Interface to use for Multicast
+    //! Interface to use for Multicast.
     private InetAddress interfaceToUse;
 
     public static String execute(String command, ArrayList<Object> args) {
@@ -33,14 +33,17 @@ public class Core implements ICore {
         instance = new ClientCore(NetworkProtocol.MULTICAST_ADDRESS, NetworkProtocol.MULTICAST_PORT, interfaceToUse);
     }
 
+    @Override
     public void sendUnicast(InetAddress hostname, String message) {
         instance.sendUnicast(hostname, message);
     }
 
+    @Override
     public void sendMulticast(String message) {
         instance.sendMulticast(message);
     }
 
+    @Override
     public void stop() {
         instance.stop();
     }

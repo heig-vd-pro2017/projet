@@ -2,6 +2,8 @@ package ch.tofind.commusica.network;
 
 import ch.tofind.commusica.core.ApplicationProtocol;
 import ch.tofind.commusica.core.Core;
+import ch.tofind.commusica.utils.Logger;
+import ch.tofind.commusica.utils.Logger.Level;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -18,13 +20,16 @@ import java.util.Objects;
  */
 public class UnicastClient implements Runnable {
 
-    //! Socket to use for the communication
+    //! Logger for debugging.
+    private static final Logger LOG = new Logger(UnicastClient.class.getSimpleName());
+
+    //! Socket to use for the communication.
     private Socket socket;
 
-    //! Where to send the output
+    //! Where to send the output.
     private PrintWriter out;
 
-    //! Where to read the input
+    //! Where to read the input.
     private BufferedReader in;
 
     public UnicastClient(InetAddress hostname, int port) {
@@ -34,7 +39,7 @@ public class UnicastClient implements Runnable {
             this.in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
             this.out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         }
     }
 
@@ -46,7 +51,7 @@ public class UnicastClient implements Runnable {
             this.in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
             this.out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         }
     }
 
@@ -71,7 +76,7 @@ public class UnicastClient implements Runnable {
         try {
             fileStream = new FileInputStream(file);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         }
 
         BufferedInputStream fileBytes = new BufferedInputStream(fileStream);
@@ -80,7 +85,7 @@ public class UnicastClient implements Runnable {
         try {
             out = new BufferedOutputStream(socket.getOutputStream());
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         }
 
         byte[] buffer = new byte[8192];
@@ -100,7 +105,7 @@ public class UnicastClient implements Runnable {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         }
 
         // Close all the streams
@@ -109,19 +114,19 @@ public class UnicastClient implements Runnable {
                 out.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         }
 
         try {
             fileBytes.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         }
 
         try {
             fileStream.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         }
     }
 
@@ -146,7 +151,7 @@ public class UnicastClient implements Runnable {
                 }
 
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.severe(e);
             }
 
             // If one side closed the connection, we simulate an end of communication
@@ -170,11 +175,11 @@ public class UnicastClient implements Runnable {
 
             // Send the command and its arguments to the controller and get the result
             String result = Core.execute(command, args);
+            System.out.println(result);
 
+            // Send the result to the client if needed
             if (!Objects.equals(result, "") && !Objects.equals(command, NetworkProtocol.END_OF_COMMUNICATION)) {
-                // Send the result to the client
-                out.write(result + NetworkProtocol.END_OF_LINE);
-                out.flush();
+                send(result);
             }
         }
 
@@ -182,7 +187,7 @@ public class UnicastClient implements Runnable {
         try {
             in.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         }
 
         out.close();
@@ -190,7 +195,7 @@ public class UnicastClient implements Runnable {
         try {
             socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         }
     }
 }

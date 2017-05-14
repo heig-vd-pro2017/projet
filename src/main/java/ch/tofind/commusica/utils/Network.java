@@ -1,5 +1,7 @@
 package ch.tofind.commusica.utils;
 
+import ch.tofind.commusica.session.ServerSession;
+
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -10,7 +12,14 @@ import java.util.*;
 
 public class Network {
 
+    //! time in seconds before a server is considered inactive
+    private static int TIME_INACTIVE_SERVER = 10;
+
     private static InetAddress addressOfInterface = null;
+
+    public static Integer hashedMacAddress = null;
+
+    private static Map<InetAddress, ServerSession> availableServers = new HashMap<>();
 
     static public byte[] getMacAddress(InetAddress hostname) {
 
@@ -36,6 +45,10 @@ public class Network {
 
                 // We shouldn't care about loopback addresses
                 if (networkInterface.isLoopback())
+                    continue;
+
+                // We shouldn't care about disconnected links
+                if (!networkInterface.isUp())
                     continue;
 
                 networkInterfaces.add(networkInterface);
@@ -98,5 +111,23 @@ public class Network {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static Map<InetAddress, ServerSession> getAvailableServers() {
+        return availableServers;
+    }
+
+    public static void addServerToServersList(ServerSession serverSession) {
+        availableServers.put(serverSession.getIp(), serverSession);
+    }
+
+    public static void cleanServersList() {
+        for (Map.Entry<InetAddress, ServerSession> entry : availableServers.entrySet()) {
+            // if the server hasn't been refreshed in the last 10s
+            if (new Date().getTime() - entry.getValue().getUpdated().getTime() > 1000 * TIME_INACTIVE_SERVER) {
+
+                availableServers.remove(entry.getValue().getIp());
+            }
+        }
     }
 }

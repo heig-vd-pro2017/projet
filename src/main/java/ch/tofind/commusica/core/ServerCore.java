@@ -1,13 +1,19 @@
 package ch.tofind.commusica.core;
 
+import ch.tofind.commusica.file.FileManager;
 import ch.tofind.commusica.network.MulticastClient;
 import ch.tofind.commusica.network.NetworkProtocol;
+import ch.tofind.commusica.network.NetworkUtils;
 import ch.tofind.commusica.network.Server;
+import ch.tofind.commusica.playlist.PlaylistManager;
+
+import ch.tofind.commusica.utils.Serialize;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.Socket;
 import java.util.ArrayList;
 
 public class ServerCore extends AbstractCore implements ICore {
@@ -15,14 +21,11 @@ public class ServerCore extends AbstractCore implements ICore {
     //! Name of the server.
     String name;
 
-    //! Multicast client to send commands via multicast.
+    //! Client to use for multicast.
     MulticastClient multicast;
 
     //! The server.
     Server server;
-
-    //!
-    private Gson json;
 
     public ServerCore(String name, String multicastAddress, int multicastPort, InetAddress interfaceToUse, int unicastPort) {
 
@@ -34,8 +37,6 @@ public class ServerCore extends AbstractCore implements ICore {
 
         new Thread(multicast).start();
         new Thread(server).start();
-
-        json = new GsonBuilder().create();
     }
 
     public String END_OF_COMMUNICATION(ArrayList<Object> args) {
@@ -43,35 +44,46 @@ public class ServerCore extends AbstractCore implements ICore {
         return "";
     }
 
-    public String DISCOVER_REQUEST(ArrayList<Object> args) {
+    public String SEND_PLAYLIST_UPDATE(ArrayList<Object> args) {
 
-        InetAddress localhost = null;
-        try {
-            localhost = InetAddress.getLocalHost();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
 
-        String localhostJson = json.toJson(localhost);
+        String inetaddressJson = Serialize.serialize(NetworkUtils.INTERFACE_TO_USE);
+        String playlistJson = Serialize.serialize(PlaylistManager.getInstance().getPlaylist());
 
-        String result = ApplicationProtocol.SERVER_DISCOVERED + NetworkProtocol.END_OF_LINE +
-                    "Soirée de ouf malade" + NetworkProtocol.END_OF_LINE +
-                    localhostJson + NetworkProtocol.END_OF_LINE +
-                    NetworkProtocol.END_OF_COMMAND;
+        String command = ApplicationProtocol.PLAYLIST_UPDATE + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                inetaddressJson + NetworkProtocol.END_OF_LINE +
+                name + NetworkProtocol.END_OF_LINE +
+                playlistJson + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
 
-        return result;
+        multicast.send(command);
+
+        return "";
     }
 
     public String TRACK_REQUEST(ArrayList<Object> args) {
+
+        System.out.println("In TRACK_REQUEST");
         String result = ApplicationProtocol.TRACK_ACCEPTED + NetworkProtocol.END_OF_LINE +
-                12345 + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
         return result;
     }
 
     public String SEND_TRACK(ArrayList<Object> args) {
+
+        System.out.println("In SEND_TRACK");
+        // Delegate the job to the FileManager
+        try {
+            System.out.println("Delegating to FM");
+            FileManager.getInstance().retrieveFile(((Socket)args.get(1)).getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         String result = ApplicationProtocol.TRACK_SAVED + NetworkProtocol.END_OF_LINE +
-                12345 + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
                 /*
                 Socket socket = (Socket)args.remove(0);
@@ -85,11 +97,6 @@ public class ServerCore extends AbstractCore implements ICore {
                 }
                 */
         return result;
-    }
-
-    @Override
-    public String commandNotFound() {
-        return END_OF_COMMUNICATION(null);
     }
 
     @Override

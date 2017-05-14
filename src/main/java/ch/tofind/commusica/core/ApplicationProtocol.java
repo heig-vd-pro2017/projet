@@ -1,7 +1,27 @@
 package ch.tofind.commusica.core;
 
+import ch.tofind.commusica.session.ServerSession;
+
+import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Scanner;
+
 public final class ApplicationProtocol {
 
+    //!
+    public static Integer myId = null;
+
+    //!
+    public static Integer serverId = null;
+
+    //!
+    public static InetAddress serverAddress = null;
+
+    //!
+    public static String serverName = null;
+
+    //! Commands
     public static final String SUCCESS = "SUCCESS";
     public static final String ERROR = "ERROR";
 
@@ -16,5 +36,37 @@ public final class ApplicationProtocol {
     public static final String TRACK_SAVED = "TRACK_SAVED";
 
     public static final String PLAYLIST_UPDATE = "PLAYLIST_UPDATE";
+    public static final String SEND_PLAYLIST_UPDATE = "SEND_PLAYLIST_UPDATE";
+    public static final String SEND_TRACK_REQUEST = "SEND_TRACK_REQUEST";
 
+    public static void serverChooser(Map<InetAddress, ServerSession> serverList) {
+        if (!serverList.isEmpty()) {
+
+            ArrayList<ServerSession> servers = new ArrayList<>();
+
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("To which server do you want to connect?");
+            int i = 1;
+
+            for (Map.Entry<InetAddress, ServerSession> entry : serverList.entrySet()) {
+                System.out.println("[" + i++ + "]" + "    " + entry.getValue());
+                servers.add(entry.getValue());
+            }
+
+            int serverChoice = -1;
+            while (serverChoice < 0) {
+                serverChoice = scanner.nextInt();
+
+                if (serverChoice > serverList.size()) {
+                    System.out.println("Not valid!");
+                    serverChoice = -1;
+                }
+            }
+            serverChoice--;
+
+            serverId = servers.get(serverChoice).getId();
+            serverName = servers.get(serverChoice).getName();
+            serverAddress = servers.get(serverChoice).getIp();
+        }
+    }
 }
