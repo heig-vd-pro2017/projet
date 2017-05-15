@@ -16,5 +16,4 @@ public class Serialize {
     public static <T> T unserialize(String jsonObject, Class<T> objectClass) {
         return gson.fromJson(jsonObject, objectClass);
     }
-
 }

@@ -28,8 +28,6 @@ public class Commusica {
             e.printStackTrace();
         }
 
-
-
         Integer uniqueID;
         Scanner scanner = new Scanner(System.in);
 
@@ -46,12 +44,12 @@ public class Commusica {
                 interfaceChoice = scanner.next();
             }
 
-            Network.interfaceToUse = networkInterfaces.get(interfaceChoice);
+            NetworkProtocol.interfaceToUse = networkInterfaces.get(interfaceChoice);
         } else {
-            Network.interfaceToUse = networkInterfaces.firstEntry().getValue();
+            NetworkProtocol.interfaceToUse = networkInterfaces.firstEntry().getValue();
         }
 
-        ApplicationProtocol.myId = Arrays.hashCode(ch.tofind.commusica.utils.Network.getMacAddress(Network.interfaceToUse));
+        ApplicationProtocol.myId = Arrays.hashCode(ch.tofind.commusica.utils.Network.getMacAddress(NetworkProtocol.interfaceToUse));
 
         int launchChoice = -1;
         while (launchChoice != 0) {
@@ -65,8 +63,8 @@ public class Commusica {
 
             if (launchChoice == 1) { // Launch as server
 
-                Core core = new Core(Network.interfaceToUse);
-                core.setupAsServer("Soirée de Lulu 4");
+                Core core = new Core(NetworkProtocol.interfaceToUse);
+                core.setupAsServer("Soirée de Lulu 4", NetworkProtocol.MULTICAST_ADDRESS, NetworkProtocol.MULTICAST_PORT, NetworkProtocol.UNICAST_PORT);
 
                 ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
                 scheduledExecutorService.scheduleAtFixedRate(() -> {
@@ -103,8 +101,8 @@ public class Commusica {
 
             } else if (launchChoice == 2) { // Launch as client
 
-                Core core = new Core(Network.interfaceToUse);
-                core.setupAsClient();
+                Core core = new Core(NetworkProtocol.interfaceToUse);
+                core.setupAsClient(NetworkProtocol.MULTICAST_ADDRESS, NetworkProtocol.MULTICAST_PORT);
 
                 InetAddress hostname = null;
                 try {

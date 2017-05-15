@@ -1,5 +1,7 @@
 package ch.tofind.commusica.core;
 
+import ch.tofind.commusica.utils.Logger;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
@@ -9,6 +11,9 @@ import java.util.ArrayList;
  * @brief This class represents an abstract core to execute code asked from the network.
  */
 abstract class AbstractCore {
+
+    //! Logger for debugging.
+    private static final Logger LOG = new Logger(AbstractCore.class.getSimpleName());
 
     /**
      * @brief Execute a command on the available core.
@@ -28,7 +33,7 @@ abstract class AbstractCore {
         } catch (NoSuchMethodException e) {
             // Do nothing
         } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         }
 
         return result;

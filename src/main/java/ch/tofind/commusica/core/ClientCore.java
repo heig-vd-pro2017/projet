@@ -6,9 +6,8 @@ import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.network.MulticastClient;
 import ch.tofind.commusica.network.NetworkProtocol;
 import ch.tofind.commusica.network.UnicastClient;
-import ch.tofind.commusica.session.ServerSession;
 import ch.tofind.commusica.session.ServerSessionManager;
-import ch.tofind.commusica.utils.Network;
+import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.Serialize;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
@@ -19,16 +18,16 @@ import org.jaudiotagger.tag.TagException;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Stack;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
+/**
+ * @brief This class represents the client side of the application.
+ */
 public class ClientCore extends AbstractCore implements ICore {
+
+    //! Logger for debugging.
+    private static final Logger LOG = new Logger(ClientCore.class.getSimpleName());
 
     //! Client to use for multicast.
     private MulticastClient multicast;
@@ -42,6 +41,12 @@ public class ClientCore extends AbstractCore implements ICore {
     //!
     ServerSessionManager ssm = null;
 
+    /**
+     * @param multicastAddress Multicast address.
+     * @param port             Multicast port.
+     * @param interfaceToUse   Interface to use for the multicast.
+     * @brief Setup the core as a client.
+     */
     public ClientCore(String multicastAddress, int port, InetAddress interfaceToUse) {
         multicast = new MulticastClient(multicastAddress, port, interfaceToUse);
         new Thread(multicast).start();
@@ -56,10 +61,10 @@ public class ClientCore extends AbstractCore implements ICore {
 
     public String PLAYLIST_UPDATE(ArrayList<Object> args) {
 
-        String idString = (String)args.remove(0);
-        String inetaddressJson = (String)args.remove(0);
-        String serverName = (String)args.remove(0);
-        String playlistJson = (String)args.remove(0);
+        String idString = (String) args.remove(0);
+        String inetaddressJson = (String) args.remove(0);
+        String serverName = (String) args.remove(0);
+        String playlistJson = (String) args.remove(0);
 
 
         Integer id = Integer.parseInt(idString);
@@ -84,7 +89,7 @@ public class ClientCore extends AbstractCore implements ICore {
 
 
     public String SEND_TRACK_REQUEST(ArrayList<Object> args) {
-        String fileURI = (String)args.get(0);
+        String fileURI = (String) args.get(0);
 
         fileToSend = new File(fileURI);
 
@@ -104,15 +109,15 @@ public class ClientCore extends AbstractCore implements ICore {
             //System.out.println(track);
             trackJson = Serialize.serialize(track);
         } catch (CannotReadException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         } catch (TagException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         } catch (ReadOnlyFileException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         } catch (InvalidAudioFrameException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         }
 
 
@@ -121,7 +126,7 @@ public class ClientCore extends AbstractCore implements ICore {
                 trackJson + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
 
-        sendUnicast(ApplicationProtocol.serverAddress ,command);
+        sendUnicast(ApplicationProtocol.serverAddress, command);
 
         return "";
     }

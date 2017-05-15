@@ -7,6 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.UUID;
 
+import ch.tofind.commusica.utils.Logger;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
@@ -15,12 +16,14 @@ import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.TagException;
 
-
 /**
  * Singleton class used to manage the actions on the files.
  * It is the class which will retrieve the file over a TCP socket.
  */
 public class FileManager {
+
+    //! Logger for debugging.
+    private static final Logger LOG = new Logger(FileManager.class.getSimpleName());
 
     /**
      * These constants are used to check the format of a file.

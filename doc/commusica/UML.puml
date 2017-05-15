@@ -55,7 +55,7 @@ endnote
 
 note left of Session
     Abstraction d'une
-    session utilisateur
+    userSession utilisateur
 endnote
 
 note left of Controller

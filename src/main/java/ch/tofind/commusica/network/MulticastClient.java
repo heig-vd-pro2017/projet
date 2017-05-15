@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- * @brief This class receives data from the server by multicast.
+ * @brief This class a multicast client.
  */
 public class MulticastClient implements Runnable {
 
@@ -34,6 +34,13 @@ public class MulticastClient implements Runnable {
     //! Tells if the client is running.
     private boolean running;
 
+    /**
+     * @brief MulticastClient constructor.
+     *
+     * @param multicastAddress Multicast address to use.
+     * @param port Port to use for the communication.
+     * @param interfaceToUse Network interface to use.
+     */
     public MulticastClient(String multicastAddress, int port, InetAddress interfaceToUse) {
         this.port = port;
         this.running = false;
@@ -59,6 +66,35 @@ public class MulticastClient implements Runnable {
 
         try {
             socket.joinGroup(multicastGroup);
+        } catch (IOException e) {
+            LOG.severe(e);
+        }
+    }
+
+    /**
+     * @brief Stop the multicast client.
+     */
+    public void stop() {
+        running = false;
+        socket.close();
+    }
+
+    /**
+     * @brief Send a message by multicast.
+     *
+     * @param message The message to send.
+     */
+    public void send(String message) {
+
+        // Transforms the message in bytes
+        byte[] messageBytes = message.getBytes();
+
+        // Prepare the packet
+        DatagramPacket out = new DatagramPacket(messageBytes, messageBytes.length, multicastGroup, port);
+
+        // Send the packet
+        try {
+            socket.send(out);
         } catch (IOException e) {
             LOG.severe(e);
         }
@@ -119,27 +155,6 @@ public class MulticastClient implements Runnable {
             if (!Objects.equals(result, "")) {
                 send(result + NetworkProtocol.END_OF_LINE);
             }
-        }
-    }
-
-    public void stop() {
-        running = false;
-        socket.close();
-    }
-
-    public void send(String message) {
-
-        // Transforms the message in bytes
-        byte[] messageBytes = message.getBytes();
-
-        // Prepare the packet
-        DatagramPacket out = new DatagramPacket(messageBytes, messageBytes.length, multicastGroup, port);
-
-        // Send the packet
-        try {
-            socket.send(out);
-        } catch (IOException e) {
-            LOG.severe(e);
         }
     }
 }

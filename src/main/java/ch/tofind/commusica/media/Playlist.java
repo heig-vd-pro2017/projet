@@ -1,42 +1,42 @@
 package ch.tofind.commusica.media;
 
-import ch.tofind.commusica.database.DatabaseObject;
 import ch.tofind.commusica.utils.Configuration;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
 /**
- * @brief This class represents a playlist and can be stored in a database
+ * @brief This class represents a playlist.
  */
-public class Playlist implements DatabaseObject {
+public class Playlist implements Serializable {
 
-    //! ID of the playlist
+    //! ID of the playlist.
     private Integer id;
 
-    //! Name of the playlist
+    //! Name of the playlist.
     private String name;
 
-    //! When was the playlist added for the first time in the database
+    //! When was the playlist added for the first time in the database.
     private Date dateAdded;
 
-    //! When was the track played for the last time
+    //! When was the track played for the last time.
     private Date datePlayed;
 
-    //! Version control for concurrency
+    //! Version control for concurrency.
     private Integer version;
 
     /**
-     * @brief Empty constructor for Hibernate
+     * @brief Empty constructor for Hibernate.
      */
     protected Playlist() {
 
     }
 
     /**
-     * @brief Create a playlist
-     * @param name Name of the playlist
+     * @brief Create a playlist.
+     * @param name Name of the playlist.
      */
     public Playlist(String name) {
         this.name = name;
@@ -44,46 +44,48 @@ public class Playlist implements DatabaseObject {
     }
 
     /**
-     * @brief Get the playlist's ID
-     * @return The playlist's ID
+     * @brief Get the playlist's ID.
+     * @return The playlist's ID.
      */
     public Integer getId() {
         return id;
     }
 
     /**
-     * @brief Get the playlist's name
-     * @return The playlist's name
+     * @brief Get the playlist's name.
+     * @return The playlist's name.
      */
     public String getName() {
         return name;
     }
 
     /**
-     * @brief Set the playlist's name
-     * @param name The playlist's name
+     * @brief Set the playlist's name.
+     * @param name The playlist's name.
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * @brief Get the date when the playlist was added
-     * @return The added date
+     * @brief Get the date when the playlist was added.
+     * @return The added date.
      */
     public Date getDateAdded() {
         return dateAdded;
     }
 
     /**
-     * @brief Get the date when the playlist was played
-     * @return The played date
+     * @brief Get the date when the playlist was played.
+     * @return The played date.
      */
     public Date getDatePlayed() {
         return datePlayed;
     }
 
-    @Override
+    /**
+     * @brief Update the object.
+     */
     public void update() {
         this.datePlayed = new Date();
     }
