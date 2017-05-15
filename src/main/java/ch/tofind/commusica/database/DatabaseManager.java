@@ -11,16 +11,16 @@ import org.hibernate.cfg.Configuration;
  */
 public class DatabaseManager {
 
-    //! Shared instance of the object for all the application
+    //! Shared instance of the object for all the application.
     private static DatabaseManager instance = null;
 
-    //! SessionFactory (Hibernate related)
+    //! SessionFactory (Hibernate related).
     private SessionFactory factory = null;
 
-    //! Session (Hibernate related)
+    //! Session (Hibernate related).
     private Session session = null;
 
-    //! Transaction (Hibernate related)
+    //! Transaction (Hibernate related).
     private Transaction transaction = null;
 
     /**
@@ -39,8 +39,9 @@ public class DatabaseManager {
     }
 
     /**
-     * @brief Get the object instance
-     * @return The instance of the object
+     * @brief Get the object instance.
+     *
+     * @return The instance of the object.
      */
     public static DatabaseManager getInstance() {
 

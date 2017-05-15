@@ -3,7 +3,6 @@ package ch.tofind.commusica.network;
 import ch.tofind.commusica.core.ApplicationProtocol;
 import ch.tofind.commusica.core.Core;
 import ch.tofind.commusica.utils.Logger;
-import ch.tofind.commusica.utils.Logger.Level;
 
 import java.io.*;
 import java.net.InetAddress;

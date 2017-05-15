@@ -42,7 +42,6 @@ public class Commusica {
 
     public static void main(String[] args) {
 
-
         try {
             Configuration.getInstance().load("commusica.properties");
         } catch (IOException e) {
