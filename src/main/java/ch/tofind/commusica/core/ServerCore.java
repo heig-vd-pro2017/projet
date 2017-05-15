@@ -2,6 +2,7 @@ package ch.tofind.commusica.core;
 
 import ch.tofind.commusica.file.FileManager;
 import ch.tofind.commusica.media.Playlist;
+import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.network.MulticastClient;
 import ch.tofind.commusica.network.NetworkProtocol;
 import ch.tofind.commusica.network.NetworkUtils;
@@ -33,6 +34,9 @@ public class ServerCore extends AbstractCore implements ICore {
 
     //!
     private Gson json;
+
+    //!
+    private Track trackReceived;
 
     public ServerCore(String name, String multicastAddress, int multicastPort, InetAddress interfaceToUse, int unicastPort) {
 
@@ -74,6 +78,7 @@ public class ServerCore extends AbstractCore implements ICore {
     public String TRACK_REQUEST(ArrayList<Object> args) {
 
         System.out.println("In TRACK_REQUEST");
+        trackReceived = json.fromJson((String)args.get(0), Track.class);
         String result = ApplicationProtocol.TRACK_ACCEPTED + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
@@ -84,27 +89,22 @@ public class ServerCore extends AbstractCore implements ICore {
 
         System.out.println("In SEND_TRACK");
         // Delegate the job to the FileManager
+        String URI = "";
         try {
+            int fileSize = Integer.parseInt((String)args.get(2));
+            System.out.println(fileSize);
             System.out.println("Delegating to FM");
-            FileManager.getInstance().retrieveFile(((Socket)args.get(1)).getInputStream());
+            URI = FileManager.getInstance().retrieveFile(((Socket)args.get(1)).getInputStream(), fileSize);
+            trackReceived.setUri(URI);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        trackReceived = null;
+
         String result = ApplicationProtocol.TRACK_SAVED + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
-                /*
-                Socket socket = (Socket)args.remove(0);
-
-                // Delegate the job to the FileManager
-                try {
-                    System.out.println("Delegating to FM");
-                    FileManager.getInstance().retrieveFile(socket.getInputStream());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                */
         return result;
     }
 

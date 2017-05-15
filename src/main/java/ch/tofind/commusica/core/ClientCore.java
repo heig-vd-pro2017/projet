@@ -92,6 +92,8 @@ public class ClientCore extends AbstractCore implements ICore {
         // TODO: VERIFICATION OF THE FORMAT!
         //if (!FileManager.signatureChecker(fileToSend))
 
+        FileManager.displayMetadatas(fileToSend);
+
         Track track;
         String trackJson = "";
 
@@ -125,6 +127,7 @@ public class ClientCore extends AbstractCore implements ICore {
         System.out.println("In TRACK_ACCEPTED");
         String result = ApplicationProtocol.SEND_TRACK + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                fileToSend.length() + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
 
         client.send(result);
