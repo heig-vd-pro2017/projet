@@ -71,7 +71,6 @@ public class Track implements DatabaseObject {
      * @param length Length (in seconds) of the track
      * @param uri URI of the file
      */
-
     public Track(String title, String artist, String album, Integer length, String uri, boolean favorited) {
         this.title = title;
         this.artist = artist;
@@ -90,33 +89,34 @@ public class Track implements DatabaseObject {
      * @param audioFile an AudioFile object that represents your track
      */
     public Track(AudioFile audioFile) {
+
         AudioHeader header = audioFile.getAudioHeader();
         Tag tags = audioFile.getTag();
 
-        if (Objects.equals(tags.getFirst(FieldKey.TITLE), "")) {
-            this.title = AudioFile.getBaseFilename(audioFile.getFile());
-        } else {
+        // We consider that all tags are unknown/default values
+        this.title = AudioFile.getBaseFilename(audioFile.getFile());
+        this.artist = "Unknown";
+        this.album = "Unknown";
+        this.length = header.getTrackLength();
+
+        if (!Objects.equals(tags.getFirst(FieldKey.TITLE), "")) {
             this.title = tags.getFirst(FieldKey.TITLE);
         }
 
-        if (Objects.equals(tags.getFirst(FieldKey.ARTIST), "")) {
-            this.artist = "unknown";
-        } else {
+        if (!Objects.equals(tags.getFirst(FieldKey.ARTIST), "")) {
             this.artist = tags.getFirst(FieldKey.ARTIST);
         }
 
-        if (Objects.equals(tags.getFirst(FieldKey.ALBUM), "")) {
-            this.album = "unknown";
-        } else {
+        if (!Objects.equals(tags.getFirst(FieldKey.ALBUM), "")) {
             this.album = tags.getFirst(FieldKey.ALBUM);
         }
 
         this.uri = audioFile.getFile().toString();
 
         this.length = header.getTrackLength();
-
-
+        
         this.favorited = false;
+
         this.favoritedProperty = new SimpleBooleanProperty(favorited);
 
         this.favoritedProperty.addListener(((observable, oldValue, newValue) -> this.favorited = newValue));

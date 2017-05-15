@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
- * This class implements the behavior of the "receptionist", whose
+ * @brief This class implements the behavior of the "receptionist", whose
  * responsibility is to listen for incoming connection requests. As soon as a
  * new client has arrived, the receptionist delegates the processing to a
  * "servant" who will execute on its own thread.
