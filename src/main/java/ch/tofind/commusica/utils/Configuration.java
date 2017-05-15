@@ -9,6 +9,10 @@ import java.util.Properties;
  */
 public class Configuration {
 
+    private static final String CONFIG_FILE = "commusica.properties";
+
+    private static final Logger LOG = new Logger(Configuration.class.getSimpleName());
+
     //! Shared instance of the object for all the application
     private static Configuration instance = null;
 
@@ -20,6 +24,12 @@ public class Configuration {
      */
     private Configuration() {
         configuration = new Properties();
+
+        try {
+            configuration.load(new FileInputStream(CONFIG_FILE));
+        } catch (IOException e) {
+            LOG.log(Logger.Level.SEVERE, e);
+        }
     }
 
     /**

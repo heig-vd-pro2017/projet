@@ -9,14 +9,17 @@ import java.util.Scanner;
 
 public final class ApplicationProtocol {
 
+    //!
+    public static Integer myId = null;
 
-    public static int myId;
+    //!
+    public static Integer serverId = null;
 
-    public static int serverId;
-    public static InetAddress serverAddress;
-    public static String serverName;
+    //!
+    public static InetAddress serverAddress = null;
 
-
+    //!
+    public static String serverName = null;
 
     //! Commands
     public static final String SUCCESS = "SUCCESS";
@@ -31,7 +34,6 @@ public final class ApplicationProtocol {
     public static final String TRACK_REFUSED = "TRACK_REFUSED";
     public static final String SEND_TRACK = "SEND_TRACK";
     public static final String TRACK_SAVED = "TRACK_SAVED";
-
 
     public static final String PLAYLIST_UPDATE = "PLAYLIST_UPDATE";
     public static final String SEND_PLAYLIST_UPDATE = "SEND_PLAYLIST_UPDATE";
@@ -67,5 +69,4 @@ public final class ApplicationProtocol {
             serverAddress = servers.get(serverChoice).getIp();
         }
     }
-
 }

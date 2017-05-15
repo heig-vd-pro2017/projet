@@ -1,23 +1,18 @@
 package ch.tofind.commusica.core;
 
-import ch.tofind.commusica.session.ServerSession;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.Map;
 
 abstract class AbstractCore {
 
     public String execute(String command, ArrayList<Object> args) {
 
-        Method method;
-
         String result = "";
 
         try {
-            method = this.getClass().getMethod( command, ArrayList.class);
+            Method method = this.getClass().getMethod( command, ArrayList.class);
             result = (String) method.invoke(this, args);
         } catch (NoSuchMethodException e) {
             // Do nothing
@@ -33,6 +28,4 @@ abstract class AbstractCore {
     abstract void sendMulticast(String message);
 
     abstract void stop();
-
-    abstract String commandNotFound();
 }

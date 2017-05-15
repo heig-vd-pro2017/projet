@@ -8,17 +8,16 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.*;
 
 public class Network {
+
     //! time in seconds before a server is considered inactive
     private static int TIME_INACTIVE_SERVER = 10;
 
-
     private static InetAddress addressOfInterface = null;
 
-    public static int hashedMacAddress;
+    public static Integer hashedMacAddress = null;
 
     private static Map<InetAddress, ServerSession> availableServers = new HashMap<>();
 
@@ -46,6 +45,10 @@ public class Network {
 
                 // We shouldn't care about loopback addresses
                 if (networkInterface.isLoopback())
+                    continue;
+
+                // We shouldn't care about disconnected links
+                if (!networkInterface.isUp())
                     continue;
 
                 networkInterfaces.add(networkInterface);

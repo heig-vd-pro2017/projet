@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Label?>
+
+<fx:root type="javafx.scene.control.ListView" xmlns:fx="http://javafx.com/fxml/1">
+    <placeholder>
+        <Label text="No playlist loaded." />
+    </placeholder>
+    <stylesheets>
+        <URL value="@styles/TracksListView.css" />
+    </stylesheets>
+</fx:root>

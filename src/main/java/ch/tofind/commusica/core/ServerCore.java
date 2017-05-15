@@ -8,25 +8,22 @@ import ch.tofind.commusica.network.NetworkProtocol;
 import ch.tofind.commusica.network.NetworkUtils;
 import ch.tofind.commusica.network.Server;
 import ch.tofind.commusica.playlist.PlaylistManager;
-import ch.tofind.commusica.session.ServerSession;
-import ch.tofind.commusica.utils.Network;
+
+import ch.tofind.commusica.utils.Serialize;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class ServerCore extends AbstractCore implements ICore {
 
     //! Name of the server.
     String name;
 
-    //! Multicast client to send commands via multicast.
+    //! Client to use for multicast.
     MulticastClient multicast;
 
     //! The server.
@@ -48,8 +45,6 @@ public class ServerCore extends AbstractCore implements ICore {
 
         new Thread(multicast).start();
         new Thread(server).start();
-
-        json = new GsonBuilder().create();
     }
 
     public String END_OF_COMMUNICATION(ArrayList<Object> args) {
@@ -60,8 +55,8 @@ public class ServerCore extends AbstractCore implements ICore {
     public String SEND_PLAYLIST_UPDATE(ArrayList<Object> args) {
 
 
-        String inetaddressJson = json.toJson(NetworkUtils.INTERFACE_TO_USE);
-        String playlistJson = json.toJson(PlaylistManager.getInstance().getPlaylist());
+        String inetaddressJson = Serialize.serialize(NetworkUtils.INTERFACE_TO_USE);
+        String playlistJson = Serialize.serialize(PlaylistManager.getInstance().getPlaylist());
 
         String command = ApplicationProtocol.PLAYLIST_UPDATE + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
@@ -106,11 +101,6 @@ public class ServerCore extends AbstractCore implements ICore {
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
         return result;
-    }
-
-    @Override
-    public String commandNotFound() {
-        return END_OF_COMMUNICATION(null);
     }
 
     @Override

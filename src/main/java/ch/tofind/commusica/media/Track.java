@@ -2,14 +2,18 @@ package ch.tofind.commusica.media;
 
 import ch.tofind.commusica.database.DatabaseObject;
 import ch.tofind.commusica.utils.Configuration;
-import org.jaudiotagger.audio.AudioFile;
-import org.jaudiotagger.audio.AudioHeader;
-import org.jaudiotagger.tag.FieldKey;
-import org.jaudiotagger.tag.Tag;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
+
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioHeader;
+import org.jaudiotagger.tag.FieldKey;
+import org.jaudiotagger.tag.Tag;
 
 /**
  * @brief This class represents an audio track and can be stored in a database
@@ -40,6 +44,15 @@ public class Track implements DatabaseObject {
     //! When was the track played for the last time
     private Date datePlayed;
 
+    /**
+     * If the track is favorited or not.
+     * This field is useful for Hibernate integration, otherwise the property defined below should be used.
+     */
+    private boolean favorited;
+
+    //! If the track is favorited or not.
+    private BooleanProperty favoritedProperty;
+
     //! Version control for concurrency
     private Integer version;
 
@@ -58,13 +71,17 @@ public class Track implements DatabaseObject {
      * @param length Length (in seconds) of the track
      * @param uri URI of the file
      */
-    public Track(String title, String artist, String album, Integer length, String uri) {
+
+    public Track(String title, String artist, String album, Integer length, String uri, boolean favorited) {
         this.title = title;
         this.artist = artist;
         this.album = album;
         this.length = length;
         this.uri = uri;
         this.dateAdded = new Date();
+        this.favorited = favorited;
+        this.favoritedProperty = new SimpleBooleanProperty(favorited);
+        this.favoritedProperty.addListener(((observable, oldValue, newValue) -> this.favorited = newValue));
     }
 
     public Track(AudioFile audioFile) {
@@ -158,6 +175,14 @@ public class Track implements DatabaseObject {
         return datePlayed;
     }
 
+    /**
+     * Returns the property about if the track is a favorite or not.
+     * @return The property about if the track is a favorite or not.
+     */
+    public BooleanProperty getFavoritedProperty() {
+        return favoritedProperty;
+    }
+
     @Override
     public void update() {
         this.datePlayed = new Date();
@@ -176,9 +201,10 @@ public class Track implements DatabaseObject {
 
         Track track = (Track) object;
 
-        return Objects.equals(title, track.title) &&
+        return Objects.equals(title, track.title)   &&
                Objects.equals(artist, track.artist) &&
-               Objects.equals(album, track.album) &&
+               Objects.equals(album, track.album)   &&
+               getFavoritedProperty().getValue() == track.getFavoritedProperty().getValue() &&
                length == track.length;
     }
 
@@ -197,13 +223,14 @@ public class Track implements DatabaseObject {
         String dateAddedString = dateAdded == null ? "N/A" : dateFormat.format(dateAdded);
         String datePlayedString = datePlayed == null ? "N/A" : dateFormat.format(datePlayed);
 
-        return "Track"                           + '\n' + '\t' +
-               "Title......: " + title            + '\n' + '\t' +
-               "Artist.....: " + artist           + '\n' + '\t' +
-               "Album......: " + album            + '\n' + '\t' +
-               "Length.....: " + length           + '\n' + '\t' +
-               "URI........: " + uri              + '\n' + '\t' +
-               "Date added.: " + dateAddedString  + '\n' + '\t' +
-               "Date played: " + datePlayedString + '\n';
+        return "Track"                                        + '\n' + '\t' +
+               "Title......: " + title                        + '\n' + '\t' +
+               "Artist.....: " + artist                       + '\n' + '\t' +
+               "Album......: " + album                        + '\n' + '\t' +
+               "Length.....: " + length                       + '\n' + '\t' +
+               "URI........: " + uri                          + '\n' + '\t' +
+               "Date added.: " + dateAddedString              + '\n' + '\t' +
+               "Date played: " + datePlayedString             + '\n' + '\t' +
+               "Favorited..: " + favoritedProperty.getValue() + '\n';
     }
 }

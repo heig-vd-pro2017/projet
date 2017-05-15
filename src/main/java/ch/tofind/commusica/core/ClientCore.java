@@ -4,51 +4,39 @@ import ch.tofind.commusica.file.FileManager;
 import ch.tofind.commusica.media.Playlist;
 import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.network.*;
-import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.session.ServerSession;
 import ch.tofind.commusica.utils.Network;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import org.jaudiotagger.audio.AudioFile;
+import ch.tofind.commusica.utils.Serialize;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.tag.TagException;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
 public class ClientCore extends AbstractCore implements ICore {
 
-
-
-    //!
+    //! Client to use for multicast.
     private MulticastClient multicast;
 
-    //!
+    //! Client to use for unicast.
     private UnicastClient client;
 
-    //!
-    private Gson json;
-
-    //!
-    private File fileToSend = null;
-
+    //! File to send to the server.
+    private File fileToSend;
 
     public ClientCore(String multicastAddress, int port, InetAddress interfaceToUse) {
         multicast = new MulticastClient(multicastAddress, port, interfaceToUse);
         new Thread(multicast).start();
-
-        json = new GsonBuilder().create();
 
         ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
 
@@ -59,8 +47,6 @@ public class ClientCore extends AbstractCore implements ICore {
         }, 0, 2, TimeUnit.SECONDS);
     }
 
-
-
     public String END_OF_COMMUNICATION(ArrayList<Object> args) {
         System.out.println("End of communication client side.");
         return "";
@@ -68,15 +54,20 @@ public class ClientCore extends AbstractCore implements ICore {
 
     public String PLAYLIST_UPDATE(ArrayList<Object> args) {
 
-        int id = Integer.parseInt((String)args.get(0));
-        if (id == ApplicationProtocol.serverId) {
-            Playlist playlistUpdated = json.fromJson((String)args.get(3), Playlist.class);
+        Integer id = Integer.parseInt((String)args.get(0));
+
+        if (Objects.isNull(ApplicationProtocol.serverId)) {
+            ApplicationProtocol.serverId = id;
+        }
+
+        if (Objects.equals(id, ApplicationProtocol.serverId)) {
+            Playlist playlistUpdated = Serialize.unserialize((String)args.get(3), Playlist.class);
             //PlaylistManager.getInstance().loadPlaylist(playlistUpdated);
         }
 
         //System.out.println("Playlist UPDATE received");
         // We add the server to the available servers list
-        InetAddress ipServer = json.fromJson((String)args.get(1), InetAddress.class);
+        InetAddress ipServer = Serialize.unserialize((String)args.get(1), InetAddress.class);
         ServerSession server = new ServerSession(ipServer, (String)args.get(2), id);
 
         Network.addServerToServersList(server);
@@ -100,7 +91,7 @@ public class ClientCore extends AbstractCore implements ICore {
         try {
             track = new Track(AudioFileIO.read(fileToSend));
             System.out.println(track);
-            trackJson = json.toJson(track);
+            trackJson = Serialize.serialize(track);
         } catch (CannotReadException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -148,11 +139,6 @@ public class ClientCore extends AbstractCore implements ICore {
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
         return result;
-    }
-
-    @Override
-    public String commandNotFound() {
-        return END_OF_COMMUNICATION(null);
     }
 
     @Override
