@@ -1,8 +1,5 @@
 package ch.tofind.commusica.session;
 
-
-import com.sun.corba.se.spi.activation.Server;
-
 import java.net.InetAddress;
 import java.util.Date;
 
@@ -15,7 +12,6 @@ public class ServerSession {
     private String name;
 
     //!
-
     private int id;
 
     //!

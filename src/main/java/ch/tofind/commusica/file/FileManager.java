@@ -1,5 +1,10 @@
 package ch.tofind.commusica.file;
 
+import java.io.*;
+import java.nio.file.Files;
+import java.util.Arrays;
+import java.util.UUID;
+
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
@@ -7,11 +12,6 @@ import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.TagException;
-
-import java.io.*;
-import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.UUID;
 
 public class FileManager {
 
