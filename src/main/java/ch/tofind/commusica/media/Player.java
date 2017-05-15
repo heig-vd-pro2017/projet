@@ -63,7 +63,7 @@ public class Player {
         }
 
         //currentTrackProperty.setValue(PlaylistManager.getInstance().nextTrack());
-        currentTrackProperty.setValue(PlaylistManager.getInstance().getPlaylist().tracksList().getNextTrack());
+        currentTrackProperty.setValue(PlaylistManager.getInstance().getPlaylist().getTracksList().getNextTrack());
 
         if (currentTrackProperty.getValue() != null) {
             Media media = null;
@@ -133,36 +133,49 @@ public class Player {
         if (currentTrackProperty.getValue() == null) {
             load();
         }
-        player.play();
-        isPlayingProperty.setValue(true);
+
+        if (player != null) {
+            player.play();
+            isPlayingProperty.setValue(true);
+        }
     }
 
     public void pause() {
-        player.pause();
-        isPlayingProperty.setValue(false);
+        if (player != null) {
+            player.pause();
+            isPlayingProperty.setValue(false);
+        }
     }
 
     public void stop() {
-        player.stop();
-        isPlayingProperty.setValue(false);
+        if (player != null) {
+            player.stop();
+            isPlayingProperty.setValue(false);
+        }
     }
 
-    public void riseVolume() {
-        double currentVolume = player.getVolume();
-        player.setVolume(currentVolume + volumeStep);
+    /* public void riseVolume() {
+        if (player != null) {
+            double currentVolume = player.getVolume();
+            player.setVolume(currentVolume + volumeStep);
+        }
     }
 
     public void lowerVolume() {
-        double currentVolume = player.getVolume();
-        player.setVolume(currentVolume - volumeStep);
+        if (player != null) {
+            double currentVolume = player.getVolume();
+            player.setVolume(currentVolume - volumeStep);
+        }
     }
 
     public double getVolume() {
         return player.getVolume();
-    }
+    } */
 
     public void setVolume(double volume) {
-        player.setVolume(volume);
+        if (player != null) {
+            player.setVolume(volume);
+        }
     }
 }
 

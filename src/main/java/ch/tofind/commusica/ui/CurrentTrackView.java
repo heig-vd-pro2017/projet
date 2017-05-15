@@ -38,7 +38,7 @@ public class CurrentTrackView extends GridPane {
     //! Commusica player.
     private static final Player player = Player.getCurrentPlayer();
 
-    //! Playlist manager.
+    //! SavedPlaylist manager.
     private static final PlaylistManager playlistManager = PlaylistManager.getInstance();
 
     @FXML

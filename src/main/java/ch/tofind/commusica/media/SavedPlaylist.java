@@ -1,8 +1,11 @@
 package ch.tofind.commusica.media;
 
+import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.database.DatabaseObject;
 import ch.tofind.commusica.playlist.PlaylistTrack;
 import ch.tofind.commusica.utils.Configuration;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,7 +15,7 @@ import java.util.Objects;
 /**
  * @brief This class represents a playlist and can be stored in a database
  */
-public class Playlist implements DatabaseObject {
+public class SavedPlaylist implements DatabaseObject, IPlaylist {
 
     //! ID of the playlist
     private Integer id;
@@ -32,7 +35,7 @@ public class Playlist implements DatabaseObject {
     /**
      * @brief Empty constructor for Hibernate
      */
-    private Playlist() {
+    private SavedPlaylist() {
 
     }
 
@@ -40,7 +43,7 @@ public class Playlist implements DatabaseObject {
      * @brief Create a playlist
      * @param name Name of the playlist
      */
-    public Playlist(String name) {
+    public SavedPlaylist(String name) {
         this.name = name;
         this.dateAdded = new Date();
     }
@@ -97,11 +100,11 @@ public class Playlist implements DatabaseObject {
             return true;
         }
 
-        if (!(object instanceof Playlist)) {
+        if (!(object instanceof SavedPlaylist)) {
             return false;
         }
 
-        Playlist playlist = (Playlist) object;
+        SavedPlaylist playlist = (SavedPlaylist) object;
 
         return Objects.equals(name, playlist.name);
     }
@@ -125,5 +128,42 @@ public class Playlist implements DatabaseObject {
                "Name.......: " + name             + '\n' + '\t' +
                "Date added.: " + dateAddedString  + '\n' + '\t' +
                "Date played: " + datePlayedString + '\n';
+    }
+
+    public boolean addTrack(Track track) {
+        if (!contains(track)) {
+            PlaylistTrack playlistTrack = new PlaylistTrack(this, track);
+            DatabaseManager.getInstance().save(playlistTrack);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean contains(Track track) {
+        // Get tracks list.
+        List<PlaylistTrack> tracksList = getTracksList();
+
+        return tracksList.stream().anyMatch(p -> p.getTrack().equals(track));
+    }
+
+    public PlaylistTrack getPlaylistTrack(Track track) {
+        List<PlaylistTrack> trackList = getTracksList();
+
+        return trackList.stream().filter(p -> p.getTrack().equals(track)).findFirst().orElse(null);
+    }
+
+    public List<PlaylistTrack> getTracksList() {
+        Session session = DatabaseManager.getInstance().getSession();
+
+        String queryString = String.format("from PlaylistTrack where playlist_id = '%d'", id);
+        Query<PlaylistTrack> query = session.createQuery(queryString, PlaylistTrack.class);
+
+        return query.list();
+    }
+
+    public boolean isSaved() {
+        return true;
     }
 }

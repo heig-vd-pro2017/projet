@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping default-access="field">
-    <class name="ch.tofind.commusica.media.Playlist" table="playlist">
+    <class name="ch.tofind.commusica.media.SavedPlaylist" table="playlist">
         <meta attribute="class-description">
             This class represents a playlist composed of many tracks
         </meta>

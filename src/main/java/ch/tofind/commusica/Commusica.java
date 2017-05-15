@@ -1,10 +1,9 @@
 package ch.tofind.commusica;
 
 import ch.tofind.commusica.playlist.PlaylistManager;
-import ch.tofind.commusica.playlist.PlaylistTrack;
 import ch.tofind.commusica.ui.UIController;
 import ch.tofind.commusica.database.DatabaseManager;
-import ch.tofind.commusica.media.Playlist;
+import ch.tofind.commusica.media.SavedPlaylist;
 import ch.tofind.commusica.media.Track;
 
 import ch.tofind.commusica.utils.Logger;
@@ -29,8 +28,8 @@ public class Commusica {
 
         dropDatabase();
 
-        /*Playlist playlist1 = new Playlist("Test1");
-        Playlist playlist2 = new Playlist("Test2");*/
+        /*SavedPlaylist playlist1 = new SavedPlaylist("Test1");
+        SavedPlaylist playlist2 = new SavedPlaylist("Test2");*/
 
         Track track1 = new Track("BLOOD", "Kendrick Lamar", "DAMN.", 119, "/Users/faku99/Desktop/tmp/BLOOD.mp3");
         Track track2 = new Track("DNA", "Kendrick Lamar", "DAMN.", 186, "/Users/faku99/Desktop/tmp/DNA.mp3");
@@ -43,17 +42,17 @@ public class Commusica {
 
         PlaylistManager playlistManager = PlaylistManager.getInstance();
 
-        Playlist playlist1 = playlistManager.createPlaylist("Test1");
-        Playlist playlist2 = playlistManager.createPlaylist("Test2");
+        SavedPlaylist playlist1 = playlistManager.createPlaylist("Test1");
+        SavedPlaylist playlist2 = playlistManager.createPlaylist("Test2");
 
-        playlistManager.addTrackToPlaylist(track1, playlist1);
-        playlistManager.addTrackToPlaylist(track2, playlist1);
-        playlistManager.addTrackToPlaylist(track3, playlist1);
+        playlist1.addTrack(track1);
+        playlist1.addTrack(track2);
+        playlist1.addTrack(track3);
 
-        playlistManager.addTrackToPlaylist(track2, playlist2);
-        playlistManager.addTrackToPlaylist(track3, playlist2);
+        playlist2.addTrack(track2);
+        playlist2.addTrack(track3);
 
-        playlistManager.getPlaylistTrackInPlaylist(track3, playlist1).upvote();
+        playlist1.getPlaylistTrack(track1).upvote();
 
         UIController.launch(UIController.class);
 

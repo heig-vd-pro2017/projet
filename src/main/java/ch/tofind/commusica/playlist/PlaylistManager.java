@@ -2,12 +2,11 @@ package ch.tofind.commusica.playlist;
 
 import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.media.EphemeralPlaylist;
-import ch.tofind.commusica.media.Playlist;
+import ch.tofind.commusica.media.SavedPlaylist;
 import ch.tofind.commusica.media.Track;
 
 import ch.tofind.commusica.ui.UIController;
 import ch.tofind.commusica.utils.Logger;
-import ch.tofind.commusica.utils.ObservableSortedPlaylistTrackList;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -15,11 +14,8 @@ import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
 import javax.persistence.NoResultException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.function.Predicate;
 
 public class PlaylistManager {
 
@@ -28,21 +24,21 @@ public class PlaylistManager {
     //! Shared instance of the playlist for all the application
     private static PlaylistManager instance = null;
 
-    //! All available playlists
-    private List<Playlist> playlists;
+    //! All saved playlists
+    private List<SavedPlaylist> savedPlaylists;
 
-    //! Playlist currently running
+    //! SavedPlaylist currently running
     private EphemeralPlaylist playlist;
 
-    //! Playlist containing favorited tracks.
-    private Playlist favoritesPlaylist;
+    //! SavedPlaylist containing favorited tracks.
+    private SavedPlaylist favoritesPlaylist;
 
     /**
      * PlaylistManager single constructor. Avoid the instantiation.
      */
     private PlaylistManager() {
         playlist = new EphemeralPlaylist();
-        playlists = retrievePlaylists();
+        savedPlaylists = retrievePlaylists();
         favoritesPlaylist = retrieveFavoritesPlaylist();
     }
 
@@ -63,90 +59,26 @@ public class PlaylistManager {
         return playlist;
     }
 
-    public Playlist createPlaylist(String name) {
-        Playlist playlist = new Playlist(name);
+    public SavedPlaylist createPlaylist(String name) {
+        SavedPlaylist playlist = new SavedPlaylist(name);
         DatabaseManager.getInstance().save(playlist);
 
-        playlists.add(playlist);
+        savedPlaylists.add(playlist);
 
         return playlist;
     }
 
-    public void removePlaylist(Playlist playlist) {
-        playlists.remove(playlist);
+    public void removePlaylist(SavedPlaylist playlist) {
+        savedPlaylists.remove(playlist);
+
+        DatabaseManager.getInstance().delete(playlist);
     }
 
-    /*public void loadPlaylist(Playlist playlist) {
-
-        this.playlist = playlist;
-
-        // Update timestamp.
-        playlist.update();
-
-        Session session = DatabaseManager.getInstance().getSession();
-
-        playlistTracksList.clear();
-        playlistTracksList.addAll(session.createQuery(String.format("from PlaylistTrack where playlist_id = '%d'", playlist.getId())).list());
-    }*/
-
-    public List<Playlist> getPlaylists() {
-        return playlists;
+    public List<SavedPlaylist> getSavedPlaylists() {
+        return savedPlaylists;
     }
 
-    /*public PlaylistTrack addTrack(Track track) {
-
-        PlaylistTrack playlistTrack = new PlaylistTrack(playlist, track);
-
-        addPlaylistTrack(playlistTrack);
-
-        return playlistTrack;
-    }*/
-
-    public void addTrackToPlaylist(Track track, Playlist playlist) {
-        PlaylistTrack playlistTrack = new PlaylistTrack(playlist, track);
-
-        // TODO: Check if the track already is in the playlist.
-        DatabaseManager.getInstance().save(playlistTrack);
-    }
-
-    /*public void addPlaylistTrack(PlaylistTrack playlistTrack) {
-        playlistTracksList.add(playlistTrack);
-    }*/
-
-    /* public PlaylistTrack getPlaylistTrack(Track track) {
-
-        for (PlaylistTrack playlistTrack : playlistTracksList) {
-            if (playlistTrack.getTrack() == track) {
-                return playlistTrack;
-            }
-        }
-
-        return null;
-
-    }*/
-
-    public PlaylistTrack getPlaylistTrackInPlaylist(Track track, Playlist playlist) {
-        List<PlaylistTrack> tracksList = getTracksForPlaylist(playlist);
-
-        // Get the first result.
-        return tracksList.stream().filter(p -> p.getTrack().equals(track)).findFirst().get();
-    }
-
-    public List<PlaylistTrack> getTracksForPlaylist(Playlist playlist) {
-        Session session = DatabaseManager.getInstance().getSession();
-
-        String queryString = String.format("from PlaylistTrack where playlist_id = '%d'", playlist.getId());
-        Query<PlaylistTrack> query = session.createQuery(queryString, PlaylistTrack.class);
-
-        /*ObservableSortedPlaylistTrackList list = new ObservableSortedPlaylistTrackList();
-        list.addAll(query.list());
-
-        return list;*/
-
-        return query.list();
-    }
-
-    public Playlist getFavoritesPlaylist() {
+    public SavedPlaylist getFavoritesPlaylist() {
         return favoritesPlaylist;
     }
 
@@ -157,7 +89,7 @@ public class PlaylistManager {
     }
 
     public void removeTrackFromFavorites(Track track) {
-        List<PlaylistTrack> list = getTracksForPlaylist(favoritesPlaylist);
+        List<PlaylistTrack> list = favoritesPlaylist.getTracksList();
 
         for (int i = 0; i < list.size(); ++i) {
             PlaylistTrack playlistTrack = list.get(i);
@@ -176,14 +108,14 @@ public class PlaylistManager {
      *
      * @return The playlist containing the favorited tracks.
      */
-    private Playlist retrieveFavoritesPlaylist() {
+    private SavedPlaylist retrieveFavoritesPlaylist() {
         Session session = DatabaseManager.getInstance().getSession();
 
         // Our implementation is made so that the playlist containing favorited songs has the ID '0'.
-        Query<Playlist> fetchQuery = session.createQuery("from Playlist where id = '0'", Playlist.class);
+        Query<SavedPlaylist> fetchQuery = session.createQuery("from SavedPlaylist where id = '0'", SavedPlaylist.class);
 
         // Retrieve the playlist.
-        Playlist playlist = null;
+        SavedPlaylist playlist = null;
         try {
             playlist = fetchQuery.getSingleResult();
         } catch (NoResultException e1) {
@@ -196,7 +128,7 @@ public class PlaylistManager {
             try {
                 transaction = session.beginTransaction();
                 String queryString = String.format("INSERT INTO playlist (id, date_added, name, version) VALUES (0, %d, 'Favorites', 0);", new Date().getTime());
-                NativeQuery<Playlist> createQuery = session.createNativeQuery(queryString, Playlist.class);
+                NativeQuery<SavedPlaylist> createQuery = session.createNativeQuery(queryString, SavedPlaylist.class);
                 createQuery.executeUpdate();
                 transaction.commit();
 
@@ -213,11 +145,11 @@ public class PlaylistManager {
         return playlist;
     }
 
-    private List<Playlist> retrievePlaylists() {
+    private List<SavedPlaylist> retrievePlaylists() {
         Session session = DatabaseManager.getInstance().getSession();
 
         // Retrieve all playlists but the favorites one.
-        Query<Playlist> query = session.createQuery("from Playlist where id > '0'", Playlist.class);
+        Query<SavedPlaylist> query = session.createQuery("from SavedPlaylist where id > '0'", SavedPlaylist.class);
 
         return query.list();
     }

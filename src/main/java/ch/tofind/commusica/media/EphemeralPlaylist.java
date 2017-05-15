@@ -4,15 +4,17 @@ import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.playlist.PlaylistTrack;
 import ch.tofind.commusica.utils.ObservableSortedPlaylistTrackList;
 
-public class EphemeralPlaylist {
+import java.util.Optional;
+
+public class EphemeralPlaylist implements IPlaylist {
 
     private ObservableSortedPlaylistTrackList tracksList;
 
     //! The playlist that will be saved into the database for keeping track of this one.
-    private Playlist staticPlaylist;
+    private SavedPlaylist staticPlaylist;
 
     public EphemeralPlaylist() {
-        staticPlaylist = new Playlist("Soirée lambda");
+        staticPlaylist = new SavedPlaylist("Soirée lambda");
         DatabaseManager.getInstance().save(staticPlaylist);
 
         tracksList = new ObservableSortedPlaylistTrackList();
@@ -31,12 +33,8 @@ public class EphemeralPlaylist {
         return false;
     }
 
-    public ObservableSortedPlaylistTrackList tracksList() {
-        return tracksList;
-    }
-
     public boolean downvoteTrack(Track track) {
-        PlaylistTrack playlistTrack = getPlaylistTrackForTrack(track);
+        PlaylistTrack playlistTrack = getPlaylistTrack(track);
 
         if (playlistTrack != null) {
             playlistTrack.downvote();
@@ -48,7 +46,7 @@ public class EphemeralPlaylist {
     }
 
     public boolean upvoteTrack(Track track) {
-        PlaylistTrack playlistTrack = getPlaylistTrackForTrack(track);
+        PlaylistTrack playlistTrack = getPlaylistTrack(track);
 
         if (playlistTrack != null) {
             playlistTrack.upvote();
@@ -59,8 +57,19 @@ public class EphemeralPlaylist {
         return false;
     }
 
-    private PlaylistTrack getPlaylistTrackForTrack(Track track) {
-        return tracksList.stream().filter(p -> p.getTrack().equals(track)).findFirst().get();
+    public PlaylistTrack getPlaylistTrack(Track track) {
+        return tracksList.stream().filter(p -> p.getTrack().equals(track)).findFirst().orElse(null);
     }
 
+    public boolean contains(Track track) {
+        return tracksList.stream().anyMatch(p -> p.getTrack().equals(track));
+    }
+
+    public ObservableSortedPlaylistTrackList getTracksList() {
+        return tracksList;
+    }
+
+    public boolean isSaved() {
+        return false;
+    }
 }
