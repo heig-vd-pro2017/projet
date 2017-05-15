@@ -1,6 +1,7 @@
 package ch.tofind.commusica.database;
 
 import ch.tofind.commusica.utils.Logger;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -21,7 +22,7 @@ public class DatabaseManager {
     //! SessionFactory (Hibernate related).
     private SessionFactory factory = null;
 
-    //! UserSession (Hibernate related).
+    //! Session (Hibernate related).
     private Session session = null;
 
     //! Transaction (Hibernate related).

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- * @brief This class an unicast client.
+ * @brief This class represents an unicast client.
  */
 public class UnicastClient implements Runnable {
 

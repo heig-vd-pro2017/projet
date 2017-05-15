@@ -2,6 +2,9 @@ package ch.tofind.commusica.core;
 
 import java.net.InetAddress;
 
+/**
+ * @brief This class represents the application protocol for communication.
+ */
 public final class ApplicationProtocol {
 
     //! The ID of the current instance.

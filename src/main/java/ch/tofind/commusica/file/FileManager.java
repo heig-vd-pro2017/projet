@@ -15,8 +15,7 @@ import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.TagException;
 
 /**
- * Singleton class used to manage the actions on the files.
- * It is the class which will retrieve the file over a TCP socket.
+ * @brief This class represents the file manager and allows interaction with the filesystem.
  */
 public class FileManager {
 

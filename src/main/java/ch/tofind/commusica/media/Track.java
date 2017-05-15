@@ -16,7 +16,7 @@ import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
 
 /**
- * @brief This class represents an audio track and can be stored in a database
+ * @brief This class represents an audio track.
  */
 public class Track implements Serializable {
 
