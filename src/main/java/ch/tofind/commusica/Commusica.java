@@ -1,36 +1,16 @@
 package ch.tofind.commusica;
 
 import ch.tofind.commusica.core.ApplicationProtocol;
-import ch.tofind.commusica.core.ClientCore;
 import ch.tofind.commusica.core.Core;
-import ch.tofind.commusica.file.FileManager;
-import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.network.NetworkProtocol;
-import ch.tofind.commusica.playlist.PlaylistManager;
-import ch.tofind.commusica.playlist.PlaylistTrack;
-import ch.tofind.commusica.ui.UIController;
-import ch.tofind.commusica.database.DatabaseManager;
-import ch.tofind.commusica.media.Playlist;
-import ch.tofind.commusica.media.Track;
+import ch.tofind.commusica.network.NetworkUtils;
+import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.Network;
 
-import java.io.File;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import ch.tofind.commusica.network.NetworkUtils;
-import ch.tofind.commusica.utils.Configuration;
-import ch.tofind.commusica.utils.Network;
-import org.jaudiotagger.audio.AudioFile;
-import org.jaudiotagger.audio.AudioFileIO;
-import org.jaudiotagger.audio.exceptions.CannotReadException;
-import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
-import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
-import org.jaudiotagger.tag.TagException;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.*;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -150,7 +130,9 @@ public class Commusica {
                             break;
                         case 1:
                             ArrayList<Object> uri = new ArrayList<>();
-                            uri.add("C:\\Users\\David\\Documents\\YourFuckingMother_x_EHDE_-_Pocket_Monsters_VIP.mp3");
+
+                            //uri.add("C:\\Users\\David\\Documents\\YourFuckingMother_x_EHDE_-_Pocket_Monsters_VIP.mp3");
+                            uri.add("C:\\Users\\David\\Downloads\\02 v.m4a");
                             core.execute(ApplicationProtocol.SEND_TRACK_REQUEST, uri);
                             break;
 

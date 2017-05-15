@@ -51,7 +51,7 @@ public class Track implements DatabaseObject {
     private boolean favorited;
 
     //! If the track is favorited or not.
-    private BooleanProperty favoritedProperty;
+    private transient BooleanProperty favoritedProperty;
 
     //! Version control for concurrency
     private Integer version;
@@ -83,6 +83,11 @@ public class Track implements DatabaseObject {
         this.favoritedProperty.addListener(((observable, oldValue, newValue) -> this.favorited = newValue));
     }
 
+    /**
+     * Create a Track from an AudioFile. It is useful when you want to transfer a file and
+     * want to do some check on a Track instead of checking the AudioFile itself
+     * @param audioFile an AudioFile object that represents your track
+     */
     public Track(AudioFile audioFile) {
 
         AudioHeader header = audioFile.getAudioHeader();
@@ -105,6 +110,16 @@ public class Track implements DatabaseObject {
         if (!Objects.equals(tags.getFirst(FieldKey.ALBUM), "")) {
             this.album = tags.getFirst(FieldKey.ALBUM);
         }
+
+        this.uri = audioFile.getFile().toString();
+
+        this.length = header.getTrackLength();
+        
+        this.favorited = false;
+
+        this.favoritedProperty = new SimpleBooleanProperty(favorited);
+
+        this.favoritedProperty.addListener(((observable, oldValue, newValue) -> this.favorited = newValue));
     }
 
     /**

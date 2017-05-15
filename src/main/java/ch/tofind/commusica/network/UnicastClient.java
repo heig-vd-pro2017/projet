@@ -198,4 +198,8 @@ public class UnicastClient implements Runnable {
             LOG.severe(e);
         }
     }
+
+    public Socket getSocket() {
+        return socket;
+    }
 }
