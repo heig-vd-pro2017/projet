@@ -1,6 +1,7 @@
 package ch.tofind.commusica.playlist;
 
 import ch.tofind.commusica.database.DatabaseManager;
+import ch.tofind.commusica.media.EphemeralPlaylist;
 import ch.tofind.commusica.media.Playlist;
 import ch.tofind.commusica.media.Track;
 
@@ -31,9 +32,7 @@ public class PlaylistManager {
     private List<Playlist> playlists;
 
     //! Playlist currently running
-    private Playlist playlist;
-
-    private final ObservableSortedPlaylistTrackList playlistTracksList;
+    private EphemeralPlaylist playlist;
 
     //! Playlist containing favorited tracks.
     private Playlist favoritesPlaylist;
@@ -42,11 +41,9 @@ public class PlaylistManager {
      * PlaylistManager single constructor. Avoid the instantiation.
      */
     private PlaylistManager() {
-        Session session = DatabaseManager.getInstance().getSession();
-
+        playlist = new EphemeralPlaylist();
         playlists = retrievePlaylists();
         favoritesPlaylist = retrieveFavoritesPlaylist();
-        playlistTracksList = new ObservableSortedPlaylistTrackList();
     }
 
     public static PlaylistManager getInstance() {
@@ -62,12 +59,17 @@ public class PlaylistManager {
         return instance;
     }
 
-    public Playlist getPlaylist() {
+    public EphemeralPlaylist getPlaylist() {
         return playlist;
     }
 
-    public void addPlaylist(Playlist playlist) {
+    public Playlist createPlaylist(String name) {
+        Playlist playlist = new Playlist(name);
+        DatabaseManager.getInstance().save(playlist);
+
         playlists.add(playlist);
+
+        return playlist;
     }
 
     public void removePlaylist(Playlist playlist) {
@@ -91,20 +93,27 @@ public class PlaylistManager {
         return playlists;
     }
 
-    public PlaylistTrack addTrack(Track track) {
+    /*public PlaylistTrack addTrack(Track track) {
 
         PlaylistTrack playlistTrack = new PlaylistTrack(playlist, track);
 
         addPlaylistTrack(playlistTrack);
 
         return playlistTrack;
+    }*/
+
+    public void addTrackToPlaylist(Track track, Playlist playlist) {
+        PlaylistTrack playlistTrack = new PlaylistTrack(playlist, track);
+
+        // TODO: Check if the track already is in the playlist.
+        DatabaseManager.getInstance().save(playlistTrack);
     }
 
-    public void addPlaylistTrack(PlaylistTrack playlistTrack) {
+    /*public void addPlaylistTrack(PlaylistTrack playlistTrack) {
         playlistTracksList.add(playlistTrack);
-    }
+    }*/
 
-    public PlaylistTrack getPlaylistTrack(Track track) {
+    /* public PlaylistTrack getPlaylistTrack(Track track) {
 
         for (PlaylistTrack playlistTrack : playlistTracksList) {
             if (playlistTrack.getTrack() == track) {
@@ -114,23 +123,27 @@ public class PlaylistManager {
 
         return null;
 
+    }*/
+
+    public PlaylistTrack getPlaylistTrackInPlaylist(Track track, Playlist playlist) {
+        List<PlaylistTrack> tracksList = getTracksForPlaylist(playlist);
+
+        // Get the first result.
+        return tracksList.stream().filter(p -> p.getTrack().equals(track)).findFirst().get();
     }
 
-    public Track nextTrack() {
-        PlaylistTrack nextTrack = playlistTracksList.getNextTrack();
-        return nextTrack != null ? nextTrack.getTrack() : null;
-    }
-
-    public ObservableSortedPlaylistTrackList getTracksForPlaylist(Playlist playlist) {
+    public List<PlaylistTrack> getTracksForPlaylist(Playlist playlist) {
         Session session = DatabaseManager.getInstance().getSession();
 
         String queryString = String.format("from PlaylistTrack where playlist_id = '%d'", playlist.getId());
         Query<PlaylistTrack> query = session.createQuery(queryString, PlaylistTrack.class);
 
-        ObservableSortedPlaylistTrackList list = new ObservableSortedPlaylistTrackList();
+        /*ObservableSortedPlaylistTrackList list = new ObservableSortedPlaylistTrackList();
         list.addAll(query.list());
 
-        return list;
+        return list;*/
+
+        return query.list();
     }
 
     public Playlist getFavoritesPlaylist() {
@@ -144,7 +157,7 @@ public class PlaylistManager {
     }
 
     public void removeTrackFromFavorites(Track track) {
-        ObservableSortedPlaylistTrackList list = getTracksForPlaylist(favoritesPlaylist);
+        List<PlaylistTrack> list = getTracksForPlaylist(favoritesPlaylist);
 
         for (int i = 0; i < list.size(); ++i) {
             PlaylistTrack playlistTrack = list.get(i);
@@ -154,8 +167,8 @@ public class PlaylistManager {
             }
         }
 
-        // Refresh UI view.
-        UIController.getController().showPlaylist(favoritesPlaylist);
+        // We need to refresh the view since it's not an Observable...
+        UIController.getController().refreshPlaylist();
     }
 
     /**

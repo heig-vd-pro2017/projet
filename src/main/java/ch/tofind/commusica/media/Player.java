@@ -4,7 +4,7 @@ import ch.tofind.commusica.playlist.PlaylistManager;
 
 import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
-import ch.tofind.commusica.utils.TrackProperty;
+import ch.tofind.commusica.utils.PlaylistTrackProperty;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -23,9 +23,9 @@ public class Player {
     
     private final IntegerProperty currentTimeProperty;
 
-    private final TrackProperty currentTrackProperty;
+    private final PlaylistTrackProperty currentTrackProperty;
 
-    private final TrackProperty previousTrackProperty;
+    private final PlaylistTrackProperty previousTrackProperty;
 
     private double volumeStep;
 
@@ -40,8 +40,8 @@ public class Player {
         this.volumeStep = volumeStep;
 
         currentTimeProperty = new SimpleIntegerProperty(0);
-        currentTrackProperty = new TrackProperty();
-        previousTrackProperty = new TrackProperty();
+        currentTrackProperty = new PlaylistTrackProperty();
+        previousTrackProperty = new PlaylistTrackProperty();
         isPlayingProperty = new SimpleBooleanProperty(false);
     }
 
@@ -62,15 +62,16 @@ public class Player {
             previousTrackProperty.setValue(currentTrackProperty.getValue());
         }
 
-        currentTrackProperty.setValue(PlaylistManager.getInstance().nextTrack());
+        //currentTrackProperty.setValue(PlaylistManager.getInstance().nextTrack());
+        currentTrackProperty.setValue(PlaylistManager.getInstance().getPlaylist().tracksList().getNextTrack());
 
         if (currentTrackProperty.getValue() != null) {
             Media media = null;
 
-            LOG.info("new track: " + currentTrackProperty.getValue().getTitle());
+            LOG.info("new track: " + currentTrackProperty.getTrack().getTitle());
 
             try {
-                media = new Media(new File(currentTrackProperty.getValue().getUri()).toURI().toString());
+                media = new Media(new File(currentTrackProperty.getTrack().getUri()).toURI().toString());
             } catch (MediaException e) {
                 LOG.log(Logger.Level.SEVERE, e);
             }
@@ -109,14 +110,14 @@ public class Player {
     }
 
     public Track getCurrentTrack() {
-        return currentTrackProperty.getValue();
+        return currentTrackProperty.getTrack();
     }
 
-    public TrackProperty getCurrentTrackProperty() {
+    public PlaylistTrackProperty getCurrentTrackProperty() {
         return currentTrackProperty;
     }
 
-    public TrackProperty getPreviousTrackProperty() {
+    public PlaylistTrackProperty getPreviousTrackProperty() {
         return previousTrackProperty;
     }
 

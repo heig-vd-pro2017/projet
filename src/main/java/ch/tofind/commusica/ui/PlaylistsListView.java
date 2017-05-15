@@ -57,7 +57,9 @@ public class PlaylistsListView extends AnchorPane {
 
     @FXML
     private void loadPlayingPlaylist(MouseEvent e) {
-        System.out.println("Not implemented yet.");
+        // Clear selected playlist if there was one.
+        playlistsView.getSelectionModel().clearSelection();
+
     }
 
     private class PlaylistCell extends ListCell<Playlist> {

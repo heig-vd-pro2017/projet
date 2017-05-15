@@ -21,6 +21,8 @@ import java.util.ResourceBundle;
  */
 public class UIController extends Application implements Initializable {
 
+    private Playlist currentPlaylist;
+
     //!
     private static FXMLLoader loader = new FXMLLoader();
 
@@ -79,7 +81,14 @@ public class UIController extends Application implements Initializable {
      * @param playlist
      */
     public void showPlaylist(Playlist playlist) {
+        currentPlaylist = playlist;
         tracksListView.showPlaylist(playlist);
+    }
+
+    public void refreshPlaylist() {
+        if (currentPlaylist != null) {
+            tracksListView.showPlaylist(currentPlaylist);
+        }
     }
 
     @Override

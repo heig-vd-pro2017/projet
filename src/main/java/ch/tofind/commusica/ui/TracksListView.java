@@ -4,12 +4,14 @@ import ch.tofind.commusica.media.Playlist;
 import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.playlist.PlaylistTrack;
 
+import ch.tofind.commusica.utils.ObservableSortedPlaylistTrackList;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @brief Represents a graphic list view of tracks.
@@ -69,6 +71,12 @@ public class TracksListView extends ListView<PlaylistTrack> {
      * @link PlaylistManager#showPlaylist(Playlist).
      */
     public void showPlaylist(Playlist playlist) {
-        setItems(playlistManager.getTracksForPlaylist(playlist));
+        List<PlaylistTrack> tracksList = playlistManager.getTracksForPlaylist(playlist);
+
+        if (ObservableSortedPlaylistTrackList.class.isInstance(tracksList)) {
+            setItems((ObservableSortedPlaylistTrackList)tracksList);
+        } else {
+            setItems(FXCollections.observableList(tracksList));
+        }
     }
 }

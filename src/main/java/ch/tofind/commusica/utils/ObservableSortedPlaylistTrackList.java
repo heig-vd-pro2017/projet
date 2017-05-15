@@ -53,7 +53,6 @@ public class ObservableSortedPlaylistTrackList extends ObservableListBase<Playli
     }
 
     public PlaylistTrack getNextTrack() {
-        // View the previous has 'already played' when going to next track, not before.
         if(count >= size()) {
             return null;
         }

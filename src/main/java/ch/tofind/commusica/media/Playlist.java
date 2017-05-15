@@ -1,10 +1,12 @@
 package ch.tofind.commusica.media;
 
 import ch.tofind.commusica.database.DatabaseObject;
+import ch.tofind.commusica.playlist.PlaylistTrack;
 import ch.tofind.commusica.utils.Configuration;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -30,7 +32,7 @@ public class Playlist implements DatabaseObject {
     /**
      * @brief Empty constructor for Hibernate
      */
-    protected Playlist() {
+    private Playlist() {
 
     }
 
