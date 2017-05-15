@@ -50,6 +50,7 @@ public class Commusica {
         }
 
 
+
         Integer uniqueID;
         Scanner scanner = new Scanner(System.in);
 
@@ -150,7 +151,7 @@ public class Commusica {
                             break;
                         case 1:
                             ArrayList<Object> uri = new ArrayList<>();
-                            uri.add("/home/ludelafo/Music/Temp/sample1.mp3");
+                            uri.add("C:\\Users\\David\\Documents\\YourFuckingMother_x_EHDE_-_Pocket_Monsters_VIP.mp3");
                             core.execute(ApplicationProtocol.SEND_TRACK_REQUEST, uri);
                             break;
 

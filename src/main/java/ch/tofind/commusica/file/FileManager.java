@@ -51,40 +51,56 @@ public class FileManager {
         file.renameTo(new File(path + File.separator + fileName));
     }
 
-    public File retrieveFile(InputStream is) {
+    // TODO: renvoyer le path
+    public String retrieveFile(InputStream is, int fileSize) {
         File result = null;
         FileOutputStream fos = null;
         BufferedOutputStream bos = null;
         try {
             byte[] receivedMusic = new byte[8192];
-            result = new File("." + File.separator + "tracks" + File.separator + UUID.randomUUID() + ".mp3");
+            //result = new File("." + File.separator + "tracks" + File.separator + UUID.randomUUID() + ".mp3");
+            result = new File("." + File.separator + "tracks" + File.separator + "result");
             fos = new FileOutputStream(result);
             bos = new BufferedOutputStream(fos);
 
-            int bytesRead = 0;
+            String ext;
+
+            int bytesRead;
+
+            int remaining = fileSize;
 
             // We check the 16 first bytes so we can check if it is a compatible file type
             byte[] signature = new byte[16];
             is.read(signature, 0, 16);
+            ext = signatureChecker(signature);
 
-            if (!signatureChecker(signature)) {
+
+            if (ext.equals("error")) {
                 System.out.println("File not compatible!");
                 fos.close();
                 bos.close();
                 Files.delete(result.toPath());
             } else {
                 bos.write(signature, 0, signature.length);
-                while ((bytesRead = is.read(receivedMusic)) != -1) {
+                remaining -= signature.length;
+                while ((bytesRead = is.read(receivedMusic, 0, Math.min(remaining, receivedMusic.length))) > 0) {
+                    remaining -= bytesRead;
                     bos.write(receivedMusic, 0, bytesRead);
                 }
                 System.out.println("Music received!");
                 bos.flush();
                 fos.close();
                 bos.close();
-            }
-            //is.close();
 
-            return result;
+                System.out.println(result.hashCode());
+
+                if(!result.renameTo(new File("." + File.separator + "tracks" + File.separator + result.hashCode() + ext))) {
+                    Files.delete(result.toPath());
+                }
+            }
+
+
+            return result.getAbsolutePath();
 
         } catch (IOException e) {
             // we delete the file if an problem occurred
@@ -120,40 +136,47 @@ public class FileManager {
         return null;
     }
 
-    public static boolean signatureChecker(byte[] signature) {
-        if ((Arrays.equals(MP3, Arrays.copyOfRange(signature, OFFSET_MP3_SIGNATURE, MP3.length))) ||
-                Arrays.equals(M4A, Arrays.copyOfRange(signature, OFFSET_M4A_SIGNATURE, M4A.length)) ||
-                Arrays.equals(WAV, Arrays.copyOfRange(signature, OFFSET_WAV_SIGNATURE, WAV.length))) {
-            return true;
+
+    /**
+     * Check if the File passed as parameter is of a supported format. If so, it return a String corresponding to the
+     * extension (.mp3 if it is a MP3)
+     * @param signature
+     * @return a String of the extension corresponding to the file format.
+     */
+    public static String signatureChecker(byte[] signature) {
+        if (Arrays.equals(MP3, Arrays.copyOfRange(signature, OFFSET_MP3_SIGNATURE, MP3.length))) {
+            return ".mp3";
+        } else if (Arrays.equals(M4A, Arrays.copyOfRange(signature, OFFSET_M4A_SIGNATURE, M4A.length))) {
+            return ".m4a";
+        } else if (Arrays.equals(WAV, Arrays.copyOfRange(signature, OFFSET_WAV_SIGNATURE, WAV.length))) {
+            return ".wav";
         }
-        return false;
+        return "error";
     }
 
-     public static void displayMetadatas(File f) {
-         try {
-             AudioFile af = AudioFileIO.read(f);
+    public static void displayMetadatas(File f) {
+        try {
+            AudioFile af = AudioFileIO.read(f);
 
-             System.out.println("toString: " + af.toString());
-             System.out.println("getFile: " + af.getFile());
-             System.out.println("getBaseFileName: " + af.getBaseFilename(f));
-/*
-             System.out.println(af.getAudioHeader().getTrackLength() / 60 + ":" + af.getAudioHeader().getTrackLength() % 60);
-             System.out.println(af.getAudioHeader().getFormat());
-             System.out.println(af.getTag().getFirst(FieldKey.ARTIST));
-             System.out.println(af.getTag().getFirst(FieldKey.ALBUM));
-             System.out.println(af.getTag().getFirst(FieldKey.TITLE));*/
-         } catch (CannotReadException e) {
-             e.printStackTrace();
-         } catch (IOException e) {
-             e.printStackTrace();
-         } catch (TagException e) {
-             e.printStackTrace();
-         } catch (ReadOnlyFileException e) {
-             e.printStackTrace();
-         } catch (InvalidAudioFrameException e) {
-             e.printStackTrace();
-         }
-     }
+
+            // System.out.println(af.getAudioHeader().getTrackLength() / 60 + ":" + af.getAudioHeader().getTrackLength() % 60);
+
+            System.out.println(af.getAudioHeader().getFormat());
+            System.out.println(af.getTag().getFirst(FieldKey.ARTIST));
+            System.out.println(af.getTag().getFirst(FieldKey.ALBUM));
+            System.out.println(af.getTag().getFirst(FieldKey.TITLE));
+        } catch (CannotReadException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (TagException e) {
+            e.printStackTrace();
+        } catch (ReadOnlyFileException e) {
+            e.printStackTrace();
+        } catch (InvalidAudioFrameException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * @param filePath

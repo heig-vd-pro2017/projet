@@ -81,9 +81,9 @@ public class UnicastClient implements Runnable {
 
         BufferedInputStream fileBytes = new BufferedInputStream(fileStream);
 
-        BufferedOutputStream out = null;
+        BufferedOutputStream bos = null;
         try {
-            out = new BufferedOutputStream(socket.getOutputStream());
+            bos = new BufferedOutputStream(socket.getOutputStream());
         } catch (IOException e) {
             LOG.severe(e);
         }
@@ -95,13 +95,13 @@ public class UnicastClient implements Runnable {
         try {
 
             while ((size = fileBytes.read(buffer)) != -1) {
-                if (out != null) {
-                    out.write(buffer, 0, size);
+                if (bos != null) {
+                    bos.write(buffer, 0, size);
                 }
             }
 
-            if (out != null) {
-                out.flush();
+            if (bos != null) {
+                bos.flush();
             }
 
         } catch (IOException e) {
@@ -109,13 +109,14 @@ public class UnicastClient implements Runnable {
         }
 
         // Close all the streams
-        try {
-            if (out != null) {
-                out.close();
+        /*try {
+            if (bos != null) {
+                bos.close();
             }
+
         } catch (IOException e) {
             LOG.severe(e);
-        }
+        }*/
 
         try {
             fileBytes.close();

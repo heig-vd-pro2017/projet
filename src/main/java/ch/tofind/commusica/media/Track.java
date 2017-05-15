@@ -148,6 +148,14 @@ public class Track implements DatabaseObject {
     }
 
     /**
+     * Set the uri of the Track
+     * @param uri
+     */
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+    /**
      * @brief Get the date when the track was added
      * @return The added date
      */
