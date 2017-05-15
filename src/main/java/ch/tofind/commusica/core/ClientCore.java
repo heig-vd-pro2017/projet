@@ -1,11 +1,13 @@
 package ch.tofind.commusica.core;
 
+import ch.tofind.commusica.file.FileManager;
 import ch.tofind.commusica.media.Playlist;
 import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.network.MulticastClient;
 import ch.tofind.commusica.network.NetworkProtocol;
 import ch.tofind.commusica.network.UnicastClient;
 import ch.tofind.commusica.session.ServerSession;
+import ch.tofind.commusica.session.ServerSessionManager;
 import ch.tofind.commusica.utils.Network;
 import ch.tofind.commusica.utils.Serialize;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -17,8 +19,11 @@ import org.jaudiotagger.tag.TagException;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Stack;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -34,17 +39,14 @@ public class ClientCore extends AbstractCore implements ICore {
     //! File to send to the server.
     private File fileToSend;
 
+    //!
+    ServerSessionManager ssm = null;
+
     public ClientCore(String multicastAddress, int port, InetAddress interfaceToUse) {
         multicast = new MulticastClient(multicastAddress, port, interfaceToUse);
         new Thread(multicast).start();
 
-        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
-
-        scheduledExecutorService.scheduleAtFixedRate(() -> {
-            //System.out.println(new Date() + " - Cleaning servers list");
-            Network.cleanServersList();
-            //System.out.println(Network.getAvailableServers());
-        }, 0, 2, TimeUnit.SECONDS);
+        ssm = ServerSessionManager.getInstance();
     }
 
     public String END_OF_COMMUNICATION(ArrayList<Object> args) {
@@ -55,7 +57,9 @@ public class ClientCore extends AbstractCore implements ICore {
     public String PLAYLIST_UPDATE(ArrayList<Object> args) {
 
         String idString = (String)args.remove(0);
-
+        String inetaddressJson = (String)args.remove(0);
+        String serverName = (String)args.remove(0);
+        String playlistJson = (String)args.remove(0);
 
 
         Integer id = Integer.parseInt(idString);
@@ -65,32 +69,34 @@ public class ClientCore extends AbstractCore implements ICore {
         }
 
         if (Objects.equals(id, ApplicationProtocol.serverId)) {
-            Playlist playlistUpdated = Serialize.unserialize((String)args.get(3), Playlist.class);
+            Playlist playlistUpdated = Serialize.unserialize(playlistJson, Playlist.class);
             //PlaylistManager.getInstance().loadPlaylist(playlistUpdated);
         }
 
         //System.out.println("Playlist UPDATE received");
         // We add the server to the available servers list
-        InetAddress ipServer = Serialize.unserialize((String)args.get(1), InetAddress.class);
-        ServerSession server = new ServerSession(ipServer, (String)args.get(2), id);
+        InetAddress ipServer = Serialize.unserialize(inetaddressJson, InetAddress.class);
 
-        Network.addServerToServersList(server);
+        ssm.store(ipServer, serverName, id);
 
         return "";
     }
 
-    // args[0] = id
-    // args[1] = URI
+
     public String SEND_TRACK_REQUEST(ArrayList<Object> args) {
-        fileToSend = new File((String)args.get(0));
+        String fileURI = (String)args.get(0);
 
-        // TODO: VERIFICATION OF THE FORMAT!
-        //if (!FileManager.signatureChecker(fileToSend))
+        fileToSend = new File(fileURI);
 
-        //FileManager.displayMetadatas(fileToSend);
+        // Verfification of the format
+        if (FileManager.signatureChecker(FileManager.getFirstBytes(fileToSend, 16)).equals("error")) {
+            return NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
+                    NetworkProtocol.END_OF_COMMAND;
+        }
 
         Track track;
         String trackJson = "";
+
 
         try {
             track = new Track(AudioFileIO.read(fileToSend));
@@ -111,6 +117,7 @@ public class ClientCore extends AbstractCore implements ICore {
 
 
         String command = ApplicationProtocol.TRACK_REQUEST + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 trackJson + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
 
