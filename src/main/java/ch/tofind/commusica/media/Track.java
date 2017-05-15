@@ -43,12 +43,6 @@ public class Track implements DatabaseObject {
     //! When was the track played for the last time
     private Date datePlayed;
 
-    /**
-     * If the track is favorited or not.
-     * This field is useful for Hibernate integration, otherwise the property defined below should be used.
-     */
-    private boolean favorited;
-
     //! If the track is favorited or not.
     private BooleanProperty favoritedProperty;
 
@@ -78,6 +72,16 @@ public class Track implements DatabaseObject {
         this.length = length;
         this.uri = uri;
         this.dateAdded = new Date();
+
+        this.favoritedProperty = new SimpleBooleanProperty(false);
+
+        this.favoritedProperty.addListener(((observable, oldValue, newValue) -> {
+            if (newValue) {
+                PlaylistManager.getInstance().addTrackToFavorites(this);
+            } else {
+                PlaylistManager.getInstance().removeTrackFromFavorites(this);
+            }
+        }));
     }
 
     /**
@@ -113,11 +117,15 @@ public class Track implements DatabaseObject {
 
         this.length = header.getTrackLength();
 
-        this.favorited = false;
+        this.favoritedProperty = new SimpleBooleanProperty(false);
 
-        this.favoritedProperty = new SimpleBooleanProperty(favorited);
-
-        this.favoritedProperty.addListener(((observable, oldValue, newValue) -> this.favorited = newValue));
+        this.favoritedProperty.addListener(((observable, oldValue, newValue) -> {
+            if (newValue) {
+                PlaylistManager.getInstance().addTrackToFavorites(this);
+            } else {
+                PlaylistManager.getInstance().removeTrackFromFavorites(this);
+            }
+        }));
     }
 
     /**

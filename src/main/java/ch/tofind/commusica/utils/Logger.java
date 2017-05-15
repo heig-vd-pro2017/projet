@@ -79,6 +79,10 @@ public class Logger {
         throw new RuntimeException(e);
     }
 
+    public void error(String message) {
+        log(Level.SEVERE, message);
+    }
+
     public void info(String message) {
         log(Level.INFO, message);
     }

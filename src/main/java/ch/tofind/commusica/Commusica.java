@@ -28,9 +28,6 @@ public class Commusica {
 
         dropDatabase();
 
-        /*SavedPlaylist playlist1 = new SavedPlaylist("Test1");
-        SavedPlaylist playlist2 = new SavedPlaylist("Test2");*/
-
         Track track1 = new Track("BLOOD", "Kendrick Lamar", "DAMN.", 119, "/Users/faku99/Desktop/tmp/BLOOD.mp3");
         Track track2 = new Track("DNA", "Kendrick Lamar", "DAMN.", 186, "/Users/faku99/Desktop/tmp/DNA.mp3");
         Track track3 = new Track("HUMBLE", "Kendrick Lamar", "DAMN.", 177, "/Users/faku99/Desktop/tmp/HUMBLE.mp3");

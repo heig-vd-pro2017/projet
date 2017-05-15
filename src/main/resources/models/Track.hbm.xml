@@ -19,6 +19,5 @@
         <property name="uri" column="uri" type="string" length="500" not-null="true" unique="true"/>
         <property name="dateAdded" column="date_added" type="timestamp" length="50" not-null="true"/>
         <property name="datePlayed" column="date_played" type="timestamp" length="50" not-null="false"/>
-        <property name="favorited" column="favorited" type="boolean" not-null="true"/>
     </class>
 </hibernate-mapping>
