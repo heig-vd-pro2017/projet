@@ -5,6 +5,10 @@ import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.utils.Configuration;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioHeader;
+import org.jaudiotagger.tag.FieldKey;
+import org.jaudiotagger.tag.Tag;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -74,15 +78,46 @@ public class Track implements DatabaseObject {
         this.length = length;
         this.uri = uri;
         this.dateAdded = new Date();
-        this.favoritedProperty = new SimpleBooleanProperty(false);
+    }
 
-        this.favoritedProperty.addListener(((observable, oldValue, newValue) -> {
-            if (newValue) {
-                PlaylistManager.getInstance().addTrackToFavorites(this);
-            } else {
-                PlaylistManager.getInstance().removeTrackFromFavorites(this);
-            }
-        }));
+    /**
+     * @brief Create a Track from an AudioFile. It is useful when you want to transfer a file and
+     * want to do some check on a Track instead of checking the AudioFile itself
+     *
+     * @param audioFile an AudioFile object that represents your track
+     */
+    public Track(AudioFile audioFile) {
+
+        AudioHeader header = audioFile.getAudioHeader();
+        Tag tags = audioFile.getTag();
+
+        // We consider that all tags are unknown/default values
+        this.title = AudioFile.getBaseFilename(audioFile.getFile());
+        this.artist = "Unknown";
+        this.album = "Unknown";
+        this.length = header.getTrackLength();
+
+        if (!Objects.equals(tags.getFirst(FieldKey.TITLE), "")) {
+            this.title = tags.getFirst(FieldKey.TITLE);
+        }
+
+        if (!Objects.equals(tags.getFirst(FieldKey.ARTIST), "")) {
+            this.artist = tags.getFirst(FieldKey.ARTIST);
+        }
+
+        if (!Objects.equals(tags.getFirst(FieldKey.ALBUM), "")) {
+            this.album = tags.getFirst(FieldKey.ALBUM);
+        }
+
+        this.uri = audioFile.getFile().toString();
+
+        this.length = header.getTrackLength();
+
+        this.favorited = false;
+
+        this.favoritedProperty = new SimpleBooleanProperty(favorited);
+
+        this.favoritedProperty.addListener(((observable, oldValue, newValue) -> this.favorited = newValue));
     }
 
     /**

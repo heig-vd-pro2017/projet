@@ -75,6 +75,10 @@
             <id>mvnrepository</id>
             <url>https://mvnrepository.com/artifact</url>
         </repository>
+        <repository>
+            <id>jaudiotagger-repository</id>
+            <url>https://dl.bintray.com/ijabz/maven</url>
+        </repository>
     </repositories>
     <dependencies>
         <!-- https://mvnrepository.com/artifact/junit/junit -->
@@ -100,6 +104,11 @@
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
             <version>3.16.1</version>
+        </dependency>
+        <dependency>
+            <groupId>net.jthink</groupId>
+            <artifactId>jaudiotagger</artifactId>
+            <version>2.2.3</version>
         </dependency>
     </dependencies>
 </project>

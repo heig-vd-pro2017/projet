@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.input.*;
+import org.jaudiotagger.audio.AudioFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -100,7 +101,7 @@ public class TracksListView extends ListView<PlaylistTrack> {
 
             if (dragboard.hasFiles() && dragboard.getFiles().size() == 1) {
                 File file = dragboard.getFiles().get(0);
-
+                
                 status = true;
             }
 
