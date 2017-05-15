@@ -35,6 +35,8 @@ public class Server implements Runnable {
 
     /**
      * @brief Constructor.
+     *
+     * @param port Port to use for the communication.
      */
     public Server(int port) {
         this.port = port;

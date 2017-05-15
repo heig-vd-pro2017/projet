@@ -4,7 +4,6 @@
 */
 package ch.tofind.commusica.playlist;
 
-import ch.tofind.commusica.database.DatabaseObject;
 import ch.tofind.commusica.media.Playlist;
 import ch.tofind.commusica.media.Track;
 
@@ -13,9 +12,10 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class PlaylistTrack implements DatabaseObject {
+public class PlaylistTrack implements Serializable {
 
     private PlaylistTrackId id;
 

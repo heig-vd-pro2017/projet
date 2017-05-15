@@ -2,6 +2,9 @@ package ch.tofind.commusica.core;
 
 import java.net.InetAddress;
 
+/**
+ * @brief This interface is used to implement any core.
+ */
 public interface ICore {
 
     /**

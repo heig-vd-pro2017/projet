@@ -16,7 +16,7 @@ package ch.tofind.commusica.database {
     class DatabaseManager {
         -instance : DatabaseManager
         -factory : SessionFactory
-        -session : Session
+        -userSession : Session
         -transaction : Transaction
 
         -DatabaseManager()

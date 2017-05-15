@@ -32,6 +32,11 @@ public class PlaylistManager {
         playlistTracksList = new ObservableSortedPlaylistTrackList();
     }
 
+    /**
+     * @brief Get the object instance.
+     *
+     * @return The instance of the object.
+     */
     public static PlaylistManager getInstance() {
 
         if(instance == null) {

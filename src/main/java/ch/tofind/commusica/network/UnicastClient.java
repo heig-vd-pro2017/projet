@@ -12,10 +12,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- * @brief This class implements the behavior of the "servants", whose
- * responsibility is to take care of clients once they have connected. This
- * is where we implement the application protocol logic, i.e. where we read
- * data sent by the client and where we generate the responses.
+ * @brief This class an unicast client.
  */
 public class UnicastClient implements Runnable {
 
@@ -65,9 +62,9 @@ public class UnicastClient implements Runnable {
     }
 
     /**
-     * Send a file to the server.
+     * @brief Send a file to the server.
      *
-     * @param file
+     * @param file The file to send to the server.
      */
     public void send(File file) {
 
@@ -80,9 +77,9 @@ public class UnicastClient implements Runnable {
 
         BufferedInputStream fileBytes = new BufferedInputStream(fileStream);
 
-        BufferedOutputStream bos = null;
+        BufferedOutputStream outputFileBytes = null;
         try {
-            bos = new BufferedOutputStream(socket.getOutputStream());
+            outputFileBytes = new BufferedOutputStream(socket.getOutputStream());
         } catch (IOException e) {
             LOG.severe(e);
         }
@@ -94,13 +91,13 @@ public class UnicastClient implements Runnable {
         try {
 
             while ((size = fileBytes.read(buffer)) != -1) {
-                if (bos != null) {
-                    bos.write(buffer, 0, size);
+                if (outputFileBytes != null) {
+                    outputFileBytes.write(buffer, 0, size);
                 }
             }
 
-            if (bos != null) {
-                bos.flush();
+            if (outputFileBytes != null) {
+                outputFileBytes.flush();
             }
 
         } catch (IOException e) {
@@ -108,15 +105,6 @@ public class UnicastClient implements Runnable {
         }
 
         // Close all the streams
-        /*try {
-            if (bos != null) {
-                bos.close();
-            }
-
-        } catch (IOException e) {
-            LOG.severe(e);
-        }*/
-
         try {
             fileBytes.close();
         } catch (IOException e) {
@@ -156,7 +144,10 @@ public class UnicastClient implements Runnable {
 
             // If one side closed the connection, we simulate an end of communication
             if (input == null) {
+                String myId = String.valueOf(ApplicationProtocol.myId);
+
                 commands.add(NetworkProtocol.END_OF_COMMUNICATION);
+                commands.add(myId);
             }
 
             // Get the requested command
@@ -192,9 +183,5 @@ public class UnicastClient implements Runnable {
         } catch (IOException e) {
             LOG.severe(e);
         }
-    }
-
-    public Socket getSocket() {
-        return socket;
     }
 }

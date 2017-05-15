@@ -6,6 +6,7 @@ import ch.tofind.commusica.network.MulticastClient;
 import ch.tofind.commusica.network.NetworkProtocol;
 import ch.tofind.commusica.network.UnicastClient;
 import ch.tofind.commusica.session.ServerSession;
+import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.Network;
 import ch.tofind.commusica.utils.Serialize;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -23,7 +24,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @brief This class represents the client side of the application.
+ */
 public class ClientCore extends AbstractCore implements ICore {
+
+    //! Logger for debugging.
+    private static final Logger LOG = new Logger(ClientCore.class.getSimpleName());
 
     //! Client to use for multicast.
     private MulticastClient multicast;
@@ -34,6 +41,13 @@ public class ClientCore extends AbstractCore implements ICore {
     //! File to send to the server.
     private File fileToSend;
 
+    /**
+     * @brief Setup the core as a client.
+     *
+     * @param multicastAddress Multicast address.
+     * @param port Multicast port.
+     * @param interfaceToUse Interface to use for the multicast.
+     */
     public ClientCore(String multicastAddress, int port, InetAddress interfaceToUse) {
         multicast = new MulticastClient(multicastAddress, port, interfaceToUse);
         new Thread(multicast).start();
@@ -98,15 +112,15 @@ public class ClientCore extends AbstractCore implements ICore {
             //System.out.println(track);
             trackJson = Serialize.serialize(track);
         } catch (CannotReadException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         } catch (TagException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         } catch (ReadOnlyFileException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         } catch (InvalidAudioFrameException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         }
 
 

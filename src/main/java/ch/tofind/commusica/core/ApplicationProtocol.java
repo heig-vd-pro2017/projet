@@ -1,24 +1,19 @@
 package ch.tofind.commusica.core;
 
-import ch.tofind.commusica.session.ServerSession;
-
 import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Scanner;
 
 public final class ApplicationProtocol {
 
-    //!
+    //! The ID of the current instance.
     public static Integer myId = null;
 
-    //!
+    //! The server's ID with which we are currently connected to.
     public static Integer serverId = null;
 
-    //!
+    //! The server's address with which we are currently connected to.
     public static InetAddress serverAddress = null;
 
-    //!
+    //! The server's name with which we are currently connected to.
     public static String serverName = null;
 
     //! Commands

@@ -16,8 +16,6 @@ public class Network {
     //! time in seconds before a server is considered inactive
     private static int TIME_INACTIVE_SERVER = 10;
 
-    public static InetAddress interfaceToUse = null;
-
     private static Map<InetAddress, ServerSession> availableServers = new HashMap<>();
 
     static public byte[] getMacAddress(InetAddress hostname) {

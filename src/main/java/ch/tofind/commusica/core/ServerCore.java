@@ -6,7 +6,7 @@ import ch.tofind.commusica.network.MulticastClient;
 import ch.tofind.commusica.network.NetworkProtocol;
 import ch.tofind.commusica.network.Server;
 import ch.tofind.commusica.playlist.PlaylistManager;
-import ch.tofind.commusica.utils.Network;
+import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.Serialize;
 
 import java.io.IOException;
@@ -14,7 +14,13 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 
+/**
+ * @brief This class represents the server side of the application.
+ */
 public class ServerCore extends AbstractCore implements ICore {
+
+    //! Logger for debugging.
+    private static final Logger LOG = new Logger(ServerCore.class.getSimpleName());
 
     //! Name of the server.
     String name;
@@ -28,6 +34,15 @@ public class ServerCore extends AbstractCore implements ICore {
     //!
     private Track trackReceived;
 
+    /**
+     * @brief Setup the core as a server.
+     *
+     * @param name Name of the server.
+     * @param multicastAddress Multicast address.
+     * @param multicastPort Multicast port.
+     * @param interfaceToUse Interface to use for multicast.
+     * @param unicastPort Unicast port.
+     */
     public ServerCore(String name, String multicastAddress, int multicastPort, InetAddress interfaceToUse, int unicastPort) {
 
         this.name = name;
@@ -48,7 +63,7 @@ public class ServerCore extends AbstractCore implements ICore {
     public String SEND_PLAYLIST_UPDATE(ArrayList<Object> args) {
 
 
-        String inetaddressJson = Serialize.serialize(Network.interfaceToUse);
+        String inetaddressJson = Serialize.serialize(NetworkProtocol.interfaceToUse);
         String playlistJson = Serialize.serialize(PlaylistManager.getInstance().getPlaylist());
 
         String command = ApplicationProtocol.PLAYLIST_UPDATE + NetworkProtocol.END_OF_LINE +
