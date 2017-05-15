@@ -165,13 +165,8 @@ public class UnicastClient implements Runnable {
             // Prepare the args to send to the controller
             ArrayList<Object> args = new ArrayList<>(commands);
 
-            // A VOIR POUR MODIFIER !!
-            // Add the potentially arguments for specific commands
-            switch (command) {
-                case ApplicationProtocol.SEND_TRACK:
-                    args.add(1, socket); // 1 because the 0st is the user
-                    break;
-            }
+            // Add the current socket used for the communication
+            args.add(1, socket); // 1 because the 0st is the user
 
             // Send the command and its arguments to the controller and get the result
             String result = Core.execute(command, args);

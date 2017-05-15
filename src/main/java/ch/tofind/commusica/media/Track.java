@@ -71,7 +71,8 @@ public class Track implements DatabaseObject {
      * @param length Length (in seconds) of the track
      * @param uri URI of the file
      */
-    public Track(String title, String artist, String album, Integer length, String uri, boolean favorited) {
+    public Track(Integer id, String title, String artist, String album, Integer length, String uri, boolean favorited) {
+        this.id = id;
         this.title = title;
         this.artist = artist;
         this.album = album;
@@ -120,6 +121,14 @@ public class Track implements DatabaseObject {
         this.favoritedProperty = new SimpleBooleanProperty(favorited);
 
         this.favoritedProperty.addListener(((observable, oldValue, newValue) -> this.favorited = newValue));
+    }
+
+    /**
+     * @brief Get the track's ID
+     * @return The track's ID
+     */
+    public Integer getId() {
+        return id;
     }
 
     /**

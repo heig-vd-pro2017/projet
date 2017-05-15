@@ -10,27 +10,27 @@ import java.util.concurrent.TimeUnit;
 /**
  * Still a lot of work to do but this is a basic implementation of SesionManager with simple features
  */
-public class SessionManager {
+public class UserSessionManager {
 
     //! Shared instance of the object for all the application
-    private static SessionManager instance = null;
+    private static UserSessionManager instance = null;
 
     //!
     private static int SESSION_TIME_BEFORE_INACTIVE = 60 * 1000 * 1;
 
     //! Store the active sessions
-    private Map<Integer, Session> activeSessions;
+    private Map<Integer, UserSession> activeSessions;
 
     //! Store the inactive sessions
-    private Map<Integer, Session> inactiveSessions;
+    private Map<Integer, UserSession> inactiveSessions;
 
     //! Clean the old sessions on schedule
     private ScheduledExecutorService scheduledExecutorService;
 
     /**
-     * SessionManager single constructor. Avoid the instantiation.
+     * UserSessionManager single constructor. Avoid the instantiation.
      */
-    private SessionManager() {
+    private UserSessionManager() {
 
         activeSessions = new HashMap<>(0);
         inactiveSessions = new HashMap<>(0);
@@ -43,12 +43,12 @@ public class SessionManager {
         }, 0, 30, TimeUnit.SECONDS);
     }
 
-    public static SessionManager getInstance() {
+    public static UserSessionManager getInstance() {
 
         if(instance == null) {
-            synchronized (SessionManager.class) {
+            synchronized (UserSessionManager.class) {
                 if (instance == null) {
-                    instance = new SessionManager();
+                    instance = new UserSessionManager();
                 }
             }
         }
@@ -59,15 +59,15 @@ public class SessionManager {
     public void store(Integer id) {
 
         if (activeSessions.containsKey(id)) {
-            Session session = activeSessions.get(id);
-            session.update();
+            UserSession userSession = activeSessions.get(id);
+            userSession.update();
         } else if (inactiveSessions.containsKey(id)) {
-            Session session = inactiveSessions.remove(id);
-            session.update();
-            activeSessions.put(session.getId(), session);
+            UserSession userSession = inactiveSessions.remove(id);
+            userSession.update();
+            activeSessions.put(userSession.getId(), userSession);
         } else {
-            Session session = new Session(id);
-            activeSessions.put(session.getId(), session);
+            UserSession userSession = new UserSession(id);
+            activeSessions.put(userSession.getId(), userSession);
         }
     }
 
@@ -79,13 +79,13 @@ public class SessionManager {
 
         Date now = new Date();
 
-        for (Map.Entry<Integer, Session> entry : activeSessions.entrySet()) {
+        for (Map.Entry<Integer, UserSession> entry : activeSessions.entrySet()) {
 
-            Session session = entry.getValue();
+            UserSession userSession = entry.getValue();
 
-            if (session.getUpdate().getTime() > now.getTime() - SESSION_TIME_BEFORE_INACTIVE) {
-                activeSessions.remove(session.getId());
-                inactiveSessions.put(session.getId(), session);
+            if (userSession.getUpdate().getTime() > now.getTime() - SESSION_TIME_BEFORE_INACTIVE) {
+                activeSessions.remove(userSession.getId());
+                inactiveSessions.put(userSession.getId(), userSession);
             }
         }
     }

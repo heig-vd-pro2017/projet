@@ -54,7 +54,11 @@ public class ClientCore extends AbstractCore implements ICore {
 
     public String PLAYLIST_UPDATE(ArrayList<Object> args) {
 
-        Integer id = Integer.parseInt((String)args.get(0));
+        String idString = (String)args.remove(0);
+
+
+
+        Integer id = Integer.parseInt(idString);
 
         if (Objects.isNull(ApplicationProtocol.serverId)) {
             ApplicationProtocol.serverId = id;
@@ -117,6 +121,7 @@ public class ClientCore extends AbstractCore implements ICore {
 
     public String TRACK_ACCEPTED(ArrayList<Object> args) {
         System.out.println("In TRACK_ACCEPTED");
+
         String result = ApplicationProtocol.SEND_TRACK + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 fileToSend.length() + NetworkProtocol.END_OF_LINE +

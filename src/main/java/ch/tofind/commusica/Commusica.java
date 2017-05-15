@@ -3,7 +3,6 @@ package ch.tofind.commusica;
 import ch.tofind.commusica.core.ApplicationProtocol;
 import ch.tofind.commusica.core.Core;
 import ch.tofind.commusica.network.NetworkProtocol;
-import ch.tofind.commusica.network.NetworkUtils;
 import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.Network;
@@ -33,7 +32,7 @@ public class Commusica {
         Integer uniqueID;
         Scanner scanner = new Scanner(System.in);
 
-        TreeMap<String, InetAddress> networkInterfaces = Network.getIPv4Interfaces();
+        TreeMap<String, InetAddress> networkInterfaces = ch.tofind.commusica.utils.Network.getIPv4Interfaces();
 
         if (networkInterfaces.size() > 1) {
             String interfaceChoice = "";
@@ -46,12 +45,12 @@ public class Commusica {
                 interfaceChoice = scanner.next();
             }
 
-            NetworkUtils.INTERFACE_TO_USE = networkInterfaces.get(interfaceChoice);
+            Network.interfaceToUse = networkInterfaces.get(interfaceChoice);
         } else {
-            NetworkUtils.INTERFACE_TO_USE = networkInterfaces.firstEntry().getValue();
+            Network.interfaceToUse = networkInterfaces.firstEntry().getValue();
         }
 
-        ApplicationProtocol.myId = Arrays.hashCode(Network.getMacAddress(NetworkUtils.INTERFACE_TO_USE));
+        ApplicationProtocol.myId = Arrays.hashCode(ch.tofind.commusica.utils.Network.getMacAddress(Network.interfaceToUse));
 
         int launchChoice = -1;
         while (launchChoice != 0) {
@@ -65,7 +64,7 @@ public class Commusica {
 
             if (launchChoice == 1) { // Launch as server
 
-                Core core = new Core(NetworkUtils.INTERFACE_TO_USE);
+                Core core = new Core(Network.interfaceToUse);
                 core.setupAsServer("Soirée de Lulu 4");
 
                 ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
@@ -103,7 +102,7 @@ public class Commusica {
 
             } else if (launchChoice == 2) { // Launch as client
 
-                Core core = new Core(NetworkUtils.INTERFACE_TO_USE);
+                Core core = new Core(Network.interfaceToUse);
                 core.setupAsClient();
 
                 InetAddress hostname = null;
@@ -137,7 +136,7 @@ public class Commusica {
                             break;
 
                         case 2:
-                            ApplicationProtocol.serverChooser(Network.getAvailableServers());
+                            Network.serverChooser(ch.tofind.commusica.utils.Network.getAvailableServers());
                             break;
                         default:
                             System.out.println("Action not supported.");

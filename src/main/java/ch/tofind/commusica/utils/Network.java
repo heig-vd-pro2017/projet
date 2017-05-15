@@ -1,5 +1,6 @@
 package ch.tofind.commusica.utils;
 
+import ch.tofind.commusica.core.ApplicationProtocol;
 import ch.tofind.commusica.session.ServerSession;
 
 import java.io.IOException;
@@ -15,9 +16,7 @@ public class Network {
     //! time in seconds before a server is considered inactive
     private static int TIME_INACTIVE_SERVER = 10;
 
-    private static InetAddress addressOfInterface = null;
-
-    public static Integer hashedMacAddress = null;
+    public static InetAddress interfaceToUse = null;
 
     private static Map<InetAddress, ServerSession> availableServers = new HashMap<>();
 
@@ -88,31 +87,6 @@ public class Network {
         return Collections.list(addresses);
     }
 
-    public static String getInet4AddressString(InetAddress address) {
-        return address.toString().substring(1);
-    }
-
-    public static InetAddress getAddressOfInterface() {
-        return addressOfInterface;
-    }
-
-    public static void setAddressOfInterface(InetAddress addr) {
-        addressOfInterface = addr;
-    }
-
-    public static NetworkInterface getCurrentNetworkInterface() {
-        try {
-            if (addressOfInterface == null) {
-                return new MulticastSocket(8585).getNetworkInterface();
-            } else {
-                return NetworkInterface.getByInetAddress(addressOfInterface);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public static Map<InetAddress, ServerSession> getAvailableServers() {
         return availableServers;
     }
@@ -128,6 +102,37 @@ public class Network {
 
                 availableServers.remove(entry.getValue().getIp());
             }
+        }
+    }
+
+    public static void serverChooser(Map<InetAddress, ServerSession> serverList) {
+        if (!serverList.isEmpty()) {
+
+            ArrayList<ServerSession> servers = new ArrayList<>();
+
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("To which server do you want to connect?");
+            int i = 1;
+
+            for (Map.Entry<InetAddress, ServerSession> entry : serverList.entrySet()) {
+                System.out.println("[" + i++ + "]" + "    " + entry.getValue());
+                servers.add(entry.getValue());
+            }
+
+            int serverChoice = -1;
+            while (serverChoice < 0) {
+                serverChoice = scanner.nextInt();
+
+                if (serverChoice > serverList.size()) {
+                    System.out.println("Not valid!");
+                    serverChoice = -1;
+                }
+            }
+            serverChoice--;
+
+            ApplicationProtocol.serverId = servers.get(serverChoice).getId();
+            ApplicationProtocol.serverName = servers.get(serverChoice).getName();
+            ApplicationProtocol.serverAddress = servers.get(serverChoice).getIp();
         }
     }
 }

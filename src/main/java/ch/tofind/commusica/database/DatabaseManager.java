@@ -17,7 +17,7 @@ public class DatabaseManager {
     //! SessionFactory (Hibernate related).
     private SessionFactory factory = null;
 
-    //! Session (Hibernate related).
+    //! UserSession (Hibernate related).
     private Session session = null;
 
     //! Transaction (Hibernate related).
