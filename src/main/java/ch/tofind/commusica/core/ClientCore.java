@@ -1,12 +1,18 @@
 package ch.tofind.commusica.core;
 
-import ch.tofind.commusica.file.FileManager;
 import ch.tofind.commusica.media.Playlist;
 import ch.tofind.commusica.media.Track;
-import ch.tofind.commusica.network.*;
+import ch.tofind.commusica.network.MulticastClient;
+import ch.tofind.commusica.network.NetworkProtocol;
+import ch.tofind.commusica.network.UnicastClient;
 import ch.tofind.commusica.session.ServerSession;
 import ch.tofind.commusica.utils.Network;
 import ch.tofind.commusica.utils.Serialize;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.audio.exceptions.CannotReadException;
+import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
+import org.jaudiotagger.tag.TagException;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,12 +22,6 @@ import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import org.jaudiotagger.audio.AudioFileIO;
-import org.jaudiotagger.audio.exceptions.CannotReadException;
-import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
-import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
-import org.jaudiotagger.tag.TagException;
 
 public class ClientCore extends AbstractCore implements ICore {
 
@@ -83,14 +83,15 @@ public class ClientCore extends AbstractCore implements ICore {
         // TODO: VERIFICATION OF THE FORMAT!
         //if (!FileManager.signatureChecker(fileToSend))
 
-        FileManager.displayMetadatas(fileToSend);
+        //FileManager.displayMetadatas(fileToSend);
 
         Track track;
         String trackJson = "";
 
         try {
             track = new Track(AudioFileIO.read(fileToSend));
-            System.out.println(track);
+
+            //System.out.println(track);
             trackJson = Serialize.serialize(track);
         } catch (CannotReadException e) {
             e.printStackTrace();
