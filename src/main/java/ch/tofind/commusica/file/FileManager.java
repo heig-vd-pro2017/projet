@@ -51,6 +51,12 @@ public class FileManager {
         file.renameTo(new File(path + File.separator + fileName));
     }
 
+    /**
+     *
+     * @param is
+     * @return
+     */
+
     public File retrieveFile(InputStream is) {
         File result = null;
         FileOutputStream fos = null;
@@ -120,6 +126,13 @@ public class FileManager {
         return null;
     }
 
+
+    /**
+     *
+     * @param signature
+     * @return
+     */
+
     public static boolean signatureChecker(byte[] signature) {
         if ((Arrays.equals(MP3, Arrays.copyOfRange(signature, OFFSET_MP3_SIGNATURE, MP3.length))) ||
                 Arrays.equals(M4A, Arrays.copyOfRange(signature, OFFSET_M4A_SIGNATURE, M4A.length)) ||
@@ -128,6 +141,11 @@ public class FileManager {
         }
         return false;
     }
+
+    /**
+     *
+     * @param f
+     */
 
      public static void displayMetadatas(File f) {
          try {
