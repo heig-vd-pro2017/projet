@@ -3,6 +3,13 @@ package ch.tofind.commusica.session;
 import java.net.InetAddress;
 import java.util.Date;
 
+
+/**
+ * Class representing a server session with an InetAddress, a name and an id. It also store a Date representing
+ * the last time the session was updated.
+ *
+ * TODO: CLEAN THE CLASS
+ */
 public class ServerSession {
 
     //!
@@ -30,6 +37,10 @@ public class ServerSession {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void update() {
+        updated = new Date();
     }
 
     public InetAddress getIp() {

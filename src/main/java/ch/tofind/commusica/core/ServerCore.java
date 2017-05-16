@@ -9,9 +9,11 @@ import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.Serialize;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.nio.file.Files;
 import java.util.ArrayList;
 
 /**
@@ -82,12 +84,15 @@ public class ServerCore extends AbstractCore implements ICore {
 
         System.out.println("In TRACK_REQUEST");
 
+        String idString  = (String) args.remove(0);
+        // remove the socket which is passed
+        args.remove(0);
         String trackJson = (String) args.remove(0);
+
         trackReceived = Serialize.unserialize(trackJson, Track.class);
 
 
-
-
+        // TODO:
         // Check if the track is in the database
 
             // Check if the MD5 is stored in the database
@@ -116,24 +121,35 @@ public class ServerCore extends AbstractCore implements ICore {
 
     public String SEND_TRACK(ArrayList<Object> args) {
 
-
         System.out.println("In SEND_TRACK");
+
+        String idString  = (String) args.remove(0);
+        Socket socket = (Socket) args.remove(0);
+        String fileSizeString = (String) args.remove(0);
+
         // Delegate the job to the FileManager
         String URI = "";
         try {
-            int fileSize = Integer.parseInt((String) args.get(2));
+            int fileSize = Integer.parseInt(fileSizeString);
             System.out.println(fileSize);
             System.out.println("Delegating to FM");
-            URI = FileManager.getInstance().retrieveFile(((Socket) args.get(1)).getInputStream(), fileSize);
-            // FileManager.getInstance().checkFile(File/URI, MD5)
-            // if (!FileManager.getInstance().checkFile(File/URI, MD5)) {
-            // return ERROR
+            URI = FileManager.getInstance().retrieveFile(socket.getInputStream(), fileSize);
+
+            // if the checksum of the received track doesn't correspond to the one of the track sent
+            // we delete the file and send an ERROR message
+            if(!FileManager.getInstance().checkFileMD5(new File(URI), trackReceived.getId())) {
+                trackReceived = null;
+                Files.delete(new File(URI).toPath());
+                return ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
+                        NetworkProtocol.END_OF_COMMAND;
+            }
 
             trackReceived.setUri(URI);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        // TODO:
         // Update/Save the track in the database
 
         // Add the track to the current Playlist

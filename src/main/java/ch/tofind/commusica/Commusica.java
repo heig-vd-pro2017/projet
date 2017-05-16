@@ -3,6 +3,7 @@ package ch.tofind.commusica;
 import ch.tofind.commusica.core.ApplicationProtocol;
 import ch.tofind.commusica.core.Core;
 import ch.tofind.commusica.network.NetworkProtocol;
+import ch.tofind.commusica.session.ServerSessionManager;
 import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.Network;
@@ -128,13 +129,13 @@ public class Commusica {
                         case 1:
                             ArrayList<Object> uri = new ArrayList<>();
 
-                            //uri.add("C:\\Users\\David\\Documents\\YourFuckingMother_x_EHDE_-_Pocket_Monsters_VIP.mp3");
-                            uri.add("C:\\Users\\David\\Downloads\\02 v.m4a");
+                            uri.add("C:\\Users\\David\\Documents\\YourFuckingMother_x_EHDE_-_Pocket_Monsters_VIP.mp3");
+                            //uri.add("C:\\Users\\David\\Downloads\\02 v.m4a");
                             core.execute(ApplicationProtocol.SEND_TRACK_REQUEST, uri);
                             break;
 
                         case 2:
-                            Network.serverChooser(ch.tofind.commusica.utils.Network.getAvailableServers());
+                            ServerSessionManager.serverChooser(ServerSessionManager.getAvailableServers());
                             break;
                         default:
                             System.out.println("Action not supported.");

@@ -35,7 +35,7 @@ public class UserSessionManager {
         activeSessions = new HashMap<>(0);
         inactiveSessions = new HashMap<>(0);
 
-        // Crée un thread qui nettoie les sessions toutes les N minutes
+        // Crée un thread qui nettoie les sessions toutes les N secondes
         scheduledExecutorService = Executors.newScheduledThreadPool(1);
 
         scheduledExecutorService.scheduleAtFixedRate(() -> {

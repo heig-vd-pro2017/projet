@@ -1,5 +1,12 @@
 package ch.tofind.commusica.media;
 
+
+import ch.tofind.commusica.file.FileManager;
+import ch.tofind.commusica.utils.Configuration;
+
+import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import ch.tofind.commusica.utils.Configuration;
 
 import java.io.Serializable;
@@ -20,8 +27,8 @@ import org.jaudiotagger.tag.Tag;
  */
 public class Track implements Serializable {
 
-    //! ID of the track in the database.
-    private Integer id;
+    //! ID of the track in the database
+    private String id;
 
     //! Title of the track.
     private String title;
@@ -72,7 +79,7 @@ public class Track implements Serializable {
      * @param length Length (in seconds) of the track.
      * @param uri URI of the file.
      */
-    public Track(Integer id, String title, String artist, String album, Integer length, String uri, boolean favorited) {
+    public Track(String id, String title, String artist, String album, Integer length, String uri, boolean favorited) {
         this.id = id;
         this.title = title;
         this.artist = artist;
@@ -92,6 +99,22 @@ public class Track implements Serializable {
      * @param audioFile an AudioFile object that represents your track
      */
     public Track(AudioFile audioFile) {
+
+
+        //Use MD5 algorithm
+        MessageDigest md5Digest = null;
+        try {
+            md5Digest = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        //Get the checksum
+        try {
+            id = FileManager.getFileChecksum(md5Digest, audioFile.getFile());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         AudioHeader header = audioFile.getAudioHeader();
         Tag tags = audioFile.getTag();
@@ -129,7 +152,7 @@ public class Track implements Serializable {
      * @brief Get the track's ID.
      * @return The track's ID.
      */
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
