@@ -81,6 +81,8 @@ public class Commusica {
 
             } else if (startApp == 2) {
 
+
+
                 TreeMap<String, InetAddress> networkInterfaces = ch.tofind.commusica.utils.Network.getIPv4Interfaces();
 
                 if (networkInterfaces.size() > 1) {
@@ -112,6 +114,8 @@ public class Commusica {
                     launchChoice = scanner.nextInt();
 
                     if (launchChoice == 1) { // Launch as server
+
+                        dropDatabase();
 
                         Core core = new Core(NetworkProtocol.interfaceToUse);
                         core.setupAsServer("Soirée de Lulu 4", NetworkProtocol.MULTICAST_ADDRESS, NetworkProtocol.MULTICAST_PORT, NetworkProtocol.UNICAST_PORT);
@@ -179,8 +183,8 @@ public class Commusica {
                                 case 1:
                                     ArrayList<Object> uri = new ArrayList<>();
 
-                                    uri.add("C:\\Users\\David\\Documents\\YourFuckingMother_x_EHDE_-_Pocket_Monsters_VIP.mp3");
-                                    //uri.add("C:\\Users\\David\\Downloads\\02 v.m4a");
+                                    //uri.add("C:\\Users\\David\\Documents\\YourFuckingMother_x_EHDE_-_Pocket_Monsters_VIP.mp3");
+                                    uri.add("C:\\Users\\David\\Downloads\\02 v.m4a");
                                     core.execute(ApplicationProtocol.SEND_TRACK_REQUEST, uri);
                                     break;
 

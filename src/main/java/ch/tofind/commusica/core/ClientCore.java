@@ -68,6 +68,7 @@ public class ClientCore extends AbstractCore implements ICore {
         String serverName = (String) args.remove(0);
         String playlistJson = (String) args.remove(0);
 
+        LOG.info("Playlist JSON: " + playlistJson);
 
         Integer id = Integer.parseInt(idString);
 
@@ -76,11 +77,11 @@ public class ClientCore extends AbstractCore implements ICore {
         }
 
         if (Objects.equals(id, ApplicationProtocol.serverId)) {
-            EphemeralPlaylist playlistUpdated = Serialize.unserialize(playlistJson, EphemeralPlaylist.class);
+            // TODO: fix this =(
+            //EphemeralPlaylist playlistUpdated = Serialize.unserialize(playlistJson, EphemeralPlaylist.class);
             //PlaylistManager.getInstance().loadPlaylist(playlistUpdated);
         }
 
-        //System.out.println("Playlist UPDATE received");
         // We add the server to the available servers list
         InetAddress ipServer = Serialize.unserialize(inetaddressJson, InetAddress.class);
 
@@ -91,6 +92,7 @@ public class ClientCore extends AbstractCore implements ICore {
 
 
     public String SEND_TRACK_REQUEST(ArrayList<Object> args) {
+        LOG.info("In SEND_TRACK_REQUEST");
         String fileURI = (String) args.get(0);
 
         fileToSend = new File(fileURI);
@@ -134,7 +136,7 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     public String TRACK_ACCEPTED(ArrayList<Object> args) {
-        System.out.println("In TRACK_ACCEPTED");
+        LOG.info("In TRACK_ACCEPTED");
 
         String result = ApplicationProtocol.SEND_TRACK + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
@@ -147,6 +149,7 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     public String TRACK_REFUSED(ArrayList<Object> args) {
+        LOG.info("In TRACK_REFUSED");
         String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
@@ -154,7 +157,7 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     public String TRACK_SAVED(ArrayList<Object> args) {
-        System.out.println("In TRACK_SAVED");
+        LOG.info("In TRACK_SAVED");
         String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;

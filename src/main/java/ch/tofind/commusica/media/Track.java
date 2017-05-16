@@ -149,6 +149,8 @@ public class Track implements Serializable {
                 PlaylistManager.getInstance().removeTrackFromFavorites(this);
             }
         }));
+
+        this.dateAdded = new Date();
     }
 
     /**
