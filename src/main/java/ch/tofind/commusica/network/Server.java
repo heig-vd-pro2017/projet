@@ -1,5 +1,7 @@
 package ch.tofind.commusica.network;
 
+import ch.tofind.commusica.utils.Logger;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -9,27 +11,29 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
- * This class implements the behavior of the "receptionist", whose
- * responsibility is to listen for incoming connection requests. As soon as a
- * new client has arrived, the receptionist delegates the processing to a
- * "servant" who will execute on its own thread.
+ * @brief This class represents a server.
  */
 public class Server implements Runnable {
 
-    //! Socket to use for the communication
+    //! Logger for debugging.
+    private static final Logger LOG = new Logger(Server.class.getSimpleName());
+
+    //! Socket to use for the communication.
     private ServerSocket socket;
 
-    //! Port to use for the communication
+    //! Port to use for the communication.
     private int port;
 
-    //! Tells if the receptionist is working
+    //! Tells if the receptionist is working.
     private boolean running;
 
-    //!
+    //! Thread pool for the clients
     private ExecutorService threadPool;
 
     /**
      * @brief Constructor.
+     *
+     * @param port Port to use for the communication.
      */
     public Server(int port) {
         this.port = port;
@@ -47,7 +51,7 @@ public class Server implements Runnable {
         try {
             socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         }
 
         // Try to stop all remaining threads
@@ -57,10 +61,10 @@ public class Server implements Runnable {
         try {
             threadPool.awaitTermination(5, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         } finally {
             if (!threadPool.isTerminated()) {
-                System.err.println("cancel non-finished tasks");
+                LOG.severe("The thread pool can't be stopped !");
             }
             threadPool.shutdownNow();
         }
@@ -74,7 +78,7 @@ public class Server implements Runnable {
         try {
             socket = new ServerSocket(port);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         }
 
         while (running) {
@@ -83,21 +87,21 @@ public class Server implements Runnable {
 
                 Socket clientSocket = socket.accept();
 
-                // Create a client and add it to the thread pool
+                LOG.info("New client arrived.");
+
                 Thread client = new Thread(new UnicastClient(clientSocket));
-                //client.start();
                 threadPool.submit(client);
 
             } catch (SocketException e) {
 
                 if (running) {
-                    e.printStackTrace();
+                    LOG.severe(e);
                 } else {
                     break;
                 }
 
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.severe(e);
             }
         }
     }

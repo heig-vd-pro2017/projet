@@ -2,7 +2,7 @@ package ch.tofind.commusica.session;
 
 import java.util.Date;
 
-public class Session {
+public class UserSession {
 
     //! ID of the session
     private Integer id;
@@ -14,7 +14,7 @@ public class Session {
      * @brief Create a session
      * @param id ID of the session
      */
-    public Session(Integer id) {
+    public UserSession(Integer id) {
         this.id = id;
         this.updated = new Date();
     }

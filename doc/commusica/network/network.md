@@ -1,9 +1,9 @@
 ## Serveur
 - Utilisation d'id pour sauvegarder les sessions
 - Classe Session et SessionManager.
-- SessionManager gère la suppression/ajout de session.
-    - Gère la suppression de session obsolètes (pas encore bien implémenté dans NetworkManager...)
-- Une session a:
+- SessionManager gère la suppression/ajout de userSession.
+    - Gère la suppression de userSession obsolètes (pas encore bien implémenté dans NetworkManager...)
+- Une userSession a:
     - Un `id` unique qui lui permet de s'identifié à chaque connexion et qui lui est
     attribué dès que la Session est créée.
     - Un `Timestamp` qui permettra de vérifier si elle est obsolète (possible de

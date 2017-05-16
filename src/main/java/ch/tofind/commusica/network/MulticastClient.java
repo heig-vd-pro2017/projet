@@ -1,6 +1,7 @@
 package ch.tofind.commusica.network;
 
 import ch.tofind.commusica.core.Core;
+import ch.tofind.commusica.utils.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,22 +15,32 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- * @brief This class receives data from the server by multicast.
+ * @brief This class a multicast client.
  */
 public class MulticastClient implements Runnable {
 
-    //!
+    //! Logger for debugging.
+    private static final Logger LOG = new Logger(MulticastClient.class.getSimpleName());
+
+    //! Port to use.
     private int port;
 
-    //!
+    //! Multicast address.
     private InetAddress multicastGroup;
 
-    //!
+    //! Socket to use.
     private MulticastSocket socket;
 
-    //!
+    //! Tells if the client is running.
     private boolean running;
 
+    /**
+     * @brief MulticastClient constructor.
+     *
+     * @param multicastAddress Multicast address to use.
+     * @param port Port to use for the communication.
+     * @param interfaceToUse Network interface to use.
+     */
     public MulticastClient(String multicastAddress, int port, InetAddress interfaceToUse) {
         this.port = port;
         this.running = false;
@@ -37,26 +48,55 @@ public class MulticastClient implements Runnable {
         try {
             socket = new MulticastSocket(port);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         }
 
         try {
             socket.setInterface(interfaceToUse);
             socket.setLoopbackMode(false);
         } catch (SocketException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         }
 
         try {
             multicastGroup = InetAddress.getByName(multicastAddress);
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            LOG.severe(e);
         }
 
         try {
             socket.joinGroup(multicastGroup);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.severe(e);
+        }
+    }
+
+    /**
+     * @brief Stop the multicast client.
+     */
+    public void stop() {
+        running = false;
+        socket.close();
+    }
+
+    /**
+     * @brief Send a message by multicast.
+     *
+     * @param message The message to send.
+     */
+    public void send(String message) {
+
+        // Transforms the message in bytes
+        byte[] messageBytes = message.getBytes();
+
+        // Prepare the packet
+        DatagramPacket out = new DatagramPacket(messageBytes, messageBytes.length, multicastGroup, port);
+
+        // Send the packet
+        try {
+            socket.send(out);
+        } catch (IOException e) {
+            LOG.severe(e);
         }
     }
 
@@ -100,7 +140,7 @@ public class MulticastClient implements Runnable {
                 // Do nothing and continue
                 continue;
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.severe(e);
             }
 
             // Get the requested command
@@ -115,27 +155,6 @@ public class MulticastClient implements Runnable {
             if (!Objects.equals(result, "")) {
                 send(result + NetworkProtocol.END_OF_LINE);
             }
-        }
-    }
-
-    public void stop() {
-        running = false;
-        socket.close();
-    }
-
-    public void send(String message) {
-
-        // Transforms the message in bytes
-        byte[] messageBytes = message.getBytes();
-
-        // Prepare the packet
-        DatagramPacket out = new DatagramPacket(messageBytes, messageBytes.length, multicastGroup, port);
-
-        // Send the packet
-        try {
-            socket.send(out);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

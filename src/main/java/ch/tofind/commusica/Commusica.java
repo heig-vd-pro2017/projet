@@ -3,16 +3,11 @@ package ch.tofind.commusica;
 import ch.tofind.commusica.core.ApplicationProtocol;
 import ch.tofind.commusica.core.Core;
 import ch.tofind.commusica.network.NetworkProtocol;
-import ch.tofind.commusica.playlist.PlaylistManager;
-import ch.tofind.commusica.playlist.PlaylistTrack;
-import ch.tofind.commusica.ui.UIController;
-import ch.tofind.commusica.database.DatabaseManager;
-import ch.tofind.commusica.media.Playlist;
-import ch.tofind.commusica.media.Track;
+import ch.tofind.commusica.session.ServerSessionManager;
+import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
-import ch.tofind.commusica.utils.Network;
 
-import java.io.File;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.*;
@@ -23,6 +18,137 @@ import java.util.concurrent.TimeUnit;
 public class Commusica {
 
     private static final Logger LOG = new Logger(Commusica.class.getSimpleName());
+
+    public static void main(String[] args) {
+
+        try {
+            Configuration.getInstance().load("commusica.properties");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Integer uniqueID;
+        Scanner scanner = new Scanner(System.in);
+
+        TreeMap<String, InetAddress> networkInterfaces = ch.tofind.commusica.utils.Network.getIPv4Interfaces();
+
+        if (networkInterfaces.size() > 1) {
+            String interfaceChoice = "";
+            while (!networkInterfaces.containsKey(interfaceChoice)) {
+                System.out.println("Which interface to use for the multicast ?");
+                for (Map.Entry<String, InetAddress> networkInterface : networkInterfaces.entrySet()) {
+                    System.out.println(networkInterface.getKey() + " - " + networkInterface.getValue());
+                }
+                System.out.print("> ");
+                interfaceChoice = scanner.next();
+            }
+
+            NetworkProtocol.interfaceToUse = networkInterfaces.get(interfaceChoice);
+        } else {
+            NetworkProtocol.interfaceToUse = networkInterfaces.firstEntry().getValue();
+        }
+
+        ApplicationProtocol.myId = Arrays.hashCode(ch.tofind.commusica.utils.Network.getMacAddress(NetworkProtocol.interfaceToUse));
+
+        int launchChoice = -1;
+        while (launchChoice != 0) {
+
+            System.out.println("How would you like to launch the program ?");
+            System.out.println("  [0] Quit.");
+            System.out.println("  [1] As the server.");
+            System.out.println("  [2] As the client.");
+            System.out.print("> ");
+            launchChoice = scanner.nextInt();
+
+            if (launchChoice == 1) { // Launch as server
+
+                Core core = new Core(NetworkProtocol.interfaceToUse);
+                core.setupAsServer("Soirée de Lulu 4", NetworkProtocol.MULTICAST_ADDRESS, NetworkProtocol.MULTICAST_PORT, NetworkProtocol.UNICAST_PORT);
+
+                ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+                scheduledExecutorService.scheduleAtFixedRate(() -> {
+                    //System.out.println(new Date() + " - Coucou");
+                    core.execute(ApplicationProtocol.SEND_PLAYLIST_UPDATE, null);
+                }, 0, 5, TimeUnit.SECONDS);
+
+                int actionChoice = -1;
+                while (actionChoice != 0) {
+                    System.out.println("Actions");
+                    System.out.println("  [0] Disconnect");
+                    System.out.println("  [1] Send message via Multicast");
+                    System.out.print("> ");
+
+                    actionChoice = scanner.nextInt();
+
+                    switch (actionChoice) {
+                        case 0:
+                            core.stop();
+                            scheduledExecutorService.shutdown();
+                            break;
+                        case 1:
+                            String command = "Bonsoir" + NetworkProtocol.END_OF_LINE +
+                                    ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                                    NetworkProtocol.END_OF_COMMAND;
+                            core.sendMulticast(command);
+                            break;
+                        default:
+                            System.out.println("Action not supported.");
+                            break;
+                    }
+
+                }
+
+            } else if (launchChoice == 2) { // Launch as client
+
+                Core core = new Core(NetworkProtocol.interfaceToUse);
+                core.setupAsClient(NetworkProtocol.MULTICAST_ADDRESS, NetworkProtocol.MULTICAST_PORT);
+
+                InetAddress hostname = null;
+                try {
+                    hostname = InetAddress.getByName("localhost");
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                }
+
+                int actionChoice = -1;
+                while (actionChoice != 0) {
+
+                    System.out.println("Actions");
+                    System.out.println("  [0] Quit");
+                    System.out.println("  [1] Send track to Unicast");
+                    System.out.println("  [2] Connect to a server");
+                    System.out.print("> ");
+
+                    actionChoice = scanner.nextInt();
+
+                    switch (actionChoice) {
+                        case 0:
+                            core.stop();
+                            break;
+                        case 1:
+                            ArrayList<Object> uri = new ArrayList<>();
+
+                            uri.add("C:\\Users\\David\\Documents\\YourFuckingMother_x_EHDE_-_Pocket_Monsters_VIP.mp3");
+                            //uri.add("C:\\Users\\David\\Downloads\\02 v.m4a");
+                            core.execute(ApplicationProtocol.SEND_TRACK_REQUEST, uri);
+                            break;
+
+                        case 2:
+                            ServerSessionManager.serverChooser(ServerSessionManager.getAvailableServers());
+                            break;
+                        default:
+                            System.out.println("Action not supported.");
+                            break;
+                    }
+                }
+            }
+        }
+    }
+
+    /*
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     public static void dropDatabase() {
         String filePath = "commusica.db";
@@ -211,4 +337,5 @@ public class Commusica {
             }
         }
     }
+    */
 }

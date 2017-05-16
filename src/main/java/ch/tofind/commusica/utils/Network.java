@@ -1,5 +1,8 @@
 package ch.tofind.commusica.utils;
 
+import ch.tofind.commusica.core.ApplicationProtocol;
+import ch.tofind.commusica.session.ServerSession;
+
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -10,7 +13,10 @@ import java.util.*;
 
 public class Network {
 
-    private static InetAddress addressOfInterface = null;
+    //! time in seconds before a server is considered inactive
+    private static int TIME_INACTIVE_SERVER = 10;
+
+    public static InetAddress interfaceToUse = null;
 
     static public byte[] getMacAddress(InetAddress hostname) {
 
@@ -36,6 +42,10 @@ public class Network {
 
                 // We shouldn't care about loopback addresses
                 if (networkInterface.isLoopback())
+                    continue;
+
+                // We shouldn't care about disconnected links
+                if (!networkInterface.isUp())
                     continue;
 
                 networkInterfaces.add(networkInterface);
@@ -75,28 +85,5 @@ public class Network {
         return Collections.list(addresses);
     }
 
-    public static String getInet4AddressString(InetAddress address) {
-        return address.toString().substring(1);
-    }
 
-    public static InetAddress getAddressOfInterface() {
-        return addressOfInterface;
-    }
-
-    public static void setAddressOfInterface(InetAddress addr) {
-        addressOfInterface = addr;
-    }
-
-    public static NetworkInterface getCurrentNetworkInterface() {
-        try {
-            if (addressOfInterface == null) {
-                return new MulticastSocket(8585).getNetworkInterface();
-            } else {
-                return NetworkInterface.getByInetAddress(addressOfInterface);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }

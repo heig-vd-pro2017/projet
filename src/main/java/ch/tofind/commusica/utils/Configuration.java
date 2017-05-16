@@ -28,7 +28,7 @@ public class Configuration {
         try {
             configuration.load(new FileInputStream(CONFIG_FILE));
         } catch (IOException e) {
-            LOG.log(Logger.Level.SEVERE, e);
+            LOG.severe(e);
         }
     }
 
