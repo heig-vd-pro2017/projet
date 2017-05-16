@@ -66,15 +66,15 @@ public class PreviousTrackView extends GridPane {
         getStyleClass().add(CSS_CLASS);
         getStylesheets().add(CSS_FILE);
 
-        player.getPreviousTrackProperty().addListener(((observable, oldTrack, newTrack) -> {
-            previousTrack = newTrack;
+        player.getPreviousTrackProperty().addListener(((observable, oldPTrack, newPTrack) -> {
+            previousTrack = newPTrack.getTrack();
 
-            if (newTrack != null) {
-                albumLabel.setText(newTrack.getAlbum());
-                artistLabel.setText(newTrack.getArtist());
-                titleLabel.setText(newTrack.getTitle());
+            if (previousTrack != null) {
+                albumLabel.setText(previousTrack.getAlbum());
+                artistLabel.setText(previousTrack.getArtist());
+                titleLabel.setText(previousTrack.getTitle());
 
-                favoriteImageView.setImage(new Image(newTrack.getFavoritedProperty().getValue() ? FAV_FULL_IMAGE : FAV_EMPTY_IMAGE));
+                favoriteImageView.setImage(new Image(previousTrack.getFavoritedProperty().getValue() ? FAV_FULL_IMAGE : FAV_EMPTY_IMAGE));
                 previousTrack.getFavoritedProperty().addListener(((obs, oldValue, newValue) -> {
                     favoriteImageView.setImage(new Image(newValue ? FAV_FULL_IMAGE : FAV_EMPTY_IMAGE));
                 }));

@@ -33,7 +33,7 @@ abstract class AbstractCore {
         } catch (NoSuchMethodException e) {
             // Do nothing
         } catch (IllegalAccessException | InvocationTargetException e) {
-            LOG.severe(e);
+            LOG.error(e);
         }
 
         return result;

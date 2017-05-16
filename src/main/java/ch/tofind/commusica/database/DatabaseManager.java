@@ -39,7 +39,7 @@ public class DatabaseManager {
             factory = configuration.buildSessionFactory();
             session = factory.openSession();
         } catch (HibernateException e) {
-            LOG.severe(e);
+            LOG.error(e);
         }
     }
 
@@ -85,7 +85,7 @@ public class DatabaseManager {
             if (transaction != null) {
                 transaction.rollback();
             }
-            LOG.severe(e);
+            LOG.error(e);
         }
     }
 
@@ -103,7 +103,7 @@ public class DatabaseManager {
             if (transaction != null) {
                 transaction.rollback();
             }
-            LOG.severe(e);
+            LOG.error(e);
         }
     }
 
@@ -121,7 +121,7 @@ public class DatabaseManager {
             if (transaction != null) {
                 transaction.rollback();
             }
-            LOG.severe(e);
+            LOG.error(e);
         }
     }
 

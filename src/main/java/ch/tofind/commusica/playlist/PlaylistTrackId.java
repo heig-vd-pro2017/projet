@@ -1,6 +1,6 @@
 package ch.tofind.commusica.playlist;
 
-import ch.tofind.commusica.media.Playlist;
+import ch.tofind.commusica.media.SavedPlaylist;
 import ch.tofind.commusica.media.Track;
 
 import java.io.Serializable;
@@ -8,8 +8,8 @@ import java.util.Objects;
 
 public class PlaylistTrackId implements Serializable {
 
-    //! Playlist related to the track
-    private Playlist playlist;
+    //! SavedPlaylist related to the track
+    private SavedPlaylist playlist;
 
     //! Track related to the playlist
     private Track track;
@@ -26,16 +26,16 @@ public class PlaylistTrackId implements Serializable {
      * @param playlist
      * @param track
      */
-    public PlaylistTrackId(Playlist playlist, Track track) {
+    public PlaylistTrackId(SavedPlaylist playlist, Track track) {
         this.playlist = playlist;
         this.track = track;
 
     }
-    public void setPlaylist(Playlist playlist) {
+    public void setPlaylist(SavedPlaylist playlist) {
         this.playlist = playlist;
     }
 
-    public Playlist getPlaylist() {
+    public SavedPlaylist getPlaylist() {
         return playlist;
     }
 

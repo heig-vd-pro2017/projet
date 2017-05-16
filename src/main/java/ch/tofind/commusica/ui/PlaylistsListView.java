@@ -1,6 +1,6 @@
 package ch.tofind.commusica.ui;
 
-import ch.tofind.commusica.media.Playlist;
+import ch.tofind.commusica.media.SavedPlaylist;
 import ch.tofind.commusica.playlist.PlaylistManager;
 
 import javafx.collections.FXCollections;
@@ -22,11 +22,11 @@ public class PlaylistsListView extends AnchorPane {
 
     private static final String FXML_FILE = "ui/PlaylistsListView.fxml";
 
-    //! Playlist manager.
+    //! SavedPlaylist manager.
     private static PlaylistManager manager = PlaylistManager.getInstance();
 
     @FXML
-    ListView<Playlist> playlistsView;
+    ListView<SavedPlaylist> playlistsView;
 
     /**
      * @brief View constructor.
@@ -44,24 +44,28 @@ public class PlaylistsListView extends AnchorPane {
 
         getStylesheets().add(CSS_FILE);
 
-        playlistsView.setItems(FXCollections.observableArrayList(manager.getPlaylists()));
-        playlistsView.setCellFactory((ListView<Playlist> list) -> new PlaylistCell());
+        playlistsView.setItems(FXCollections.observableArrayList(manager.getSavedPlaylists()));
+        playlistsView.setCellFactory((ListView<SavedPlaylist> list) -> new PlaylistCell());
     }
 
     @FXML
     private void loadFavoritesPlaylist(MouseEvent e) {
-        loadPlayingPlaylist(e);
+        // Clear selected playlist if there was one.
+        playlistsView.getSelectionModel().clearSelection();
+        UIController.getController().showPlaylist(manager.getFavoritesPlaylist());
     }
 
     @FXML
     private void loadPlayingPlaylist(MouseEvent e) {
-        System.out.println("Not implemented yet.");
+        // Clear selected playlist if there was one.
+        playlistsView.getSelectionModel().clearSelection();
+        UIController.getController().showPlaylist(manager.getPlaylist());
     }
 
-    private class PlaylistCell extends ListCell<Playlist> {
+    private class PlaylistCell extends ListCell<SavedPlaylist> {
 
         @Override
-        public void updateItem(Playlist playlist, boolean empty) {
+        public void updateItem(SavedPlaylist playlist, boolean empty) {
             super.updateItem(playlist, empty);
 
             if (playlist != null) {
@@ -77,7 +81,7 @@ public class PlaylistsListView extends AnchorPane {
             super.updateSelected(value);
 
             if (isSelected() && !isEmpty()) {
-                UIController.getController().loadPlaylist(getItem());
+                UIController.getController().showPlaylist(getItem());
             }
         }
     }

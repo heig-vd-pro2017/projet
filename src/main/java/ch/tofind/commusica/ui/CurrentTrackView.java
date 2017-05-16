@@ -1,6 +1,7 @@
 package ch.tofind.commusica.ui;
 
 import ch.tofind.commusica.media.Player;
+import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.playlist.PlaylistTrack;
 
@@ -38,7 +39,7 @@ public class CurrentTrackView extends GridPane {
     //! Commusica player.
     private static final Player player = Player.getCurrentPlayer();
 
-    //! Playlist manager.
+    //! SavedPlaylist manager.
     private static final PlaylistManager playlistManager = PlaylistManager.getInstance();
 
     @FXML
@@ -80,27 +81,27 @@ public class CurrentTrackView extends GridPane {
         getStylesheets().add(CSS_FILE);
 
         // What to do when the current track changes.
-        player.getCurrentTrackProperty().addListener((observable, oldTrack, newTrack) -> {
-            if (newTrack == null) {
+        player.getCurrentTrackProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null) {
                 albumLabel.setText("-");
                 artistLabel.setText("-");
                 titleLabel.setText("-");
                 votesLabel.setText("-");
                 favoriteImageView.setImage(new Image(FAV_EMPTY_IMAGE));
             } else {
-                PlaylistTrack playlistTrack = playlistManager.getPlaylistTrack(newTrack);
-                albumLabel.setText(newTrack.getAlbum());
-                artistLabel.setText(newTrack.getArtist());
-                titleLabel.setText(newTrack.getTitle());
-                votesLabel.setText(String.valueOf(playlistTrack.getVotesProperty().intValue()));
+                Track track = newValue.getTrack();
+                albumLabel.setText(track.getAlbum());
+                artistLabel.setText(track.getArtist());
+                titleLabel.setText(track.getTitle());
+                votesLabel.setText(String.valueOf(newValue.getVotesProperty().intValue()));
 
-                favoriteImageView.setImage((new Image(newTrack.getFavoritedProperty().getValue() ? FAV_FULL_IMAGE : FAV_EMPTY_IMAGE)));
-                newTrack.getFavoritedProperty().addListener(((obs, oldValue, newValue) -> {
-                    favoriteImageView.setImage((new Image(newValue ? FAV_FULL_IMAGE : FAV_EMPTY_IMAGE)));
+                favoriteImageView.setImage((new Image(track.getFavoritedProperty().getValue() ? FAV_FULL_IMAGE : FAV_EMPTY_IMAGE)));
+                track.getFavoritedProperty().addListener(((obs, oldTrack, newTrack) -> {
+                    favoriteImageView.setImage((new Image(newTrack ? FAV_FULL_IMAGE : FAV_EMPTY_IMAGE)));
                 }));
 
-                playlistTrack.getVotesProperty().addListener((obs, oldValue, newValue) -> {
-                    votesLabel.setText(String.valueOf(newValue.intValue()));
+                newValue.getVotesProperty().addListener((obs, oldCount, newCount) -> {
+                    votesLabel.setText(String.valueOf(newCount.intValue()));
                 });
             }
         });
@@ -124,7 +125,7 @@ public class CurrentTrackView extends GridPane {
     @FXML
     private void downvote(MouseEvent e) {
         if(player.getCurrentTrack() != null) {
-            playlistManager.getPlaylistTrack(player.getCurrentTrack()).downvote();
+            playlistManager.getPlaylist().downvoteTrack(player.getCurrentTrack());
         }
     }
 
@@ -138,7 +139,7 @@ public class CurrentTrackView extends GridPane {
     @FXML
     private void upvote(MouseEvent e) {
         if(player.getCurrentTrack() != null) {
-            playlistManager.getPlaylistTrack(player.getCurrentTrack()).upvote();
+            playlistManager.getPlaylist().upvoteTrack(player.getCurrentTrack());
         }
     }
 }

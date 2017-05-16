@@ -28,7 +28,7 @@ public class Configuration {
         try {
             configuration.load(new FileInputStream(CONFIG_FILE));
         } catch (IOException e) {
-            LOG.severe(e);
+            LOG.error(e);
         }
     }
 

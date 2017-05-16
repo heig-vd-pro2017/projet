@@ -10,8 +10,6 @@ import java.util.List;
 
 public class ObservableSortedPlaylistTrackList extends ObservableListBase<PlaylistTrack> {
 
-    private final Logger LOG = new Logger(ObservableSortedPlaylistTrackList.class.getSimpleName());
-
     private final List<PlaylistTrack> delegate = new ArrayList<>();
 
     private VoteComparator comparator = new VoteComparator();
@@ -41,6 +39,7 @@ public class ObservableSortedPlaylistTrackList extends ObservableListBase<Playli
         return result;
     }
 
+    @Override
     public void clear() {
         beginChange();
 
@@ -55,12 +54,19 @@ public class ObservableSortedPlaylistTrackList extends ObservableListBase<Playli
     }
 
     public PlaylistTrack getNextTrack() {
-        // View the previous has 'already played' when going to next track, not before.
         if(count >= size()) {
             return null;
         }
 
         return get(count++);
+    }
+
+    public void remove(PlaylistTrack track) {
+        beginChange();
+
+        delegate.remove(track);
+
+        endChange();
     }
 
     @Override

@@ -3,7 +3,7 @@ package ch.tofind.commusica.media;
 import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
-import ch.tofind.commusica.utils.TrackProperty;
+import ch.tofind.commusica.utils.PlaylistTrackProperty;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -23,9 +23,9 @@ public class Player {
     
     private final IntegerProperty currentTimeProperty;
 
-    private final TrackProperty currentTrackProperty;
+    private final PlaylistTrackProperty currentTrackProperty;
 
-    private final TrackProperty previousTrackProperty;
+    private final PlaylistTrackProperty previousTrackProperty;
 
     private double volumeStep;
 
@@ -40,8 +40,8 @@ public class Player {
         this.volumeStep = volumeStep;
 
         currentTimeProperty = new SimpleIntegerProperty(0);
-        currentTrackProperty = new TrackProperty();
-        previousTrackProperty = new TrackProperty();
+        currentTrackProperty = new PlaylistTrackProperty();
+        previousTrackProperty = new PlaylistTrackProperty();
         isPlayingProperty = new SimpleBooleanProperty(false);
     }
 
@@ -62,15 +62,16 @@ public class Player {
             previousTrackProperty.setValue(currentTrackProperty.getValue());
         }
 
-        currentTrackProperty.setValue(PlaylistManager.getInstance().nextTrack());
+        //currentTrackProperty.setValue(PlaylistManager.getInstance().nextTrack());
+        currentTrackProperty.setValue(PlaylistManager.getInstance().getPlaylist().getTracksList().getNextTrack());
 
         if (currentTrackProperty.getValue() != null) {
             Media media = null;
 
-            LOG.info("new track: " + currentTrackProperty.getValue().getTitle());
+            LOG.info("new track: " + currentTrackProperty.getTrack().getTitle());
 
             try {
-                media = new Media(new File(currentTrackProperty.getValue().getUri()).toURI().toString());
+                media = new Media(new File(currentTrackProperty.getTrack().getUri()).toURI().toString());
             } catch (MediaException e) {
                 LOG.log(Logger.Level.SEVERE, e);
             }
@@ -109,14 +110,14 @@ public class Player {
     }
 
     public Track getCurrentTrack() {
-        return currentTrackProperty.getValue();
+        return currentTrackProperty.getTrack();
     }
 
-    public TrackProperty getCurrentTrackProperty() {
+    public PlaylistTrackProperty getCurrentTrackProperty() {
         return currentTrackProperty;
     }
 
-    public TrackProperty getPreviousTrackProperty() {
+    public PlaylistTrackProperty getPreviousTrackProperty() {
         return previousTrackProperty;
     }
 
@@ -132,35 +133,48 @@ public class Player {
         if (currentTrackProperty.getValue() == null) {
             load();
         }
-        player.play();
-        isPlayingProperty.setValue(true);
+
+        if (player != null) {
+            player.play();
+            isPlayingProperty.setValue(true);
+        }
     }
 
     public void pause() {
-        player.pause();
-        isPlayingProperty.setValue(false);
+        if (player != null) {
+            player.pause();
+            isPlayingProperty.setValue(false);
+        }
     }
 
     public void stop() {
-        player.stop();
-        isPlayingProperty.setValue(false);
+        if (player != null) {
+            player.stop();
+            isPlayingProperty.setValue(false);
+        }
     }
 
-    public void riseVolume() {
-        double currentVolume = player.getVolume();
-        player.setVolume(currentVolume + volumeStep);
+    /* public void riseVolume() {
+        if (player != null) {
+            double currentVolume = player.getVolume();
+            player.setVolume(currentVolume + volumeStep);
+        }
     }
 
     public void lowerVolume() {
-        double currentVolume = player.getVolume();
-        player.setVolume(currentVolume - volumeStep);
+        if (player != null) {
+            double currentVolume = player.getVolume();
+            player.setVolume(currentVolume - volumeStep);
+        }
     }
 
     public double getVolume() {
         return player.getVolume();
-    }
+    } */
 
     public void setVolume(double volume) {
-        player.setVolume(volume);
+        if (player != null) {
+            player.setVolume(volume);
+        }
     }
 }

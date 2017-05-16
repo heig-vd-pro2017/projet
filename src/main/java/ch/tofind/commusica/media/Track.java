@@ -1,15 +1,13 @@
 package ch.tofind.commusica.media;
 
-
 import ch.tofind.commusica.file.FileManager;
 import ch.tofind.commusica.utils.Configuration;
+import ch.tofind.commusica.playlist.PlaylistManager;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import ch.tofind.commusica.utils.Configuration;
-
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
@@ -51,12 +49,6 @@ public class Track implements Serializable {
     //! When was the track played for the last time.
     private Date datePlayed;
 
-    /**
-     * If the track is favorited or not.
-     * This field is useful for Hibernate integration, otherwise the property defined below should be used.
-     */
-    private boolean favorited;
-
     //! If the track is favorited or not.
     private transient BooleanProperty favoritedProperty;
 
@@ -79,7 +71,7 @@ public class Track implements Serializable {
      * @param length Length (in seconds) of the track.
      * @param uri URI of the file.
      */
-    public Track(String id, String title, String artist, String album, Integer length, String uri, boolean favorited) {
+    public Track(String id, String title, String artist, String album, Integer length, String uri) {
         this.id = id;
         this.title = title;
         this.artist = artist;
@@ -87,9 +79,16 @@ public class Track implements Serializable {
         this.length = length;
         this.uri = uri;
         this.dateAdded = new Date();
-        this.favorited = favorited;
-        this.favoritedProperty = new SimpleBooleanProperty(favorited);
-        this.favoritedProperty.addListener(((observable, oldValue, newValue) -> this.favorited = newValue));
+
+        this.favoritedProperty = new SimpleBooleanProperty(false);
+
+        this.favoritedProperty.addListener(((observable, oldValue, newValue) -> {
+            if (newValue) {
+                PlaylistManager.getInstance().addTrackToFavorites(this);
+            } else {
+                PlaylistManager.getInstance().removeTrackFromFavorites(this);
+            }
+        }));
     }
 
     /**
@@ -140,12 +139,16 @@ public class Track implements Serializable {
         this.uri = audioFile.getFile().toString();
 
         this.length = header.getTrackLength();
-        
-        this.favorited = false;
 
-        this.favoritedProperty = new SimpleBooleanProperty(favorited);
+        this.favoritedProperty = new SimpleBooleanProperty(false);
 
-        this.favoritedProperty.addListener(((observable, oldValue, newValue) -> this.favorited = newValue));
+        this.favoritedProperty.addListener(((observable, oldValue, newValue) -> {
+            if (newValue) {
+                PlaylistManager.getInstance().addTrackToFavorites(this);
+            } else {
+                PlaylistManager.getInstance().removeTrackFromFavorites(this);
+            }
+        }));
     }
 
     /**

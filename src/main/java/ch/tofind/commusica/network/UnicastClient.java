@@ -35,7 +35,7 @@ public class UnicastClient implements Runnable {
             this.in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
             this.out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
         } catch (IOException e) {
-            LOG.severe(e);
+            LOG.error(e);
         }
     }
 
@@ -47,7 +47,7 @@ public class UnicastClient implements Runnable {
             this.in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
             this.out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
         } catch (IOException e) {
-            LOG.severe(e);
+            LOG.error(e);
         }
     }
 
@@ -72,7 +72,7 @@ public class UnicastClient implements Runnable {
         try {
             fileStream = new FileInputStream(file);
         } catch (FileNotFoundException e) {
-            LOG.severe(e);
+            LOG.error(e);
         }
 
         BufferedInputStream fileBytes = new BufferedInputStream(fileStream);
@@ -81,7 +81,7 @@ public class UnicastClient implements Runnable {
         try {
             outputFileBytes = new BufferedOutputStream(socket.getOutputStream());
         } catch (IOException e) {
-            LOG.severe(e);
+            LOG.error(e);
         }
 
         byte[] buffer = new byte[8192];
@@ -101,20 +101,20 @@ public class UnicastClient implements Runnable {
             }
 
         } catch (IOException e) {
-            LOG.severe(e);
+            LOG.error(e);
         }
 
         // Close all the streams
         try {
             fileBytes.close();
         } catch (IOException e) {
-            LOG.severe(e);
+            LOG.error(e);
         }
 
         try {
             fileStream.close();
         } catch (IOException e) {
-            LOG.severe(e);
+            LOG.error(e);
         }
     }
 
@@ -139,7 +139,7 @@ public class UnicastClient implements Runnable {
                 }
 
             } catch (IOException e) {
-                LOG.severe(e);
+                LOG.error(e);
             }
 
             // If one side closed the connection, we simulate an end of communication
@@ -173,7 +173,7 @@ public class UnicastClient implements Runnable {
         try {
             in.close();
         } catch (IOException e) {
-            LOG.severe(e);
+            LOG.error(e);
         }
 
         out.close();
@@ -181,7 +181,7 @@ public class UnicastClient implements Runnable {
         try {
             socket.close();
         } catch (IOException e) {
-            LOG.severe(e);
+            LOG.error(e);
         }
     }
 }

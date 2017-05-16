@@ -1,7 +1,7 @@
 package ch.tofind.commusica.core;
 
 import ch.tofind.commusica.file.FileManager;
-import ch.tofind.commusica.media.Playlist;
+import ch.tofind.commusica.media.EphemeralPlaylist;
 import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.network.MulticastClient;
 import ch.tofind.commusica.network.NetworkProtocol;
@@ -76,7 +76,7 @@ public class ClientCore extends AbstractCore implements ICore {
         }
 
         if (Objects.equals(id, ApplicationProtocol.serverId)) {
-            Playlist playlistUpdated = Serialize.unserialize(playlistJson, Playlist.class);
+            EphemeralPlaylist playlistUpdated = Serialize.unserialize(playlistJson, EphemeralPlaylist.class);
             //PlaylistManager.getInstance().loadPlaylist(playlistUpdated);
         }
 
@@ -111,15 +111,15 @@ public class ClientCore extends AbstractCore implements ICore {
             //System.out.println(track);
             trackJson = Serialize.serialize(track);
         } catch (CannotReadException e) {
-            LOG.severe(e);
+            LOG.error(e);
         } catch (IOException e) {
-            LOG.severe(e);
+            LOG.error(e);
         } catch (TagException e) {
-            LOG.severe(e);
+            LOG.error(e);
         } catch (ReadOnlyFileException e) {
-            LOG.severe(e);
+            LOG.error(e);
         } catch (InvalidAudioFrameException e) {
-            LOG.severe(e);
+            LOG.error(e);
         }
 
 

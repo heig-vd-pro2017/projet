@@ -51,7 +51,7 @@ public class Server implements Runnable {
         try {
             socket.close();
         } catch (IOException e) {
-            LOG.severe(e);
+            LOG.error(e);
         }
 
         // Try to stop all remaining threads
@@ -61,10 +61,10 @@ public class Server implements Runnable {
         try {
             threadPool.awaitTermination(5, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            LOG.severe(e);
+            LOG.error(e);
         } finally {
             if (!threadPool.isTerminated()) {
-                LOG.severe("The thread pool can't be stopped !");
+                LOG.error("The thread pool can't be stopped !");
             }
             threadPool.shutdownNow();
         }
@@ -78,7 +78,7 @@ public class Server implements Runnable {
         try {
             socket = new ServerSocket(port);
         } catch (IOException e) {
-            LOG.severe(e);
+            LOG.error(e);
         }
 
         while (running) {
@@ -95,13 +95,13 @@ public class Server implements Runnable {
             } catch (SocketException e) {
 
                 if (running) {
-                    LOG.severe(e);
+                    LOG.error(e);
                 } else {
                     break;
                 }
 
             } catch (IOException e) {
-                LOG.severe(e);
+                LOG.error(e);
             }
         }
     }

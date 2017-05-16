@@ -8,8 +8,8 @@
         <meta attribute="class-description">
             This class represents an audio track
         </meta>
-        <id name="id" type="int" column="id">
-            <generator class="increment"/>
+        <id name="id" type="string" column="id">
+            <generator class="assigned"/>
         </id>
         <version name="version" column="version"/>
         <property name="title" column="title" type="string" length="50" not-null="true"/>
@@ -19,6 +19,5 @@
         <property name="uri" column="uri" type="string" length="500" not-null="true" unique="true"/>
         <property name="dateAdded" column="date_added" type="timestamp" length="50" not-null="true"/>
         <property name="datePlayed" column="date_played" type="timestamp" length="50" not-null="false"/>
-        <property name="favorited" column="favorited" type="boolean" not-null="true"/>
     </class>
 </hibernate-mapping>

@@ -4,7 +4,7 @@
 */
 package ch.tofind.commusica.playlist;
 
-import ch.tofind.commusica.media.Playlist;
+import ch.tofind.commusica.media.SavedPlaylist;
 import ch.tofind.commusica.media.Track;
 
 import javafx.beans.property.BooleanProperty;
@@ -34,7 +34,7 @@ public class PlaylistTrack implements Serializable {
      * @param playlist
      * @param track
      */
-    public PlaylistTrack(Playlist playlist, Track track) {
+    public PlaylistTrack(SavedPlaylist playlist, Track track) {
         this.id = new PlaylistTrackId(playlist, track);
         this.beenPlayedProperty = new SimpleBooleanProperty(false);
         this.votes = 0;
@@ -49,7 +49,7 @@ public class PlaylistTrack implements Serializable {
         return beenPlayedProperty;
     }
 
-    public Playlist getPlaylist() {
+    public SavedPlaylist getPlaylist() {
         return id.getPlaylist();
     }
 
@@ -102,7 +102,7 @@ public class PlaylistTrack implements Serializable {
     public String toString() {
 
         return "PlaylistTrack"                           + '\n' + '\t' +
-               "Playlist: " + id.getPlaylist().getName() + '\n' + '\t' +
+               "SavedPlaylist: " + id.getPlaylist().getName() + '\n' + '\t' +
                "Track...: " + id.getTrack().getTitle()   + '\n' + '\t' +
                "Votes...: " + votes                      + '\n';
     }

@@ -13,7 +13,7 @@ public class Logger {
 
     //!
     private enum ANSIColor {
-        BLUE(34), GREEN(42), RED(31), RESET(0), YELLOW(43);
+        BLUE(34), GREEN(32), RED(31), RESET(0), YELLOW(33);
 
         int code;
 
@@ -79,15 +79,21 @@ public class Logger {
         throw new RuntimeException(e);
     }
 
+
     public void info(String message) {
         log(Level.INFO, message);
     }
 
-    public void severe(String message) {
+    public void warning(String message) {
+        log(Level.WARNING, message);
+    }
+
+    public void error(String message) {
         log(Level.SEVERE, message);
     }
 
-    public void severe(Exception e) {
+
+    public void error(Exception e) {
         log(Level.SEVERE, e);
     }
 }

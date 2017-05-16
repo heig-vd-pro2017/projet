@@ -1,7 +1,8 @@
 package ch.tofind.commusica.ui;
 
-import ch.tofind.commusica.media.Playlist;
+import ch.tofind.commusica.media.IPlaylist;
 
+import ch.tofind.commusica.playlist.PlaylistManager;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +21,8 @@ import java.util.ResourceBundle;
  * Controller meant to interact with the interface.
  */
 public class UIController extends Application implements Initializable {
+
+    private IPlaylist currentPlaylist;
 
     //!
     private static FXMLLoader loader = new FXMLLoader();
@@ -78,12 +81,21 @@ public class UIController extends Application implements Initializable {
      *
      * @param playlist
      */
-    public void loadPlaylist(Playlist playlist) {
-        tracksListView.loadPlaylist(playlist);
+    public void showPlaylist(IPlaylist playlist) {
+        currentPlaylist = playlist;
+        tracksListView.showPlaylist(playlist);
+    }
+
+    public void refreshPlaylist() {
+        if (currentPlaylist != null) {
+            tracksListView.showPlaylist(currentPlaylist);
+        }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loader.setController(this);
+
+        showPlaylist(PlaylistManager.getInstance().getPlaylist());
     }
 }

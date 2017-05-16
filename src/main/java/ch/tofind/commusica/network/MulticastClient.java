@@ -48,26 +48,26 @@ public class MulticastClient implements Runnable {
         try {
             socket = new MulticastSocket(port);
         } catch (IOException e) {
-            LOG.severe(e);
+            LOG.error(e);
         }
 
         try {
             socket.setInterface(interfaceToUse);
             socket.setLoopbackMode(false);
         } catch (SocketException e) {
-            LOG.severe(e);
+            LOG.error(e);
         }
 
         try {
             multicastGroup = InetAddress.getByName(multicastAddress);
         } catch (UnknownHostException e) {
-            LOG.severe(e);
+            LOG.error(e);
         }
 
         try {
             socket.joinGroup(multicastGroup);
         } catch (IOException e) {
-            LOG.severe(e);
+            LOG.error(e);
         }
     }
 
@@ -96,7 +96,7 @@ public class MulticastClient implements Runnable {
         try {
             socket.send(out);
         } catch (IOException e) {
-            LOG.severe(e);
+            LOG.error(e);
         }
     }
 
@@ -140,7 +140,7 @@ public class MulticastClient implements Runnable {
                 // Do nothing and continue
                 continue;
             } catch (IOException e) {
-                LOG.severe(e);
+                LOG.error(e);
             }
 
             // Get the requested command

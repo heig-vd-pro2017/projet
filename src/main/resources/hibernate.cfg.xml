@@ -9,15 +9,13 @@
         <property name="format_sql">true</property>
         <property name="dialect">org.hibernate.dialect.SQLiteDialect</property>
         <property name="connection.driver_class">org.sqlite.JDBC</property>
-        <property name="connection.username"></property>
-        <property name="connection.password"></property>
 
         <property name="connection.url">jdbc:sqlite:commusica.db</property>
 
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <!-- List of mapping classes -->
-        <mapping resource="models/Playlist.hbm.xml"/>
+        <mapping resource="models/SavedPlaylist.hbm.xml"/>
         <mapping resource="models/Track.hbm.xml"/>
         <mapping resource="models/PlaylistTrack.hbm.xml"/>
 
