@@ -89,6 +89,9 @@ public class PlaylistManager {
     }
 
     public void addTrackToFavorites(Track track) {
+        // Save the track if it isn't already done.
+        DatabaseManager.getInstance().getSession().saveOrUpdate(track);
+
         PlaylistTrack playlistTrack = new PlaylistTrack(favoritesPlaylist, track);
 
         DatabaseManager.getInstance().save(playlistTrack);

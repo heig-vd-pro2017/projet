@@ -92,6 +92,10 @@ public class UIController extends Application implements Initializable {
         }
     }
 
+    public IPlaylist getCurrentPlaylist() {
+        return currentPlaylist;
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loader.setController(this);

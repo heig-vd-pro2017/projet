@@ -4,18 +4,17 @@ import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.playlist.PlaylistTrack;
 import ch.tofind.commusica.utils.ObservableSortedPlaylistTrackList;
 
-import java.util.Optional;
-
 public class EphemeralPlaylist implements IPlaylist {
 
     private ObservableSortedPlaylistTrackList tracksList;
 
     //! The playlist that will be saved into the database for keeping track of this one.
-    private SavedPlaylist staticPlaylist;
+    private SavedPlaylist delegate;
 
     public EphemeralPlaylist() {
-        staticPlaylist = new SavedPlaylist("Soirée lambda");
-        DatabaseManager.getInstance().save(staticPlaylist);
+        delegate = new SavedPlaylist("Soirée lambda");
+
+        DatabaseManager.getInstance().save(delegate);
 
         tracksList = new ObservableSortedPlaylistTrackList();
     }
@@ -24,7 +23,7 @@ public class EphemeralPlaylist implements IPlaylist {
         // Check that the playlist doesn't already contains the track.
         if (tracksList.stream().noneMatch(p -> p.getTrack().equals(track))) {
             // Create the PlaylistTrack object by associating it with the static playlist.
-            PlaylistTrack playlistTrack = new PlaylistTrack(staticPlaylist, track);
+            PlaylistTrack playlistTrack = new PlaylistTrack(delegate, track);
             tracksList.add(playlistTrack);
 
             return true;
