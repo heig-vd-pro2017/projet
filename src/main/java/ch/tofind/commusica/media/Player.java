@@ -102,6 +102,7 @@ public class Player {
         } else {
             stop();
             currentTrackProperty.setValue(null);
+            player = null;
         }
     }
 
