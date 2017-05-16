@@ -1,9 +1,28 @@
 # Journal de travail
 *Le journal de travail débute le 15.03.2017*
 
+## 16.05.2017
+### David Truan
+* Implémentation des checks si un morceau est dans la base de donnée (30min).
+
+## 15.05.2017
+### David Truan
+* Reflexion de l'implémentation des contrôles sur les fichiers (1h).
+* Implémentation de check de checksum MD5 pour les fichiers transférés (1h).
+* Cleaning des Cores clients et serveurs (2h).
+
+## 14.05.2017
+### David Truan
+* Mise en place de la decouverte de serveurs (1h30).
+* Amélioration de la communiation et fix de bug des Cores (2h).
+
 ## 10.05.2017
 ### Ludovic Delafontaine
 * Fusion du travail de tout le monde sur la branche master (0h45)
+
+## 09.05.2017
+### David Truan
+* Reflexion avec L. Delafontaine au niveau de la novelle implémentation client/serveur (1h)
 
 ## 07.05.2017
 ### Ludovic Delafontaine
@@ -21,6 +40,11 @@
 ### Ludovic Delafontaine
 * Revue de code afin de pouvoir tout fusionner (2h00)
 * Améliorations aux notions de client/serveur (2h00)
+
+## 04.05.2017
+### David Truan
+* Lecture des Metadatas des fichiers et tests de la libraire audio utilisée (2h).
+* Implémentation de la lecture des signatures des fichiers audios (1h)
 
 ## 03.05.2017
 ### Lucas Elisei

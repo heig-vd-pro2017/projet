@@ -1,5 +1,6 @@
 package ch.tofind.commusica.core;
 
+import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.file.FileManager;
 import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.network.MulticastClient;
@@ -8,6 +9,8 @@ import ch.tofind.commusica.network.Server;
 import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.Serialize;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import java.io.File;
 import java.io.IOException;
@@ -81,8 +84,7 @@ public class ServerCore extends AbstractCore implements ICore {
     }
 
     public String TRACK_REQUEST(ArrayList<Object> args) {
-
-        System.out.println("In TRACK_REQUEST");
+        LOG.info("In TRACK_REQUEST");
 
         String idString  = (String) args.remove(0);
         // remove the socket which is passed
@@ -91,37 +93,32 @@ public class ServerCore extends AbstractCore implements ICore {
 
         trackReceived = Serialize.unserialize(trackJson, Track.class);
 
+        Session session = DatabaseManager.getInstance().getSession();
 
-        // TODO:
-        // Check if the track is in the database
+        String queryString = String.format("from Track where id = '%s'", trackReceived.getId());
+        Query<Track> queryId = session.createQuery(queryString, Track.class);
+        queryString = String.format("from Track where title = '%s' and album = '%s' and artist = '%s' and length > '%d'" +
+                " and length < '%d'", trackReceived.getTitle(), trackReceived.getAlbum(), trackReceived.getArtist(),
+                trackReceived.getLength() - 5, trackReceived.getLength() + 5);
+        Query<Track> queryOtherAttributes = session.createQuery(queryString, Track.class);
 
-            // Check if the MD5 is stored in the database
+        String result = "";
+        if (queryId.list().isEmpty() && queryOtherAttributes.list().isEmpty()) {
+            LOG.info("Track not in the database.");
+            result = ApplicationProtocol.TRACK_ACCEPTED + NetworkProtocol.END_OF_LINE;
+        } else {
+            LOG.info("Track already in the database.");
+            result = ApplicationProtocol.TRACK_REFUSED + NetworkProtocol.END_OF_LINE;
+        }
 
-                // Check if the URI is set
+        result = result.concat(ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND);
 
-                    // If URI is set, return TRACK_REFUSED as the track is already on the local disk
-
-                // Return TRACK_ACCEPTED as the track is in the database, but not in the local disk
-
-            // Check if the metadatas are in the database
-
-                // Check if the URI is set
-
-                    // If URI is set, return TRACK_REFUSED as the track is already on the local disk
-
-                // Return TRACK_ACCEPTED as the track is in the database, but not in the local disk
-
-            // Return TRACK_ACCEPTED as the track is not present on the system
-
-        String result = ApplicationProtocol.TRACK_ACCEPTED + NetworkProtocol.END_OF_LINE +
-                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
-                NetworkProtocol.END_OF_COMMAND;
         return result;
     }
 
     public String SEND_TRACK(ArrayList<Object> args) {
-
-        System.out.println("In SEND_TRACK");
+        LOG.info("In SEND_TRACK");
 
         String idString  = (String) args.remove(0);
         Socket socket = (Socket) args.remove(0);
@@ -145,14 +142,16 @@ public class ServerCore extends AbstractCore implements ICore {
             }
 
             trackReceived.setUri(URI);
+            //trackReceived
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        // TODO:
         // Update/Save the track in the database
+        DatabaseManager.getInstance().save(trackReceived);
 
         // Add the track to the current Playlist
+        PlaylistManager.getInstance().getPlaylist().addTrack(trackReceived);
 
         // Reset the track
         trackReceived = null;

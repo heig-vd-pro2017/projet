@@ -42,6 +42,18 @@ public class FileManager {
 
     private FileManager() {
 
+        // create the tracks directory which will contain the tracks
+        File tracksDir = new File("." + File.separator + "tracks");
+
+        // if the directory does not exist, create it
+        if (!tracksDir.exists()) {
+            try {
+                tracksDir.mkdir();
+                LOG.info("tracks directory created");
+            } catch (SecurityException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -125,7 +137,7 @@ public class FileManager {
             File newName = new File("." + File.separator + "tracks" + File.separator + MD5 + ext);
 
             // if the renaming failed (name already in the directory)
-            if(!result.renameTo(newName)) {
+            if (!result.renameTo(newName)) {
                 Files.delete(result.toPath());
             }
 
@@ -186,7 +198,8 @@ public class FileManager {
 
     /**
      * Get the first nbByte of a File.
-     * @param file the file itself
+     *
+     * @param file    the file itself
      * @param nbBytes number of bytes wanted
      * @return a byte array containing the nbBytes first bytes of the file
      */
@@ -242,6 +255,7 @@ public class FileManager {
     /**
      * Return a String of the checksum for the specified file with the specified digest
      * taken from the here: http://howtodoinjava.com/core-java/io/how-to-generate-sha-or-md5-file-checksum-hash-in-java/
+     *
      * @param digest
      * @param file
      * @return a string of the checksum
@@ -280,7 +294,8 @@ public class FileManager {
 
     /**
      * Check if the MD5 checksum is the same as the MD5 passed in param
-     * @param file the file to check
+     *
+     * @param file        the file to check
      * @param MD5checksum the MD5 to compare
      * @return true if the checksum are the same, false if they are different
      * @throws IOException
