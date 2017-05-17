@@ -130,6 +130,7 @@ public class ClientCore extends AbstractCore implements ICore {
                 trackJson + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
 
+
         sendUnicast(ApplicationProtocol.serverAddress, command);
 
         return "";

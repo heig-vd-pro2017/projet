@@ -1,20 +1,12 @@
 package ch.tofind.commusica.file;
 
+import ch.tofind.commusica.utils.Logger;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.UUID;
-
-import ch.tofind.commusica.utils.Logger;
-import org.jaudiotagger.audio.AudioFile;
-import org.jaudiotagger.audio.AudioFileIO;
-import org.jaudiotagger.audio.exceptions.CannotReadException;
-import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
-import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
-import org.jaudiotagger.tag.FieldKey;
-import org.jaudiotagger.tag.TagException;
 
 /**
  * @brief This class represents the file manager and allows interaction with the filesystem.
@@ -24,20 +16,7 @@ public class FileManager {
     //! Logger for debugging.
     private static final Logger LOG = new Logger(FileManager.class.getSimpleName());
 
-    /**
-     * These constants are used to check the format of a file.
-     * The arrays are the sequences of byte contained in each file of the specified format.
-     * The OFFSETs are the offset of the signature in the file (for example the sequence of bytes 0x49, 0x44, 0x33 are
-     * the first 3 bytes of an MP3 file).
-     */
-    public static final byte[] MP3 = {0x49, 0x44, 0x33};
-    public static final int OFFSET_MP3_SIGNATURE = 0;
-    public static final byte[] M4A = {0x66, 0x74, 0x79, 0x70, 0x4D, 0x34, 0x41, 0x20};
-    public static final int OFFSET_M4A_SIGNATURE = 4;
-    public static final byte[] WAV = {0x57, 0x41, 0x56, 0x45, 0x66, 0x6D, 0x74, 0x20};
-    public static final int OFFSET_WAV_SIGNATURE = 8;
-
-
+    //! Instance of the object shared for all the application
     private static FileManager instance = null;
 
     private FileManager() {
@@ -45,15 +24,7 @@ public class FileManager {
         // create the tracks directory which will contain the tracks
         File tracksDir = new File("." + File.separator + "tracks");
 
-        // if the directory does not exist, create it
-        if (!tracksDir.exists()) {
-            try {
-                tracksDir.mkdir();
-                LOG.info("tracks directory created");
-            } catch (SecurityException e) {
-                e.printStackTrace();
-            }
-        }
+        tracksDir.mkdir();
     }
 
     /**
@@ -72,15 +43,6 @@ public class FileManager {
         }
 
         return instance;
-    }
-
-    /**
-     * @param path
-     * @param fileName
-     * @param file
-     */
-    public void save(File file, String path, String fileName) {
-        file.renameTo(new File(path + File.separator + fileName));
     }
 
     /**
@@ -186,11 +148,11 @@ public class FileManager {
      * @return a String of the extension corresponding to the file format.
      */
     public static String signatureChecker(byte[] signature) {
-        if (Arrays.equals(MP3, Arrays.copyOfRange(signature, OFFSET_MP3_SIGNATURE, OFFSET_MP3_SIGNATURE + MP3.length))) {
+        if (Arrays.equals(AudioFilesOffset.MP3, Arrays.copyOfRange(signature, AudioFilesOffset.OFFSET_MP3_SIGNATURE, AudioFilesOffset.OFFSET_MP3_SIGNATURE + AudioFilesOffset.MP3.length))) {
             return ".mp3";
-        } else if (Arrays.equals(M4A, Arrays.copyOfRange(signature, OFFSET_M4A_SIGNATURE, OFFSET_M4A_SIGNATURE + M4A.length))) {
+        } else if (Arrays.equals(AudioFilesOffset.M4A, Arrays.copyOfRange(signature, AudioFilesOffset.OFFSET_M4A_SIGNATURE, AudioFilesOffset.OFFSET_M4A_SIGNATURE + AudioFilesOffset.M4A.length))) {
             return ".m4a";
-        } else if (Arrays.equals(WAV, Arrays.copyOfRange(signature, OFFSET_WAV_SIGNATURE, OFFSET_WAV_SIGNATURE + WAV.length))) {
+        } else if (Arrays.equals(AudioFilesOffset.WAV, Arrays.copyOfRange(signature, AudioFilesOffset.OFFSET_WAV_SIGNATURE, AudioFilesOffset.OFFSET_WAV_SIGNATURE + AudioFilesOffset.WAV.length))) {
             return ".wav";
         }
         return "error";
