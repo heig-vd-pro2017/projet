@@ -2,11 +2,8 @@ package ch.tofind.commusica.file;
 
 /**
  * @brief These constants are used to check the format of a file.
- * The arrays are the sequences of byte contained in each file of the specified format.
- * The OFFSETs are the offset of the signature in the file (for example the sequence of bytes 0x49, 0x44, 0x33 are
- * the first 3 bytes of an MP3_HEADER file).
  */
-public class FilesBytes {
+public class FilesFormats {
 
     public static final byte[] MP3_HEADER = {0x49, 0x44, 0x33};
     public static final int MP3_HEADER_OFFSET = 0;

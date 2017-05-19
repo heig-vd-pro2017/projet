@@ -138,12 +138,12 @@ public class FileManager {
             LOG.error(e);
         }
 
-        if (Arrays.equals(FilesBytes.MP3_HEADER, Arrays.copyOfRange(fileHeader, FilesBytes.MP3_HEADER_OFFSET, FilesBytes.MP3_HEADER_OFFSET + FilesBytes.MP3_HEADER.length))) {
-            return FilesBytes.MP3_EXTENSION;
-        } else if (Arrays.equals(FilesBytes.M4A_HEADER, Arrays.copyOfRange(fileHeader, FilesBytes.M4A_HEADER_OFFSET, FilesBytes.M4A_HEADER_OFFSET + FilesBytes.M4A_HEADER.length))) {
-            return FilesBytes.M4A_EXTENSION;
-        } else if (Arrays.equals(FilesBytes.WAV_HEADER, Arrays.copyOfRange(fileHeader, FilesBytes.WAV_HEADER_OFFSET, FilesBytes.WAV_HEADER_OFFSET + FilesBytes.WAV_HEADER.length))) {
-            return FilesBytes.WAV_EXTENSION;
+        if (Arrays.equals(FilesFormats.MP3_HEADER, Arrays.copyOfRange(fileHeader, FilesFormats.MP3_HEADER_OFFSET, FilesFormats.MP3_HEADER_OFFSET + FilesFormats.MP3_HEADER.length))) {
+            return FilesFormats.MP3_EXTENSION;
+        } else if (Arrays.equals(FilesFormats.M4A_HEADER, Arrays.copyOfRange(fileHeader, FilesFormats.M4A_HEADER_OFFSET, FilesFormats.M4A_HEADER_OFFSET + FilesFormats.M4A_HEADER.length))) {
+            return FilesFormats.M4A_EXTENSION;
+        } else if (Arrays.equals(FilesFormats.WAV_HEADER, Arrays.copyOfRange(fileHeader, FilesFormats.WAV_HEADER_OFFSET, FilesFormats.WAV_HEADER_OFFSET + FilesFormats.WAV_HEADER.length))) {
+            return FilesFormats.WAV_EXTENSION;
         } else {
             throw new Exception("File not supported.");
         }
