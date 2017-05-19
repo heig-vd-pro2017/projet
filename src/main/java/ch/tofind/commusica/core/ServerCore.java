@@ -2,6 +2,7 @@ package ch.tofind.commusica.core;
 
 import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.file.FileManager;
+import ch.tofind.commusica.file.FilesFormats;
 import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.network.MulticastClient;
 import ch.tofind.commusica.network.NetworkProtocol;
@@ -142,6 +143,8 @@ public class ServerCore extends AbstractCore implements ICore {
         // Retrieve the file from the network
         FileManager fileManager = FileManager.getInstance();
 
+        String result = "";
+
         File tempFile;
         try {
             tempFile = fileManager.retrieveFile(socket.getInputStream(), fileSize);
@@ -153,7 +156,7 @@ public class ServerCore extends AbstractCore implements ICore {
         }
 
         // Compare the checksums to avoid files corruption
-        String tempFileChecksum = fileManager.getChecksum(tempFile);
+        String tempFileChecksum = fileManager.getMD5Checksum(tempFile);
 
         if (!Objects.equals(tempFileChecksum, trackToReceive.getId())) {
 
@@ -161,17 +164,27 @@ public class ServerCore extends AbstractCore implements ICore {
 
             trackToReceive = null;
 
-            return ApplicationProtocol.TRACK_REFUSED + NetworkProtocol.END_OF_LINE +
+            return ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
         }
 
         // Get the file extension
         String fileExtension = null;
         try {
-            fileExtension = fileManager.formatChecker(tempFile);
+            fileExtension = fileManager.getFormatExtension(tempFile);
         } catch (Exception e) {
             fileManager.delete(tempFile);
             LOG.error(e);
+        }
+
+
+        // Check if the file is of a supported format (MP3, M4A and WAV for now)
+        // if not return an ERROR command
+        if (fileExtension.equals(FilesFormats.FILE_NOT_SUPPORTED)) {
+            result = ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                    NetworkProtocol.END_OF_COMMAND;
+            return result;
         }
 
         // Save the file under its new name on the filesystem
@@ -193,7 +206,7 @@ public class ServerCore extends AbstractCore implements ICore {
         // Reset the track
         trackToReceive = null;
 
-        String result = ApplicationProtocol.TRACK_SAVED + NetworkProtocol.END_OF_LINE +
+        result = ApplicationProtocol.TRACK_SAVED + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
         return result;

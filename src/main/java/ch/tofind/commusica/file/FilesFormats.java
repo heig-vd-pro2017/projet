@@ -16,4 +16,7 @@ public class FilesFormats {
     public static final byte[] WAV_HEADER = {0x57, 0x41, 0x56, 0x45, 0x66, 0x6D, 0x74, 0x20};
     public static final int WAV_HEADER_OFFSET = 8;
     public static final String WAV_EXTENSION = "wav";
+
+    public static final String FILE_NOT_SUPPORTED = "File not supported.";
+
 }

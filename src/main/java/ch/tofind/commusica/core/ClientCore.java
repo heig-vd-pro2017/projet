@@ -1,6 +1,7 @@
 package ch.tofind.commusica.core;
 
 import ch.tofind.commusica.file.FileManager;
+import ch.tofind.commusica.file.FilesFormats;
 import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.network.MulticastClient;
 import ch.tofind.commusica.network.NetworkProtocol;
@@ -95,9 +96,13 @@ public class ClientCore extends AbstractCore implements ICore {
 
         FileManager fileManager = FileManager.getInstance();
 
-        // Ends the communication if header isn't found
+        // Ends the communication if the extension is not found (format not supported)
         try {
-            fileManager.formatChecker(fileToSend);
+            if (fileManager.getFormatExtension(fileToSend).equals(FilesFormats.FILE_NOT_SUPPORTED)) {
+                return NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
+                        ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                        NetworkProtocol.END_OF_COMMAND;
+            }
         } catch (Exception e) {
             LOG.error(e);
         }

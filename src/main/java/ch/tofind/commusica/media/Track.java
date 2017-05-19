@@ -4,10 +4,7 @@ import ch.tofind.commusica.file.FileManager;
 import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.playlist.PlaylistManager;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
@@ -99,7 +96,7 @@ public class Track implements Serializable {
      */
     public Track(AudioFile audioFile) {
 
-        id = FileManager.getInstance().getChecksum(audioFile.getFile());
+        id = FileManager.getInstance().getMD5Checksum(audioFile.getFile());
 
         AudioHeader header = audioFile.getAudioHeader();
         Tag tags = audioFile.getTag();

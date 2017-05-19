@@ -126,17 +126,13 @@ public class FileManager {
      *
      * @return The file's extension corresponding to the file format.
      */
-    public String formatChecker(File file) throws Exception {
+    public String getFormatExtension(File file) throws Exception {
 
         InputStream inputStream = new FileInputStream(file);
 
-        byte[] fileHeader = new byte[16];
+        byte[] fileHeader = getBytes(file, 16);
 
-        try {
-            inputStream.read(fileHeader, 0, fileHeader.length);
-        } catch (IOException e) {
-            LOG.error(e);
-        }
+        inputStream.close();
 
         if (Arrays.equals(FilesFormats.MP3_HEADER, Arrays.copyOfRange(fileHeader, FilesFormats.MP3_HEADER_OFFSET, FilesFormats.MP3_HEADER_OFFSET + FilesFormats.MP3_HEADER.length))) {
             return FilesFormats.MP3_EXTENSION;
@@ -223,7 +219,7 @@ public class FileManager {
      *
      * @return The checksum of the file.
      */
-    public String getChecksum(File file) {
+    public String getMD5Checksum(File file) {
 
         MessageDigest digest = null;
         try {
