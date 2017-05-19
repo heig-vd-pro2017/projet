@@ -1,5 +1,6 @@
 package ch.tofind.commusica.file;
 
+import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
 
 import java.io.*;
@@ -16,21 +17,26 @@ public class FileManager {
     //! Logger for debugging.
     private static final Logger LOG = new Logger(FileManager.class.getSimpleName());
 
-    //! Instance of the object shared for all the application
+    //! Instance of the object shared for all the application.
     private static FileManager instance = null;
 
+    //! Output of the saved tracks.
+    private static String DEFAULT_TRACKS_DIRECTORY = Configuration.getInstance().get("DEFAULT_TRACKS_DIRECTORY");
+
+    /**
+     * @brief DatabaseManager single constructor. Avoid the instantiation.
+     */
     private FileManager() {
 
-        // create the tracks directory which will contain the tracks
-        File tracksDir = new File("." + File.separator + "tracks");
+        File tracksDirectory = new File(DEFAULT_TRACKS_DIRECTORY);
 
-        tracksDir.mkdir();
+        tracksDirectory.mkdir();
     }
 
     /**
-     * Returns the Singleton of the FileManager
+     * @brief Get the object instance.
      *
-     * @return the instance of the FileManager
+     * @return The instance of the object.
      */
     public static FileManager getInstance() {
 
@@ -46,10 +52,9 @@ public class FileManager {
     }
 
     /**
-     * Retrive a file form a TCP socket. It also check the format of the file.
-     * For now it accept MP3, M4A and WAV.
+     * @brief Retrieve a file form a TCP socket.
      *
-     * @param is       InputStream of the socket
+     * @param is InputStream of the socket
      * @param fileSize size of the file
      * @return the path where the file is stored as a String
      */
@@ -142,18 +147,18 @@ public class FileManager {
 
     /**
      * Check if the File passed as parameter is of a supported format. If so, it return a String corresponding to the
-     * extension (ex.: .mp3 if it is a MP3)
+     * extension (ex.: .mp3 if it is a MP3_HEADER)
      *
      * @param signature
      * @return a String of the extension corresponding to the file format.
      */
     public static String signatureChecker(byte[] signature) {
-        if (Arrays.equals(AudioFilesOffset.MP3, Arrays.copyOfRange(signature, AudioFilesOffset.OFFSET_MP3_SIGNATURE, AudioFilesOffset.OFFSET_MP3_SIGNATURE + AudioFilesOffset.MP3.length))) {
-            return ".mp3";
-        } else if (Arrays.equals(AudioFilesOffset.M4A, Arrays.copyOfRange(signature, AudioFilesOffset.OFFSET_M4A_SIGNATURE, AudioFilesOffset.OFFSET_M4A_SIGNATURE + AudioFilesOffset.M4A.length))) {
-            return ".m4a";
-        } else if (Arrays.equals(AudioFilesOffset.WAV, Arrays.copyOfRange(signature, AudioFilesOffset.OFFSET_WAV_SIGNATURE, AudioFilesOffset.OFFSET_WAV_SIGNATURE + AudioFilesOffset.WAV.length))) {
-            return ".wav";
+        if (Arrays.equals(FilesBytes.MP3_HEADER, Arrays.copyOfRange(signature, FilesBytes.MP3_HEADER_OFFSET, FilesBytes.MP3_HEADER_OFFSET + FilesBytes.MP3_HEADER.length))) {
+            return FilesBytes.MP3_EXTENSION;
+        } else if (Arrays.equals(FilesBytes.M4A_HEADER, Arrays.copyOfRange(signature, FilesBytes.M4A_HEADER_OFFSET, FilesBytes.M4A_HEADER_OFFSET + FilesBytes.M4A_HEADER.length))) {
+            return FilesBytes.M4A_EXTENSION;
+        } else if (Arrays.equals(FilesBytes.WAV_HEADER, Arrays.copyOfRange(signature, FilesBytes.WAV_HEADER_OFFSET, FilesBytes.WAV_HEADER_OFFSET + FilesBytes.WAV_HEADER.length))) {
+            return FilesBytes.WAV_EXTENSION;
         }
         return "error";
     }

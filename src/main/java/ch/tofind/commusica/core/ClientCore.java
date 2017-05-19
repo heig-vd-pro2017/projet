@@ -1,7 +1,6 @@
 package ch.tofind.commusica.core;
 
 import ch.tofind.commusica.file.FileManager;
-import ch.tofind.commusica.media.EphemeralPlaylist;
 import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.network.MulticastClient;
 import ch.tofind.commusica.network.NetworkProtocol;
@@ -39,8 +38,8 @@ public class ClientCore extends AbstractCore implements ICore {
     //! File to send to the server.
     private File fileToSend;
 
-    //!
-    ServerSessionManager ssm = null;
+    //! Server Session Manager.
+    ServerSessionManager serverSessionManager;
 
     /**
      * @brief Setup the core as a client.
@@ -53,7 +52,7 @@ public class ClientCore extends AbstractCore implements ICore {
         multicast = new MulticastClient(multicastAddress, port, interfaceToUse);
         new Thread(multicast).start();
 
-        ssm = ServerSessionManager.getInstance();
+        serverSessionManager = ServerSessionManager.getInstance();
     }
 
     public String END_OF_COMMUNICATION(ArrayList<Object> args) {
@@ -63,29 +62,27 @@ public class ClientCore extends AbstractCore implements ICore {
 
     public String PLAYLIST_UPDATE(ArrayList<Object> args) {
 
-        String idString = (String) args.remove(0);
-        String inetaddressJson = (String) args.remove(0);
+        Integer serverId = Integer.valueOf((String) args.remove(0));
+        InetAddress serverAddress = Serialize.unserialize((String) args.remove(0), InetAddress.class);
         String serverName = (String) args.remove(0);
         String playlistJson = (String) args.remove(0);
 
         LOG.info("Playlist JSON: " + playlistJson);
 
-        Integer id = Integer.parseInt(idString);
-
         if (Objects.isNull(ApplicationProtocol.serverId)) {
-            ApplicationProtocol.serverId = id;
+            ApplicationProtocol.serverId = serverId;
+            ApplicationProtocol.serverName = serverName;
+            ApplicationProtocol.serverAddress = serverAddress;
         }
 
-        if (Objects.equals(id, ApplicationProtocol.serverId)) {
+        if (Objects.equals(serverId, ApplicationProtocol.serverId)) {
             // TODO: fix this =(
             //EphemeralPlaylist playlistUpdated = Serialize.unserialize(playlistJson, EphemeralPlaylist.class);
             //PlaylistManager.getInstance().loadPlaylist(playlistUpdated);
         }
 
         // We add the server to the available servers list
-        InetAddress ipServer = Serialize.unserialize(inetaddressJson, InetAddress.class);
-
-        ssm.store(ipServer, serverName, id);
+        serverSessionManager.store(serverAddress, serverName, serverId);
 
         return "";
     }
@@ -93,25 +90,21 @@ public class ClientCore extends AbstractCore implements ICore {
 
     public String SEND_TRACK_REQUEST(ArrayList<Object> args) {
         LOG.info("In SEND_TRACK_REQUEST");
-        String fileURI = (String) args.get(0);
 
-        fileToSend = new File(fileURI);
+        fileToSend = new File((String) args.get(0));
 
-        // Verfification of the format
-        if (FileManager.signatureChecker(FileManager.getFirstBytes(fileToSend, 16)).equals("error")) {
+        // Verification of the format
+        byte[] fileHeader = FileManager.getFirstBytes(fileToSend, 16);
+
+        // Ends the communication if header isn't found
+        if (FileManager.signatureChecker(fileHeader).equals("error")) {
             return NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
         }
 
-        Track track;
-        String trackJson = "";
-
-
+        Track track = null;
         try {
             track = new Track(AudioFileIO.read(fileToSend));
-
-            //System.out.println(track);
-            trackJson = Serialize.serialize(track);
         } catch (CannotReadException e) {
             LOG.error(e);
         } catch (IOException e) {
@@ -124,12 +117,11 @@ public class ClientCore extends AbstractCore implements ICore {
             LOG.error(e);
         }
 
+        String trackJson = Serialize.serialize(track);
 
         String command = ApplicationProtocol.TRACK_REQUEST + NetworkProtocol.END_OF_LINE +
-                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 trackJson + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
-
 
         sendUnicast(ApplicationProtocol.serverAddress, command);
 
@@ -140,7 +132,6 @@ public class ClientCore extends AbstractCore implements ICore {
         LOG.info("In TRACK_ACCEPTED");
 
         String result = ApplicationProtocol.SEND_TRACK + NetworkProtocol.END_OF_LINE +
-                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 fileToSend.length() + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
 
@@ -151,29 +142,32 @@ public class ClientCore extends AbstractCore implements ICore {
 
     public String TRACK_REFUSED(ArrayList<Object> args) {
         LOG.info("In TRACK_REFUSED");
+
         String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
-                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
         return result;
     }
 
     public String TRACK_SAVED(ArrayList<Object> args) {
         LOG.info("In TRACK_SAVED");
+
         String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
-                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
         return result;
     }
 
     @Override
     public void sendUnicast(InetAddress hostname, String message) {
-        // check if a server has been set
+
+        // Check if a server has been set
         if (ApplicationProtocol.serverAddress != null) {
+
             client = new UnicastClient(hostname, NetworkProtocol.UNICAST_PORT);
             new Thread(client).start();
             client.send(message);
+
         } else {
-            System.out.println("No server has been set...");
+            LOG.error(new RuntimeException("Server was not set !"));
         }
     }
 
@@ -186,25 +180,4 @@ public class ClientCore extends AbstractCore implements ICore {
     public void stop() {
         multicast.stop();
     }
-
-    /*public String DISCOVER_SERVER(ArrayList<Object> args) {
-        String command = ApplicationProtocol.DISCOVER_REQUEST + NetworkProtocol.END_OF_LINE +
-                NetworkProtocol.END_OF_COMMAND;
-        sendMulticast(command);
-
-        return "";
-    }
-
-    public String SERVER_DISCOVERED(ArrayList<Object> args) {
-        String serverName = (String) args.remove(0);
-        String serverAddressJson = (String) args.remove(0);
-
-        InetAddress serverAddress = json.fromJson(serverAddressJson, InetAddress.class);
-
-        availableServers.put(serverAddress, serverName);
-
-        System.out.println("Serveur découvert ! " + serverName);
-
-        return "";
-    } */
 }

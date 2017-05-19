@@ -67,13 +67,12 @@ public class ServerCore extends AbstractCore implements ICore {
 
     public String SEND_PLAYLIST_UPDATE(ArrayList<Object> args) {
 
-
-        String inetaddressJson = Serialize.serialize(NetworkProtocol.interfaceToUse);
+        String inetAddressJson = Serialize.serialize(NetworkProtocol.interfaceToUse);
         String playlistJson = Serialize.serialize(PlaylistManager.getInstance().getPlaylist());
 
         String command = ApplicationProtocol.PLAYLIST_UPDATE + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
-                inetaddressJson + NetworkProtocol.END_OF_LINE +
+                inetAddressJson + NetworkProtocol.END_OF_LINE +
                 name + NetworkProtocol.END_OF_LINE +
                 playlistJson + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
@@ -86,29 +85,40 @@ public class ServerCore extends AbstractCore implements ICore {
     public String TRACK_REQUEST(ArrayList<Object> args) {
         LOG.info("In TRACK_REQUEST");
 
-        String idString  = (String) args.remove(0);
-        // remove the socket which is passed
-        args.remove(0);
-        String trackJson = (String) args.remove(0);
+        args.remove(0); // Remove the socket as it's not needed in this command
 
-        trackReceived = Serialize.unserialize(trackJson, Track.class);
+        trackReceived = Serialize.unserialize((String) args.remove(0), Track.class);
 
         Session session = DatabaseManager.getInstance().getSession();
 
         String queryString = String.format("from Track where id = '%s'", trackReceived.getId());
+
         Query<Track> queryId = session.createQuery(queryString, Track.class);
-        queryString = String.format("from Track where title = '%s' and album = '%s' and artist = '%s' and length > '%d'" +
-                " and length < '%d'", trackReceived.getTitle(), trackReceived.getAlbum(), trackReceived.getArtist(),
-                trackReceived.getLength() - 5, trackReceived.getLength() + 5);
+
+        queryString = String.format("from Track where title = '%s' and " +
+                        "album = '%s' and " +
+                        "artist = '%s' and " +
+                        "length > '%d' and " +
+                        "length < '%d'",
+                trackReceived.getTitle(),
+                trackReceived.getAlbum(),
+                trackReceived.getArtist(),
+                trackReceived.getLength() - 5,
+                trackReceived.getLength() + 5);
+
         Query<Track> queryOtherAttributes = session.createQuery(queryString, Track.class);
 
-        String result = "";
+        String result;
         if (queryId.list().isEmpty() && queryOtherAttributes.list().isEmpty()) {
+
             LOG.info("Track not in the database.");
             result = ApplicationProtocol.TRACK_ACCEPTED + NetworkProtocol.END_OF_LINE;
+
         } else {
+
             LOG.info("Track already in the database.");
             result = ApplicationProtocol.TRACK_REFUSED + NetworkProtocol.END_OF_LINE;
+
         }
 
         result = result.concat(ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
@@ -120,29 +130,31 @@ public class ServerCore extends AbstractCore implements ICore {
     public String SEND_TRACK(ArrayList<Object> args) {
         LOG.info("In SEND_TRACK");
 
-        String idString  = (String) args.remove(0);
         Socket socket = (Socket) args.remove(0);
-        String fileSizeString = (String) args.remove(0);
+
+        Integer fileSize = Integer.parseInt((String) args.remove(0));
 
         // Delegate the job to the FileManager
-        String URI = "";
         try {
-            int fileSize = Integer.parseInt(fileSizeString);
-            System.out.println(fileSize);
-            System.out.println("Delegating to FM");
-            URI = FileManager.getInstance().retrieveFile(socket.getInputStream(), fileSize);
 
-            // if the checksum of the received track doesn't correspond to the one of the track sent
-            // we delete the file and send an ERROR message
-            if(!FileManager.getInstance().checkFileMD5(new File(URI), trackReceived.getId())) {
+            FileManager fileManager = FileManager.getInstance();
+
+            String savedTrackUri = fileManager.retrieveFile(socket.getInputStream(), fileSize);
+
+            File savedTrack = new File(savedTrackUri);
+
+            if(!fileManager.checkFileMD5(savedTrack, trackReceived.getId())) {
+
+                Files.delete(savedTrack.toPath());
+
                 trackReceived = null;
-                Files.delete(new File(URI).toPath());
-                return ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
+
+                return ApplicationProtocol.TRACK_REFUSED + NetworkProtocol.END_OF_LINE +
                         NetworkProtocol.END_OF_COMMAND;
             }
 
-            trackReceived.setUri(URI);
-            //trackReceived
+            trackReceived.setUri(savedTrackUri);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -156,7 +168,6 @@ public class ServerCore extends AbstractCore implements ICore {
         // Reset the track
         trackReceived = null;
 
-        // Change to SUCCESS
         String result = ApplicationProtocol.TRACK_SAVED + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
@@ -165,7 +176,7 @@ public class ServerCore extends AbstractCore implements ICore {
 
     @Override
     public void sendUnicast(InetAddress hostname, String message) {
-
+        // Do nothing
     }
 
     @Override
