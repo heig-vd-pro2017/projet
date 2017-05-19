@@ -76,7 +76,7 @@ public class Logger {
         log(level, e.getMessage());
         e.printStackTrace();
 
-        throw new RuntimeException(e);
+        //throw new RuntimeException(e);
     }
 
 

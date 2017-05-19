@@ -184,7 +184,9 @@ public class Commusica {
                                     ArrayList<Object> uri = new ArrayList<>();
 
                                     //uri.add("C:\\Users\\David\\Documents\\YourFuckingMother_x_EHDE_-_Pocket_Monsters_VIP.mp3");
-                                    uri.add("C:\\Users\\David\\Downloads\\02 v.m4a");
+                                    //uri.add("C:\\Users\\David\\Downloads\\02 v.m4a");
+                                    uri.add("/home/ludelafo/Music/Temp/sample3.mp3");
+
                                     core.execute(ApplicationProtocol.SEND_TRACK_REQUEST, uri);
                                     break;
 

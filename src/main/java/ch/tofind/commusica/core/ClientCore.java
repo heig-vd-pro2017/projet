@@ -93,13 +93,13 @@ public class ClientCore extends AbstractCore implements ICore {
 
         fileToSend = new File((String) args.get(0));
 
-        // Verification of the format
-        byte[] fileHeader = FileManager.getFirstBytes(fileToSend, 16);
+        FileManager fileManager = FileManager.getInstance();
 
         // Ends the communication if header isn't found
-        if (FileManager.signatureChecker(fileHeader).equals("error")) {
-            return NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
-                    NetworkProtocol.END_OF_COMMAND;
+        try {
+            fileManager.formatChecker(fileToSend);
+        } catch (Exception e) {
+            LOG.error(e);
         }
 
         Track track = null;
@@ -120,6 +120,7 @@ public class ClientCore extends AbstractCore implements ICore {
         String trackJson = Serialize.serialize(track);
 
         String command = ApplicationProtocol.TRACK_REQUEST + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 trackJson + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
 
@@ -132,6 +133,7 @@ public class ClientCore extends AbstractCore implements ICore {
         LOG.info("In TRACK_ACCEPTED");
 
         String result = ApplicationProtocol.SEND_TRACK + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 fileToSend.length() + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
 
@@ -144,6 +146,7 @@ public class ClientCore extends AbstractCore implements ICore {
         LOG.info("In TRACK_REFUSED");
 
         String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
         return result;
     }
@@ -152,6 +155,7 @@ public class ClientCore extends AbstractCore implements ICore {
         LOG.info("In TRACK_SAVED");
 
         String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
         return result;
     }

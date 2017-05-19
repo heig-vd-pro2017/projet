@@ -99,21 +99,7 @@ public class Track implements Serializable {
      */
     public Track(AudioFile audioFile) {
 
-
-        //Use MD5 algorithm
-        MessageDigest md5Digest = null;
-        try {
-            md5Digest = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-
-        //Get the checksum
-        try {
-            id = FileManager.getFileChecksum(md5Digest, audioFile.getFile());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        id = FileManager.getInstance().getChecksum(audioFile.getFile());
 
         AudioHeader header = audioFile.getAudioHeader();
         Tag tags = audioFile.getTag();
