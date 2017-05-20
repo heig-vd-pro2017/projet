@@ -98,13 +98,13 @@ public class ClientCore extends AbstractCore implements ICore {
 
         // Ends the communication if the extension is not found (format not supported)
         try {
-            if (fileManager.getFormatExtension(fileToSend).equals(FilesFormats.FILE_NOT_SUPPORTED)) {
-                return NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
-                        ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
-                        NetworkProtocol.END_OF_COMMAND;
-            }
+            fileManager.getFormatExtension(fileToSend);
         } catch (Exception e) {
             LOG.error(e);
+
+            return NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                    NetworkProtocol.END_OF_COMMAND;
         }
 
         Track track = null;

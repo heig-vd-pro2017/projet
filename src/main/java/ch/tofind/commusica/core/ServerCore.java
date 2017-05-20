@@ -175,17 +175,12 @@ public class ServerCore extends AbstractCore implements ICore {
         } catch (Exception e) {
             fileManager.delete(tempFile);
             LOG.error(e);
-        }
-
-
-        // Check if the file is of a supported format (MP3, M4A and WAV for now)
-        // if not return an ERROR command
-        if (fileExtension.equals(FilesFormats.FILE_NOT_SUPPORTED)) {
-            result = ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
+            result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
             return result;
         }
+
 
         // Save the file under its new name on the filesystem
         String filename = FileManager.OUTPUT_DIRECTORY + File.separator +
