@@ -238,12 +238,12 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Entry point to send the UPVOTE_TRACK_REQUEST command. It retrieves by the args
+     * @brief Entry point to send the DOWNVOTE_TRACK_REQUEST command. It retrieves by the args
      * the id of the Track to upvote and sends it to the server.
      *
      * @param args
      *
-     * @return UPVOTE_TRACK_REQUEST command with the track id
+     * @return DOWNVOTE_TRACK_REQUEST command with the track id
      */
     public String DOWNVOTE_TRACK(ArrayList<Object> args) {
         String trackToDownvoteId = (String) args.remove(0);
