@@ -8,6 +8,7 @@ import ch.tofind.commusica.network.MulticastClient;
 import ch.tofind.commusica.network.NetworkProtocol;
 import ch.tofind.commusica.network.Server;
 import ch.tofind.commusica.playlist.PlaylistManager;
+import ch.tofind.commusica.session.UserSessionManager;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.Serialize;
 import org.hibernate.Session;
@@ -38,6 +39,9 @@ public class ServerCore extends AbstractCore implements ICore {
     Server server;
 
     //!
+    UserSessionManager userSessionManager;
+
+    //!
     private Track trackToReceive;
 
     /**
@@ -57,6 +61,8 @@ public class ServerCore extends AbstractCore implements ICore {
 
         server = new Server(unicastPort);
 
+        userSessionManager = UserSessionManager.getInstance();
+
         new Thread(multicast).start();
         new Thread(server).start();
     }
@@ -66,6 +72,15 @@ public class ServerCore extends AbstractCore implements ICore {
         return "";
     }
 
+
+    /**
+     * Entry point to send the current playlist by multicast. It also sends the server InetAdress, name
+     * and id.
+     *
+     * @param args
+     *
+     * @return an empty String
+     */
     public String SEND_PLAYLIST_UPDATE(ArrayList<Object> args) {
 
         String inetAddressJson = Serialize.serialize(NetworkProtocol.interfaceToUse);
@@ -83,6 +98,16 @@ public class ServerCore extends AbstractCore implements ICore {
         return "";
     }
 
+    /**
+     * @brief Method invoked when the client sends the TRACK_REQUEST command. It retrieves the Track object
+     * by the args and then check if it is already stored in the database. It checks if the id (MD5 checksum
+     * of the file) is already present. If not it checks if a track with the same title, artist, album and length
+     * (with a 5s delta) is already stored in the database
+     *
+     * @param args
+     *
+     * @return TRACK_ACCEPTED command if the track is accepted, TRACK_REFUSED command otherwise
+     */
     public String TRACK_REQUEST(ArrayList<Object> args) {
         LOG.info("In TRACK_REQUEST");
 
@@ -90,7 +115,10 @@ public class ServerCore extends AbstractCore implements ICore {
 
         args.remove(0); // Remove the socket as it's not needed in this command
 
+        userSessionManager.store(userId);
+
         trackToReceive = Serialize.unserialize((String) args.remove(0), Track.class);
+
 
         Session session = DatabaseManager.getInstance().getSession();
 
@@ -130,9 +158,20 @@ public class ServerCore extends AbstractCore implements ICore {
         return result;
     }
 
-    public String SEND_TRACK(ArrayList<Object> args) {
+    /**
+     * @brief Method invoked when the client send the SENDING_TRACK command. retrieve by the unicast socket
+     * by the args and the delegate the transfer to the FileManager.
+     * Once the track is received, it compare the MD5 checksum with the id of the track to receive (which is
+     * its own MD5 checksum). It then checks the format and if all checks pass, it store the new track in the
+     * database and rename it with it's MD5 on the disk.
+     *
+     * @param args
+     *
+     * @return ERROR command if a check failed. TRACK_SAVED if the track is correctly saved
+     */
+    public String SENDING_TRACK(ArrayList<Object> args) {
 
-        LOG.info("In SEND_TRACK");
+        LOG.info("In SENDING_TRACK");
 
         args.remove(0); // Remove the user ID as its not needed in this command
 
@@ -175,7 +214,7 @@ public class ServerCore extends AbstractCore implements ICore {
         } catch (Exception e) {
             fileManager.delete(tempFile);
             LOG.error(e);
-            result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
+            result = ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
             return result;
@@ -205,6 +244,55 @@ public class ServerCore extends AbstractCore implements ICore {
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
         return result;
+    }
+
+
+    /**
+     * @brief receive the ask for an upvote on a specific Track by a client
+     *
+     * @param args
+     * @return END_OF_COMMUNICATION command
+     */
+    public String UPVOTE_TRACK_REQUEST(ArrayList<Object> args) {
+        LOG.info("In UPVOTE_TRACK_REQUEST");
+
+        String userId = (String) args.remove(0);
+
+        String trackToUpvoteId = (String) args.remove(0);
+
+        userSessionManager.store(userId);
+
+        int numberOfVotesToAdd = userSessionManager.updateVoteList(userId, trackToUpvoteId, ApplicationProtocol.UPVOTE_TRACK);
+
+        // TODO: update the property in the database with the numberOfVotesToAdd
+
+        return NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
+    }
+
+    /**
+     * @brief receive the ask for a downvote on a specific Track by a client
+     *
+     * @param args
+     * @return END_OF_COMMUNICATION command
+     */
+    public String DOWNVOTE_TRACK_REQUEST(ArrayList<Object> args) {
+        LOG.info("In DOWNVOTE_TRACK_REQUEST");
+
+        String userId = (String) args.remove(0);
+
+        String trackToDownvoteId = (String) args.remove(0); // Remove the socket as it's not needed in this command
+
+        userSessionManager.store(userId);
+
+        int numberOfVotesToAdd = userSessionManager.updateVoteList(userId, trackToDownvoteId, ApplicationProtocol.UPVOTE_TRACK);
+
+        // TODO: update the property in the database with the numberOfVotesToAdd
+
+        return NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package ch.tofind.commusica.core;
 
 import ch.tofind.commusica.file.FileManager;
-import ch.tofind.commusica.file.FilesFormats;
 import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.network.MulticastClient;
 import ch.tofind.commusica.network.NetworkProtocol;
@@ -56,11 +55,29 @@ public class ClientCore extends AbstractCore implements ICore {
         serverSessionManager = ServerSessionManager.getInstance();
     }
 
+
+    /**
+     * @brief method which is invoked when the server sends an END_OF_COMMUNICATION command
+     *
+     * @param args
+     * @return an empty String
+     */
     public String END_OF_COMMUNICATION(ArrayList<Object> args) {
         System.out.println("End of communication client side.");
         return "";
     }
 
+
+    /**
+     * @brief Method invoked when the server sends a PLAYLIST_UPDATE command
+     * it has two purposes:
+     * -Update the client playlist if the server who sends the update is the one saved by the client
+     * -Update the available servers list of the client
+     *
+     * @param args
+     *
+     * @return an empty String
+     */
     public String PLAYLIST_UPDATE(ArrayList<Object> args) {
 
         Integer serverId = Integer.valueOf((String) args.remove(0));
@@ -89,6 +106,17 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
 
+    /**
+     * Entry point to ask the server for a track request. This method does the first check to ensure
+     * the track is in a supported format and then send the command TRACK_REQUES  with all the
+     * information available about the track.
+     * It also setup the Unicast client for the time of the "transaction" since the UnicastCLient
+     * isn't set anywhere in the client.
+     *
+     * @param args
+     *
+     * @return an empty String if the checks are good, the command END_OF_COMMUNICATION otherwise.
+     */
     public String SEND_TRACK_REQUEST(ArrayList<Object> args) {
         LOG.info("In SEND_TRACK_REQUEST");
 
@@ -134,10 +162,20 @@ public class ClientCore extends AbstractCore implements ICore {
         return "";
     }
 
+
+    /**
+     * @brief Method invoked when the server sends the TRACK_ACCEPTED command. It is in this method that
+     * the file is sent by Unicast after the command SENDING_TRACK was sent to the server to make
+     * it go into file reception mode.
+     *
+     * @param args
+     *
+     * @return an empty String
+     */
     public String TRACK_ACCEPTED(ArrayList<Object> args) {
         LOG.info("In TRACK_ACCEPTED");
 
-        String result = ApplicationProtocol.SEND_TRACK + NetworkProtocol.END_OF_LINE +
+        String result = ApplicationProtocol.SENDING_TRACK + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 fileToSend.length() + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
@@ -147,6 +185,13 @@ public class ClientCore extends AbstractCore implements ICore {
         return "";
     }
 
+    /**
+     * @brief Method invoked when the server sends the TRACK_REFUSED command. It can happen if the
+     * track was already on the server or in the database.
+     *
+     * @param args
+     * @return END_OF_COMMUNICATION command
+     */
     public String TRACK_REFUSED(ArrayList<Object> args) {
         LOG.info("In TRACK_REFUSED");
 
@@ -156,6 +201,14 @@ public class ClientCore extends AbstractCore implements ICore {
         return result;
     }
 
+
+    /**
+     * @brief Method invoked when the server sends the TRACK_SAVED command. It notify that the
+     * track was saved in the server side.
+     *
+     * @param args
+     * @return END_OF_COMMUNICATION command
+     */
     public String TRACK_SAVED(ArrayList<Object> args) {
         LOG.info("In TRACK_SAVED");
 
@@ -165,6 +218,53 @@ public class ClientCore extends AbstractCore implements ICore {
         return result;
     }
 
+    /**
+     * @brief Entry point to send the UPVOTE_TRACK_REQUEST command. It retrieves by the args
+     * the id of the Track to upvote and sends it to the server.
+     *
+     * @param args
+     *
+     * @return UPVOTE_TRACK_REQUEST command with the track id
+     */
+    public String UPVOTE_TRACK(ArrayList<Object> args) {
+        String trackToUpvoteId = (String) args.remove(0);
+
+        String result = ApplicationProtocol.UPVOTE_TRACK_REQUEST + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                trackToUpvoteId + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
+
+        return result;
+    }
+
+    /**
+     * @brief Entry point to send the UPVOTE_TRACK_REQUEST command. It retrieves by the args
+     * the id of the Track to upvote and sends it to the server.
+     *
+     * @param args
+     *
+     * @return UPVOTE_TRACK_REQUEST command with the track id
+     */
+    public String DOWNVOTE_TRACK(ArrayList<Object> args) {
+        String trackToDownvoteId = (String) args.remove(0);
+
+        String result = ApplicationProtocol.DOWNVOTE_TRACK_REQUEST + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                trackToDownvoteId + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
+
+        return result;
+    }
+
+
+
+
+    /**
+     * @brief Entry point to set the UnicastClient and start the unicast communication.
+     *
+     * @param hostname IP address of the hostname.
+     * @param message Message to send to the hostname.
+     */
     @Override
     public void sendUnicast(InetAddress hostname, String message) {
 
@@ -180,11 +280,20 @@ public class ClientCore extends AbstractCore implements ICore {
         }
     }
 
+
+    /**
+     * @brief sends a message by multicast to the multicast group set.
+     *
+     * @param message Message to send.
+     */
     @Override
     public void sendMulticast(String message) {
         multicast.send(message);
     }
 
+    /**
+     * @brief Stop the MulticastClient
+     */
     @Override
     public void stop() {
         multicast.stop();
