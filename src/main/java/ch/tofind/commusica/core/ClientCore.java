@@ -116,7 +116,7 @@ public class ClientCore extends AbstractCore implements ICore {
      *
      * @return an empty String if the checks are good, the command END_OF_COMMUNICATION otherwise.
      */
-    public String SEND_TRACK_REQUEST(ArrayList<Object> args) {
+    public String SEND_TRACK_REQUEST (ArrayList<Object> args) {
 
         LOG.info("In SEND_TRACK_REQUEST");
 
@@ -229,7 +229,9 @@ public class ClientCore extends AbstractCore implements ICore {
      *
      * @return UPVOTE_TRACK_REQUEST command with the track id
      */
-    public String UPVOTE_TRACK(ArrayList<Object> args) {
+    public String SEND_UPVOTE_TRACK_REQUEST(ArrayList<Object> args) {
+        LOG.info("In SEND_UPVOTE_TRACK_REQUEST");
+
         String trackToUpvoteId = (String) args.remove(0);
 
         String result = ApplicationProtocol.UPVOTE_TRACK_REQUEST + NetworkProtocol.END_OF_LINE +
@@ -237,7 +239,9 @@ public class ClientCore extends AbstractCore implements ICore {
                 trackToUpvoteId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
 
-        return result;
+        sendUnicast(ApplicationProtocol.serverAddress, result);
+
+        return "";
     }
 
     /**
@@ -248,7 +252,8 @@ public class ClientCore extends AbstractCore implements ICore {
      *
      * @return DOWNVOTE_TRACK_REQUEST command with the track id
      */
-    public String DOWNVOTE_TRACK(ArrayList<Object> args) {
+    public String SEND_DOWNVOTE_TRACK_REQUEST(ArrayList<Object> args) {
+        LOG.info("In SEND_DOWNVOTE_TRACK_REQUEST");
         String trackToDownvoteId = (String) args.remove(0);
 
         String result = ApplicationProtocol.DOWNVOTE_TRACK_REQUEST + NetworkProtocol.END_OF_LINE +
@@ -256,18 +261,21 @@ public class ClientCore extends AbstractCore implements ICore {
                 trackToDownvoteId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
 
-        return result;
+        sendUnicast(ApplicationProtocol.serverAddress, result);
+
+        return "";
     }
 
     /**
      * @brief Method invoked when the server sends the TRACK_UPVOTED command. It notify that the
-     * track was update in the server side.
+     * track was updated in the server side.
      *
      * @param args Args of the command.
      *
      * @return END_OF_COMMUNICATION command
      */
     public String TRACK_UPVOTED(ArrayList<Object> args) {
+        LOG.info("In TRACK_UPVOTED");
 
         String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
@@ -277,13 +285,14 @@ public class ClientCore extends AbstractCore implements ICore {
 
     /**
      * @brief Method invoked when the server sends the TRACK_DOWNVOTED command. It notify that the
-     * track was update in the server side.
+     * track was updated in the server side.
      *
      * @param args Args of the command.
      *
      * @return END_OF_COMMUNICATION command
      */
     public String TRACK_DOWNVOTED(ArrayList<Object> args) {
+        LOG.info("In TRACK_DOWNVOTED");
 
         String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +

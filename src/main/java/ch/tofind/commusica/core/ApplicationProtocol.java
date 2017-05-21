@@ -32,9 +32,17 @@ public final class ApplicationProtocol {
 
     public static final String SENDING_TRACK = "SENDING_TRACK";
 
+    public static final String SEND_UPVOTE_TRACK_REQUEST = "SEND_UPVOTE_TRACK_REQUEST";
+
+    public static final String SEND_DOWNVOTE_TRACK_REQUEST = "SEND_DOWNVOTE_TRACK_REQUEST";
+
     public static final String UPVOTE_TRACK_REQUEST = "UPVOTE_TRACK_REQUEST";
 
     public static final String DOWNVOTE_TRACK_REQUEST = "DOWNVOTE_TRACK_REQUEST";
+
+    public static final String TRACK_DOWNVOTED = "TRACK_DOWNVOTED";
+
+    public static final String TRACK_UPVOTED = "TRACK_UPVOTED";
 
     public static final String PLAYLIST_UPDATE = "PLAYLIST_UPDATE";
 

@@ -131,6 +131,7 @@ public class Commusica {
                             System.out.println("Actions");
                             System.out.println("  [0] Disconnect");
                             System.out.println("  [1] Send message via Multicast");
+                            System.out.println("  [2] Show current playlist");
                             System.out.print("> ");
 
                             actionChoice = scanner.nextInt();
@@ -146,6 +147,11 @@ public class Commusica {
                                             NetworkProtocol.END_OF_COMMAND;
                                     core.sendMulticast(command);
                                     break;
+
+                                case 2:
+                                    System.out.println(PlaylistManager.getInstance().getPlaylist());
+                                    break;
+
                                 default:
                                     System.out.println("Action not supported.");
                                     break;
@@ -172,6 +178,8 @@ public class Commusica {
                             System.out.println("  [0] Quit");
                             System.out.println("  [1] Send track to Unicast");
                             System.out.println("  [2] Connect to a server");
+                            System.out.println("  [3] Upvote the track sent (do after sending a track)");
+                            System.out.println("  [4] Downvote the track sent (do after sending a track)");
                             System.out.print("> ");
 
                             actionChoice = scanner.nextInt();
@@ -184,7 +192,7 @@ public class Commusica {
                                     ArrayList<Object> uri = new ArrayList<>();
 
                                     //uri.add("C:\\Users\\David\\Documents\\YourFuckingMother_x_EHDE_-_Pocket_Monsters_VIP.mp3");
-                                    //uri.add("C:\\Users\\David\\Downloads\\02 v.m4a");
+                                    uri.add("C:\\Users\\David\\Downloads\\02 v.m4a");
 
                                     // Error test with pdf
                                     //uri.add("C:\\Users\\David\\Documents\\2014_SYE-B_TE2.pdf");
@@ -197,6 +205,27 @@ public class Commusica {
                                 case 2:
                                     ServerSessionManager.getInstance().serverChooser(ServerSessionManager.getInstance().getAvailableServers());
                                     break;
+
+                                case 3:
+                                    ArrayList<Object> trackToUpvote = new ArrayList<>();
+
+                                    // used for test!! replace this with the MD5 hash of the file you sent before
+                                    // only for test purpose
+                                    trackToUpvote.add("0358fd8ee66c98236318537365cebd23");
+
+                                    core.execute(ApplicationProtocol.SEND_UPVOTE_TRACK_REQUEST, trackToUpvote);
+                                    break;
+
+                                case 4:
+                                    ArrayList<Object> trackToDownVote = new ArrayList<>();
+
+                                    // used for test!! replace this with the MD5 hash of the file you sent before
+                                    // only for test purpose
+                                    trackToDownVote.add("0358fd8ee66c98236318537365cebd23");
+
+                                    core.execute(ApplicationProtocol.SEND_DOWNVOTE_TRACK_REQUEST, trackToDownVote);
+                                    break;
+
                                 default:
                                     System.out.println("Action not supported.");
                                     break;

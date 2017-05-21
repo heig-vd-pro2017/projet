@@ -8,6 +8,7 @@ import ch.tofind.commusica.network.MulticastClient;
 import ch.tofind.commusica.network.NetworkProtocol;
 import ch.tofind.commusica.network.Server;
 import ch.tofind.commusica.playlist.PlaylistManager;
+import ch.tofind.commusica.playlist.PlaylistTrack;
 import ch.tofind.commusica.session.UserSessionManager;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.Serialize;
@@ -112,7 +113,7 @@ public class ServerCore extends AbstractCore implements ICore {
 
         LOG.info("In TRACK_REQUEST");
 
-        Integer userId = (Integer) args.remove(0); // A UTILISER POUR VERIFIER LES SESSIONS !!
+        Integer userId = Integer.parseInt((String) args.remove(0)); // A UTILISER POUR VERIFIER LES SESSIONS !!
 
         args.remove(0); // Remove the socket as it's not needed in this command
 
@@ -256,7 +257,10 @@ public class ServerCore extends AbstractCore implements ICore {
 
         LOG.info("In UPVOTE_TRACK_REQUEST");
 
-        Integer userId = (Integer) args.remove(0);
+        Integer userId = Integer.parseInt((String) args.remove(0));
+
+        // remove the socket because we won't need it
+        args.remove(0);
 
         String trackId = (String) args.remove(0);
 
@@ -274,18 +278,28 @@ public class ServerCore extends AbstractCore implements ICore {
             return result;
         }
 
+
         // Get the track from the database
+        Session session = DatabaseManager.getInstance().getSession();
+
+        String queryString = String.format("from Track where id = '%s'", trackId);
+
+        Query<Track> queryId = session.createQuery(queryString, Track.class);
+
+        Track trackToUpvote = queryId.list().get(0);
 
         // Update the track properties
+        PlaylistTrack playlistTrackToUpvote = PlaylistManager.getInstance().getPlaylist().getPlaylistTrack(trackToUpvote);
+        playlistTrackToUpvote.upvote();
 
         // Update the track in the database
-
-        // Update the playlist
+        session.update(playlistTrackToUpvote);
 
         // Update the UI
+        // TODO: Is it done automatically?
 
         // Tells the user its track has been voted
-        result = ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
+        result = ApplicationProtocol.TRACK_UPVOTED + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
         return result;
@@ -302,7 +316,7 @@ public class ServerCore extends AbstractCore implements ICore {
 
         LOG.info("In DOWNVOTE_TRACK_REQUEST");
 
-        Integer userId = (Integer) args.remove(0);
+        Integer userId = Integer.parseInt((String) args.remove(0));
 
         args.remove(0); // Remove the socket as it is not needed in this command
 
@@ -323,17 +337,26 @@ public class ServerCore extends AbstractCore implements ICore {
         }
 
         // Get the track from the database
+        Session session = DatabaseManager.getInstance().getSession();
+
+        String queryString = String.format("from Track where id = '%s'", trackId);
+
+        Query<Track> queryId = session.createQuery(queryString, Track.class);
+
+        Track trackToDownvote = queryId.list().get(0);
 
         // Update the track properties
+        PlaylistTrack playlistTrackToUpvote = PlaylistManager.getInstance().getPlaylist().getPlaylistTrack(trackToDownvote);
+        playlistTrackToUpvote.downvote();
 
         // Update the track in the database
-
-        // Update the playlist
+        session.update(playlistTrackToUpvote);
 
         // Update the UI
+        // TODO: Is it done automatically?
 
         // Tells the user its track has been voted
-        result = ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
+        result = ApplicationProtocol.TRACK_DOWNVOTED + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
         return result;

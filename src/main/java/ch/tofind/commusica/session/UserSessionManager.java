@@ -103,7 +103,11 @@ public class UserSessionManager implements ISessionManager {
             throw new Exception("Track has already been upvoted by this user.");
         }
 
-        userSession.addUpvotedTrack(trackId);
+        if (userSession.getDownvotedTracks().contains(trackId)) {
+            userSession.getDownvotedTracks().remove(trackId);
+        } else {
+            userSession.addUpvotedTrack(trackId);
+        }
 
     }
 
@@ -125,7 +129,11 @@ public class UserSessionManager implements ISessionManager {
             throw new Exception("Track has already been downvoted by this user.");
         }
 
-        userSession.addDownvotedTrack(trackId);
+        if (userSession.getUpvotedTracks().contains(trackId)) {
+            userSession.getUpvotedTracks().remove(trackId);
+        } else {
+            userSession.addDownvotedTrack(trackId);
+        }
 
     }
 
