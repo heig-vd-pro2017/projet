@@ -38,6 +38,9 @@ public class ClientCore extends AbstractCore implements ICore {
     //! File to send to the server.
     private File fileToSend;
 
+    //! Track to send to the server
+    private Track trackToSend;
+
     //! The manager that saves availables servers.
     ServerSessionManager serverSessionManager;
 
@@ -137,9 +140,8 @@ public class ClientCore extends AbstractCore implements ICore {
                     NetworkProtocol.END_OF_COMMAND;
         }
 
-        Track track = null;
         try {
-            track = new Track(AudioFileIO.read(fileToSend));
+            trackToSend = new Track(AudioFileIO.read(fileToSend));
         } catch (CannotReadException e) {
             LOG.error(e);
         } catch (IOException e) {
@@ -152,11 +154,11 @@ public class ClientCore extends AbstractCore implements ICore {
             LOG.error(e);
         }
 
-        String trackJson = Serialize.serialize(track);
+        String trackToSendJson = Serialize.serialize(trackToSend);
 
         String command = ApplicationProtocol.TRACK_REQUEST + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
-                trackJson + NetworkProtocol.END_OF_LINE +
+                trackToSendJson + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
 
         sendUnicast(ApplicationProtocol.serverAddress, command);
@@ -178,9 +180,12 @@ public class ClientCore extends AbstractCore implements ICore {
 
         LOG.info("In TRACK_ACCEPTED");
 
+        String trackToSendJson = Serialize.serialize(trackToSend);
+
         String result = ApplicationProtocol.SENDING_TRACK + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 fileToSend.length() + NetworkProtocol.END_OF_LINE +
+                trackToSendJson + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
 
         client.send(result);
@@ -296,6 +301,23 @@ public class ClientCore extends AbstractCore implements ICore {
      */
     public String TRACK_DOWNVOTED(ArrayList<Object> args) {
         LOG.info("In TRACK_DOWNVOTED");
+
+        String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
+        return result;
+    }
+
+    /**
+     * @brief Method invoked when the server sends the ERROR command. It notify that an ERROR occurred on
+     * the server side
+     *
+     * @param args Args of the command.
+     *
+     * @return END_OF_COMMUNICATION command
+     */
+    public String ERROR(ArrayList<Object> args) {
+        LOG.info("In ERROR");
 
         String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
