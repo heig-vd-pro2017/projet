@@ -179,6 +179,7 @@ public class Commusica {
                             System.out.println("  [1] Send track to Unicast");
                             System.out.println("  [2] Connect to a server");
                             System.out.println("  [3] Upvote the track sent (do after sending a track)");
+                            System.out.println("  [4] Downvote the track sent (do after sending a track)");
                             System.out.print("> ");
 
                             actionChoice = scanner.nextInt();
