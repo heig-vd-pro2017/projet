@@ -9,9 +9,10 @@ import java.util.Properties;
  */
 public class Configuration {
 
-    private static final String CONFIG_FILE = "commusica.properties";
-
+    //! Logger for debugging.
     private static final Logger LOG = new Logger(Configuration.class.getSimpleName());
+
+    private static final String CONFIG_FILE = "commusica.properties";
 
     //! Shared instance of the object for all the application
     private static Configuration instance = null;
@@ -47,13 +48,6 @@ public class Configuration {
         }
 
         return instance;
-    }
-
-    /**
-     * @brief Load the configuration file to use
-     */
-    public void load(String fileName) throws IOException {
-        configuration.load(new FileInputStream(fileName));
     }
 
     /**

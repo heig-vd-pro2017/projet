@@ -68,7 +68,6 @@ public class ClientCore extends AbstractCore implements ICore {
         return "";
     }
 
-
     /**
      * @brief Method invoked when the server sends a PLAYLIST_UPDATE command
      * it has two purposes:
@@ -106,9 +105,8 @@ public class ClientCore extends AbstractCore implements ICore {
         return "";
     }
 
-
     /**
-     * Entry point to ask the server for a track request. This method does the first check to ensure
+     * @brief Entry point to ask the server for a track request. This method does the first check to ensure
      * the track is in a supported format and then send the command TRACK_REQUES  with all the
      * information available about the track.
      * It also setup the Unicast client for the time of the "transaction" since the UnicastCLient
@@ -163,7 +161,6 @@ public class ClientCore extends AbstractCore implements ICore {
 
         return "";
     }
-
 
     /**
      * @brief Method invoked when the server sends the TRACK_ACCEPTED command. It is in this method that

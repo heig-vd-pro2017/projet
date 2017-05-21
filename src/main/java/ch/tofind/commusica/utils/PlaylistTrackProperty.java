@@ -5,6 +5,7 @@ import ch.tofind.commusica.playlist.PlaylistTrack;
 import javafx.beans.property.ObjectPropertyBase;
 
 public class PlaylistTrackProperty extends ObjectPropertyBase<PlaylistTrack> {
+
     @Override
     public Object getBean() {
         return this;

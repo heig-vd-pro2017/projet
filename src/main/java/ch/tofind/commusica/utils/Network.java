@@ -1,22 +1,12 @@
 package ch.tofind.commusica.utils;
 
-import ch.tofind.commusica.core.ApplicationProtocol;
-import ch.tofind.commusica.session.ServerSession;
-
-import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
-import java.net.MulticastSocket;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.*;
 
 public class Network {
-
-    //! time in seconds before a server is considered inactive
-    private static int TIME_INACTIVE_SERVER = 10;
-
-    public static InetAddress interfaceToUse = null;
 
     static public byte[] getMacAddress(InetAddress hostname) {
 
