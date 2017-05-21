@@ -180,6 +180,9 @@ public class Commusica {
                             System.out.println("  [2] Connect to a server");
                             System.out.println("  [3] Upvote the track sent (do after sending a track)");
                             System.out.println("  [4] Downvote the track sent (do after sending a track)");
+                            System.out.println("  [5] Ask for the next song");
+                            System.out.println("  [6] Ask to turn the volume up");
+                            System.out.println("  [7] Ask to turn the volume down");
                             System.out.print("> ");
 
                             actionChoice = scanner.nextInt();
@@ -224,6 +227,18 @@ public class Commusica {
                                     trackToDownVote.add("0358fd8ee66c98236318537365cebd23");
 
                                     core.execute(ApplicationProtocol.SEND_DOWNVOTE_TRACK_REQUEST, trackToDownVote);
+                                    break;
+
+                                case 5:
+                                    core.execute(ApplicationProtocol.SEND_NEXT_TRACK_REQUEST, null);
+                                    break;
+
+                                case 6:
+                                    core.execute(ApplicationProtocol.SEND_TURN_VOLUME_UP_REQUEST, null);
+                                    break;
+
+                                case 7:
+                                    core.execute(ApplicationProtocol.SEND_TURN_VOLUME_DOWN_REQUEST, null);
                                     break;
 
                                 default:

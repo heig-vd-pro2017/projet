@@ -367,7 +367,7 @@ public class ServerCore extends AbstractCore implements ICore {
      */
     public String NEXT_TRACK_REQUEST(ArrayList<Object> args) {
 
-        LOG.info("Client asked for the next song.");
+        LOG.info("User asked for the next song.");
 
         Integer userId = Integer.parseInt((String) args.remove(0));
 
@@ -400,7 +400,7 @@ public class ServerCore extends AbstractCore implements ICore {
      */
     public String TURN_VOLUME_UP_REQUEST(ArrayList<Object> args) {
 
-        LOG.info("Client asked to turn the volume up");
+        LOG.info("User asked to turn the volume up.");
 
         Integer userId = Integer.parseInt((String) args.remove(0));
 
@@ -433,7 +433,7 @@ public class ServerCore extends AbstractCore implements ICore {
      */
     public String TURN_VOLUME_DOWN_REQUEST(ArrayList<Object> args) {
 
-        LOG.info("Client asked to turn the volume down");
+        LOG.info("User asked to turn the volume down.");
 
         Integer userId = Integer.parseInt((String) args.remove(0));
 

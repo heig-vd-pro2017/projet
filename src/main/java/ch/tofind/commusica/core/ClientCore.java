@@ -252,7 +252,7 @@ public class ClientCore extends AbstractCore implements ICore {
      *
      * @return TURN_VOLUME_UP_REQUEST command.
      */
-    public String SEND_TURN_UP_VOLUME_REQUESTT(ArrayList<Object> args) {
+    public String SEND_TURN_VOLUME_UP_REQUEST(ArrayList<Object> args) {
 
         LOG.info("Ask the server to turn up the volume.");
 
@@ -272,7 +272,7 @@ public class ClientCore extends AbstractCore implements ICore {
      *
      * @return TURN_VOLUME_DOWN_REQUEST command.
      */
-    public String SEND_TURN_DOWN_VOLUME_REQUEST(ArrayList<Object> args) {
+    public String SEND_TURN_VOLUME_DOWN_REQUEST(ArrayList<Object> args) {
 
         LOG.info("Ask the next song to the server.");
 
