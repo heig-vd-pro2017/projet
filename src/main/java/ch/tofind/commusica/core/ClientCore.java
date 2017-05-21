@@ -38,7 +38,7 @@ public class ClientCore extends AbstractCore implements ICore {
     //! File to send to the server.
     private File fileToSend;
 
-    //! Server Session Manager.
+    //! The manager that saves availables servers.
     ServerSessionManager serverSessionManager;
 
     /**
@@ -57,10 +57,11 @@ public class ClientCore extends AbstractCore implements ICore {
 
 
     /**
-     * @brief method which is invoked when the server sends an END_OF_COMMUNICATION command
+     * @brief Method which is invoked when the server sends an END_OF_COMMUNICATION command
      *
-     * @param args
-     * @return an empty String
+     * @param args Args of the command.
+     *             
+     * @return An empty String.
      */
     public String END_OF_COMMUNICATION(ArrayList<Object> args) {
         System.out.println("End of communication client side.");
@@ -74,9 +75,9 @@ public class ClientCore extends AbstractCore implements ICore {
      * -Update the client playlist if the server who sends the update is the one saved by the client
      * -Update the available servers list of the client
      *
-     * @param args
+     * @param args Args of the command.
      *
-     * @return an empty String
+     * @return An empty String.
      */
     public String PLAYLIST_UPDATE(ArrayList<Object> args) {
 
@@ -85,7 +86,7 @@ public class ClientCore extends AbstractCore implements ICore {
         String serverName = (String) args.remove(0);
         String playlistJson = (String) args.remove(0);
 
-        LOG.info("Playlist JSON: " + playlistJson);
+        LOG.info("Sending playlist: " + playlistJson);
 
         if (Objects.isNull(ApplicationProtocol.serverId)) {
             ApplicationProtocol.serverId = serverId;
@@ -100,7 +101,7 @@ public class ClientCore extends AbstractCore implements ICore {
         }
 
         // We add the server to the available servers list
-        serverSessionManager.store(serverAddress, serverName, serverId);
+        serverSessionManager.store(serverId, serverAddress, serverName);
 
         return "";
     }
@@ -118,6 +119,7 @@ public class ClientCore extends AbstractCore implements ICore {
      * @return an empty String if the checks are good, the command END_OF_COMMUNICATION otherwise.
      */
     public String SEND_TRACK_REQUEST(ArrayList<Object> args) {
+
         LOG.info("In SEND_TRACK_REQUEST");
 
         fileToSend = new File((String) args.get(0));
@@ -168,11 +170,12 @@ public class ClientCore extends AbstractCore implements ICore {
      * the file is sent by Unicast after the command SENDING_TRACK was sent to the server to make
      * it go into file reception mode.
      *
-     * @param args
+     * @param args Args of the command.
      *
-     * @return an empty String
+     * @return An empty String.
      */
     public String TRACK_ACCEPTED(ArrayList<Object> args) {
+
         LOG.info("In TRACK_ACCEPTED");
 
         String result = ApplicationProtocol.SENDING_TRACK + NetworkProtocol.END_OF_LINE +
@@ -189,10 +192,12 @@ public class ClientCore extends AbstractCore implements ICore {
      * @brief Method invoked when the server sends the TRACK_REFUSED command. It can happen if the
      * track was already on the server or in the database.
      *
-     * @param args
+     * @param args Args of the command.
+     * 
      * @return END_OF_COMMUNICATION command
      */
     public String TRACK_REFUSED(ArrayList<Object> args) {
+
         LOG.info("In TRACK_REFUSED");
 
         String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
@@ -201,15 +206,16 @@ public class ClientCore extends AbstractCore implements ICore {
         return result;
     }
 
-
     /**
      * @brief Method invoked when the server sends the TRACK_SAVED command. It notify that the
      * track was saved in the server side.
      *
-     * @param args
+     * @param args Args of the command.
+     * 
      * @return END_OF_COMMUNICATION command
      */
     public String TRACK_SAVED(ArrayList<Object> args) {
+
         LOG.info("In TRACK_SAVED");
 
         String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
@@ -222,7 +228,7 @@ public class ClientCore extends AbstractCore implements ICore {
      * @brief Entry point to send the UPVOTE_TRACK_REQUEST command. It retrieves by the args
      * the id of the Track to upvote and sends it to the server.
      *
-     * @param args
+     * @param args Args of the command.
      *
      * @return UPVOTE_TRACK_REQUEST command with the track id
      */
@@ -241,7 +247,7 @@ public class ClientCore extends AbstractCore implements ICore {
      * @brief Entry point to send the DOWNVOTE_TRACK_REQUEST command. It retrieves by the args
      * the id of the Track to upvote and sends it to the server.
      *
-     * @param args
+     * @param args Args of the command.
      *
      * @return DOWNVOTE_TRACK_REQUEST command with the track id
      */
@@ -256,15 +262,38 @@ public class ClientCore extends AbstractCore implements ICore {
         return result;
     }
 
+    /**
+     * @brief Method invoked when the server sends the TRACK_UPVOTED command. It notify that the
+     * track was update in the server side.
+     *
+     * @param args Args of the command.
+     *
+     * @return END_OF_COMMUNICATION command
+     */
+    public String TRACK_UPVOTED(ArrayList<Object> args) {
 
-
+        String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
+        return result;
+    }
 
     /**
-     * @brief Entry point to set the UnicastClient and start the unicast communication.
+     * @brief Method invoked when the server sends the TRACK_DOWNVOTED command. It notify that the
+     * track was update in the server side.
      *
-     * @param hostname IP address of the hostname.
-     * @param message Message to send to the hostname.
+     * @param args Args of the command.
+     *
+     * @return END_OF_COMMUNICATION command
      */
+    public String TRACK_DOWNVOTED(ArrayList<Object> args) {
+
+        String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
+        return result;
+    }
+
     @Override
     public void sendUnicast(InetAddress hostname, String message) {
 
@@ -280,20 +309,11 @@ public class ClientCore extends AbstractCore implements ICore {
         }
     }
 
-
-    /**
-     * @brief sends a message by multicast to the multicast group set.
-     *
-     * @param message Message to send.
-     */
     @Override
     public void sendMulticast(String message) {
         multicast.send(message);
     }
 
-    /**
-     * @brief Stop the MulticastClient
-     */
     @Override
     public void stop() {
         multicast.stop();

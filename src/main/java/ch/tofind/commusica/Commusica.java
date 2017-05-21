@@ -195,7 +195,7 @@ public class Commusica {
                                     break;
 
                                 case 2:
-                                    ServerSessionManager.serverChooser(ServerSessionManager.getAvailableServers());
+                                    ServerSessionManager.getInstance().serverChooser(ServerSessionManager.getInstance().getAvailableServers());
                                     break;
                                 default:
                                     System.out.println("Action not supported.");

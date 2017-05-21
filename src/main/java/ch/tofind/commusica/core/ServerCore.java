@@ -38,10 +38,10 @@ public class ServerCore extends AbstractCore implements ICore {
     //! The server.
     Server server;
 
-    //!
+    //! The manager to know how many users are active.
     UserSessionManager userSessionManager;
 
-    //!
+    //! The track that the user wants to send.
     private Track trackToReceive;
 
     /**
@@ -74,10 +74,10 @@ public class ServerCore extends AbstractCore implements ICore {
 
 
     /**
-     * Entry point to send the current playlist by multicast. It also sends the server InetAdress, name
+     * @brief Entry point to send the current playlist by multicast. It also sends the server InetAdress, name
      * and id.
      *
-     * @param args
+     * @param args Args of the command.
      *
      * @return an empty String
      */
@@ -104,21 +104,21 @@ public class ServerCore extends AbstractCore implements ICore {
      * of the file) is already present. If not it checks if a track with the same title, artist, album and length
      * (with a 5s delta) is already stored in the database
      *
-     * @param args
+     * @param args Args of the command.
      *
      * @return TRACK_ACCEPTED command if the track is accepted, TRACK_REFUSED command otherwise
      */
     public String TRACK_REQUEST(ArrayList<Object> args) {
+
         LOG.info("In TRACK_REQUEST");
 
-        String userId = (String) args.remove(0); // A UTILISER POUR VERIFIER LES SESSIONS !!
+        Integer userId = (Integer) args.remove(0); // A UTILISER POUR VERIFIER LES SESSIONS !!
 
         args.remove(0); // Remove the socket as it's not needed in this command
 
         userSessionManager.store(userId);
 
         trackToReceive = Serialize.unserialize((String) args.remove(0), Track.class);
-
 
         Session session = DatabaseManager.getInstance().getSession();
 
@@ -165,9 +165,9 @@ public class ServerCore extends AbstractCore implements ICore {
      * its own MD5 checksum). It then checks the format and if all checks pass, it store the new track in the
      * database and rename it with it's MD5 on the disk.
      *
-     * @param args
+     * @param args Args of the command.
      *
-     * @return ERROR command if a check failed. TRACK_SAVED if the track is correctly saved
+     * @return ERROR command if a check failed. TRACK_SAVED if the track is correctly saved.
      */
     public String SENDING_TRACK(ArrayList<Object> args) {
 
@@ -182,7 +182,7 @@ public class ServerCore extends AbstractCore implements ICore {
         // Retrieve the file from the network
         FileManager fileManager = FileManager.getInstance();
 
-        String result = "";
+        String result;
 
         File tempFile;
         try {
@@ -190,7 +190,7 @@ public class ServerCore extends AbstractCore implements ICore {
         } catch (IOException e) {
             LOG.error(e);
 
-            return ApplicationProtocol.TRACK_REFUSED + NetworkProtocol.END_OF_LINE +
+            return ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
         }
 
@@ -208,7 +208,7 @@ public class ServerCore extends AbstractCore implements ICore {
         }
 
         // Get the file extension
-        String fileExtension = null;
+        String fileExtension;
         try {
             fileExtension = fileManager.getFormatExtension(tempFile);
         } catch (Exception e) {
@@ -219,7 +219,6 @@ public class ServerCore extends AbstractCore implements ICore {
                     NetworkProtocol.END_OF_COMMAND;
             return result;
         }
-
 
         // Save the file under its new name on the filesystem
         String filename = FileManager.OUTPUT_DIRECTORY + File.separator +
@@ -240,59 +239,104 @@ public class ServerCore extends AbstractCore implements ICore {
         // Reset the track
         trackToReceive = null;
 
-        result = ApplicationProtocol.TRACK_SAVED + NetworkProtocol.END_OF_LINE +
+        result = ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
         return result;
     }
 
-
     /**
-     * @brief receive the ask for an upvote on a specific Track by a client
+     * @brief Receive the ask for an upvote on a specific track by a client
      *
-     * @param args
+     * @param args Args of the command.
+     *
      * @return END_OF_COMMUNICATION command
      */
     public String UPVOTE_TRACK_REQUEST(ArrayList<Object> args) {
+
         LOG.info("In UPVOTE_TRACK_REQUEST");
 
-        String userId = (String) args.remove(0);
+        Integer userId = (Integer) args.remove(0);
 
-        String trackToUpvoteId = (String) args.remove(0);
+        String trackId = (String) args.remove(0);
 
-        userSessionManager.store(userId);
+        String result;
 
-        int numberOfVotesToAdd = userSessionManager.updateVoteList(userId, trackToUpvoteId, ApplicationProtocol.UPVOTE_TRACK);
+        // Check that the track has only been upvoted once by this user
+        try {
+            userSessionManager.upvote(userId, trackId);
+        } catch (Exception e) {
+            LOG.error(e);
 
-        // TODO: update the property in the database with the numberOfVotesToAdd
+            result = ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                    NetworkProtocol.END_OF_COMMAND;
+            return result;
+        }
 
-        return NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
+        // Get the track from the database
+
+        // Update the track properties
+
+        // Update the track in the database
+
+        // Update the playlist
+
+        // Update the UI
+
+        // Tells the user its track has been voted
+        result = ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
+        return result;
     }
 
     /**
-     * @brief receive the ask for a downvote on a specific Track by a client
+     * @brief Receive the ask for a downvote on a specific track by a client
      *
-     * @param args
+     * @param args Args of the command.
+     *
      * @return END_OF_COMMUNICATION command
      */
     public String DOWNVOTE_TRACK_REQUEST(ArrayList<Object> args) {
+
         LOG.info("In DOWNVOTE_TRACK_REQUEST");
 
-        String userId = (String) args.remove(0);
+        Integer userId = (Integer) args.remove(0);
 
-        String trackToDownvoteId = (String) args.remove(0); // Remove the socket as it's not needed in this command
+        args.remove(0); // Remove the socket as it is not needed in this command
 
-        userSessionManager.store(userId);
+        String trackId = (String) args.remove(0);
 
-        int numberOfVotesToAdd = userSessionManager.updateVoteList(userId, trackToDownvoteId, ApplicationProtocol.UPVOTE_TRACK);
+        String result;
 
-        // TODO: update the property in the database with the numberOfVotesToAdd
+        // Check that the track has only been downvoted once by this user
+        try {
+            userSessionManager.downvote(userId, trackId);
+        } catch (Exception e) {
+            LOG.error(e);
 
-        return NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
+            result = ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                    NetworkProtocol.END_OF_COMMAND;
+            return result;
+        }
+
+        // Get the track from the database
+
+        // Update the track properties
+
+        // Update the track in the database
+
+        // Update the playlist
+
+        // Update the UI
+
+        // Tells the user its track has been voted
+        result = ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
+        return result;
     }
 
     @Override

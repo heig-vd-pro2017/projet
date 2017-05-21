@@ -9,24 +9,21 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Still a lot of work to do but this is a basic implementation of SesionManager with simple features
+ * Manage the servers sessions.
  */
-public class ServerSessionManager {
+public class ServerSessionManager implements ISessionManager {
 
-    //! Shared instance of the object for all the application
+    //! Shared instance of the object for all the application.
     private static ServerSessionManager instance = null;
 
-    //!
-    private static int SESSION_TIME_BEFORE_INACTIVE = 10 * 1000;
+    //! Store the active sessions.
+    private static Map<Integer, ServerSession> availableServers = new HashMap<>();
 
-    //!
-    private static Map<InetAddress, ServerSession> availableServers = new HashMap<>();
-
-    //! Clean the old sessions on schedule
+    //! Clean the old sessions on schedule.
     private ScheduledExecutorService scheduledExecutorService;
 
     /**
-     * UserSessionManager single constructor. Avoid the instantiation.
+     * ServerSessionManager single constructor. Avoid the instantiation.
      */
     private ServerSessionManager() {
 
@@ -37,7 +34,7 @@ public class ServerSessionManager {
 
         scheduledExecutorService.scheduleAtFixedRate(() -> {
             deleteObsoleteSessions();
-        }, 0, 2, TimeUnit.SECONDS);
+        }, 0, TIME_BEFORE_SESSION_INACTIVE, TimeUnit.SECONDS);
     }
 
     public static ServerSessionManager getInstance() {
@@ -53,33 +50,38 @@ public class ServerSessionManager {
         return instance;
     }
 
-    public static void store(InetAddress ip, String name, Integer id) {
+    /**
+     * @brief Store a new session.
+     *
+     * @param id ID of the new session.
+     * @param serverIp The server's IP.
+     * @param serverName The server's name.
+     */
+    public void store(Integer id, InetAddress serverIp, String serverName) {
 
-        if (availableServers.containsKey(ip)) {
-            availableServers.get(ip).update();
+        if (availableServers.containsKey(serverIp)) {
+            ServerSession serverSession = availableServers.get(serverIp);
+            serverSession.update();
         } else {
-
-            availableServers.put(ip, new ServerSession(ip, name, id));
+            ServerSession serverSession = new ServerSession(id, serverIp, serverName);
+            availableServers.put(serverSession.getId(), serverSession);
         }
     }
 
-
-    public static Map<InetAddress, ServerSession> getAvailableServers() {
+    /**
+     * @brief Get the available servers for the user.
+     *
+     * @return The available servers.
+     */
+    public Map<Integer, ServerSession> getAvailableServers() {
         return availableServers;
     }
 
-
-    private void deleteObsoleteSessions() {
-        for (Map.Entry<InetAddress, ServerSession> entry : availableServers.entrySet()) {
-            // if the server hasn't been refreshed in the last 10s
-            if (new Date().getTime() - entry.getValue().getUpdated().getTime() > SESSION_TIME_BEFORE_INACTIVE) {
-
-                availableServers.remove(entry.getValue().getIp());
-            }
-        }
-    }
-
-    public static void serverChooser(Map<InetAddress, ServerSession> serverList) {
+    /**
+     * @brief Choose a server in the available servers.
+     * @param serverList The available servers.
+     */
+    public void serverChooser(Map<Integer, ServerSession> serverList) {
         if (!serverList.isEmpty()) {
 
             ArrayList<ServerSession> servers = new ArrayList<>();
@@ -88,7 +90,7 @@ public class ServerSessionManager {
             System.out.println("To which server do you want to connect?");
             int i = 1;
 
-            for (Map.Entry<InetAddress, ServerSession> entry : serverList.entrySet()) {
+            for (Map.Entry<Integer, ServerSession> entry : serverList.entrySet()) {
                 System.out.println("[" + i++ + "]" + "    " + entry.getValue());
                 servers.add(entry.getValue());
             }
@@ -104,12 +106,33 @@ public class ServerSessionManager {
             }
             serverChoice--;
 
-            ApplicationProtocol.serverId = servers.get(serverChoice).getId();
-            ApplicationProtocol.serverName = servers.get(serverChoice).getName();
-            ApplicationProtocol.serverAddress = servers.get(serverChoice).getIp();
+            ServerSession chosenServer = servers.get(serverChoice);
+
+            ApplicationProtocol.serverId = chosenServer.getId();
+            ApplicationProtocol.serverAddress = chosenServer.getServerIp();
+            ApplicationProtocol.serverName = chosenServer.getServerName();
         }
     }
 
+    /**
+     * @brief Delete the sessions that are not active anymore.
+     */
+    private void deleteObsoleteSessions() {
+
+        Date now = new Date();
+
+        for (Map.Entry<Integer, ServerSession> entry : availableServers.entrySet()) {
+
+            ServerSession serverSession = entry.getValue();
+
+            // if the server hasn't been refreshed in the last 10s
+            if (serverSession.getLastUpdate().getTime() > now.getTime() - TIME_BEFORE_SESSION_INACTIVE) {
+                availableServers.remove(serverSession.getId());
+            }
+        }
+    }
+
+    @Override
     public void stop() {
         scheduledExecutorService.shutdown();
     }

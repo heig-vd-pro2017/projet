@@ -3,73 +3,68 @@ package ch.tofind.commusica.session;
 import java.net.InetAddress;
 import java.util.Date;
 
-
 /**
- * Class representing a server session with an InetAddress, a name and an id. It also store a Date representing
- * the last time the session was updated.
- *
- * TODO: CLEAN THE CLASS
+ * @brief Class representing a server session.
  */
-public class ServerSession {
+public class ServerSession implements ISession {
 
-    //!
-    private InetAddress ip;
+    //! ID of the session.
+    private Integer id;
 
-    //!
-    private String name;
+    //! IP address of the server
+    private InetAddress serverIp;
 
-    //!
-    private int id;
+    //! Name of the server
+    private String serverName;
 
-    //!
+    //! Last time the session was updated.
     private Date updated;
 
-    public ServerSession(InetAddress ip, String name, int id) {
-        this.ip = ip;
-        this.name = name;
-        this.updated = new Date();
+    /**
+     * @brief Create a session.
+     *
+     * @param id ID of the session.
+     * @param serverIp IP of the server.
+     * @param serverName Name of the server.
+     */
+    public ServerSession(Integer id, InetAddress serverIp, String serverName) {
         this.id = id;
+        this.serverIp = serverIp;
+        this.serverName = serverName;
+        this.updated = new Date();
     }
 
-    public int getId() {
+    /**
+     * @brief Get the server's IP associated with the session.
+     *
+     * @return The server's IP.
+     */
+    public InetAddress getServerIp() {
+        return serverIp;
+    }
+
+    /**
+     * @brief Get the server's name associated with the session.
+     *
+     * @return The server's name.
+     */
+    public String getServerName() {
+        return serverName;
+    }
+
+    @Override
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
+    @Override
     public void update() {
         updated = new Date();
     }
 
-    public InetAddress getIp() {
-        return ip;
-    }
-
-    public void setIp(InetAddress ip) {
-        this.ip = ip;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Date getUpdated() {
+    @Override
+    public Date getLastUpdate() {
         return updated;
     }
-
-    public void setUpdated(Date updated) {
-        this.updated = updated;
-    }
-
-    public String toString() {
-        return name + " " + ip;
-    }
-
 
 }

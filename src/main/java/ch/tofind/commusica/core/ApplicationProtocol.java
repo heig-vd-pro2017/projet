@@ -21,22 +21,24 @@ public final class ApplicationProtocol {
 
     //! Commands
     public static final String SUCCESS = "SUCCESS";
+
     public static final String ERROR = "ERROR";
 
-
     public static final String TRACK_REQUEST = "TRACK_REQUEST";
-    public static final String TRACK_ACCEPTED = "TRACK_ACCEPTED";
-    public static final String TRACK_REFUSED = "TRACK_REFUSED";
-    public static final String SENDING_TRACK = "SENDING_TRACK";
-    public static final String TRACK_SAVED = "TRACK_SAVED";
 
-    public static final String UPVOTE_TRACK = "UPVOTE_TRACK";
-    public static final String DOWNVOTE_TRACK = "DOWNVOTE_TRACK";
+    public static final String TRACK_ACCEPTED = "TRACK_ACCEPTED";
+
+    public static final String TRACK_REFUSED = "TRACK_REFUSED";
+
+    public static final String SENDING_TRACK = "SENDING_TRACK";
+
     public static final String UPVOTE_TRACK_REQUEST = "UPVOTE_TRACK_REQUEST";
+
     public static final String DOWNVOTE_TRACK_REQUEST = "DOWNVOTE_TRACK_REQUEST";
 
-
     public static final String PLAYLIST_UPDATE = "PLAYLIST_UPDATE";
+
     public static final String SEND_PLAYLIST_UPDATE = "SEND_PLAYLIST_UPDATE";
+
     public static final String SEND_TRACK_REQUEST = "SEND_TRACK_REQUEST";
 }
