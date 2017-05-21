@@ -48,6 +48,8 @@ public final class ApplicationProtocol {
 
     public static final String PLAYLIST_UPDATE = "PLAYLIST_UPDATE";
 
+    public static final String NEW_ACTIVE_CLIENT = "NEW_ACTIVE_CLIENT";
+
     public static final String SEND_PLAYLIST_UPDATE = "SEND_PLAYLIST_UPDATE";
 
     public static final String SEND_TRACK_REQUEST = "SEND_TRACK_REQUEST";

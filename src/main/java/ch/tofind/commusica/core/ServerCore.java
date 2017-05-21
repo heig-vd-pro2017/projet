@@ -79,7 +79,7 @@ public class ServerCore extends AbstractCore implements ICore {
      *
      * @param args Args of the command.
      *
-     * @return an empty String
+     * @return An empty String
      */
     public String SEND_PLAYLIST_UPDATE(ArrayList<Object> args) {
 
@@ -96,6 +96,26 @@ public class ServerCore extends AbstractCore implements ICore {
         multicast.send(command);
 
         return "";
+    }
+
+    /**
+     * @brief Add the user to the active clients.
+     *
+     * @param args Args of the command.
+     *
+     * @return An empty String
+     */
+    public String NEW_ACTIVE_CLIENT(ArrayList<Object> args) {
+
+        LOG.info("New active user.");
+
+        Integer userId = Integer.parseInt((String) args.remove(0));
+
+        userSessionManager.store(userId);
+
+        return NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
     }
 
     /**
