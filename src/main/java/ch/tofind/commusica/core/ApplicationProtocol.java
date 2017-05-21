@@ -30,6 +30,8 @@ public final class ApplicationProtocol {
 
     public static final String TRACK_REFUSED = "TRACK_REFUSED";
 
+    public static final String TRACK_SAVED = "TRACK_SAVED";
+
     public static final String SENDING_TRACK = "SENDING_TRACK";
 
     public static final String SEND_UPVOTE_TRACK_REQUEST = "SEND_UPVOTE_TRACK_REQUEST";

@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -42,8 +43,6 @@ public class ServerCore extends AbstractCore implements ICore {
     //! The manager to know how many users are active.
     UserSessionManager userSessionManager;
 
-    //! The track that the user wants to send.
-    private Track trackToReceive;
 
     /**
      * @brief Setup the core as a server.
@@ -119,7 +118,7 @@ public class ServerCore extends AbstractCore implements ICore {
 
         userSessionManager.store(userId);
 
-        trackToReceive = Serialize.unserialize((String) args.remove(0), Track.class);
+        Track trackToReceive = Serialize.unserialize((String) args.remove(0), Track.class);
 
         Session session = DatabaseManager.getInstance().getSession();
 
@@ -180,6 +179,8 @@ public class ServerCore extends AbstractCore implements ICore {
 
         Integer fileSize = Integer.parseInt((String) args.remove(0));
 
+        Track trackToReceive = Serialize.unserialize((String) args.remove(0), Track.class);
+
         // Retrieve the file from the network
         FileManager fileManager = FileManager.getInstance();
 
@@ -201,8 +202,6 @@ public class ServerCore extends AbstractCore implements ICore {
         if (!Objects.equals(tempFileChecksum, trackToReceive.getId())) {
 
             fileManager.delete(tempFile);
-
-            trackToReceive = null;
 
             return ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
@@ -237,10 +236,7 @@ public class ServerCore extends AbstractCore implements ICore {
         // Add the track to the current Playlist
         PlaylistManager.getInstance().getPlaylist().addTrack(trackToReceive);
 
-        // Reset the track
-        trackToReceive = null;
-
-        result = ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
+        result = ApplicationProtocol.TRACK_SAVED + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
         return result;
