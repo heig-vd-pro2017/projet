@@ -362,6 +362,105 @@ public class ServerCore extends AbstractCore implements ICore {
         return result;
     }
 
+    /**
+     * @brief Receive the ask for the next song by a client.
+     *
+     * @param args Args of the command.
+     *
+     * @return SUCCESS command
+     */
+    public String NEXT_TRACK_REQUEST(ArrayList<Object> args) {
+
+        LOG.info("Client asked for the next song.");
+
+        Integer userId = Integer.parseInt((String) args.remove(0));
+
+        userSessionManager.nextTrack(userId);
+
+        if (userSessionManager.countNextTrackRequests() > userSessionManager.countActiveSessions() / 2) {
+
+            userSessionManager.resetNextTrackRequests();
+
+            // TODO Changer la musique !
+
+            LOG.info("Next song.");
+        } else {
+            LOG.info("User's opinion was taken into account.");
+        }
+
+        // Tells the user its opinion was taken into account
+        String result = ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
+        return result;
+    }
+
+    /**
+     * @brief Receive the ask to turn the volume up by a client.
+     *
+     * @param args Args of the command.
+     *
+     * @return SUCCESS command
+     */
+    public String TURN_VOLUME_UP_REQUEST(ArrayList<Object> args) {
+
+        LOG.info("Client asked to turn the volume up");
+
+        Integer userId = Integer.parseInt((String) args.remove(0));
+
+        userSessionManager.turnVolumeUp(userId);
+
+        if (userSessionManager.countTurnVolumeUpRequests() > userSessionManager.countActiveSessions() / 2) {
+
+            userSessionManager.resetTurnVolumeUpRequests();
+
+            // TODO Augmenter le volume !
+
+            LOG.info("Volume turns up.");
+        } else {
+            LOG.info("User's opinion was taken into account.");
+        }
+
+        // Tells the user its opinion was taken into account
+        String result = ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
+        return result;
+    }
+
+    /**
+     * @brief Receive the ask to turn the volume down by a client.
+     *
+     * @param args Args of the command.
+     *
+     * @return SUCCESS command
+     */
+    public String TURN_VOLUME_DOWN_REQUEST(ArrayList<Object> args) {
+
+        LOG.info("Client asked to turn the volume down");
+
+        Integer userId = Integer.parseInt((String) args.remove(0));
+
+        userSessionManager.turnVolumeDown(userId);
+
+        if (userSessionManager.countTurnVolumeDownRequests() > userSessionManager.countActiveSessions() / 2) {
+
+            userSessionManager.resetTurnVolumeDownRequests();
+
+            // TODO Diminuer le volume !
+
+            LOG.info("Volume turns down.");
+        } else {
+            LOG.info("User's opinion was taken into account.");
+        }
+
+        // Tells the user its opinion has been counted
+        String result = ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
+        return result;
+    }
+
     @Override
     public void sendUnicast(InetAddress hostname, String message) {
         // Do nothing

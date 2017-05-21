@@ -49,4 +49,17 @@ public final class ApplicationProtocol {
     public static final String SEND_PLAYLIST_UPDATE = "SEND_PLAYLIST_UPDATE";
 
     public static final String SEND_TRACK_REQUEST = "SEND_TRACK_REQUEST";
+
+    public static final String SEND_NEXT_TRACK_REQUEST = "SEND_NEXT_TRACK_REQUEST";
+
+    public static final String NEXT_TRACK_REQUEST = "NEXT_TRACK_REQUEST";
+
+    public static final String SEND_TURN_VOLUME_UP_REQUEST = "SEND_TURN_VOLUME_UP_REQUEST";
+
+    public static final String TURN_VOLUME_UP_REQUEST = "TURN_VOLUME_UP_REQUEST";
+
+    public static final String SEND_TURN_VOLUME_DOWN_REQUEST = "SEND_TURN_VOLUME_DOWN_REQUEST";
+
+    public static final String TURN_VOLUME_DOWN_REQUEST = "TURN_VOLUME_DOWN_REQUEST";
+
 }

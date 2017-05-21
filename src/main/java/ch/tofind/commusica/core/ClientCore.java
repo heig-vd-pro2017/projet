@@ -55,7 +55,6 @@ public class ClientCore extends AbstractCore implements ICore {
         serverSessionManager = ServerSessionManager.getInstance();
     }
 
-
     /**
      * @brief Method which is invoked when the server sends an END_OF_COMMUNICATION command
      *
@@ -112,11 +111,11 @@ public class ClientCore extends AbstractCore implements ICore {
      * It also setup the Unicast client for the time of the "transaction" since the UnicastCLient
      * isn't set anywhere in the client.
      *
-     * @param args
+     * @param args Args of the command.
      *
-     * @return an empty String if the checks are good, the command END_OF_COMMUNICATION otherwise.
+     * @return An empty String if the checks are good, the command END_OF_COMMUNICATION otherwise.
      */
-    public String SEND_TRACK_REQUEST (ArrayList<Object> args) {
+    public String SEND_TRACK_REQUEST(ArrayList<Object> args) {
 
         LOG.info("In SEND_TRACK_REQUEST");
 
@@ -222,6 +221,66 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
+     * @brief Entry point to send the NEXT_TRACK_REQUEST command.
+     *
+     * @param args Args of the command.
+     *
+     * @return NEXT_TRACK_REQUEST command.
+     */
+    public String SEND_NEXT_TRACK_REQUEST(ArrayList<Object> args) {
+
+        LOG.info("Ask the server for the next song.");
+
+        String result = ApplicationProtocol.NEXT_TRACK_REQUEST + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
+
+        sendUnicast(ApplicationProtocol.serverAddress, result);
+
+        return "";
+    }
+
+    /**
+     * @brief Entry point to send the TURN_VOLUME_UP_REQUEST command.
+     *
+     * @param args Args of the command.
+     *
+     * @return TURN_VOLUME_UP_REQUEST command.
+     */
+    public String SEND_TURN_UP_VOLUME_REQUESTT(ArrayList<Object> args) {
+
+        LOG.info("Ask the server to turn up the volume.");
+
+        String result = ApplicationProtocol.TURN_VOLUME_UP_REQUEST + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
+
+        sendUnicast(ApplicationProtocol.serverAddress, result);
+
+        return "";
+    }
+
+    /**
+     * @brief Entry point to send the TURN_VOLUME_DOWN_REQUEST command.
+     *
+     * @param args Args of the command.
+     *
+     * @return TURN_VOLUME_DOWN_REQUEST command.
+     */
+    public String SEND_TURN_DOWN_VOLUME_REQUEST(ArrayList<Object> args) {
+
+        LOG.info("Ask the next song to the server.");
+
+        String result = ApplicationProtocol.TURN_VOLUME_DOWN_REQUEST + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
+
+        sendUnicast(ApplicationProtocol.serverAddress, result);
+
+        return "";
+    }
+
+    /**
      * @brief Entry point to send the UPVOTE_TRACK_REQUEST command. It retrieves by the args
      * the id of the Track to upvote and sends it to the server.
      *
@@ -232,11 +291,11 @@ public class ClientCore extends AbstractCore implements ICore {
     public String SEND_UPVOTE_TRACK_REQUEST(ArrayList<Object> args) {
         LOG.info("In SEND_UPVOTE_TRACK_REQUEST");
 
-        String trackToUpvoteId = (String) args.remove(0);
+        String trackToDownvoteId = (String) args.remove(0);
 
         String result = ApplicationProtocol.UPVOTE_TRACK_REQUEST + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
-                trackToUpvoteId + NetworkProtocol.END_OF_LINE +
+                trackToDownvoteId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
 
         sendUnicast(ApplicationProtocol.serverAddress, result);
@@ -246,7 +305,7 @@ public class ClientCore extends AbstractCore implements ICore {
 
     /**
      * @brief Entry point to send the DOWNVOTE_TRACK_REQUEST command. It retrieves by the args
-     * the id of the Track to upvote and sends it to the server.
+     * the id of the Track to downvote and sends it to the server.
      *
      * @param args Args of the command.
      *

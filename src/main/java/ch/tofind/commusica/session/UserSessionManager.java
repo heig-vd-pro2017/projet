@@ -3,9 +3,7 @@ package ch.tofind.commusica.session;
 import ch.tofind.commusica.core.ApplicationProtocol;
 import ch.tofind.commusica.utils.Configuration;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -24,6 +22,15 @@ public class UserSessionManager implements ISessionManager {
     //! Store the inactive sessions.
     private Map<Integer, UserSession> inactiveSessions;
 
+    //! Users who asked to change the track.
+    private Set<Integer> usersAskedForNextTrack;
+
+    //! Users who asked to turn up the volume.
+    private Set<Integer> usersAskedToTurnVolumeUp;
+
+    //! Users who asked to turn down the volume.
+    private Set<Integer> usersAskedToTurnVolumeDown;
+
     //! Clean the old sessions on schedule.
     private ScheduledExecutorService scheduledExecutorService;
 
@@ -32,8 +39,12 @@ public class UserSessionManager implements ISessionManager {
      */
     private UserSessionManager() {
 
-        activeSessions = new HashMap<>(0);
-        inactiveSessions = new HashMap<>(0);
+        activeSessions = new HashMap<>();
+        inactiveSessions = new HashMap<>();
+
+        usersAskedForNextTrack = new HashSet<>();
+        usersAskedToTurnVolumeUp = new HashSet<>();
+        usersAskedToTurnVolumeDown = new HashSet<>();
 
         // Crée un thread qui nettoie les sessions toutes les N secondes
         scheduledExecutorService = Executors.newScheduledThreadPool(1);
@@ -84,6 +95,43 @@ public class UserSessionManager implements ISessionManager {
     public int countActiveSessions() {
         return activeSessions.size();
     }
+
+    /**
+     * @brief Count the inactive sessions.
+     *
+     * @return The number of inactive sessions.
+     */
+    public int countInactiveSessions() {
+        return inactiveSessions.size();
+    }
+
+    /**
+     * @brief Count the requests for the next track.
+     *
+     * @return The number of request for the next track.
+     */
+    public int countNextTrackRequests() {
+        return usersAskedForNextTrack.size();
+    }
+
+    /**
+     * @brief Count the requests to turn the volume up.
+     *
+     * @return The number of request to turn the volume up.
+     */
+    public int countTurnVolumeUpRequests() {
+        return usersAskedToTurnVolumeUp.size();
+    }
+
+    /**
+     * @brief Count the requests to turn the volume down.
+     *
+     * @return The number of request to turn the volume down.
+     */
+    public int countTurnVolumeDownRequests() {
+        return usersAskedToTurnVolumeDown.size();
+    }
+
 
     /**
      * @brief Avoid that a track can be upvoted twice by the same user.
@@ -138,6 +186,63 @@ public class UserSessionManager implements ISessionManager {
     }
 
     /**
+     * @brief Store the fact that a user would like the next track.
+     *
+     * @param userId The user which ask for the next song.
+     */
+    public void nextTrack(Integer userId) {
+
+        store(userId);
+
+        usersAskedForNextTrack.add(userId);
+    }
+
+    /**
+     * @brief Reset all requests for the next track.
+     */
+    public void resetNextTrackRequests() {
+        usersAskedForNextTrack.clear();
+    }
+
+    /**
+     * @brief Store the fact that a user would like to turn the volume up.
+     *
+     * @param userId The user which ask for to turn the volume up.
+     */
+    public void turnVolumeUp(Integer userId) {
+
+        store(userId);
+
+        usersAskedToTurnVolumeUp.add(userId);
+    }
+
+    /**
+     * @brief Reset all requests to turn the volume up.
+     */
+    public void resetTurnVolumeUpRequests() {
+        usersAskedToTurnVolumeUp.clear();
+    }
+
+    /**
+     * @brief Store the fact that a user would like to turn the volume down.
+     *
+     * @param userId The user which ask for to turn the volume down.
+     */
+    public void turnVolumeDown(Integer userId) {
+
+        store(userId);
+
+        usersAskedToTurnVolumeDown.add(userId);
+    }
+
+    /**
+     * @brief Reset all requests to turn the volume down.
+     */
+    public void resetTurnVolumeDownRequests() {
+        usersAskedToTurnVolumeDown.clear();
+    }
+
+    /**
      * @brief Delete the sessions that are not active anymore.
      */
     private void deleteObsoleteSessions() {
@@ -150,6 +255,11 @@ public class UserSessionManager implements ISessionManager {
 
             if (userSession.getLastUpdate().getTime() > now.getTime() - TIME_BEFORE_SESSION_INACTIVE) {
                 activeSessions.remove(userSession.getId());
+
+                usersAskedForNextTrack.remove(userSession.getId());
+                usersAskedToTurnVolumeUp.remove(userSession.getId());
+                usersAskedToTurnVolumeDown.remove(userSession.getId());
+
                 inactiveSessions.put(userSession.getId(), userSession);
             }
         }
