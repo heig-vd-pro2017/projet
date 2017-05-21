@@ -61,6 +61,10 @@ public class PlaylistTrack implements Serializable {
         return votesProperty;
     }
 
+    public PlaylistTrackId getId() {
+        return id;
+    }
+
     public void upvote() {
         if (!beenPlayedProperty.getValue()) {
             votesProperty.setValue(votesProperty.intValue() + 1);

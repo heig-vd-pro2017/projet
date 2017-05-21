@@ -72,4 +72,10 @@ public class EphemeralPlaylist implements IPlaylist {
     public boolean isSaved() {
         return false;
     }
+
+    @Override
+    public String toString() {
+        return staticPlaylist.getName() + "\n" +
+                tracksList;
+    }
 }

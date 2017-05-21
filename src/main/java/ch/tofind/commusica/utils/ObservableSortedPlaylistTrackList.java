@@ -80,4 +80,14 @@ public class ObservableSortedPlaylistTrackList extends ObservableListBase<Playli
             delegate.subList(count, size()).sort(comparator);
         }
     }
+
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder("");
+        for (PlaylistTrack playlistTrack : delegate) {
+            result.append(playlistTrack + "\n");
+        }
+
+        return result.toString();
+    }
 }

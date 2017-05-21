@@ -67,4 +67,9 @@ public class ServerSession implements ISession {
         return updated;
     }
 
+    @Override
+    public String toString() {
+        return "Nom: " + serverName + " " + serverIp;
+    }
+
 }
