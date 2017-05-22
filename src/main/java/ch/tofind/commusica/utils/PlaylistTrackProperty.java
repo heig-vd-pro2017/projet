@@ -15,7 +15,7 @@ public class PlaylistTrackProperty extends ObjectPropertyBase<PlaylistTrack> {
      * @return Track property of the current value.
      */
     public Track getTrack() {
-        return getValue().getTrack();
+        return (getValue() != null) ? getValue().getTrack() : null;
     }
 
     @Override

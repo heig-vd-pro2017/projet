@@ -14,21 +14,25 @@ public class EphemeralPlaylistSerializer implements JsonSerializer<EphemeralPlay
     public EphemeralPlaylist deserialize(JsonElement json, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
         // Playlist name.
         String name = json.getAsJsonObject().get("name").getAsString();
-        Map<Track, Integer> tracksList = new HashMap<>();
-
-        Iterator<JsonElement> it = json.getAsJsonObject().getAsJsonArray("tracks").iterator();
-        while (it.hasNext()) {
-            JsonObject track = it.next().getAsJsonObject();
-
-            tracksList.put(Serialize.unserialize(track.get("track").toString(), Track.class), track.get("votes").getAsInt());
-        }
 
         EphemeralPlaylist playlist = new EphemeralPlaylist(name);
 
-        tracksList.forEach((track, votes) -> {
-            playlist.addTrack(track);
-            playlist.getPlaylistTrack(track).getVotesProperty().setValue(votes);
-        });
+        JsonArray tracks = json.getAsJsonObject().getAsJsonArray("tracks");
+        if (tracks != null) {
+            Map<Track, Integer> tracksList = new HashMap<>();
+
+            Iterator<JsonElement> it = tracks.iterator();
+            while (it.hasNext()) {
+                JsonObject track = it.next().getAsJsonObject();
+
+                tracksList.put(Serialize.unserialize(track.get("track").toString(), Track.class), track.get("votes").getAsInt());
+            }
+
+            tracksList.forEach((track, votes) -> {
+                playlist.addTrack(track);
+                playlist.getPlaylistTrack(track).getVotesProperty().setValue(votes);
+            });
+        }
 
         return playlist;
     }

@@ -115,6 +115,12 @@ public class PlaylistManager {
         UIController.getController().refreshPlaylist();
     }
 
+    public void setEphemeralPlaylist(EphemeralPlaylist playlist) {
+        this.playlist = playlist;
+
+        LOG.info("Changed ephemeral playlist.");
+    }
+
     /**
      * Returns the playlist containing the favorited tracks.
      *
