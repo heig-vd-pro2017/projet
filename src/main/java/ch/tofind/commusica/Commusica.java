@@ -113,7 +113,7 @@ public class Commusica {
 
                     if (launchChoice == 1) { // Launch as server
 
-                        dropDatabase();
+                        //dropDatabase();
 
                         Core core = new Core(NetworkProtocol.interfaceToUse);
                         String serverName = Configuration.getInstance().get("SERVER_NAME");
