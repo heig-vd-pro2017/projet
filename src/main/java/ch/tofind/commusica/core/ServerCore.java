@@ -511,4 +511,9 @@ public class ServerCore extends AbstractCore implements ICore {
         multicast.stop();
         server.stop();
     }
+
+    @Override
+    public boolean isServer() {
+        return true;
+    }
 }

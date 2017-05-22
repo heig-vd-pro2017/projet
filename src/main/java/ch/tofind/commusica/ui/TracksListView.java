@@ -1,5 +1,7 @@
 package ch.tofind.commusica.ui;
 
+import ch.tofind.commusica.core.ApplicationProtocol;
+import ch.tofind.commusica.core.Core;
 import ch.tofind.commusica.media.IPlaylist;
 import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.playlist.PlaylistManager;
@@ -22,6 +24,7 @@ import org.jaudiotagger.tag.TagException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -111,11 +114,13 @@ public class TracksListView extends ListView<PlaylistTrack> {
 
                     Track track = new Track(audioFile);
 
-                    if (playlistManager.getPlaylist().addTrack(track)) {
-                        UIController.getController().refreshPlaylist();
-                        LOG.info("Track loaded");
+                    if (Core.isServer()) {
+                        playlistManager.getPlaylist().addTrack(track);
                     } else {
-                        LOG.error("Couldn't load track.");
+                        ArrayList<Object> args = new ArrayList<>();
+                        args.add(track.getUri());
+
+                        Core.execute(ApplicationProtocol.SEND_TRACK_REQUEST, args);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

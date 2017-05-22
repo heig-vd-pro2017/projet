@@ -422,4 +422,9 @@ public class ClientCore extends AbstractCore implements ICore {
     public void stop() {
         multicast.stop();
     }
+
+    @Override
+    public boolean isServer() {
+        return false;
+    }
 }
