@@ -116,7 +116,8 @@ public class Commusica {
                         dropDatabase();
 
                         Core core = new Core(NetworkProtocol.interfaceToUse);
-                        core.setupAsServer("Soirée de Lulu 4", NetworkProtocol.MULTICAST_ADDRESS, NetworkProtocol.MULTICAST_PORT, NetworkProtocol.UNICAST_PORT);
+                        String serverName = Configuration.getInstance().get("SERVER_NAME");
+                        core.setupAsServer(serverName, NetworkProtocol.MULTICAST_ADDRESS, NetworkProtocol.MULTICAST_PORT, NetworkProtocol.UNICAST_PORT);
 
                         ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
                         scheduledExecutorService.scheduleAtFixedRate(() -> {
@@ -192,19 +193,20 @@ public class Commusica {
                                 case 1:
                                     ArrayList<Object> uri = new ArrayList<>();
 
-                                    //uri.add("C:\\Users\\David\\Documents\\YourFuckingMother_x_EHDE_-_Pocket_Monsters_VIP.mp3");
+                                    uri.add("C:\\Users\\David\\Documents\\YourFuckingMother_x_EHDE_-_Pocket_Monsters_VIP.mp3");
                                     ///home/ludelafo/Music/Temp/sample3.mp3uri.add("C:\\Users\\David\\Downloads\\02 v.m4a");
 
                                     // Error test with pdf
                                     //uri.add("C:\\Users\\David\\Documents\\2014_SYE-B_TE2.pdf");
 
-                                    uri.add("/home/ludelafo/Music/Temp/sample3.mp3");
+                                    //uri.add("/home/ludelafo/Music/Temp/sample3.mp3");
 
                                     core.execute(ApplicationProtocol.SEND_TRACK_REQUEST, uri);
                                     break;
 
                                 case 2:
                                     ServerSessionManager.getInstance().serverChooser(ServerSessionManager.getInstance().getAvailableServers());
+                                    core.execute(ApplicationProtocol.SEND_FIRST_CONNECTION, null);
                                     break;
 
                                 case 3:

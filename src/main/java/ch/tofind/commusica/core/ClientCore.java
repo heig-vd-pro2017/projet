@@ -94,11 +94,6 @@ public class ClientCore extends AbstractCore implements ICore {
             //EphemeralPlaylist playlistUpdated = Serialize.unserialize(playlistJson, EphemeralPlaylist.class);
             //PlaylistManager.getInstance().loadPlaylist(playlistUpdated);
 
-            //String command = ApplicationProtocol.NEW_ACTIVE_CLIENT + NetworkProtocol.END_OF_LINE +
-            //        ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
-            //        NetworkProtocol.END_OF_COMMAND;
-
-            //sendUnicast(ApplicationProtocol.serverAddress, command);
         }
 
         // We add the server to the available servers list
@@ -106,6 +101,28 @@ public class ClientCore extends AbstractCore implements ICore {
 
         return "";
     }
+
+    /**
+     * @brief Entry point to notify the server the client want to connect to it. It sends the NEW_ACTIVE_CLIENT command
+     * by Unicast to the server chosen.
+     *
+     * @param args Args of the command.
+     *
+     * @return An empty String
+     */
+    public String SEND_FIRST_CONNECTION(ArrayList<Object> args) {
+        LOG.info("Dans SEND_FIRST_CONNECTION");
+
+        String command = ApplicationProtocol.NEW_ACTIVE_CLIENT + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
+
+        sendUnicast(ApplicationProtocol.serverAddress, command);
+
+        return "";
+    }
+
+
 
     /**
      * @brief Entry point to ask the server for a track request. This method does the first check to ensure
