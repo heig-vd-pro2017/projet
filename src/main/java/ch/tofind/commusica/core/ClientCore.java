@@ -119,9 +119,7 @@ public class ClientCore extends AbstractCore implements ICore {
 
         return "";
     }
-
-
-
+    
     /**
      * @brief Entry point to ask the server for a track request. This method does the first check to ensure
      * the track is in a supported format and then send the command TRACK_REQUEST with all the
