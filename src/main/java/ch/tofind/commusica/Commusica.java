@@ -1,11 +1,11 @@
 package ch.tofind.commusica;
 
-import ch.tofind.commusica.core.ApplicationConfiguration;
 import ch.tofind.commusica.core.ApplicationProtocol;
 import ch.tofind.commusica.core.Core;
 import ch.tofind.commusica.session.ServerSessionManager;
 import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.utils.Logger;
+import ch.tofind.commusica.utils.Network;
 
 import java.util.*;
 
@@ -18,7 +18,7 @@ public class Commusica {
 
         Scanner scanner = new Scanner(System.in);
 
-        ApplicationConfiguration.configure();
+        Network.configureNetwork();
 
         Core core = new Core();
 

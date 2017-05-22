@@ -1,5 +1,8 @@
 package ch.tofind.commusica.utils;
 
+import ch.tofind.commusica.core.ApplicationProtocol;
+import ch.tofind.commusica.network.NetworkProtocol;
+
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -10,6 +13,36 @@ import java.util.*;
  * @brief This class can get properties about the network interfaces of the current machine.
  */
 public class Network {
+
+    /**
+     * @brief Configure the network for the rest of the application.
+     */
+    public static void configureNetwork() {
+
+        Scanner scanner = new Scanner(System.in);
+
+        TreeMap<String, InetAddress> networkInterfaces = ch.tofind.commusica.utils.Network.getIPv4Interfaces();
+
+        if (networkInterfaces.size() > 1) {
+
+            String interfaceChoice = "";
+            while (!networkInterfaces.containsKey(interfaceChoice)) {
+                System.out.println("Which interface to use for the multicast ?");
+                for (Map.Entry<String, InetAddress> networkInterface : networkInterfaces.entrySet()) {
+                    System.out.println(networkInterface.getKey() + " - " + networkInterface.getValue());
+                }
+                System.out.print("> ");
+                interfaceChoice = scanner.next();
+            }
+
+            NetworkProtocol.interfaceToUse = networkInterfaces.get(interfaceChoice);
+        } else {
+
+            NetworkProtocol.interfaceToUse = networkInterfaces.firstEntry().getValue();
+        }
+
+        ApplicationProtocol.myId = Arrays.hashCode(ch.tofind.commusica.utils.Network.getMacAddress(NetworkProtocol.interfaceToUse));
+    }
 
     /**
      * @brief Get the MAC address from a network interface.
