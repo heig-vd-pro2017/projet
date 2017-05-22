@@ -193,12 +193,12 @@ public class Commusica {
                                     ArrayList<Object> uri = new ArrayList<>();
 
                                     //uri.add("C:\\Users\\David\\Documents\\YourFuckingMother_x_EHDE_-_Pocket_Monsters_VIP.mp3");
-                                    uri.add("C:\\Users\\David\\Downloads\\02 v.m4a");
+                                    ///home/ludelafo/Music/Temp/sample3.mp3uri.add("C:\\Users\\David\\Downloads\\02 v.m4a");
 
                                     // Error test with pdf
                                     //uri.add("C:\\Users\\David\\Documents\\2014_SYE-B_TE2.pdf");
 
-                                    //uri.add("/home/ludelafo/Music/Temp/sample3.mp3");
+                                    uri.add("/home/ludelafo/Music/Temp/sample3.mp3");
 
                                     core.execute(ApplicationProtocol.SEND_TRACK_REQUEST, uri);
                                     break;
