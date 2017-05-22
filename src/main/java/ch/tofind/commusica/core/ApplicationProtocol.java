@@ -24,6 +24,8 @@ public final class ApplicationProtocol {
 
     public static final String ERROR = "ERROR";
 
+    public static final String SEND_FIRST_CONNECTION = "SEND_FIRST_CONNECTION";
+
     public static final String TRACK_REQUEST = "TRACK_REQUEST";
 
     public static final String TRACK_ACCEPTED = "TRACK_ACCEPTED";
