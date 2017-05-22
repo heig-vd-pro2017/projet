@@ -2,6 +2,9 @@ package ch.tofind.commusica.session;
 
 import java.util.Date;
 
+/**
+ * @brief These methods must be defined when implementing a session object.
+ */
 public interface ISession {
 
     /**
@@ -9,17 +12,17 @@ public interface ISession {
      *
      * @return ID of the session.
      */
-    abstract Integer getId();
+    Integer getId();
 
     /**
      * @brief Update the session.
      */
-    abstract void update();
+    void update();
 
     /**
      * @brief Get the session's last update.
      *
      * @return Date when the session was updated.
      */
-    abstract Date getLastUpdate();
+    Date getLastUpdate();
 }

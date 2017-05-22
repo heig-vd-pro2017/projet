@@ -289,7 +289,7 @@ public class ServerCore extends AbstractCore implements ICore {
         try {
             userSessionManager.upvote(userId, trackId);
         } catch (Exception e) {
-            LOG.error(e);
+            LOG.warning("This user has already upvoted this track.");
 
             result = ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
@@ -355,7 +355,7 @@ public class ServerCore extends AbstractCore implements ICore {
         try {
             userSessionManager.downvote(userId, trackId);
         } catch (Exception e) {
-            LOG.error(e);
+            LOG.warning("This user has already downvoted this track.");
 
             result = ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
