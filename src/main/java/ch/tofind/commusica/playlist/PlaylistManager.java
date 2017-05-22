@@ -5,6 +5,7 @@ import ch.tofind.commusica.media.EphemeralPlaylist;
 import ch.tofind.commusica.media.SavedPlaylist;
 import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.ui.UIController;
+import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
 
 import java.util.List;
@@ -38,7 +39,9 @@ public class PlaylistManager {
      * PlaylistManager single constructor. Avoid the instantiation.
      */
     private PlaylistManager() {
-        playlist = new EphemeralPlaylist();
+        // TODO: Is this the right place ?
+        String playlistName = Configuration.getInstance().get("PLAYLIST_NAME");
+        playlist = new EphemeralPlaylist(playlistName);
         savedPlaylists = retrievePlaylists();
         favoritesPlaylist = retrieveFavoritesPlaylist();
     }

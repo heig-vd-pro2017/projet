@@ -4,16 +4,10 @@ import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.playlist.PlaylistTrack;
 import javafx.beans.property.ObjectPropertyBase;
 
+/**
+ * @brief This class can get properties from a PlaylistTrack.
+ */
 public class PlaylistTrackProperty extends ObjectPropertyBase<PlaylistTrack> {
-    @Override
-    public Object getBean() {
-        return this;
-    }
-
-    @Override
-    public String getName() {
-        return "currentTrack";
-    }
 
     /**
      * Shortcut accessor for the getValue().getTrack() property.
@@ -22,5 +16,15 @@ public class PlaylistTrackProperty extends ObjectPropertyBase<PlaylistTrack> {
      */
     public Track getTrack() {
         return getValue().getTrack();
+    }
+
+    @Override
+    public Object getBean() {
+        return this;
+    }
+
+    @Override
+    public String getName() {
+        return "currentTrack";
     }
 }

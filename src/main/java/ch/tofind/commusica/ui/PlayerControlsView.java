@@ -95,7 +95,7 @@ public class PlayerControlsView extends GridPane {
      */
     @FXML
     private void next(MouseEvent e) {
-        LOG.log(Logger.Level.INFO, "Asked for next track.");
+        LOG.info("Asked for next track.");
 
         if(Configuration.getInstance().get("DEBUG").equals("1")) {
             player.load();
@@ -125,7 +125,7 @@ public class PlayerControlsView extends GridPane {
      */
     @FXML
     private void previous(MouseEvent e) {
-        LOG.log(Logger.Level.INFO, "Asked for previous track.");
+        LOG.info("Asked for previous track.");
     }
 
     /**

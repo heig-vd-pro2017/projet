@@ -4,10 +4,7 @@ import ch.tofind.commusica.file.FileManager;
 import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.playlist.PlaylistManager;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
@@ -99,21 +96,7 @@ public class Track implements Serializable {
      */
     public Track(AudioFile audioFile) {
 
-
-        //Use MD5 algorithm
-        MessageDigest md5Digest = null;
-        try {
-            md5Digest = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-
-        //Get the checksum
-        try {
-            id = FileManager.getFileChecksum(md5Digest, audioFile.getFile());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        id = FileManager.getInstance().getMD5Checksum(audioFile.getFile());
 
         AudioHeader header = audioFile.getAudioHeader();
         Tag tags = audioFile.getTag();

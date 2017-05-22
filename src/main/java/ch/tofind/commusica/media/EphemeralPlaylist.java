@@ -2,6 +2,7 @@ package ch.tofind.commusica.media;
 
 import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.playlist.PlaylistTrack;
+import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.ObservableSortedPlaylistTrackList;
 
 public class EphemeralPlaylist implements IPlaylist {
@@ -11,10 +12,10 @@ public class EphemeralPlaylist implements IPlaylist {
     //! The playlist that will be saved into the database for keeping track of this one.
     private SavedPlaylist delegate;
 
-    public EphemeralPlaylist() {
-        delegate = new SavedPlaylist("Soirée lambda");
-
-        DatabaseManager.getInstance().save(delegate);
+    public EphemeralPlaylist(String playlistName) {
+        // TODO: Choose the playlist name
+        staticPlaylist = new SavedPlaylist(playlistName);
+        DatabaseManager.getInstance().save(staticPlaylist);
 
         tracksList = new ObservableSortedPlaylistTrackList();
     }
@@ -70,5 +71,11 @@ public class EphemeralPlaylist implements IPlaylist {
 
     public boolean isSaved() {
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return staticPlaylist.getName() + "\n" +
+                tracksList;
     }
 }
