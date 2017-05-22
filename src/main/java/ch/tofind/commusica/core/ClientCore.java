@@ -392,6 +392,41 @@ public class ClientCore extends AbstractCore implements ICore {
     public String ERROR(ArrayList<Object> args) {
         LOG.info("In ERROR");
 
+        // remove the id
+        args.remove(0);
+        // remove the socket
+        args.remove(0);
+
+        String errorMessage = (String) args.remove(0);
+
+        LOG.warning(errorMessage);
+
+        String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
+        return result;
+    }
+
+    /**
+     * @brief Method invoked when the server sends the SUCCESS command. It notify that an action
+     * succeed.
+     *
+     * @param args Args of the command.
+     *
+     * @return END_OF_COMMUNICATION command
+     */
+    public String SUCCESS(ArrayList<Object> args) {
+        LOG.info("In SUCESS");
+
+        // remove the id
+        args.remove(0);
+        // remove the socket
+        args.remove(0);
+
+        String successMessage = (String) args.remove(0);
+
+        LOG.info(successMessage);
+
         String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;

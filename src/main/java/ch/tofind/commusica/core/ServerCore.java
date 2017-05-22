@@ -213,6 +213,8 @@ public class ServerCore extends AbstractCore implements ICore {
             LOG.error(e);
 
             return ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.ERROR_DURING_TRANSFER + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
         }
 
@@ -224,6 +226,8 @@ public class ServerCore extends AbstractCore implements ICore {
             fileManager.delete(tempFile);
 
             return ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.ERROR_FILE_CORRPUTED + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
         }
 
@@ -236,6 +240,7 @@ public class ServerCore extends AbstractCore implements ICore {
             LOG.error(e);
             result = ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.ERROR_FILE_EXTENSION + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
             return result;
         }
@@ -293,6 +298,7 @@ public class ServerCore extends AbstractCore implements ICore {
 
             result = ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.ERROR_ALREADY_UPVOTED + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
             return result;
         }
@@ -309,6 +315,7 @@ public class ServerCore extends AbstractCore implements ICore {
         if (queryId.list().isEmpty()) {
             result = ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.ERROR_TRACK_ID_NOT_IN_DB + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
             return result;
         }
@@ -358,7 +365,7 @@ public class ServerCore extends AbstractCore implements ICore {
             LOG.error(e);
 
             result = ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
-                    ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.ERROR_ALREADY_DOWNVOTED + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
             return result;
         }
@@ -374,6 +381,7 @@ public class ServerCore extends AbstractCore implements ICore {
         if (queryId.list().isEmpty()) {
             result = ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.ERROR_TRACK_ID_NOT_IN_DB + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
             return result;
         }
@@ -426,6 +434,7 @@ public class ServerCore extends AbstractCore implements ICore {
         // Tells the user its opinion was taken into account
         String result = ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.SUCCESS_NEXT_TRACK + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
         return result;
     }
@@ -459,6 +468,7 @@ public class ServerCore extends AbstractCore implements ICore {
         // Tells the user its opinion was taken into account
         String result = ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.SUCCESS_VOLUME_UP + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
         return result;
     }
@@ -492,6 +502,7 @@ public class ServerCore extends AbstractCore implements ICore {
         // Tells the user its opinion has been counted
         String result = ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.SUCCESS_VOLUME_DOWN + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
         return result;
     }
