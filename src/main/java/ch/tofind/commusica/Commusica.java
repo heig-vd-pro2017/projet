@@ -193,6 +193,7 @@ public class Commusica {
                                 case 1:
                                     ArrayList<Object> uri = new ArrayList<>();
 
+                                    // id = a381d396d1e43b7fe170b6d61a2aa429
                                     uri.add("C:\\Users\\David\\Documents\\YourFuckingMother_x_EHDE_-_Pocket_Monsters_VIP.mp3");
                                     ///home/ludelafo/Music/Temp/sample3.mp3uri.add("C:\\Users\\David\\Downloads\\02 v.m4a");
 
@@ -214,7 +215,7 @@ public class Commusica {
 
                                     // used for test!! replace this with the MD5 hash of the file you sent before
                                     // only for test purpose
-                                    trackToUpvote.add("0358fd8ee66c98236318537365cebd23");
+                                    trackToUpvote.add("a381d396d1e43b7fe170b6d61a2aa429");
 
                                     core.execute(ApplicationProtocol.SEND_UPVOTE_TRACK_REQUEST, trackToUpvote);
                                     break;
@@ -224,7 +225,7 @@ public class Commusica {
 
                                     // used for test!! replace this with the MD5 hash of the file you sent before
                                     // only for test purpose
-                                    trackToDownVote.add("0358fd8ee66c98236318537365cebd23");
+                                    trackToDownVote.add("a381d396d1e43b7fe170b6d61a2aa429");
 
                                     core.execute(ApplicationProtocol.SEND_DOWNVOTE_TRACK_REQUEST, trackToDownVote);
                                     break;

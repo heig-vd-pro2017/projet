@@ -305,6 +305,14 @@ public class ServerCore extends AbstractCore implements ICore {
 
         Query<Track> queryId = session.createQuery(queryString, Track.class);
 
+        // If the query has no result we send the command ERROR
+        if (queryId.list().isEmpty()) {
+            result = ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                    NetworkProtocol.END_OF_COMMAND;
+            return result;
+        }
+
         Track trackToUpvote = queryId.list().get(0);
 
         // Update the track properties
@@ -361,6 +369,14 @@ public class ServerCore extends AbstractCore implements ICore {
         String queryString = String.format("from Track where id = '%s'", trackId);
 
         Query<Track> queryId = session.createQuery(queryString, Track.class);
+
+        // If the query has no result we send the command ERROR
+        if (queryId.list().isEmpty()) {
+            result = ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                    NetworkProtocol.END_OF_COMMAND;
+            return result;
+        }
 
         Track trackToDownvote = queryId.list().get(0);
 
