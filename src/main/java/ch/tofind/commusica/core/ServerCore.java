@@ -23,6 +23,9 @@ import java.net.Socket;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @brief This class represents the server side of the application.
@@ -32,8 +35,11 @@ public class ServerCore extends AbstractCore implements ICore {
     //! Logger for debugging.
     private static final Logger LOG = new Logger(ServerCore.class.getSimpleName());
 
+    //! Time before a session is considered inactive.
+    private static final int TIME_BEFORE_PLAYLIST_UPDATE = Integer.valueOf(Configuration.getInstance().get("TIME_BEFORE_PLAYLIST_UPDATE"));
+
     //! Name of the server.
-    String name;
+    private static final String name = Configuration.getInstance().get("SERVER_NAME");
 
     //! Client to use for multicast.
     MulticastClient multicast;
@@ -44,28 +50,27 @@ public class ServerCore extends AbstractCore implements ICore {
     //! The manager to know how many users are active.
     UserSessionManager userSessionManager;
 
+    //! Broadcast the playlist on schedule.
+    ScheduledExecutorService broadcastPlaylist;
 
     /**
      * @brief Setup the core as a server.
-     *
-     * @param name Name of the server.
-     * @param multicastAddress Multicast address.
-     * @param multicastPort Multicast port.
-     * @param interfaceToUse Interface to use for multicast.
-     * @param unicastPort Unicast port.
      */
-    public ServerCore(String name, String multicastAddress, int multicastPort, InetAddress interfaceToUse, int unicastPort) {
+    public ServerCore() {
 
-        this.name = name;
+        multicast = new MulticastClient(NetworkProtocol.MULTICAST_ADDRESS, NetworkProtocol.MULTICAST_PORT, NetworkProtocol.interfaceToUse);
 
-        multicast = new MulticastClient(multicastAddress, multicastPort, interfaceToUse);
-
-        server = new Server(unicastPort);
+        server = new Server(NetworkProtocol.UNICAST_PORT);
 
         userSessionManager = UserSessionManager.getInstance();
 
         new Thread(multicast).start();
         new Thread(server).start();
+
+        broadcastPlaylist = Executors.newScheduledThreadPool(1);
+        broadcastPlaylist.scheduleAtFixedRate(() -> {
+            execute(ApplicationProtocol.SEND_PLAYLIST_UPDATE, null);
+        }, 0, TIME_BEFORE_PLAYLIST_UPDATE, TimeUnit.SECONDS);
     }
 
     public String END_OF_COMMUNICATION(ArrayList<Object> args) {
@@ -511,12 +516,14 @@ public class ServerCore extends AbstractCore implements ICore {
     public void stop() {
 
         // Stop the network elements
+        broadcastPlaylist.shutdown();
         multicast.stop();
         server.stop();
 
         // Delete the unplayed tracks from the database
-        //Session session = DatabaseManager.getInstance().getSession();
-        //session.createQuery("delete Track where date_played is null").executeUpdate();
+        Session session = DatabaseManager.getInstance().getSession();
+        Query query = session.createQuery("DELETE Track", Track.class);
+        query.executeUpdate();
 
         // Delete the tracks folder
         File tracksDirectory = new File(Configuration.getInstance().get("DEFAULT_TRACKS_DIRECTORY"));

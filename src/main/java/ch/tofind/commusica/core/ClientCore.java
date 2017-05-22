@@ -47,13 +47,10 @@ public class ClientCore extends AbstractCore implements ICore {
 
     /**
      * @brief Setup the core as a client.
-     *
-     * @param multicastAddress Multicast address.
-     * @param port Multicast port.
-     * @param interfaceToUse Interface to use for the multicast.
      */
-    public ClientCore(String multicastAddress, int port, InetAddress interfaceToUse) {
-        multicast = new MulticastClient(multicastAddress, port, interfaceToUse);
+    public ClientCore() {
+
+        multicast = new MulticastClient(NetworkProtocol.MULTICAST_ADDRESS, NetworkProtocol.MULTICAST_PORT, NetworkProtocol.interfaceToUse);
         new Thread(multicast).start();
 
         serverSessionManager = ServerSessionManager.getInstance();

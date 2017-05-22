@@ -1,7 +1,9 @@
 package ch.tofind.commusica.core;
 
+import ch.tofind.commusica.network.NetworkProtocol;
+
 import java.net.InetAddress;
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * @brief This class represents a server or a client core for the current instance.
@@ -10,9 +12,6 @@ public class Core implements ICore {
 
     //! Shared instance of the object for all the application.
     private static AbstractCore instance = null;
-
-    //! Interface to use for Multicast.
-    private InetAddress interfaceToUse;
 
     /**
      * @brief Execute a command on the available core.
@@ -28,33 +27,45 @@ public class Core implements ICore {
 
     /**
      * @brief Create a core.
-     *
-     * @param interfaceToUse Interface to use for multicast.
      */
-    public Core(InetAddress interfaceToUse) {
-        this.interfaceToUse = interfaceToUse;
+    public Core() {
+
+    }
+
+    /**
+     * @brief Setup the core as a network core.
+     */
+    public void setupAsNetwork() {
+
+        if (instance != null) {
+            instance.stop();
+        }
+
+        instance = new NetworkCore();
     }
 
     /**
      * @brief Setup the core as a server.
-     *
-     * @param name Name of the server.
-     * @param multicastAddress Multicast address.
-     * @param multicastPort Multicast port.
-     * @param unicastPort Unicast port.
      */
-    public void setupAsServer(String name, String multicastAddress, int multicastPort, int unicastPort) {
-        instance = new ServerCore(name, multicastAddress, multicastPort, interfaceToUse, unicastPort);
+    public void setupAsServer() {
+
+        if (instance != null) {
+            instance.stop();
+        }
+
+        instance = new ServerCore();
     }
 
     /**
      * @brief Setup the core as a client.
-     *
-     * @param multicastAddress Multicast address.
-     * @param multicastPort Multicast port.
      */
-    public void setupAsClient(String multicastAddress, int multicastPort) {
-        instance = new ClientCore(multicastAddress, multicastPort, interfaceToUse);
+    public void setupAsClient() {
+
+        if (instance != null) {
+            instance.stop();
+        }
+
+        instance = new ClientCore();
     }
 
     @Override
