@@ -8,12 +8,18 @@ import javafx.collections.ObservableListBase;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @brief This class represents all the PlaylistTrack in the UI.
+ */
 public class ObservableSortedPlaylistTrackList extends ObservableListBase<PlaylistTrack> {
 
+    //! The list of PlaylistTrack.
     private final List<PlaylistTrack> delegate = new ArrayList<>();
 
+    //! Know which PlaylistTrack is prior to another PlaylistTrack.
     private VoteComparator comparator = new VoteComparator();
 
+    //! Number of tracks for the PlaylistTrack.
     private int count = 0;
 
     @Override

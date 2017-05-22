@@ -1,8 +1,11 @@
 package ch.tofind.commusica.utils;
 
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
+/**
+ * @brief This class is used for debugging.
+ */
 public class Logger {
 
     //! Set the debugging for the all the application.
@@ -11,7 +14,7 @@ public class Logger {
     //! Class that asked to debug.
     private String className;
 
-    //!
+    //! All the available colors to show on the screen.
     private enum ANSIColor {
         BLUE(34), GREEN(32), RED(31), RESET(0), YELLOW(33);
 
@@ -26,7 +29,7 @@ public class Logger {
         }
     }
 
-    //!
+    //! All the available levels for logging.
     public enum Level {
         INFO(ANSIColor.BLUE), SEVERE(ANSIColor.RED), SUCCESS(ANSIColor.GREEN), WARNING(ANSIColor.YELLOW);
 
@@ -56,12 +59,12 @@ public class Logger {
      * @param level The level of the message.
      * @param message The message to display.
      */
-    public void log(Level level, String message) {
+    private void log(Level level, String message) {
         if (DEBUG) {
-            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            Date now = new Date();
             SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss Z");
 
-            System.out.printf("%s - %s\n", format.format(timestamp), className);
+            System.out.printf("%s - %s\n", format.format(now), className);
             System.out.printf("%s: %s\n", level, message);
         }
     }
@@ -72,27 +75,43 @@ public class Logger {
      * @param level The level of the exception.
      * @param e The exception to throw.
      */
-    public void log(Level level, Exception e) {
+    private void log(Level level, Exception e) {
         log(level, e.getMessage());
         e.printStackTrace();
-
-        //throw new RuntimeException(e);
     }
 
-
+    /**
+     * @brief Log as info.
+     *
+     * @param message The message to display.
+     */
     public void info(String message) {
         log(Level.INFO, message);
     }
 
+    /**
+     * @brief Log as warning.
+     *
+     * @param message The message to display.
+     */
     public void warning(String message) {
         log(Level.WARNING, message);
     }
 
+    /**
+     * @brief Log as error.
+     *
+     * @param message The message to display.
+     */
     public void error(String message) {
         log(Level.SEVERE, message);
     }
 
-
+    /**
+     * @brief Log as error.
+     *
+     * @param e The exception that has been thrown.
+     */
     public void error(Exception e) {
         log(Level.SEVERE, e);
     }

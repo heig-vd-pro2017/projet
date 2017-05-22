@@ -36,7 +36,7 @@ public class Commusica {
     }
 
     public static void main(String[] args) throws Exception {
-        LOG.log(Logger.Level.INFO, "Starting application...");
+        LOG.info("Starting application...");
 
         Scanner scanner = new Scanner(System.in);
 

@@ -5,19 +5,20 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
- * @brief This class can get properties from a configuration file
+ * @brief This class can get properties from a configuration file.
  */
 public class Configuration {
 
     //! Logger for debugging.
     private static final Logger LOG = new Logger(Configuration.class.getSimpleName());
 
+    //! The configuration file to use.
     private static final String CONFIG_FILE = "commusica.properties";
 
-    //! Shared instance of the object for all the application
+    //! Shared instance of the object for all the application.
     private static Configuration instance = null;
 
-    //! Property object to load property from configuration file
+    //! Property object to load property from configuration file.
     private Properties configuration = null;
 
     /**

@@ -73,7 +73,7 @@ public class Player {
             try {
                 media = new Media(new File(currentTrackProperty.getTrack().getUri()).toURI().toString());
             } catch (MediaException e) {
-                LOG.log(Logger.Level.SEVERE, e);
+                LOG.error(e);
             }
 
             // Stop current player if there is one.
