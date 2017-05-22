@@ -109,7 +109,7 @@ public class ClientCore extends AbstractCore implements ICore {
 
     /**
      * @brief Entry point to ask the server for a track request. This method does the first check to ensure
-     * the track is in a supported format and then send the command TRACK_REQUES  with all the
+     * the track is in a supported format and then send the command TRACK_REQUEST with all the
      * information available about the track.
      * It also setup the Unicast client for the time of the "transaction" since the UnicastCLient
      * isn't set anywhere in the client.

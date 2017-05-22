@@ -250,6 +250,9 @@ public class ServerCore extends AbstractCore implements ICore {
 
         trackToReceive.setUri(filename);
 
+        // delete the temporary file
+        fileManager.delete(tempFile);
+
         // Update/Save the file in the database
         DatabaseManager.getInstance().save(trackToReceive);
 

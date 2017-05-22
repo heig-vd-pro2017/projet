@@ -81,8 +81,6 @@ public class Commusica {
 
             } else if (startApp == 2) {
 
-
-
                 TreeMap<String, InetAddress> networkInterfaces = ch.tofind.commusica.utils.Network.getIPv4Interfaces();
 
                 if (networkInterfaces.size() > 1) {
