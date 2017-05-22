@@ -4,8 +4,6 @@ import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.playlist.PlaylistTrack;
 import ch.tofind.commusica.utils.ObservableSortedPlaylistTrackList;
 
-import java.util.Optional;
-
 public class EphemeralPlaylist implements IPlaylist {
 
     private ObservableSortedPlaylistTrackList tracksList;

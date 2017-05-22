@@ -89,22 +89,24 @@ public class ClientCore extends AbstractCore implements ICore {
 
         LOG.info("Sending playlist: " + playlistJson);
 
+        /*
         if (Objects.isNull(ApplicationProtocol.serverId)) {
             ApplicationProtocol.serverId = serverId;
             ApplicationProtocol.serverName = serverName;
             ApplicationProtocol.serverAddress = serverAddress;
         }
+        */
 
         if (Objects.equals(serverId, ApplicationProtocol.serverId)) {
             // TODO: fix this =(
             //EphemeralPlaylist playlistUpdated = Serialize.unserialize(playlistJson, EphemeralPlaylist.class);
             //PlaylistManager.getInstance().loadPlaylist(playlistUpdated);
 
-            String command = ApplicationProtocol.NEW_ACTIVE_CLIENT + NetworkProtocol.END_OF_LINE +
+            //String command = ApplicationProtocol.NEW_ACTIVE_CLIENT + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
 
-            sendUnicast(ApplicationProtocol.serverAddress, command);
+            //sendUnicast(ApplicationProtocol.serverAddress, command);
         }
 
         // We add the server to the available servers list
