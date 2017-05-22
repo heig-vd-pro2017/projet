@@ -1,5 +1,7 @@
 package ch.tofind.commusica.ui;
 
+import ch.tofind.commusica.core.ApplicationProtocol;
+import ch.tofind.commusica.core.Core;
 import ch.tofind.commusica.network.Server;
 import ch.tofind.commusica.session.ServerSession;
 import ch.tofind.commusica.session.ServerSessionManager;
@@ -40,6 +42,14 @@ public class SettingsView extends AnchorPane {
 
         serversList.setCellFactory((ListView<ServerSession> cell) -> new ServerSessionCell());
         serversList.setButtonCell(new ServerSessionCell());
+
+        serversList.valueProperty().addListener((obs, oldValue, newValue) -> {
+            ApplicationProtocol.serverId = newValue.getId();
+            ApplicationProtocol.serverAddress = newValue.getServerIp();
+            ApplicationProtocol.serverName = newValue.getServerName();
+
+            Core.execute(ApplicationProtocol.SEND_FIRST_CONNECTION, null);
+        });
     }
 
     private class ServerSessionCell extends ListCell<ServerSession> {
