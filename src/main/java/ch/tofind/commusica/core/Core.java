@@ -6,7 +6,7 @@ import java.util.*;
 /**
  * @brief This class represents a server or a client core for the current instance.
  */
-public class Core implements ICore {
+public class Core {
 
     //! Shared instance of the object for all the application.
     private static AbstractCore instance = null;
@@ -28,16 +28,9 @@ public class Core implements ICore {
     }
 
     /**
-     * @brief Create a core.
-     */
-    public Core() {
-
-    }
-
-    /**
      * @brief Setup the core as a server.
      */
-    public void setupAsServer() {
+    public static void setupAsServer() {
 
         if (instance != null) {
             instance.stop();
@@ -49,7 +42,7 @@ public class Core implements ICore {
     /**
      * @brief Setup the core as a client.
      */
-    public void setupAsClient() {
+    public static void setupAsClient() {
 
         if (instance != null) {
             instance.stop();
@@ -58,19 +51,10 @@ public class Core implements ICore {
         instance = new ClientCore();
     }
 
-    @Override
-    public void sendUnicast(InetAddress hostname, String message) {
-        instance.sendUnicast(hostname, message);
-    }
+    public static void stop() {
 
-    @Override
-    public void sendMulticast(String message) {
-        instance.sendMulticast(message);
+        if (instance != null) {
+            instance.stop();
+        }
     }
-
-    @Override
-    public void stop() {
-        instance.stop();
-    }
-
 }

@@ -150,19 +150,17 @@ public class UIController extends Application implements Initializable {
 
             Network.configureNetwork();
 
-            core = new Core();
-
             if (result.get().equals("Client")) {
 
                 LOG.info("Launching as client.");
 
-                core.setupAsClient();
+                Core.setupAsClient();
 
             } else if (result.get().equals("Server")) {
 
                 LOG.info("Launching as server.");
 
-                core.setupAsServer();
+                Core.setupAsServer();
 
             } else {
 
@@ -183,7 +181,7 @@ public class UIController extends Application implements Initializable {
 
         LOG.info("Stopping application...");
 
-        core.stop();
+        Core.stop();
 
         // IMMONDE
         System.exit(0);
