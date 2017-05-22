@@ -2,10 +2,12 @@ package ch.tofind.commusica.core;
 
 import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.file.FileManager;
+import ch.tofind.commusica.media.EphemeralPlaylist;
 import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.network.MulticastClient;
 import ch.tofind.commusica.network.NetworkProtocol;
 import ch.tofind.commusica.network.UnicastClient;
+import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.session.ServerSessionManager;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.Serialize;
@@ -88,10 +90,8 @@ public class ClientCore extends AbstractCore implements ICore {
         LOG.info("Sending playlist: " + playlistJson);
 
         if (Objects.equals(serverId, ApplicationProtocol.serverId)) {
-            // TODO: fix this =(
-            //EphemeralPlaylist playlistUpdated = Serialize.unserialize(playlistJson, EphemeralPlaylist.class);
-            //PlaylistManager.getInstance().loadPlaylist(playlistUpdated);
-
+            EphemeralPlaylist playlistUpdated = Serialize.unserialize(playlistJson, EphemeralPlaylist.class);
+            PlaylistManager.getInstance().setEphemeralPlaylist(playlistUpdated);
         }
 
         // We add the server to the available servers list
@@ -460,5 +460,10 @@ public class ClientCore extends AbstractCore implements ICore {
 
         // Close the database connection
         DatabaseManager.getInstance().close();
+    }
+
+    @Override
+    public boolean isServer() {
+        return false;
     }
 }

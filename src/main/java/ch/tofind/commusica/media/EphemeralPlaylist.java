@@ -10,11 +10,12 @@ public class EphemeralPlaylist implements IPlaylist {
     private ObservableSortedPlaylistTrackList tracksList;
 
     //! The playlist that will be saved into the database for keeping track of this one.
-    private SavedPlaylist staticPlaylist;
+    private SavedPlaylist delegate;
 
     public EphemeralPlaylist(String playlistName) {
-        staticPlaylist = new SavedPlaylist(playlistName);
-        DatabaseManager.getInstance().save(staticPlaylist);
+        // TODO: Choose the playlist name
+        delegate = new SavedPlaylist(playlistName);
+        DatabaseManager.getInstance().save(delegate);
 
         tracksList = new ObservableSortedPlaylistTrackList();
     }
@@ -31,7 +32,7 @@ public class EphemeralPlaylist implements IPlaylist {
         // Check that the playlist doesn't already contains the track.
         if (tracksList.stream().noneMatch(p -> p.getTrack().equals(track))) {
             // Create the PlaylistTrack object by associating it with the static playlist.
-            PlaylistTrack playlistTrack = new PlaylistTrack(staticPlaylist, track);
+            PlaylistTrack playlistTrack = new PlaylistTrack(delegate, track);
             tracksList.add(playlistTrack);
 
             return true;
@@ -103,7 +104,11 @@ public class EphemeralPlaylist implements IPlaylist {
 
     @Override
     public String toString() {
-        return staticPlaylist.getName() + "\n" +
+        return delegate.getName() + "\n" +
                 tracksList;
+    }
+
+    public String getName() {
+        return delegate.getName();
     }
 }

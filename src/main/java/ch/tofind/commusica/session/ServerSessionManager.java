@@ -1,6 +1,10 @@
 package ch.tofind.commusica.session;
 
 import ch.tofind.commusica.core.ApplicationProtocol;
+import ch.tofind.commusica.network.Server;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 
 import java.net.InetAddress;
 import java.util.*;
@@ -17,7 +21,10 @@ public class ServerSessionManager implements ISessionManager {
     private static ServerSessionManager instance = null;
 
     //! Store the active sessions.
-    private static Map<Integer, ServerSession> availableServers = new HashMap<>();
+    //private static Map<Integer, ServerSession> availableServers;
+    private static ObservableMap<Integer, ServerSession> availableServers;
+
+    //private static ObservableList<ServerSession> observableServersList;
 
     //! Clean the old sessions on schedule.
     private ScheduledExecutorService scheduledExecutorService;
@@ -27,7 +34,8 @@ public class ServerSessionManager implements ISessionManager {
      */
     private ServerSessionManager() {
 
-        availableServers = new HashMap<>(0);
+        //availableServers = new HashMap<>(0);
+        availableServers = FXCollections.observableHashMap();
 
         // Crée un thread qui nettoie les sessions toutes les N secondes
         scheduledExecutorService = Executors.newScheduledThreadPool(1);
@@ -59,12 +67,13 @@ public class ServerSessionManager implements ISessionManager {
      */
     public void store(Integer id, InetAddress serverIp, String serverName) {
 
-        if (availableServers.containsKey(serverIp)) {
-            ServerSession serverSession = availableServers.get(serverIp);
+        if (availableServers.containsKey(id)) {
+            ServerSession serverSession = availableServers.get(id);
             serverSession.update();
         } else {
             ServerSession serverSession = new ServerSession(id, serverIp, serverName);
             availableServers.put(serverSession.getId(), serverSession);
+            //observableServersList.add(serverSession);
         }
     }
 
@@ -73,9 +82,13 @@ public class ServerSessionManager implements ISessionManager {
      *
      * @return The available servers.
      */
-    public Map<Integer, ServerSession> getAvailableServers() {
+    public ObservableMap<Integer, ServerSession> getAvailableServers() {
         return availableServers;
     }
+
+    /*public ObservableList<ServerSession> getObservableServersList() {
+        return observableServersList;
+    }*/
 
     /**
      * @brief Choose a server in the available servers.
@@ -128,6 +141,7 @@ public class ServerSessionManager implements ISessionManager {
             // if the server hasn't been refreshed in the last 10s
             if (serverSession.getLastUpdate().getTime() > now.getTime() - TIME_BEFORE_SESSION_INACTIVE) {
                 availableServers.remove(serverSession.getId());
+                //observableServersList.remove(serverSession);
             }
         }
     }
@@ -135,5 +149,7 @@ public class ServerSessionManager implements ISessionManager {
     @Override
     public void stop() {
         scheduledExecutorService.shutdown();
+
+        instance = null;
     }
 }

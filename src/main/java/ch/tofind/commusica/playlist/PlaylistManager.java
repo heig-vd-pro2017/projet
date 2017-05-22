@@ -92,6 +92,9 @@ public class PlaylistManager {
     }
 
     public void addTrackToFavorites(Track track) {
+        // Save the track if it isn't already done.
+        DatabaseManager.getInstance().getSession().saveOrUpdate(track);
+
         PlaylistTrack playlistTrack = new PlaylistTrack(favoritesPlaylist, track);
 
         DatabaseManager.getInstance().save(playlistTrack);
@@ -110,6 +113,12 @@ public class PlaylistManager {
 
         // We need to refresh the view since it's not an Observable...
         UIController.getController().refreshPlaylist();
+    }
+
+    public void setEphemeralPlaylist(EphemeralPlaylist playlist) {
+        this.playlist = playlist;
+
+        LOG.info("Changed ephemeral playlist.");
     }
 
     /**

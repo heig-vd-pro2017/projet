@@ -23,6 +23,10 @@ public class Core implements ICore {
         return instance.execute(command, args);
     }
 
+    public static boolean isServer() {
+        return instance.isServer();
+    }
+
     /**
      * @brief Create a core.
      */

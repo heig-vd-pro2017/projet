@@ -123,30 +123,40 @@ public class PlaylistTrackCell {
     /**
      * @brief Downvote the track.
      *
-     * @param e MouseEvent that triggered the function.
+     * @param event MouseEvent that triggered the function.
      */
     @FXML
-    private void downvote(MouseEvent e) {
-        playlistTrack.downvote();
+    private void downvote(MouseEvent event) {
+        if (!UIController.getController().getCurrentPlaylist().isSaved()) {
+            playlistTrack.downvote();
+        }
+
+        event.consume();
     }
 
     /**
      * @brief Favorite the track.
      *
-     * @param e MouseEvent that triggered the function.
+     * @param event MouseEvent that triggered the function.
      */
     @FXML
-    private void favorite(MouseEvent e) {
+    private void favorite(MouseEvent event) {
         track.getFavoritedProperty().setValue(!track.getFavoritedProperty().getValue());
+
+        event.consume();
     }
 
     /**
      * @brief Upvote the track.
      *
-     * @param e MouseEvent that triggered the function.
+     * @param event MouseEvent that triggered the function.
      */
     @FXML
-    private void upvote(MouseEvent e) {
-        playlistTrack.upvote();
+    private void upvote(MouseEvent event) {
+        if (!UIController.getController().getCurrentPlaylist().isSaved()) {
+            playlistTrack.upvote();
+        }
+
+        event.consume();
     }
 }

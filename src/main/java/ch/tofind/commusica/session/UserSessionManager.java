@@ -268,5 +268,7 @@ public class UserSessionManager implements ISessionManager {
     @Override
     public void stop() {
         scheduledExecutorService.shutdown();
+
+        instance = null;
     }
 }

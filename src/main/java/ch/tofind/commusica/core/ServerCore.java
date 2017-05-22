@@ -526,15 +526,28 @@ public class ServerCore extends AbstractCore implements ICore {
     @Override
     public void stop() {
 
-        // Stop the network elements
+        // Try to stop all remaining threads
         broadcastPlaylist.shutdown();
+
+        // Wait 5 seconds before killing everyone
+        try {
+            broadcastPlaylist.awaitTermination(5, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            LOG.error(e);
+        } finally {
+            if (!broadcastPlaylist.isTerminated()) {
+                LOG.error("The thread pool can't be stopped !");
+            }
+            broadcastPlaylist.shutdownNow();
+        }
+
         multicast.stop();
         server.stop();
 
         // Delete the unplayed tracks from the database
-        Session session = DatabaseManager.getInstance().getSession();
-        Query query = session.createQuery("DELETE Track", Track.class);
-        query.executeUpdate();
+        //Session session = DatabaseManager.getInstance().getSession();
+        //Query query = session.createQuery("DELETE Track", Track.class);
+        //query.executeUpdate();
 
         // Delete the tracks folder
         File tracksDirectory = new File(Configuration.getInstance().get("DEFAULT_TRACKS_DIRECTORY"));
@@ -542,5 +555,10 @@ public class ServerCore extends AbstractCore implements ICore {
 
         // Close the database connection
         DatabaseManager.getInstance().close();
+    }
+
+    @Override
+    public boolean isServer() {
+        return true;
     }
 }
