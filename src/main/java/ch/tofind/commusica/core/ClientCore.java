@@ -1,5 +1,6 @@
 package ch.tofind.commusica.core;
 
+import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.file.FileManager;
 import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.network.MulticastClient;
@@ -420,6 +421,14 @@ public class ClientCore extends AbstractCore implements ICore {
 
     @Override
     public void stop() {
+        // Stop the network elements
         multicast.stop();
+
+        // Delete the unplayed tracks from the database
+        //Session session = DatabaseManager.getInstance().getSession();
+        //session.createQuery("DELETE Track WHERE date_played IS NULL").executeUpdate();
+
+        // Close the database connection
+        DatabaseManager.getInstance().close();
     }
 }

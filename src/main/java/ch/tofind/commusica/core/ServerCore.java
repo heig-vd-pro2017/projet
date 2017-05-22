@@ -10,6 +10,7 @@ import ch.tofind.commusica.network.Server;
 import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.playlist.PlaylistTrack;
 import ch.tofind.commusica.session.UserSessionManager;
+import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.Serialize;
 import org.hibernate.Session;
@@ -508,7 +509,20 @@ public class ServerCore extends AbstractCore implements ICore {
 
     @Override
     public void stop() {
+
+        // Stop the network elements
         multicast.stop();
         server.stop();
+
+        // Delete the unplayed tracks from the database
+        //Session session = DatabaseManager.getInstance().getSession();
+        //session.createQuery("delete Track where date_played is null").executeUpdate();
+
+        // Delete the tracks folder
+        File tracksDirectory = new File(Configuration.getInstance().get("DEFAULT_TRACKS_DIRECTORY"));
+        FileManager.getInstance().delete(tracksDirectory);
+
+        // Close the database connection
+        DatabaseManager.getInstance().close();
     }
 }
