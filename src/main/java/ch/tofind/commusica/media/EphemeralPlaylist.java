@@ -78,4 +78,8 @@ public class EphemeralPlaylist implements IPlaylist {
         return delegate.getName() + "\n" +
                 tracksList;
     }
+
+    public String getName() {
+        return delegate.getName();
+    }
 }

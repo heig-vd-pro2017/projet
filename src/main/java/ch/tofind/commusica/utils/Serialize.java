@@ -1,5 +1,6 @@
 package ch.tofind.commusica.utils;
 
+import ch.tofind.commusica.media.EphemeralPlaylist;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -12,7 +13,8 @@ public class Serialize {
     private static final GsonBuilder builder = new GsonBuilder();
 
     //! Google JSON convertor.
-    private static final Gson gson = builder.create();
+    private static final Gson gson = builder.registerTypeAdapter(EphemeralPlaylist.class, new EphemeralPlaylistSerializer())
+                                            .create();
 
     /**
      * @brief Serialize an object to JSON.
