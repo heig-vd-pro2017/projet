@@ -1,5 +1,6 @@
 package ch.tofind.commusica;
 
+import ch.tofind.commusica.core.ApplicationConfiguration;
 import ch.tofind.commusica.core.ApplicationProtocol;
 import ch.tofind.commusica.core.Core;
 import ch.tofind.commusica.session.ServerSessionManager;
@@ -17,10 +18,9 @@ public class Commusica {
 
         Scanner scanner = new Scanner(System.in);
 
+        ApplicationConfiguration.configure();
+
         Core core = new Core();
-
-        core.setupAsNetwork();
-
 
         int launchChoice = -1;
         while (launchChoice != 0) {

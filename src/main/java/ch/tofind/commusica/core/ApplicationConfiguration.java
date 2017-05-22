@@ -9,17 +9,17 @@ import java.util.Scanner;
 import java.util.TreeMap;
 
 /**
- * @brief This core is only used to set the network properties for the rest of the application.
+ * @brief This class is only used to set the application configuration.
  */
-public class NetworkCore extends AbstractCore implements ICore {
+public class ApplicationConfiguration {
 
     //! Logger for debugging.
-    private static final Logger LOG = new Logger(NetworkCore.class.getSimpleName());
+    private static final Logger LOG = new Logger(ApplicationConfiguration.class.getSimpleName());
 
     /**
-     * @brief Setup the core as a network core.
+     * @brief Configure the application.
      */
-    public NetworkCore() {
+    public static void configure() {
 
         Scanner scanner = new Scanner(System.in);
 
@@ -48,20 +48,5 @@ public class NetworkCore extends AbstractCore implements ICore {
         }
 
         ApplicationProtocol.myId = Arrays.hashCode(ch.tofind.commusica.utils.Network.getMacAddress(NetworkProtocol.interfaceToUse));
-    }
-
-    @Override
-    public void sendUnicast(InetAddress hostname, String message) {
-        // Do nothing
-    }
-
-    @Override
-    public void sendMulticast(String message) {
-        // Do nothing
-    }
-
-    @Override
-    public void stop() {
-        // Do nothing
     }
 }

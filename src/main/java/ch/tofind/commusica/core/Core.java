@@ -1,7 +1,5 @@
 package ch.tofind.commusica.core;
 
-import ch.tofind.commusica.network.NetworkProtocol;
-
 import java.net.InetAddress;
 import java.util.*;
 
@@ -30,18 +28,6 @@ public class Core implements ICore {
      */
     public Core() {
 
-    }
-
-    /**
-     * @brief Setup the core as a network core.
-     */
-    public void setupAsNetwork() {
-
-        if (instance != null) {
-            instance.stop();
-        }
-
-        instance = new NetworkCore();
     }
 
     /**
