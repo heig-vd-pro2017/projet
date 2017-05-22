@@ -13,13 +13,20 @@ public class EphemeralPlaylist implements IPlaylist {
     private SavedPlaylist staticPlaylist;
 
     public EphemeralPlaylist(String playlistName) {
-        // TODO: Choose the playlist name
         staticPlaylist = new SavedPlaylist(playlistName);
         DatabaseManager.getInstance().save(staticPlaylist);
 
         tracksList = new ObservableSortedPlaylistTrackList();
     }
 
+    /**
+     * @brief Add a track to the EphemeralPlaylist. It also create a PlaylistTrack to link the
+     * Track and the playlist (for DB purpose).
+     *
+     * @param track The track to add to the playlist.
+     *
+     * @return true if the track was added false otherwise.
+     */
     public boolean addTrack(Track track) {
         // Check that the playlist doesn't already contains the track.
         if (tracksList.stream().noneMatch(p -> p.getTrack().equals(track))) {
@@ -33,6 +40,13 @@ public class EphemeralPlaylist implements IPlaylist {
         return false;
     }
 
+    /**
+     * @brief Downvote a PlaylistTrack.
+     *
+     * @param track The Track form the PlaylistTrack to downvote.
+     *
+     * @return true if the PlaylistTrack was downvoted, false otherwise.
+     */
     public boolean downvoteTrack(Track track) {
         PlaylistTrack playlistTrack = getPlaylistTrack(track);
 
@@ -45,6 +59,13 @@ public class EphemeralPlaylist implements IPlaylist {
         return false;
     }
 
+    /**
+     * @brief Upvote a PlaylistTrack.
+     *
+     * @param track The Track form the PlaylistTrack to upvote.
+     *
+     * @return true if the PlaylistTrack was upvoted, false otherwise.
+     */
     public boolean upvoteTrack(Track track) {
         PlaylistTrack playlistTrack = getPlaylistTrack(track);
 
@@ -57,6 +78,13 @@ public class EphemeralPlaylist implements IPlaylist {
         return false;
     }
 
+    /**
+     * @brief Get the PlaylistTrack object where the Track is the one passed by parameter.
+     *
+     * @param track The Track which we will search in the PlaylistTrack list.
+     *
+     * @return The PlaylistTrack object where the Track is the one passed by parameter.
+     */
     public PlaylistTrack getPlaylistTrack(Track track) {
         return tracksList.stream().filter(p -> p.getTrack().equals(track)).findFirst().orElse(null);
     }
