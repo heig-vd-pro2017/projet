@@ -50,7 +50,7 @@ public class Commusica {
             startApp = scanner.nextInt();
 
             if (startApp == 1) {
-                dropDatabase();
+                //dropDatabase();
 
                 Track track1 = new Track("hashdelatrack1", "BLOOD", "Kendrick Lamar", "DAMN.", 119, "/Users/faku99/Desktop/tmp/BLOOD.mp3");
                 Track track2 = new Track("hashdelatrack2", "DNA", "Kendrick Lamar", "DAMN.", 186, "/Users/faku99/Desktop/tmp/DNA.mp3");

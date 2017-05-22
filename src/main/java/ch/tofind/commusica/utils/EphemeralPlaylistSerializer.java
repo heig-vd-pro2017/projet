@@ -23,9 +23,20 @@ public class EphemeralPlaylistSerializer implements JsonSerializer<EphemeralPlay
 
             Iterator<JsonElement> it = tracks.iterator();
             while (it.hasNext()) {
-                JsonObject track = it.next().getAsJsonObject();
+                JsonObject playlistTrack = it.next().getAsJsonObject();
 
-                tracksList.put(Serialize.unserialize(track.get("track").toString(), Track.class), track.get("votes").getAsInt());
+                String id = playlistTrack.get("id").getAsString();
+                String title = playlistTrack.get("title").getAsString();
+                String artist = playlistTrack.get("artist").getAsString();
+                String album = playlistTrack.get("album").getAsString();
+                Integer length = playlistTrack.get("length").getAsInt();
+                String uri = playlistTrack.get("uri").getAsString();
+
+                Integer votes = playlistTrack.get("votes").getAsInt();
+
+                Track track = new Track(id, title, artist, album, length, uri);
+
+                tracksList.put(track, votes);
             }
 
             tracksList.forEach((track, votes) -> {
@@ -47,12 +58,21 @@ public class EphemeralPlaylistSerializer implements JsonSerializer<EphemeralPlay
         // Playlist tracks.
         JsonArray tracks = new JsonArray();
         playlist.getTracksList().forEach(item -> {
-            JsonObject track = new JsonObject();
-            track.addProperty("track", Serialize.serialize(item.getTrack()));
-            track.addProperty("votes", item.getVotesProperty().getValue());
+            JsonObject playlistTrack = new JsonObject();
 
-            tracks.add(track);
+            playlistTrack.addProperty("id", item.getTrack().getId());
+            playlistTrack.addProperty("title", item.getTrack().getTitle());
+            playlistTrack.addProperty("artist", item.getTrack().getArtist());
+            playlistTrack.addProperty("album", item.getTrack().getAlbum());
+            playlistTrack.addProperty("length", item.getTrack().getLength());
+            playlistTrack.addProperty("uri", item.getTrack().getUri());
+            //playlistTrack.addProperty("dateAdded", item.getTrack().getDateAdded().toString());
+
+            playlistTrack.addProperty("votes", item.getVotesProperty().getValue());
+
+            tracks.add(playlistTrack);
         });
+        root.add("tracks", tracks);
 
         return root;
     }
