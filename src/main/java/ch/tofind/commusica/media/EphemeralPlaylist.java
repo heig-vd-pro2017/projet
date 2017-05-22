@@ -14,8 +14,8 @@ public class EphemeralPlaylist implements IPlaylist {
 
     public EphemeralPlaylist(String playlistName) {
         // TODO: Choose the playlist name
-        staticPlaylist = new SavedPlaylist(playlistName);
-        DatabaseManager.getInstance().save(staticPlaylist);
+        delegate = new SavedPlaylist(playlistName);
+        DatabaseManager.getInstance().save(delegate);
 
         tracksList = new ObservableSortedPlaylistTrackList();
     }
@@ -75,7 +75,7 @@ public class EphemeralPlaylist implements IPlaylist {
 
     @Override
     public String toString() {
-        return staticPlaylist.getName() + "\n" +
+        return delegate.getName() + "\n" +
                 tracksList;
     }
 }
