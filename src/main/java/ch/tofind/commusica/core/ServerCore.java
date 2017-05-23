@@ -2,6 +2,7 @@ package ch.tofind.commusica.core;
 
 import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.file.FileManager;
+import ch.tofind.commusica.media.Player;
 import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.network.MulticastClient;
 import ch.tofind.commusica.network.NetworkProtocol;
@@ -435,6 +436,30 @@ public class ServerCore extends AbstractCore implements ICore {
         return result;
     }
 
+
+    /**
+     *
+     */
+    public String SEND_PLAY_PAUSE_REQUEST(ArrayList<Object> args) {
+        Player player = Player.getCurrentPlayer();
+        if (!player.getIsPlayingProperty().get()) {
+            Player.getCurrentPlayer().play();
+        } else {
+            Player.getCurrentPlayer().pause();
+        }
+
+        return "";
+    }
+
+
+    public String SEND_NEXT_TRACK_REQUEST(ArrayList<Object> args) {
+
+        Player.getCurrentPlayer().load();
+        Player.getCurrentPlayer().play();
+
+        return "";
+    }
+
     /**
      * @brief Entry point to send the PLAY_PAUSE_REQUEST command.
      *
@@ -452,9 +477,9 @@ public class ServerCore extends AbstractCore implements ICore {
 
         if (userSessionManager.countPlayPauseRequests() > userSessionManager.countActiveSessions() / 2) {
 
-            userSessionManager.countPlayPauseRequests();
+            userSessionManager.resetPlayPauseRequests();
 
-            // TODO Mettre en pause la musique !
+            Core.execute("SEND_PLAY_PAUSE_REQUEST", null);
 
             LOG.info("Play/paused.");
         } else {
