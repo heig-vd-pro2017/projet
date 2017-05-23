@@ -299,6 +299,13 @@ public class UserSessionManager implements ISessionManager {
     }
 
     /**
+     * @brief Reset all requests to turn the volume down.
+     */
+    public void resetPlayPauseRequests() {
+        usersAskedForPlayPause.clear();
+    }
+
+    /**
      * @brief Delete the sessions that are not active anymore.
      */
     private void deleteObsoleteSessions() {
