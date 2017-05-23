@@ -1,5 +1,7 @@
 package ch.tofind.commusica.core;
 
+import ch.tofind.commusica.utils.Configuration;
+
 import java.net.InetAddress;
 
 /**
@@ -56,9 +58,17 @@ public final class ApplicationProtocol {
 
     public static final String SEND_TRACK_REQUEST = "SEND_TRACK_REQUEST";
 
+    public static final String SEND_PLAY_PAUSE_REQUEST = "SEND_PLAY_PAUSE_REQUEST";
+
+    public static final String PLAY_PAUSE_REQUEST = "PLAY_PAUSE_REQUEST";
+
     public static final String SEND_NEXT_TRACK_REQUEST = "SEND_NEXT_TRACK_REQUEST";
 
     public static final String NEXT_TRACK_REQUEST = "NEXT_TRACK_REQUEST";
+
+    public static final String SEND_PREVIOUS_TRACK_REQUEST = "SEND_PREVIOUS_TRACK_REQUEST";
+
+    public static final String PREVIOUS_TRACK_REQUEST = "PREVIOUS_TRACK_REQUEST";
 
     public static final String SEND_TURN_VOLUME_UP_REQUEST = "SEND_TURN_VOLUME_UP_REQUEST";
 
@@ -68,29 +78,14 @@ public final class ApplicationProtocol {
 
     public static final String TURN_VOLUME_DOWN_REQUEST = "TURN_VOLUME_DOWN_REQUEST";
 
-
     // Success messages
-
-    public static final String SUCCESS_NEXT_TRACK = "Your vote for the next track has been taken in account";
-
-    public static final String SUCCESS_VOLUME_UP = "Your vote for the volume up has been taken in account";
-
-    public static final String SUCCESS_VOLUME_DOWN = "Your vote for the volume down has been taken in account";
+    public static final String SUCCESS_VOTE = Configuration.getInstance().get("SUCCESS_VOTE");
 
     // Error messages
+    public static final String ERROR_VOTE = Configuration.getInstance().get("ERROR_VOTE");
 
-    public static final String ERROR_DURING_TRANSFER = "An error occurred during the file transfer";
+    public static final String ERROR_DURING_TRANSFER = Configuration.getInstance().get("ERROR_DURING_TRANSFER");
 
-    public static final String ERROR_FILE_CORRPUTED = "The checksum of the file received is not the same" +
-            "as the one expected. The file was probably corrupted.";
-
-    public static final String ERROR_FILE_EXTENSION = "The extension of the file couldn't get retrieve.";
-
-    public static final String ERROR_ALREADY_UPVOTED = "You already upvoted this track!";
-
-    public static final String ERROR_ALREADY_DOWNVOTED = "You already downvoted this track!";
-
-    public static final String ERROR_TRACK_ID_NOT_IN_DB = "The track you asked for wasn't found in the DB";
-
+    public static final String ERROR_FILE_NOT_SUPPORTED = Configuration.getInstance().get("ERROR_FILE_NOT_SUPPORTED");
 
 }

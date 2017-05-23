@@ -251,7 +251,7 @@ public class Track implements Serializable {
     @Override
     public String toString() {
 
-        String format = Configuration.getInstance().get("DEFAULT_DATE_FORMAT");
+        String format = Configuration.getInstance().get("DATE_FORMAT");
 
         SimpleDateFormat dateFormat = new SimpleDateFormat(format);
 

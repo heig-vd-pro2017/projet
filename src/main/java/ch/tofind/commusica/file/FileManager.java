@@ -21,7 +21,7 @@ public class FileManager {
     private static FileManager instance = null;
 
     //! Output of the saved tracks.
-    public static String OUTPUT_DIRECTORY = Configuration.getInstance().get("DEFAULT_TRACKS_DIRECTORY");
+    public static String OUTPUT_DIRECTORY = Configuration.getInstance().get("TRACKS_DIRECTORY");
 
     /**
      * @brief FileManager single constructor. Avoid the instantiation.

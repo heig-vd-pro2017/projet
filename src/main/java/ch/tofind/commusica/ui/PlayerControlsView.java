@@ -1,12 +1,13 @@
 package ch.tofind.commusica.ui;
 
+import ch.tofind.commusica.core.ApplicationProtocol;
+import ch.tofind.commusica.core.Core;
 import ch.tofind.commusica.media.Player;
 import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -86,7 +87,8 @@ public class PlayerControlsView extends GridPane {
      */
     @FXML
     private void lowerVolume(MouseEvent e) {
-        volumeSlider.adjustValue(volumeSlider.getValue() - VOLUME_STEP);
+        //volumeSlider.adjustValue(volumeSlider.getValue() - VOLUME_STEP);
+        Core.execute(ApplicationProtocol.SEND_TURN_VOLUME_DOWN_REQUEST, null);
     }
 
     /**
@@ -96,11 +98,7 @@ public class PlayerControlsView extends GridPane {
      */
     @FXML
     private void next(MouseEvent e) {
-        LOG.info("Asked for next track.");
-
-        if(Configuration.getInstance().get("DEBUG").equals("1")) {
-            player.load();
-        }
+        Core.execute(ApplicationProtocol.SEND_NEXT_TRACK_REQUEST, null);
     }
 
     /**
@@ -110,6 +108,7 @@ public class PlayerControlsView extends GridPane {
      */
     @FXML
     private void playPause(MouseEvent e) {
+        /*
         if(player.isPlaying()) {
             player.pause();
         } else {
@@ -117,6 +116,8 @@ public class PlayerControlsView extends GridPane {
         }
 
         player.setVolume(volumeSlider.getValue());
+        */
+        Core.execute(ApplicationProtocol.SEND_PLAY_PAUSE_REQUEST, null);
     }
 
     /**
@@ -126,7 +127,7 @@ public class PlayerControlsView extends GridPane {
      */
     @FXML
     private void previous(MouseEvent e) {
-        LOG.info("Asked for previous track.");
+        Core.execute(ApplicationProtocol.SEND_PREVIOUS_TRACK_REQUEST, null);
     }
 
     /**
@@ -136,6 +137,7 @@ public class PlayerControlsView extends GridPane {
      */
     @FXML
     private void riseVolume(MouseEvent e) {
-        volumeSlider.adjustValue(volumeSlider.getValue() + VOLUME_STEP);
+        //volumeSlider.adjustValue(volumeSlider.getValue() + VOLUME_STEP);
+        Core.execute(ApplicationProtocol.SEND_TURN_VOLUME_UP_REQUEST, null);
     }
 }

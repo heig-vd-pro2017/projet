@@ -1,5 +1,7 @@
 package ch.tofind.commusica.ui;
 
+import ch.tofind.commusica.core.ApplicationProtocol;
+import ch.tofind.commusica.core.Core;
 import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.playlist.PlaylistTrack;
 import ch.tofind.commusica.utils.Logger;
@@ -129,6 +131,8 @@ public class PlaylistTrackCell {
     private void downvote(MouseEvent event) {
         if (!UIController.getController().getCurrentPlaylist().isSaved()) {
             playlistTrack.downvote();
+
+            Core.execute(ApplicationProtocol.SEND_DOWNVOTE_TRACK_REQUEST, null);
         }
 
         event.consume();
@@ -155,6 +159,8 @@ public class PlaylistTrackCell {
     private void upvote(MouseEvent event) {
         if (!UIController.getController().getCurrentPlaylist().isSaved()) {
             playlistTrack.upvote();
+
+            Core.execute(ApplicationProtocol.SEND_UPVOTE_TRACK_REQUEST, null);
         }
 
         event.consume();

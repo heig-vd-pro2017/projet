@@ -2,7 +2,6 @@ package ch.tofind.commusica.core;
 
 import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.file.FileManager;
-import ch.tofind.commusica.file.FilesFormats;
 import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.network.MulticastClient;
 import ch.tofind.commusica.network.NetworkProtocol;
@@ -20,7 +19,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.Executors;
@@ -36,7 +34,7 @@ public class ServerCore extends AbstractCore implements ICore {
     private static final Logger LOG = new Logger(ServerCore.class.getSimpleName());
 
     //! Time before a session is considered inactive.
-    private static final int TIME_BEFORE_PLAYLIST_UPDATE = Integer.valueOf(Configuration.getInstance().get("TIME_BEFORE_PLAYLIST_UPDATE"));
+    private static final int TIME_BEFORE_PLAYLIST_UPDATE = Integer.valueOf(Configuration.getInstance().get("TIME_BETWEEN_PLAYLIST_UPDATES"));
 
     //! Name of the server.
     private static final String name = Configuration.getInstance().get("SERVER_NAME");
@@ -85,7 +83,7 @@ public class ServerCore extends AbstractCore implements ICore {
      *
      * @param args Args of the command.
      *
-     * @return An empty String
+     * @return The result of the command.
      */
     public String SEND_PLAYLIST_UPDATE(ArrayList<Object> args) {
 
@@ -109,7 +107,7 @@ public class ServerCore extends AbstractCore implements ICore {
      *
      * @param args Args of the command.
      *
-     * @return An empty String
+     * @return The result of the command.
      */
     public String NEW_ACTIVE_CLIENT(ArrayList<Object> args) {
 
@@ -132,7 +130,7 @@ public class ServerCore extends AbstractCore implements ICore {
      *
      * @param args Args of the command.
      *
-     * @return TRACK_ACCEPTED command if the track is accepted, TRACK_REFUSED command otherwise
+     * @return The result of the command.
      */
     public String TRACK_REQUEST(ArrayList<Object> args) {
 
@@ -193,7 +191,7 @@ public class ServerCore extends AbstractCore implements ICore {
      *
      * @param args Args of the command.
      *
-     * @return ERROR command if a check failed. TRACK_SAVED if the track is correctly saved.
+     * @return The result of the command.
      */
     public String SENDING_TRACK(ArrayList<Object> args) {
 
@@ -233,7 +231,7 @@ public class ServerCore extends AbstractCore implements ICore {
 
             return ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
-                    ApplicationProtocol.ERROR_FILE_CORRPUTED + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.ERROR_DURING_TRANSFER + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
         }
 
@@ -246,7 +244,7 @@ public class ServerCore extends AbstractCore implements ICore {
             LOG.error(e);
             result = ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
-                    ApplicationProtocol.ERROR_FILE_EXTENSION + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.ERROR_FILE_NOT_SUPPORTED + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
             return result;
         }
@@ -281,7 +279,7 @@ public class ServerCore extends AbstractCore implements ICore {
      *
      * @param args Args of the command.
      *
-     * @return END_OF_COMMUNICATION command
+     * @return The result of the command.
      */
     public String UPVOTE_TRACK_REQUEST(ArrayList<Object> args) {
 
@@ -304,7 +302,7 @@ public class ServerCore extends AbstractCore implements ICore {
 
             result = ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
-                    ApplicationProtocol.ERROR_ALREADY_UPVOTED + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.ERROR_VOTE + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
             return result;
         }
@@ -321,7 +319,7 @@ public class ServerCore extends AbstractCore implements ICore {
         if (queryId.list().isEmpty()) {
             result = ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
-                    ApplicationProtocol.ERROR_TRACK_ID_NOT_IN_DB + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.ERROR_VOTE + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
             return result;
         }
@@ -350,7 +348,7 @@ public class ServerCore extends AbstractCore implements ICore {
      *
      * @param args Args of the command.
      *
-     * @return END_OF_COMMUNICATION command
+     * @return The result of the command.
      */
     public String DOWNVOTE_TRACK_REQUEST(ArrayList<Object> args) {
 
@@ -371,7 +369,7 @@ public class ServerCore extends AbstractCore implements ICore {
             LOG.warning("This user has already downvoted this track.");
 
             result = ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
-                    ApplicationProtocol.ERROR_ALREADY_DOWNVOTED + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.ERROR_VOTE + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
             return result;
         }
@@ -387,7 +385,7 @@ public class ServerCore extends AbstractCore implements ICore {
         if (queryId.list().isEmpty()) {
             result = ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
-                    ApplicationProtocol.ERROR_TRACK_ID_NOT_IN_DB + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.ERROR_VOTE + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
             return result;
         }
@@ -412,11 +410,45 @@ public class ServerCore extends AbstractCore implements ICore {
     }
 
     /**
+     * @brief Entry point to send the PLAY_PAUSE_REQUEST command.
+     *
+     * @param args Args of the command.
+     *
+     * @return The result of the command.
+     */
+    public String PLAY_PAUSE_REQUEST(ArrayList<Object> args) {
+
+        LOG.info("User asked to play/pause the current track.");
+
+        Integer userId = Integer.parseInt((String) args.remove(0));
+
+        userSessionManager.playPause(userId);
+
+        if (userSessionManager.countPlayPauseRequests() > userSessionManager.countActiveSessions() / 2) {
+
+            userSessionManager.resetNextTrackRequests();
+
+            // TODO Mettre en pause la musique !
+
+            LOG.info("Play/paused.");
+        } else {
+            LOG.info("User's opinion was taken into account.");
+        }
+
+        // Tells the user its opinion was taken into account
+        String result = ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.SUCCESS_VOTE + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
+        return result;
+    }
+
+    /**
      * @brief Receive the ask for the next song by a client.
      *
      * @param args Args of the command.
      *
-     * @return SUCCESS command
+     * @return The result of the command.
      */
     public String NEXT_TRACK_REQUEST(ArrayList<Object> args) {
 
@@ -440,17 +472,52 @@ public class ServerCore extends AbstractCore implements ICore {
         // Tells the user its opinion was taken into account
         String result = ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
-                ApplicationProtocol.SUCCESS_NEXT_TRACK + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.SUCCESS_VOTE + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
         return result;
     }
+
+    /**
+     * @brief Entry point to send the PREVIOUS_TRACK_REQUEST command.
+     *
+     * @param args Args of the command.
+     *
+     * @return The result of the command.
+     */
+    public String PREVIOUS_TRACK_REQUEST(ArrayList<Object> args) {
+
+        LOG.info("User asked for the previous song.");
+
+        Integer userId = Integer.parseInt((String) args.remove(0));
+
+        userSessionManager.previousTrack(userId);
+
+        if (userSessionManager.countPreviousTrackRequests() > userSessionManager.countActiveSessions() / 2) {
+
+            userSessionManager.resetNextTrackRequests();
+
+            // TODO Changer la musique !
+
+            LOG.info("Previous song.");
+        } else {
+            LOG.info("User's opinion was taken into account.");
+        }
+
+        // Tells the user its opinion was taken into account
+        String result = ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.SUCCESS_VOTE + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
+        return result;
+    }
+
 
     /**
      * @brief Receive the ask to turn the volume up by a client.
      *
      * @param args Args of the command.
      *
-     * @return SUCCESS command
+     * @return The result of the command.
      */
     public String TURN_VOLUME_UP_REQUEST(ArrayList<Object> args) {
 
@@ -474,7 +541,7 @@ public class ServerCore extends AbstractCore implements ICore {
         // Tells the user its opinion was taken into account
         String result = ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
-                ApplicationProtocol.SUCCESS_VOLUME_UP + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.SUCCESS_VOTE + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
         return result;
     }
@@ -484,7 +551,7 @@ public class ServerCore extends AbstractCore implements ICore {
      *
      * @param args Args of the command.
      *
-     * @return SUCCESS command
+     * @return The result of the command.
      */
     public String TURN_VOLUME_DOWN_REQUEST(ArrayList<Object> args) {
 
@@ -508,7 +575,7 @@ public class ServerCore extends AbstractCore implements ICore {
         // Tells the user its opinion has been counted
         String result = ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
-                ApplicationProtocol.SUCCESS_VOLUME_DOWN + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.SUCCESS_VOTE + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
         return result;
     }
@@ -550,7 +617,7 @@ public class ServerCore extends AbstractCore implements ICore {
         //query.executeUpdate();
 
         // Delete the tracks folder
-        File tracksDirectory = new File(Configuration.getInstance().get("DEFAULT_TRACKS_DIRECTORY"));
+        File tracksDirectory = new File(Configuration.getInstance().get("TRACKS_DIRECTORY"));
         FileManager.getInstance().delete(tracksDirectory);
 
         // Close the database connection

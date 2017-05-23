@@ -239,6 +239,26 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
+     * @brief Entry point to send the PLAY_PAUSE_REQUEST command.
+     *
+     * @param args Args of the command.
+     *
+     * @return PLAY_PAUSE_REQUEST command.
+     */
+    public String SEND_PLAY_PAUSE_REQUEST(ArrayList<Object> args) {
+
+        LOG.info("Ask the server for to play/pause the current track.");
+
+        String result = ApplicationProtocol.PLAY_PAUSE_REQUEST + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
+
+        sendUnicast(ApplicationProtocol.serverAddress, result);
+
+        return "";
+    }
+
+    /**
      * @brief Entry point to send the NEXT_TRACK_REQUEST command.
      *
      * @param args Args of the command.
@@ -250,6 +270,26 @@ public class ClientCore extends AbstractCore implements ICore {
         LOG.info("Ask the server for the next song.");
 
         String result = ApplicationProtocol.NEXT_TRACK_REQUEST + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
+
+        sendUnicast(ApplicationProtocol.serverAddress, result);
+
+        return "";
+    }
+
+    /**
+     * @brief Entry point to send the PREVIOUS_TRACK_REQUEST command.
+     *
+     * @param args Args of the command.
+     *
+     * @return PREVIOUS_TRACK_REQUEST command.
+     */
+    public String SEND_PREVIOUS_TRACK_REQUEST(ArrayList<Object> args) {
+
+        LOG.info("Ask the server for to play/pause the current track.");
+
+        String result = ApplicationProtocol.PREVIOUS_TRACK_REQUEST + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
 

@@ -1,6 +1,5 @@
 package ch.tofind.commusica.core;
 
-import java.net.InetAddress;
 import java.util.*;
 
 /**
@@ -51,6 +50,9 @@ public class Core {
         instance = new ClientCore();
     }
 
+    /**
+     * @brief Stop the core.
+     */
     public static void stop() {
 
         if (instance != null) {
