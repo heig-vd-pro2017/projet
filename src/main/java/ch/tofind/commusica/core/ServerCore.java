@@ -426,7 +426,7 @@ public class ServerCore extends AbstractCore implements ICore {
 
         if (userSessionManager.countPlayPauseRequests() > userSessionManager.countActiveSessions() / 2) {
 
-            userSessionManager.resetNextTrackRequests();
+            userSessionManager.countPlayPauseRequests();
 
             // TODO Mettre en pause la musique !
 
@@ -462,6 +462,8 @@ public class ServerCore extends AbstractCore implements ICore {
 
             userSessionManager.resetNextTrackRequests();
 
+            userSessionManager.resetPreviousTrackRequests();
+
             // TODO Changer la musique !
 
             LOG.info("Next song.");
@@ -495,6 +497,8 @@ public class ServerCore extends AbstractCore implements ICore {
         if (userSessionManager.countPreviousTrackRequests() > userSessionManager.countActiveSessions() / 2) {
 
             userSessionManager.resetNextTrackRequests();
+
+            userSessionManager.resetPreviousTrackRequests();
 
             // TODO Changer la musique !
 
