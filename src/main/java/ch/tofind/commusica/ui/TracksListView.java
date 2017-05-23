@@ -89,12 +89,12 @@ public class TracksListView extends ListView<PlaylistTrack> {
      * @link PlaylistManager#showPlaylist(SavedPlaylist).
      */
     public void showPlaylist(IPlaylist playlist) {
-        //setItems(FXCollections.observableList(playlist.getTracksList()));
-        if (playlist.isSaved()) {
+        setItems(FXCollections.observableList(playlist.getTracksList()));
+        /*if (playlist.isSaved()) {
             setItems(FXCollections.observableList(playlist.getTracksList()));
         } else {
             setItems((ObservableSortedPlaylistTrackList)playlist.getTracksList());
-        }
+        }*/
     }
 
     private void initializeDragAndDrop() {
@@ -121,6 +121,9 @@ public class TracksListView extends ListView<PlaylistTrack> {
 
                     if (Core.isServer()) {
                         playlistManager.getPlaylist().addTrack(track);
+
+                        // Refresh current playlist.
+                        UIController.getController().refreshPlaylist();
                     } else {
                         ArrayList<Object> args = new ArrayList<>();
                         args.add(track.getUri());
