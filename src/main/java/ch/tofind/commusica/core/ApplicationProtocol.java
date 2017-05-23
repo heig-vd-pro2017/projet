@@ -21,19 +21,51 @@ public final class ApplicationProtocol {
 
     //! Commands
     public static final String SUCCESS = "SUCCESS";
+
     public static final String ERROR = "ERROR";
 
-    public static final String DISCOVER_REQUEST = "DISCOVER_REQUEST";
-    public static final String DISCOVER_SERVER = "DISCOVER_SERVER";
-    public static final String SERVER_DISCOVERED = "SERVER_DISCOVERED";
+    public static final String SEND_FIRST_CONNECTION = "SEND_FIRST_CONNECTION";
 
     public static final String TRACK_REQUEST = "TRACK_REQUEST";
+
     public static final String TRACK_ACCEPTED = "TRACK_ACCEPTED";
+
     public static final String TRACK_REFUSED = "TRACK_REFUSED";
-    public static final String SEND_TRACK = "SEND_TRACK";
+
     public static final String TRACK_SAVED = "TRACK_SAVED";
 
+    public static final String SENDING_TRACK = "SENDING_TRACK";
+
+    public static final String SEND_UPVOTE_TRACK_REQUEST = "SEND_UPVOTE_TRACK_REQUEST";
+
+    public static final String SEND_DOWNVOTE_TRACK_REQUEST = "SEND_DOWNVOTE_TRACK_REQUEST";
+
+    public static final String UPVOTE_TRACK_REQUEST = "UPVOTE_TRACK_REQUEST";
+
+    public static final String DOWNVOTE_TRACK_REQUEST = "DOWNVOTE_TRACK_REQUEST";
+
+    public static final String TRACK_DOWNVOTED = "TRACK_DOWNVOTED";
+
+    public static final String TRACK_UPVOTED = "TRACK_UPVOTED";
+
     public static final String PLAYLIST_UPDATE = "PLAYLIST_UPDATE";
+
+    public static final String NEW_ACTIVE_CLIENT = "NEW_ACTIVE_CLIENT";
+
     public static final String SEND_PLAYLIST_UPDATE = "SEND_PLAYLIST_UPDATE";
+
     public static final String SEND_TRACK_REQUEST = "SEND_TRACK_REQUEST";
+
+    public static final String SEND_NEXT_TRACK_REQUEST = "SEND_NEXT_TRACK_REQUEST";
+
+    public static final String NEXT_TRACK_REQUEST = "NEXT_TRACK_REQUEST";
+
+    public static final String SEND_TURN_VOLUME_UP_REQUEST = "SEND_TURN_VOLUME_UP_REQUEST";
+
+    public static final String TURN_VOLUME_UP_REQUEST = "TURN_VOLUME_UP_REQUEST";
+
+    public static final String SEND_TURN_VOLUME_DOWN_REQUEST = "SEND_TURN_VOLUME_DOWN_REQUEST";
+
+    public static final String TURN_VOLUME_DOWN_REQUEST = "TURN_VOLUME_DOWN_REQUEST";
+
 }

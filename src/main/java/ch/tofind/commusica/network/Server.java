@@ -87,8 +87,6 @@ public class Server implements Runnable {
 
                 Socket clientSocket = socket.accept();
 
-                LOG.info("New client arrived.");
-
                 Thread client = new Thread(new UnicastClient(clientSocket));
                 threadPool.submit(client);
 

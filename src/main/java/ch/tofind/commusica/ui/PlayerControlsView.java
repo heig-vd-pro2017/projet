@@ -6,6 +6,7 @@ import ch.tofind.commusica.utils.Logger;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -95,7 +96,7 @@ public class PlayerControlsView extends GridPane {
      */
     @FXML
     private void next(MouseEvent e) {
-        LOG.log(Logger.Level.INFO, "Asked for next track.");
+        LOG.info("Asked for next track.");
 
         if(Configuration.getInstance().get("DEBUG").equals("1")) {
             player.load();
@@ -125,7 +126,7 @@ public class PlayerControlsView extends GridPane {
      */
     @FXML
     private void previous(MouseEvent e) {
-        LOG.log(Logger.Level.INFO, "Asked for previous track.");
+        LOG.info("Asked for previous track.");
     }
 
     /**

@@ -36,7 +36,7 @@ public class Commusica {
     }
 
     public static void main(String[] args) throws Exception {
-        LOG.log(Logger.Level.INFO, "Starting application...");
+        LOG.info("Starting application...");
 
         Scanner scanner = new Scanner(System.in);
 
@@ -50,7 +50,7 @@ public class Commusica {
             startApp = scanner.nextInt();
 
             if (startApp == 1) {
-                dropDatabase();
+                //dropDatabase();
 
                 Track track1 = new Track("hashdelatrack1", "BLOOD", "Kendrick Lamar", "DAMN.", 119, "/Users/faku99/Desktop/tmp/BLOOD.mp3");
                 Track track2 = new Track("hashdelatrack2", "DNA", "Kendrick Lamar", "DAMN.", 186, "/Users/faku99/Desktop/tmp/DNA.mp3");
@@ -80,8 +80,6 @@ public class Commusica {
                 DatabaseManager.getInstance().close();
 
             } else if (startApp == 2) {
-
-
 
                 TreeMap<String, InetAddress> networkInterfaces = ch.tofind.commusica.utils.Network.getIPv4Interfaces();
 
@@ -118,7 +116,8 @@ public class Commusica {
                         dropDatabase();
 
                         Core core = new Core(NetworkProtocol.interfaceToUse);
-                        core.setupAsServer("Soirée de Lulu 4", NetworkProtocol.MULTICAST_ADDRESS, NetworkProtocol.MULTICAST_PORT, NetworkProtocol.UNICAST_PORT);
+                        String serverName = Configuration.getInstance().get("SERVER_NAME");
+                        core.setupAsServer(serverName, NetworkProtocol.MULTICAST_ADDRESS, NetworkProtocol.MULTICAST_PORT, NetworkProtocol.UNICAST_PORT);
 
                         ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
                         scheduledExecutorService.scheduleAtFixedRate(() -> {
@@ -131,6 +130,7 @@ public class Commusica {
                             System.out.println("Actions");
                             System.out.println("  [0] Disconnect");
                             System.out.println("  [1] Send message via Multicast");
+                            System.out.println("  [2] Show current playlist");
                             System.out.print("> ");
 
                             actionChoice = scanner.nextInt();
@@ -146,6 +146,11 @@ public class Commusica {
                                             NetworkProtocol.END_OF_COMMAND;
                                     core.sendMulticast(command);
                                     break;
+
+                                case 2:
+                                    System.out.println(PlaylistManager.getInstance().getPlaylist());
+                                    break;
+
                                 default:
                                     System.out.println("Action not supported.");
                                     break;
@@ -172,6 +177,11 @@ public class Commusica {
                             System.out.println("  [0] Quit");
                             System.out.println("  [1] Send track to Unicast");
                             System.out.println("  [2] Connect to a server");
+                            System.out.println("  [3] Upvote the track sent (do after sending a track)");
+                            System.out.println("  [4] Downvote the track sent (do after sending a track)");
+                            System.out.println("  [5] Ask for the next song");
+                            System.out.println("  [6] Ask to turn the volume up");
+                            System.out.println("  [7] Ask to turn the volume down");
                             System.out.print("> ");
 
                             actionChoice = scanner.nextInt();
@@ -183,14 +193,55 @@ public class Commusica {
                                 case 1:
                                     ArrayList<Object> uri = new ArrayList<>();
 
-                                    //uri.add("C:\\Users\\David\\Documents\\YourFuckingMother_x_EHDE_-_Pocket_Monsters_VIP.mp3");
-                                    uri.add("C:\\Users\\David\\Downloads\\02 v.m4a");
+                                    // id = a381d396d1e43b7fe170b6d61a2aa429
+                                    uri.add("C:\\Users\\David\\Documents\\YourFuckingMother_x_EHDE_-_Pocket_Monsters_VIP.mp3");
+                                    ///home/ludelafo/Music/Temp/sample3.mp3uri.add("C:\\Users\\David\\Downloads\\02 v.m4a");
+
+                                    // Error test with pdf
+                                    //uri.add("C:\\Users\\David\\Documents\\2014_SYE-B_TE2.pdf");
+
+                                    //uri.add("/home/ludelafo/Music/Temp/sample3.mp3");
+
                                     core.execute(ApplicationProtocol.SEND_TRACK_REQUEST, uri);
                                     break;
 
                                 case 2:
-                                    ServerSessionManager.serverChooser(ServerSessionManager.getAvailableServers());
+                                    ServerSessionManager.getInstance().serverChooser(ServerSessionManager.getInstance().getAvailableServers());
+                                    core.execute(ApplicationProtocol.SEND_FIRST_CONNECTION, null);
                                     break;
+
+                                case 3:
+                                    ArrayList<Object> trackToUpvote = new ArrayList<>();
+
+                                    // used for test!! replace this with the MD5 hash of the file you sent before
+                                    // only for test purpose
+                                    trackToUpvote.add("a381d396d1e43b7fe170b6d61a2aa429");
+
+                                    core.execute(ApplicationProtocol.SEND_UPVOTE_TRACK_REQUEST, trackToUpvote);
+                                    break;
+
+                                case 4:
+                                    ArrayList<Object> trackToDownVote = new ArrayList<>();
+
+                                    // used for test!! replace this with the MD5 hash of the file you sent before
+                                    // only for test purpose
+                                    trackToDownVote.add("a381d396d1e43b7fe170b6d61a2aa429");
+
+                                    core.execute(ApplicationProtocol.SEND_DOWNVOTE_TRACK_REQUEST, trackToDownVote);
+                                    break;
+
+                                case 5:
+                                    core.execute(ApplicationProtocol.SEND_NEXT_TRACK_REQUEST, null);
+                                    break;
+
+                                case 6:
+                                    core.execute(ApplicationProtocol.SEND_TURN_VOLUME_UP_REQUEST, null);
+                                    break;
+
+                                case 7:
+                                    core.execute(ApplicationProtocol.SEND_TURN_VOLUME_DOWN_REQUEST, null);
+                                    break;
+
                                 default:
                                     System.out.println("Action not supported.");
                                     break;

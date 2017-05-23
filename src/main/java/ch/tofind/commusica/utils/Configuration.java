@@ -5,18 +5,20 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
- * @brief This class can get properties from a configuration file
+ * @brief This class can get properties from a configuration file.
  */
 public class Configuration {
 
-    private static final String CONFIG_FILE = "commusica.properties";
-
+    //! Logger for debugging.
     private static final Logger LOG = new Logger(Configuration.class.getSimpleName());
 
-    //! Shared instance of the object for all the application
+    //! The configuration file to use.
+    private static final String CONFIG_FILE = "commusica.properties";
+
+    //! Shared instance of the object for all the application.
     private static Configuration instance = null;
 
-    //! Property object to load property from configuration file
+    //! Property object to load property from configuration file.
     private Properties configuration = null;
 
     /**
@@ -47,13 +49,6 @@ public class Configuration {
         }
 
         return instance;
-    }
-
-    /**
-     * @brief Load the configuration file to use
-     */
-    public void load(String fileName) throws IOException {
-        configuration.load(new FileInputStream(fileName));
     }
 
     /**

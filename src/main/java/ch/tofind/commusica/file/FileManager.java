@@ -1,20 +1,13 @@
 package ch.tofind.commusica.file;
 
+import ch.tofind.commusica.utils.Configuration;
+import ch.tofind.commusica.utils.Logger;
+
 import java.io.*;
-import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.UUID;
-
-import ch.tofind.commusica.utils.Logger;
-import org.jaudiotagger.audio.AudioFile;
-import org.jaudiotagger.audio.AudioFileIO;
-import org.jaudiotagger.audio.exceptions.CannotReadException;
-import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
-import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
-import org.jaudiotagger.tag.FieldKey;
-import org.jaudiotagger.tag.TagException;
 
 /**
  * @brief This class represents the file manager and allows interaction with the filesystem.
@@ -24,42 +17,26 @@ public class FileManager {
     //! Logger for debugging.
     private static final Logger LOG = new Logger(FileManager.class.getSimpleName());
 
-    /**
-     * These constants are used to check the format of a file.
-     * The arrays are the sequences of byte contained in each file of the specified format.
-     * The OFFSETs are the offset of the signature in the file (for example the sequence of bytes 0x49, 0x44, 0x33 are
-     * the first 3 bytes of an MP3 file).
-     */
-    public static final byte[] MP3 = {0x49, 0x44, 0x33};
-    public static final int OFFSET_MP3_SIGNATURE = 0;
-    public static final byte[] M4A = {0x66, 0x74, 0x79, 0x70, 0x4D, 0x34, 0x41, 0x20};
-    public static final int OFFSET_M4A_SIGNATURE = 4;
-    public static final byte[] WAV = {0x57, 0x41, 0x56, 0x45, 0x66, 0x6D, 0x74, 0x20};
-    public static final int OFFSET_WAV_SIGNATURE = 8;
-
-
+    //! Instance of the object shared for all the application.
     private static FileManager instance = null;
 
+    //! Output of the saved tracks.
+    public static String OUTPUT_DIRECTORY = Configuration.getInstance().get("DEFAULT_TRACKS_DIRECTORY");
+
+    /**
+     * @brief FileManager single constructor. Avoid the instantiation.
+     */
     private FileManager() {
 
-        // create the tracks directory which will contain the tracks
-        File tracksDir = new File("." + File.separator + "tracks");
+        File outputDirectory = new File(OUTPUT_DIRECTORY);
 
-        // if the directory does not exist, create it
-        if (!tracksDir.exists()) {
-            try {
-                tracksDir.mkdir();
-                LOG.info("tracks directory created");
-            } catch (SecurityException e) {
-                e.printStackTrace();
-            }
-        }
+        outputDirectory.mkdir();
     }
 
     /**
-     * Returns the Singleton of the FileManager
+     * @brief Get the object instance.
      *
-     * @return the instance of the FileManager
+     * @return The instance of the object.
      */
     public static FileManager getInstance() {
 
@@ -75,256 +52,216 @@ public class FileManager {
     }
 
     /**
-     * @param path
-     * @param fileName
-     * @param file
-     */
-    public void save(File file, String path, String fileName) {
-        file.renameTo(new File(path + File.separator + fileName));
-    }
-
-    /**
-     * Retrive a file form a TCP socket. It also check the format of the file.
-     * For now it accept MP3, M4A and WAV.
+     * @brief Retrieve a file.
      *
-     * @param is       InputStream of the socket
-     * @param fileSize size of the file
-     * @return the path where the file is stored as a String
+     * @param inputStream The origin of the file.
+     * @param fileSize Size of the file.
+     *
+     * @return The stored file.
      */
-    public String retrieveFile(InputStream is, int fileSize) {
-        File result = null;
-        FileOutputStream fos = null;
-        BufferedOutputStream bos = null;
+    public File retrieveFile(InputStream inputStream, int fileSize) {
+
+        byte[] networkPacketSize = new byte[8192];
+
+        String tmpFileName = UUID.randomUUID().toString();
+
+        File tmpFile = new File(OUTPUT_DIRECTORY + File.separator + tmpFileName);
+
+        BufferedOutputStream bufferedFileStream;
+
+        FileOutputStream fileStream = null;
         try {
-            byte[] receivedMusic = new byte[8192];
-            //result = new File("." + File.separator + "tracks" + File.separator + UUID.randomUUID() + ".mp3");
-            result = new File("." + File.separator + "tracks" + File.separator + "tmp");
-            fos = new FileOutputStream(result);
-            bos = new BufferedOutputStream(fos);
+            fileStream = new FileOutputStream(tmpFile);
+        } catch (FileNotFoundException e) {
+            LOG.error(e);
+        }
 
-            // file extension
-            String ext;
+        bufferedFileStream = new BufferedOutputStream(fileStream);
 
-            // variables used to control the transfer
-            int bytesRead;
-            int remaining = fileSize;
+        int bytesRead;
 
-            // We check the 16 first bytes so we can check if it is a compatible file type
-            byte[] signature = new byte[16];
-            is.read(signature, 0, 16);
-            ext = signatureChecker(signature);
+        int remainingBytes = fileSize;
 
-            if (ext.equals("error")) {
-                System.out.println("File not compatible!");
-                fos.close();
-                bos.close();
-                Files.delete(result.toPath());
-            } else {
-                bos.write(signature, 0, signature.length);
-                remaining -= signature.length;
-                while ((bytesRead = is.read(receivedMusic, 0, Math.min(remaining, receivedMusic.length))) > 0) {
-                    remaining -= bytesRead;
-                    bos.write(receivedMusic, 0, bytesRead);
-                }
-                System.out.println("Music received!");
-                bos.flush();
-                fos.close();
-                bos.close();
+        try {
+
+            while ((bytesRead = inputStream.read(networkPacketSize, 0, Math.min(remainingBytes, networkPacketSize.length))) > 0) {
+                bufferedFileStream.write(networkPacketSize, 0, bytesRead);
+                remainingBytes -= bytesRead;
             }
-
-
-            String MD5 = getMD5(result);
-            File newName = new File("." + File.separator + "tracks" + File.separator + MD5 + ext);
-
-            // if the renaming failed (name already in the directory)
-            if (!result.renameTo(newName)) {
-                Files.delete(result.toPath());
-            }
-
-            return newName.getPath();
 
         } catch (IOException e) {
-            // we delete the file if an problem occurred
-            if (result != null)
-                try {
-                    Files.delete(result.toPath());
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
 
-            if (fos != null)
-                try {
-                    fos.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
+            delete(tmpFile);
 
-            if (bos != null)
-                try {
-                    bos.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
+            LOG.error(e);
 
-            if (is != null)
-                try {
-                    is.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            e.printStackTrace();
+            return null;
         }
-        return null;
-    }
 
-
-    /**
-     * Check if the File passed as parameter is of a supported format. If so, it return a String corresponding to the
-     * extension (ex.: .mp3 if it is a MP3)
-     *
-     * @param signature
-     * @return a String of the extension corresponding to the file format.
-     */
-    public static String signatureChecker(byte[] signature) {
-        if (Arrays.equals(MP3, Arrays.copyOfRange(signature, OFFSET_MP3_SIGNATURE, OFFSET_MP3_SIGNATURE + MP3.length))) {
-            return ".mp3";
-        } else if (Arrays.equals(M4A, Arrays.copyOfRange(signature, OFFSET_M4A_SIGNATURE, OFFSET_M4A_SIGNATURE + M4A.length))) {
-            return ".m4a";
-        } else if (Arrays.equals(WAV, Arrays.copyOfRange(signature, OFFSET_WAV_SIGNATURE, OFFSET_WAV_SIGNATURE + WAV.length))) {
-            return ".wav";
+        try {
+            bufferedFileStream.flush();
+        } catch (IOException e) {
+            LOG.error(e);
         }
-        return "error";
+
+        try {
+            fileStream.close();
+        } catch (IOException e) {
+            LOG.error(e);
+        }
+
+        try {
+            bufferedFileStream.close();
+        } catch (IOException e) {
+            LOG.error(e);
+        }
+
+        return tmpFile;
     }
 
     /**
-     * Get the first nbByte of a File.
+     * @brief Check if the file is supported.
      *
-     * @param file    the file itself
-     * @param nbBytes number of bytes wanted
-     * @return a byte array containing the nbBytes first bytes of the file
+     * @param file The file to check.
+     *
+     * @return The file's extension corresponding to the file format.
      */
-    public static byte[] getFirstBytes(File file, int nbBytes) {
+    public String getFormatExtension(File file) throws Exception {
 
-        // check if the file is too small
+        InputStream inputStream = new FileInputStream(file);
+
+        byte[] fileHeader = getBytes(file, 16);
+
+        inputStream.close();
+
+        if (Arrays.equals(FilesFormats.MP3_HEADER, Arrays.copyOfRange(fileHeader, FilesFormats.MP3_HEADER_OFFSET, FilesFormats.MP3_HEADER_OFFSET + FilesFormats.MP3_HEADER.length))) {
+            return FilesFormats.MP3_EXTENSION;
+        } else if (Arrays.equals(FilesFormats.M4A_HEADER, Arrays.copyOfRange(fileHeader, FilesFormats.M4A_HEADER_OFFSET, FilesFormats.M4A_HEADER_OFFSET + FilesFormats.M4A_HEADER.length))) {
+            return FilesFormats.M4A_EXTENSION;
+        } else if (Arrays.equals(FilesFormats.WAV_HEADER, Arrays.copyOfRange(fileHeader, FilesFormats.WAV_HEADER_OFFSET, FilesFormats.WAV_HEADER_OFFSET + FilesFormats.WAV_HEADER.length))) {
+            return FilesFormats.WAV_EXTENSION;
+        } else {
+            throw new Exception("File not supported.");
+        }
+    }
+
+    /**
+     * @brief Get the Nth first bytes from a file.
+     *
+     * @param file The file.
+     * @param nbBytes Number of bytes wanted.
+     *
+     * @return The Nth first bytes from the file.
+     */
+    public byte[] getBytes(File file, int nbBytes) {
+
         if (file.length() < nbBytes) {
             return null;
         }
 
-        byte[] result = new byte[nbBytes];
-        FileInputStream fis = null;
+        byte[] nFirstBytes = new byte[nbBytes];
 
+        FileInputStream fileStream = null;
         try {
-            fis = new FileInputStream(file);
+            fileStream = new FileInputStream(file);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
 
-        BufferedInputStream fileBytes = new BufferedInputStream(fis);
+        BufferedInputStream fileBytes = new BufferedInputStream(fileStream);
 
         try {
-            fileBytes.read(result, 0, nbBytes);
+            fileBytes.read(nFirstBytes, 0, nbBytes);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
 
-
         try {
-            fis.close();
+            fileStream.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
 
         try {
             fileBytes.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
 
-        return result;
+        return nFirstBytes;
     }
 
     /**
-     * @param filePath
-     * @return
-     */
-    public boolean delete(String filePath) {
-        return new File(filePath).delete();
-    }
-
-
-    /**
-     * Return a String of the checksum for the specified file with the specified digest
-     * taken from the here: http://howtodoinjava.com/core-java/io/how-to-generate-sha-or-md5-file-checksum-hash-in-java/
+     * @brief Delete the file from the filesystem.
      *
-     * @param digest
-     * @param file
-     * @return a string of the checksum
-     * @throws IOException
+     * @param file The file to delete.
+     *
+     * @return Status of the deletion.
      */
-    public static String getFileChecksum(MessageDigest digest, File file) throws IOException {
-        //Get file input stream for reading the file content
-        FileInputStream fis = new FileInputStream(file);
+    public boolean delete(File file) {
+        return file.delete();
+    }
 
-        //Create byte array to read data in chunks
-        byte[] byteArray = new byte[1024];
+    /**
+     * @brief Rename the file to a new filename.
+     *
+     * @param file The file to rename.
+     * @param newFilename The new name of the file.
+     */
+    public void rename(File file, File newFilename) {
+        file.renameTo(newFilename);
+    }
+
+    /**
+     * @brief Get the checksum from the file.
+     *
+     * @param file The file to get the checksum.
+     *
+     * @return The checksum of the file.
+     */
+    public String getMD5Checksum(File file) {
+
+        MessageDigest digest = null;
+        try {
+            digest = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            LOG.error(e);
+        }
+
+        FileInputStream fileStream = null;
+        try {
+            fileStream = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            LOG.error(e);
+        }
+
+        byte[] buffer = new byte[1024];
         int bytesCount = 0;
 
-        //Read file data and update in message digest
-        while ((bytesCount = fis.read(byteArray)) != -1) {
-            digest.update(byteArray, 0, bytesCount);
+        try {
+            while ((bytesCount = fileStream.read(buffer)) != -1) {
+                digest.update(buffer, 0, bytesCount);
+            }
+        } catch (IOException e) {
+            LOG.error(e);
         }
 
+        try {
+            fileStream.close();
+        } catch (IOException e) {
+            LOG.error(e);
+        }
 
-        //close the stream; We don't need it now.
-        fis.close();
-
-        //Get the hash's bytes
         byte[] bytes = digest.digest();
 
-        //This bytes[] has bytes in decimal format;
-        //Convert it to hexadecimal format
-        StringBuilder sb = new StringBuilder();
+        // Convert the array of bytes to hexadecimal format
+        StringBuilder hash = new StringBuilder();
         for (int i = 0; i < bytes.length; i++) {
-            sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+
+            hash.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+
         }
 
-        //return complete hash
-        return sb.toString();
-    }
-
-    /**
-     * Check if the MD5 checksum is the same as the MD5 passed in param
-     *
-     * @param file        the file to check
-     * @param MD5checksum the MD5 to compare
-     * @return true if the checksum are the same, false if they are different
-     * @throws IOException
-     */
-    public static boolean checkFileMD5(File file, String MD5checksum) throws IOException {
-        //Use MD5 algorithm
-        MessageDigest md5Digest = null;
-        try {
-            md5Digest = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-
-        return getFileChecksum(md5Digest, file).equals(MD5checksum);
-    }
-
-    public static String getMD5(File file) throws IOException {
-        MessageDigest md5Digest = null;
-        try {
-            md5Digest = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return getFileChecksum(md5Digest, file);
+        return hash.toString();
     }
 }
-
-
-
-
-
-

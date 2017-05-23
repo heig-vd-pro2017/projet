@@ -58,4 +58,6 @@ abstract class AbstractCore {
      * @brief Stop the core.
      */
     abstract void stop();
+
+    abstract boolean isServer();
 }
