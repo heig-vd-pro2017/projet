@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * @brief This class represents
@@ -130,9 +131,11 @@ public class PlaylistTrackCell {
     @FXML
     private void downvote(MouseEvent event) {
         if (!UIController.getController().getCurrentPlaylist().isSaved()) {
-            playlistTrack.downvote();
+            String playlistTrackId = playlistTrack.getTrack().getId();
+            ArrayList<Object> args = new ArrayList<>();
+            args.add(playlistTrackId);
 
-            Core.execute(ApplicationProtocol.SEND_DOWNVOTE_TRACK_REQUEST, null);
+            Core.execute(ApplicationProtocol.SEND_DOWNVOTE_TRACK_REQUEST, args);
         }
 
         event.consume();
@@ -158,9 +161,11 @@ public class PlaylistTrackCell {
     @FXML
     private void upvote(MouseEvent event) {
         if (!UIController.getController().getCurrentPlaylist().isSaved()) {
-            playlistTrack.upvote();
+            String playlistTrackId = playlistTrack.getTrack().getId();
+            ArrayList<Object> args = new ArrayList<>();
+            args.add(playlistTrackId);
 
-            Core.execute(ApplicationProtocol.SEND_UPVOTE_TRACK_REQUEST, null);
+            Core.execute(ApplicationProtocol.SEND_UPVOTE_TRACK_REQUEST, args);
         }
 
         event.consume();

@@ -369,6 +369,7 @@ public class ServerCore extends AbstractCore implements ICore {
             LOG.warning("This user has already downvoted this track.");
 
             result = ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.ERROR_VOTE + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
             return result;

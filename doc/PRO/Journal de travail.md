@@ -13,6 +13,11 @@
 * Ajout de commandes au niveau des core pour gérer le volume et demander la track suivant (1h00)
 * Documentation (0h45)
 
+### David Truan
+* Ajout des commandes pour les upvote/downvote et leur gestion dans UserSession (1h30).
+* Documentation et ajout de messages d'erreur (1h).
+* Meilleure notification des nouveaux clients au serveur (30min).
+
 ## 20.05.2017
 ### Ludovic Delafontaine
 * Documentation du code et mise au propre (1h30)
