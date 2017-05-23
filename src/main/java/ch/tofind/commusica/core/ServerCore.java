@@ -151,7 +151,7 @@ public class ServerCore extends AbstractCore implements ICore {
 
         String getTrackById = "FROM Track WHERE id = :id";
 
-        Query trackById = session.createQuery(getTrackById);
+        Query<Track> trackById = session.createQuery(getTrackById, Track.class);
         trackById.setParameter("id", trackToReceive.getId());
         trackById.executeUpdate();
 
@@ -169,7 +169,7 @@ public class ServerCore extends AbstractCore implements ICore {
                     "length > :lengthMin AND " +
                     "length < :lengthMax";
 
-            Query trackByAttributes = session.createQuery(getTrackByAttributes);
+            Query<Track> trackByAttributes = session.createQuery(getTrackByAttributes, Track.class);
             trackByAttributes.setParameter("title", trackToReceive.getTitle());
             trackByAttributes.setParameter("artist", trackToReceive.getArtist());
             trackByAttributes.setParameter("album", trackToReceive.getAlbum());
