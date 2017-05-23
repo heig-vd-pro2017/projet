@@ -1,6 +1,31 @@
 # Journal de travail
 *Le journal de travail débute le 15.03.2017*
 
+## 22.05.2017
+### Ludovic Delafontaine
+* Finalisation du protocol applicatif (3h00)
+* Documentation (1h00)
+* Fusion du travail de chacun (1h00)
+* Tests (1h00)
+
+## 21.05.2017
+### Ludovic Delafontaine
+* Ajout de commandes au niveau des core pour gérer le volume et demander la track suivant (1h00)
+* Documentation (0h45)
+
+### David Truan
+* Ajout des commandes pour les upvote/downvote et leur gestion dans UserSession (1h30).
+* Documentation et ajout de messages d'erreur (1h).
+* Meilleure notification des nouveaux clients au serveur (30min).
+
+## 20.05.2017
+### Ludovic Delafontaine
+* Documentation du code et mise au propre (1h30)
+
+## 19.05.2017
+### Ludovic Delafontaine
+* Mise au propre du File Manager (3h00)
+
 ## 16.05.2017
 ### David Truan
 * Implémentation des checks si un morceau est dans la base de donnée (30min).
@@ -110,7 +135,7 @@
 * Réalisation de la présentation (2h00)
 
 ### Thibaut Togue Kamga
-* Implémentation du player sans playlistManager et test  (3h)		                                                       
+* Implémentation du player sans playlistManager et test  (3h)
 
 ## 08.04.2017
 ### David Truan
@@ -227,7 +252,7 @@ du fichier de configuration, modification du file Manager d'après la discussion
 * Essais et documentation sur la partie client/serveur (3h).
 
 ### Thibaut Togue
-* test du fichier Sqlite à travers des conteneurs docker et correction des bugs(2h)                              
+* test du fichier Sqlite à travers des conteneurs docker et correction des bugs(2h)
 
 ## 18.03.2017
 ### Ludovic Delafontaine

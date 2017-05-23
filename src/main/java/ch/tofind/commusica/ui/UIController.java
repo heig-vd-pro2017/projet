@@ -41,11 +41,13 @@ public class UIController extends Application implements Initializable {
 
     private IPlaylist currentPlaylist;
 
-    //!
     private static FXMLLoader loader = new FXMLLoader();
 
     //! FXML file to use for the view.
     private static final String FXML_FILE = "ui/main.fxml";
+
+    //! The used Core for this session.
+    private Core core;
 
     //!
     @FXML
@@ -91,8 +93,6 @@ public class UIController extends Application implements Initializable {
 
         stage.setMinHeight(stage.getHeight());
         stage.setMinWidth(stage.getWidth());
-
-        displayServerClientDialog();
     }
 
     /**
@@ -118,10 +118,11 @@ public class UIController extends Application implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loader.setController(this);
-
+        
         // Display client/server choice.
         displayServerClientDialog();
 
+        // Select the Playing playlist.
         showPlaylist(PlaylistManager.getInstance().getPlaylist());
     }
 
@@ -147,39 +148,46 @@ public class UIController extends Application implements Initializable {
 
         Optional<String> result = dialog.showAndWait();
 
-        Core core;
-
         if (result.isPresent()) {
-            NetworkProtocol.interfaceToUse = Network.getIPv4Interfaces().firstEntry().getValue();
-            core = new Core(NetworkProtocol.interfaceToUse);
 
-            ApplicationProtocol.myId = Arrays.hashCode(Network.getMacAddress(NetworkProtocol.interfaceToUse));
+            Network.configureNetwork();
 
             if (result.get().equals("Client")) {
-                core.setupAsClient(NetworkProtocol.MULTICAST_ADDRESS, NetworkProtocol.MULTICAST_PORT);
 
                 LOG.info("Launching as client.");
-            }
-            else if (result.get().equals("Server")) {
-                // Retrieve server's name.
-                String serverName = Configuration.getInstance().get("SERVER_NAME");
 
-                core.setupAsServer(serverName, NetworkProtocol.MULTICAST_ADDRESS, NetworkProtocol.MULTICAST_PORT, NetworkProtocol.UNICAST_PORT);
+                Core.setupAsClient();
+
+            } else if (result.get().equals("Server")) {
 
                 LOG.info("Launching as server.");
 
-                ScheduledExecutorService execService = Executors.newScheduledThreadPool(1);
-                execService.scheduleAtFixedRate(() -> {
-                    Core.execute(ApplicationProtocol.SEND_PLAYLIST_UPDATE, null);
-                }, 0, 5, TimeUnit.SECONDS);
+                Core.setupAsServer();
+
             } else {
+
                 LOG.error("WTF?");
+
             }
-        }
-        else {
+
+        } else {
             LOG.error("Quitting application because user didn't choose an option.");
 
             Platform.exit();
         }
     }
+
+
+    @Override
+    public void stop() {
+
+        LOG.info("Stopping application...");
+
+        Core.stop();
+
+        // IMMONDE
+        System.exit(0);
+
+    }
+
 }

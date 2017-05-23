@@ -23,7 +23,7 @@ abstract class AbstractCore {
      *
      * @return The output of the command.
      */
-    public String execute(String command, ArrayList<Object> args) {
+    public synchronized String execute(String command, ArrayList<Object> args) {
 
         String result = "";
 

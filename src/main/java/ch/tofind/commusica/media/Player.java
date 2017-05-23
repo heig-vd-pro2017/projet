@@ -49,7 +49,7 @@ public class Player {
         if (currentPlayer == null) {
             synchronized (Player.class) {
                 if (currentPlayer == null) {
-                    currentPlayer = new Player(Double.parseDouble(Configuration.getInstance().get("DEFAULT_VOLUME_STEP")));
+                    currentPlayer = new Player(Double.parseDouble(Configuration.getInstance().get("VOLUME_STEP")));
                 }
             }
         }

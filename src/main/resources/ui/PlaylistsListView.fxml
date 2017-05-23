@@ -33,7 +33,7 @@
             </font>
         </Label>
 
-        <Label fx:id="playingLabel" maxHeight="Infinity" maxWidth="Infinity" onMouseClicked="#loadPlayingPlaylist" styleClass="hand-cursor, header, subtitle" text="PLAYING" GridPane.rowIndex="2">
+        <Label fx:id="playingLabel" maxHeight="Infinity" maxWidth="Infinity" onMouseClicked="#loadPlayingPlaylist" styleClass="hand-cursor, header, subtitle, playingPlaylist" text="PLAYING" GridPane.rowIndex="2">
             <font>
                 <Font size="16.0"/>
             </font>
@@ -42,7 +42,7 @@
             </tooltip>
         </Label>
 
-        <Label fx:id="favoritesLabel" maxHeight="Infinity" maxWidth="Infinity" onMouseClicked="#loadFavoritesPlaylist" styleClass="hand-cursor, header, subtitle" text="FAVORITES" GridPane.rowIndex="3">
+        <Label fx:id="favoritesLabel" maxHeight="Infinity" maxWidth="Infinity" onMouseClicked="#loadFavoritesPlaylist" styleClass="hand-cursor, header, subtitle, favoritePlaylist" text="FAVORITES" GridPane.rowIndex="3">
             <font>
                 <Font size="16.0"/>
             </font>

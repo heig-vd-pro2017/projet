@@ -132,6 +132,8 @@ public class DatabaseManager {
         if(instance != null) {
             session.close();
             factory.close();
+
+            instance = null;
         }
     }
 }

@@ -1,5 +1,6 @@
 package ch.tofind.commusica.core;
 
+import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.file.FileManager;
 import ch.tofind.commusica.media.EphemeralPlaylist;
 import ch.tofind.commusica.media.Track;
@@ -48,13 +49,10 @@ public class ClientCore extends AbstractCore implements ICore {
 
     /**
      * @brief Setup the core as a client.
-     *
-     * @param multicastAddress Multicast address.
-     * @param port Multicast port.
-     * @param interfaceToUse Interface to use for the multicast.
      */
-    public ClientCore(String multicastAddress, int port, InetAddress interfaceToUse) {
-        multicast = new MulticastClient(multicastAddress, port, interfaceToUse);
+    public ClientCore() {
+
+        multicast = new MulticastClient(NetworkProtocol.MULTICAST_ADDRESS, NetworkProtocol.MULTICAST_PORT, NetworkProtocol.interfaceToUse);
         new Thread(multicast).start();
 
         serverSessionManager = ServerSessionManager.getInstance();
@@ -121,9 +119,7 @@ public class ClientCore extends AbstractCore implements ICore {
 
         return "";
     }
-
-
-
+    
     /**
      * @brief Entry point to ask the server for a track request. This method does the first check to ensure
      * the track is in a supported format and then send the command TRACK_REQUEST with all the
@@ -243,6 +239,26 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
+     * @brief Entry point to send the PLAY_PAUSE_REQUEST command.
+     *
+     * @param args Args of the command.
+     *
+     * @return PLAY_PAUSE_REQUEST command.
+     */
+    public String SEND_PLAY_PAUSE_REQUEST(ArrayList<Object> args) {
+
+        LOG.info("Ask the server for to play/pause the current track.");
+
+        String result = ApplicationProtocol.PLAY_PAUSE_REQUEST + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
+
+        sendUnicast(ApplicationProtocol.serverAddress, result);
+
+        return "";
+    }
+
+    /**
      * @brief Entry point to send the NEXT_TRACK_REQUEST command.
      *
      * @param args Args of the command.
@@ -254,6 +270,26 @@ public class ClientCore extends AbstractCore implements ICore {
         LOG.info("Ask the server for the next song.");
 
         String result = ApplicationProtocol.NEXT_TRACK_REQUEST + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
+
+        sendUnicast(ApplicationProtocol.serverAddress, result);
+
+        return "";
+    }
+
+    /**
+     * @brief Entry point to send the PREVIOUS_TRACK_REQUEST command.
+     *
+     * @param args Args of the command.
+     *
+     * @return PREVIOUS_TRACK_REQUEST command.
+     */
+    public String SEND_PREVIOUS_TRACK_REQUEST(ArrayList<Object> args) {
+
+        LOG.info("Ask the server for to play/pause the current track.");
+
+        String result = ApplicationProtocol.PREVIOUS_TRACK_REQUEST + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
 
@@ -392,6 +428,41 @@ public class ClientCore extends AbstractCore implements ICore {
     public String ERROR(ArrayList<Object> args) {
         LOG.info("In ERROR");
 
+        // remove the id
+        args.remove(0);
+        // remove the socket
+        args.remove(0);
+
+        String errorMessage = (String) args.remove(0);
+
+        LOG.warning(errorMessage);
+
+        String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
+        return result;
+    }
+
+    /**
+     * @brief Method invoked when the server sends the SUCCESS command. It notify that an action
+     * succeed.
+     *
+     * @param args Args of the command.
+     *
+     * @return END_OF_COMMUNICATION command
+     */
+    public String SUCCESS(ArrayList<Object> args) {
+        LOG.info("In SUCESS");
+
+        // remove the id
+        args.remove(0);
+        // remove the socket
+        args.remove(0);
+
+        String successMessage = (String) args.remove(0);
+
+        LOG.info(successMessage);
+
         String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
@@ -420,7 +491,15 @@ public class ClientCore extends AbstractCore implements ICore {
 
     @Override
     public void stop() {
+        // Stop the network elements
         multicast.stop();
+
+        // Delete the unplayed tracks from the database
+        //Session session = DatabaseManager.getInstance().getSession();
+        //session.createQuery("DELETE Track WHERE date_played IS NULL").executeUpdate();
+
+        // Close the database connection
+        DatabaseManager.getInstance().close();
     }
 
     @Override

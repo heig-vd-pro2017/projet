@@ -22,8 +22,14 @@ public class UserSessionManager implements ISessionManager {
     //! Store the inactive sessions.
     private Map<Integer, UserSession> inactiveSessions;
 
+    //! Users who asked to play/pause the current track.
+    private Set<Integer> usersAskedForPlayPause;
+
     //! Users who asked to change the track.
     private Set<Integer> usersAskedForNextTrack;
+
+    //! Users who asked to change the track.
+    private Set<Integer> usersAskedForPreviousTrack;
 
     //! Users who asked to turn up the volume.
     private Set<Integer> usersAskedToTurnVolumeUp;
@@ -42,7 +48,9 @@ public class UserSessionManager implements ISessionManager {
         activeSessions = new HashMap<>();
         inactiveSessions = new HashMap<>();
 
+        usersAskedForPlayPause = new HashSet<>();
         usersAskedForNextTrack = new HashSet<>();
+        usersAskedForPreviousTrack = new HashSet<>();
         usersAskedToTurnVolumeUp = new HashSet<>();
         usersAskedToTurnVolumeDown = new HashSet<>();
 
@@ -106,12 +114,30 @@ public class UserSessionManager implements ISessionManager {
     }
 
     /**
+     * @brief Count the requests to play/pause the current track.
+     *
+     * @return The number of request to play/pause the current track.
+     */
+    public int countPlayPauseRequests() {
+        return usersAskedForPlayPause.size();
+    }
+
+    /**
      * @brief Count the requests for the next track.
      *
      * @return The number of request for the next track.
      */
     public int countNextTrackRequests() {
         return usersAskedForNextTrack.size();
+    }
+
+    /**
+     * @brief Count the requests for the previous track.
+     *
+     * @return The number of request for the previous track.
+     */
+    public int countPreviousTrackRequests() {
+        return usersAskedForPreviousTrack.size();
     }
 
     /**
@@ -132,6 +158,41 @@ public class UserSessionManager implements ISessionManager {
         return usersAskedToTurnVolumeDown.size();
     }
 
+    /**
+     * @brief Store the fact that a user would like to play/pause the current track.
+     *
+     * @param userId The user which ask to play/pause the current track.
+     */
+    public void playPause(Integer userId) {
+
+        store(userId);
+
+        usersAskedForPlayPause.add(userId);
+    }
+
+    /**
+     * @brief Store the fact that a user would like the next track.
+     *
+     * @param userId The user which ask for the next track.
+     */
+    public void previousTrack(Integer userId) {
+
+        store(userId);
+
+        usersAskedForPreviousTrack.add(userId);
+    }
+
+    /**
+     * @brief Store the fact that a user would like the previous track.
+     *
+     * @param userId The user which ask for the previous track.
+     */
+    public void nextTrack(Integer userId) {
+
+        store(userId);
+
+        usersAskedForNextTrack.add(userId);
+    }
 
     /**
      * @brief Avoid that a track can be upvoted twice by the same user.
@@ -186,25 +247,6 @@ public class UserSessionManager implements ISessionManager {
     }
 
     /**
-     * @brief Store the fact that a user would like the next track.
-     *
-     * @param userId The user which ask for the next song.
-     */
-    public void nextTrack(Integer userId) {
-
-        store(userId);
-
-        usersAskedForNextTrack.add(userId);
-    }
-
-    /**
-     * @brief Reset all requests for the next track.
-     */
-    public void resetNextTrackRequests() {
-        usersAskedForNextTrack.clear();
-    }
-
-    /**
      * @brief Store the fact that a user would like to turn the volume up.
      *
      * @param userId The user which ask for to turn the volume up.
@@ -214,13 +256,6 @@ public class UserSessionManager implements ISessionManager {
         store(userId);
 
         usersAskedToTurnVolumeUp.add(userId);
-    }
-
-    /**
-     * @brief Reset all requests to turn the volume up.
-     */
-    public void resetTurnVolumeUpRequests() {
-        usersAskedToTurnVolumeUp.clear();
     }
 
     /**
@@ -236,10 +271,38 @@ public class UserSessionManager implements ISessionManager {
     }
 
     /**
+     * @brief Reset all requests for the next track.
+     */
+    public void resetNextTrackRequests() {
+        usersAskedForNextTrack.clear();
+    }
+
+    /**
+     * @brief Reset all requests for the previous track.
+     */
+    public void resetPreviousTrackRequests() {
+        usersAskedForPreviousTrack.clear();
+    }
+
+    /**
+     * @brief Reset all requests to turn the volume up.
+     */
+    public void resetTurnVolumeUpRequests() {
+        usersAskedToTurnVolumeUp.clear();
+    }
+
+    /**
      * @brief Reset all requests to turn the volume down.
      */
     public void resetTurnVolumeDownRequests() {
         usersAskedToTurnVolumeDown.clear();
+    }
+
+    /**
+     * @brief Reset all requests to turn the volume down.
+     */
+    public void resetPlayPauseRequests() {
+        usersAskedForPlayPause.clear();
     }
 
     /**
@@ -268,5 +331,7 @@ public class UserSessionManager implements ISessionManager {
     @Override
     public void stop() {
         scheduledExecutorService.shutdown();
+
+        instance = null;
     }
 }

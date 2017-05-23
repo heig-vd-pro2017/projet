@@ -2,6 +2,7 @@ package ch.tofind.commusica.utils;
 
 import ch.tofind.commusica.media.EphemeralPlaylist;
 import ch.tofind.commusica.media.Track;
+
 import com.google.gson.*;
 
 import java.lang.reflect.Type;
@@ -30,11 +31,10 @@ public class EphemeralPlaylistSerializer implements JsonSerializer<EphemeralPlay
                 String artist = playlistTrack.get("artist").getAsString();
                 String album = playlistTrack.get("album").getAsString();
                 Integer length = playlistTrack.get("length").getAsInt();
-                String uri = playlistTrack.get("uri").getAsString();
 
                 Integer votes = playlistTrack.get("votes").getAsInt();
 
-                Track track = new Track(id, title, artist, album, length, uri);
+                Track track = new Track(id, title, artist, album, length, "");
 
                 tracksList.put(track, votes);
             }
@@ -65,8 +65,6 @@ public class EphemeralPlaylistSerializer implements JsonSerializer<EphemeralPlay
             playlistTrack.addProperty("artist", item.getTrack().getArtist());
             playlistTrack.addProperty("album", item.getTrack().getAlbum());
             playlistTrack.addProperty("length", item.getTrack().getLength());
-            playlistTrack.addProperty("uri", item.getTrack().getUri());
-            //playlistTrack.addProperty("dateAdded", item.getTrack().getDateAdded().toString());
 
             playlistTrack.addProperty("votes", item.getVotesProperty().getValue());
 

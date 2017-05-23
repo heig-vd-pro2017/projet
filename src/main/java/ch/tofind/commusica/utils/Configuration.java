@@ -18,7 +18,7 @@ public class Configuration {
     //! Shared instance of the object for all the application.
     private static Configuration instance = null;
 
-    //! Property object to load property from configuration file.
+    //! Property object to load property from configuration file
     private Properties configuration = null;
 
     /**
