@@ -89,7 +89,12 @@ public class TracksListView extends ListView<PlaylistTrack> {
      * @link PlaylistManager#showPlaylist(SavedPlaylist).
      */
     public void showPlaylist(IPlaylist playlist) {
-        setItems(FXCollections.observableList(playlist.getTracksList()));
+        //setItems(FXCollections.observableList(playlist.getTracksList()));
+        if (playlist.isSaved()) {
+            setItems(FXCollections.observableList(playlist.getTracksList()));
+        } else {
+            setItems((ObservableSortedPlaylistTrackList)playlist.getTracksList());
+        }
     }
 
     private void initializeDragAndDrop() {

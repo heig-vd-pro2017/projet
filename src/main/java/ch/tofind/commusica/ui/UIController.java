@@ -119,6 +119,9 @@ public class UIController extends Application implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         loader.setController(this);
 
+        // Display client/server choice.
+        displayServerClientDialog();
+
         showPlaylist(PlaylistManager.getInstance().getPlaylist());
     }
 
