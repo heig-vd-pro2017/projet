@@ -136,7 +136,7 @@ public class ServerCore extends AbstractCore implements ICore {
 
         LOG.info("In TRACK_REQUEST");
 
-        Integer userId = Integer.parseInt((String) args.remove(0)); // A UTILISER POUR VERIFIER LES SESSIONS !!
+        Integer userId = Integer.parseInt((String) args.remove(0));
 
         args.remove(0); // Remove the socket as it's not needed in this command
 
@@ -146,40 +146,65 @@ public class ServerCore extends AbstractCore implements ICore {
 
         Session session = DatabaseManager.getInstance().getSession();
 
-        String queryString = String.format("from Track where id = '%s'", trackToReceive.getId());
+        String queryResult;
 
-        Query<Track> queryId = session.createQuery(queryString, Track.class);
+        String getTrackById = "FROM Track WHERE id = :id";
 
-        queryString = String.format("from Track where title = '%s' and " +
-                        "album = '%s' and " +
-                        "artist = '%s' and " +
-                        "length > '%d' and " +
-                        "length < '%d'",
-                trackToReceive.getTitle(),
-                trackToReceive.getAlbum(),
-                trackToReceive.getArtist(),
-                trackToReceive.getLength() - 5,
-                trackToReceive.getLength() + 5);
+        Query trackById = session.createQuery(getTrackById);
+        trackById.setParameter("id", trackToReceive.getId());
+        trackById.executeUpdate();
 
-        Query<Track> queryOtherAttributes = session.createQuery(queryString, Track.class);
+        if (trackById.list().isEmpty()) {
 
-        String result;
-        if (queryId.list().isEmpty() && queryOtherAttributes.list().isEmpty()) {
+            LOG.info("The track was not found by ID.");
 
-            LOG.info("The track is not in the system.");
-            result = ApplicationProtocol.TRACK_ACCEPTED + NetworkProtocol.END_OF_LINE;
+            queryResult = ApplicationProtocol.TRACK_ACCEPTED + NetworkProtocol.END_OF_LINE;
 
         } else {
 
-            LOG.info("Track already in the system.");
-            result = ApplicationProtocol.TRACK_REFUSED + NetworkProtocol.END_OF_LINE;
+            String getTrackByAttributes = "FROM Track WHERE title = :title AND " +
+                    "artist = :artist AND " +
+                    "album = :album AND " +
+                    "length > :lengthMin AND " +
+                    "length < :lengthMax";
 
+            Query trackByAttributes = session.createQuery(getTrackByAttributes);
+            trackByAttributes.setParameter("title", trackToReceive.getTitle());
+            trackByAttributes.setParameter("artist", trackToReceive.getArtist());
+            trackByAttributes.setParameter("album", trackToReceive.getAlbum());
+            trackByAttributes.setParameter("lengthMin", trackToReceive.getLength() - 5);
+            trackByAttributes.setParameter("lengthMax", trackToReceive.getLength() + 5);
+            trackByAttributes.executeUpdate();
+
+            if (trackByAttributes.list().isEmpty()) {
+
+                LOG.info("The track was not found by attributes.");
+
+                queryResult = ApplicationProtocol.TRACK_ACCEPTED + NetworkProtocol.END_OF_LINE;
+
+            } else {
+
+                Track trackInDatabase = (Track) trackByAttributes.getSingleResult();
+
+                if (Objects.equals(trackInDatabase.getUri(), "")) {
+
+                    LOG.info("The track was found in database but is not stored on filesystem.");
+
+                    queryResult = ApplicationProtocol.TRACK_ACCEPTED + NetworkProtocol.END_OF_LINE;
+
+                } else {
+
+                    LOG.info("The track was found in the system.");
+
+                    queryResult = ApplicationProtocol.TRACK_REFUSED + NetworkProtocol.END_OF_LINE;
+                }
+            }
         }
 
-        result = result.concat(ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+        queryResult = queryResult.concat(ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND);
 
-        return result;
+        return queryResult;
     }
 
     /**
@@ -597,6 +622,8 @@ public class ServerCore extends AbstractCore implements ICore {
 
     @Override
     public void stop() {
+
+        LOG.warning("Server shutting down...");
 
         // Try to stop all remaining threads
         broadcastPlaylist.shutdown();
