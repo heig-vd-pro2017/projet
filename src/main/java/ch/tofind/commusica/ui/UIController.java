@@ -93,8 +93,6 @@ public class UIController extends Application implements Initializable {
 
         stage.setMinHeight(stage.getHeight());
         stage.setMinWidth(stage.getWidth());
-
-        displayServerClientDialog();
     }
 
     /**
@@ -120,7 +118,11 @@ public class UIController extends Application implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loader.setController(this);
+        
+        // Display client/server choice.
+        displayServerClientDialog();
 
+        // Select the Playing playlist.
         showPlaylist(PlaylistManager.getInstance().getPlaylist());
     }
 
