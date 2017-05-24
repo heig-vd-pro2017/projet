@@ -2,6 +2,7 @@ package ch.tofind.commusica.session;
 
 import ch.tofind.commusica.core.ApplicationProtocol;
 import ch.tofind.commusica.network.Server;
+import ch.tofind.commusica.utils.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
@@ -16,6 +17,9 @@ import java.util.concurrent.TimeUnit;
  * Manage the servers sessions.
  */
 public class ServerSessionManager implements ISessionManager {
+
+    //! Logger for debugging.
+    private static final Logger LOG = new Logger(ServerSessionManager.class.getSimpleName());
 
     //! Shared instance of the object for all the application.
     private static ServerSessionManager instance = null;
@@ -45,6 +49,11 @@ public class ServerSessionManager implements ISessionManager {
         }, 0, TIME_BEFORE_SESSION_INACTIVE, TimeUnit.SECONDS);
     }
 
+    /**
+     * @brief Get the object instance.
+     *
+     * @return The instance of the object.
+     */
     public static ServerSessionManager getInstance() {
 
         if(instance == null) {
@@ -138,8 +147,10 @@ public class ServerSessionManager implements ISessionManager {
 
             ServerSession serverSession = entry.getValue();
 
-            // if the server hasn't been refreshed in the last 10s
             if (serverSession.getLastUpdate().getTime() > now.getTime() - TIME_BEFORE_SESSION_INACTIVE) {
+
+                LOG.info("Removing old server session.");
+
                 availableServers.remove(serverSession.getId());
                 //observableServersList.remove(serverSession);
             }
