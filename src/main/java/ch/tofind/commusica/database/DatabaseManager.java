@@ -148,11 +148,13 @@ public class DatabaseManager {
      * @brief Close the database connection.
      */
     public void close() {
+
         if(instance != null) {
             session.close();
             factory.close();
 
             instance = null;
         }
+
     }
 }
