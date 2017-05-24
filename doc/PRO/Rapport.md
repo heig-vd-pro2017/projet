@@ -23,7 +23,17 @@ Nous avons choisi d'implémenter un gestionnaire de configuration utilisant le f
  +  TIME_BETWEEN_PLAYLIST_UPDATES : choix du délai de mise à jour des playlists et leurs chansons
 ###  Core
 ###  Database
+
+
+La sauvegarde et le chargement font parties des points importante de notre application, car elle a été conçu pour par exemple permettre à un utilisateur de sauvegarder les metadatas des chansons qui lui plaisent dans la base de données. Ce package est constitué essentiellement de la classe **DatabaseManager.java** donc le rôle est d'assuré le CRUD(Create Read Update, Delete) de la base des données de  notre application  et d'assuré la fermeture de la connexion à la base des données. 
+
+Pour l'implémentation nous avons choisir le framework Hibernate qui simplifie le développement de l'application java pour interagir avec la base des données. C'est un outil open source, léger. ORM(Object Relational Mapping) 
+Un outil ORM simplifie la création des données, la manipulation de données et l'accès aux données. C'est une technique de programme qui mappe l'objet aux données stockées dans la base des données. 
+ 
+La performance du framework hibernate est rapide car le cache est utilisé en interne dans le cadre hiberné. 
+Le framework Hibernate offre la possibilité de créer automatiquement les tables de la base des données. Il m'est donc pas nécessaires de créer manuellement des tables dans la base de données.
 ###  File
+
 ###  Network
 ###  Playlist
 ###  Interface graphique
