@@ -103,6 +103,7 @@ public class ServerCore extends AbstractCore implements ICore {
         // Save the playlist into the database and refresh UI.
         PlaylistManager.getInstance().getPlaylist().save();
         UIController.getController().refreshPlaylistsList();
+        UIController.getController().refreshPlaylist();
 
         String command = ApplicationProtocol.PLAYLIST_UPDATE + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
