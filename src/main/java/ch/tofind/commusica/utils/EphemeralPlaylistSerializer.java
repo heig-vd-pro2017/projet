@@ -2,6 +2,7 @@ package ch.tofind.commusica.utils;
 
 import ch.tofind.commusica.media.EphemeralPlaylist;
 import ch.tofind.commusica.media.Track;
+
 import com.google.gson.*;
 
 import java.lang.reflect.Type;
@@ -9,6 +10,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * @brief This class is used to tell the step to un/serialize an ephemeral playlist from/to JSON.
+ */
 public class EphemeralPlaylistSerializer implements JsonSerializer<EphemeralPlaylist>, JsonDeserializer<EphemeralPlaylist> {
 
     @Override
