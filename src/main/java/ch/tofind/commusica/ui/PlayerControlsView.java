@@ -4,6 +4,9 @@ import ch.tofind.commusica.core.ApplicationProtocol;
 import ch.tofind.commusica.core.Core;
 import ch.tofind.commusica.media.Player;
 import ch.tofind.commusica.utils.Logger;
+
+import java.io.IOException;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Slider;
@@ -12,10 +15,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
-import java.io.IOException;
-
 /**
- * @brief This class represents
+ * @brief This class represents the player controls view.
  */
 public class PlayerControlsView extends GridPane {
 

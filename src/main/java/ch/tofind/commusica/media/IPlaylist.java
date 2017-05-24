@@ -4,6 +4,9 @@ import ch.tofind.commusica.playlist.PlaylistTrack;
 
 import java.util.List;
 
+/**
+ * @brief This class must be used by any kind of playlist.
+ */
 public interface IPlaylist {
 
     /**

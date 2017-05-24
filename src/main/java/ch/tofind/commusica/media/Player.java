@@ -15,6 +15,9 @@ import javafx.scene.media.MediaPlayer;
 
 import java.io.File;
 
+/**
+ * @brief This class represents a player that can play a track.
+ */
 public class Player {
 
     //! Logger for debugging.
