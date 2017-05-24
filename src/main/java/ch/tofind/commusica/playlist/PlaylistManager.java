@@ -1,6 +1,5 @@
 package ch.tofind.commusica.playlist;
 
-import ch.tofind.commusica.core.Core;
 import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.media.EphemeralPlaylist;
 import ch.tofind.commusica.media.SavedPlaylist;
@@ -8,23 +7,23 @@ import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.ui.UIController;
 import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
+
+import javax.persistence.NoResultException;
+import java.util.Date;
+import java.util.List;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
-import javax.persistence.NoResultException;
-import java.util.Date;
-import java.util.List;
-
 /**
  * @brief Class used to manages playlist.
- *
- * It can only be used as a singleton.
  */
 public class PlaylistManager {
 
+    //! Logger for debugging.
     private static final Logger LOG = new Logger(PlaylistManager.class.getSimpleName());
 
     //! Shared instance of the playlist for all the application
