@@ -482,7 +482,7 @@ public class ServerCore extends AbstractCore implements ICore {
         } else {
 
             Player.getCurrentPlayer().pause();
-            
+
         }
 
         return "";
