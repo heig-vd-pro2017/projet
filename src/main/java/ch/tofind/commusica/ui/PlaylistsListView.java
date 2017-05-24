@@ -2,7 +2,6 @@ package ch.tofind.commusica.ui;
 
 import ch.tofind.commusica.media.SavedPlaylist;
 import ch.tofind.commusica.playlist.PlaylistManager;
-
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

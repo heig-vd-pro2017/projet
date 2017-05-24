@@ -5,7 +5,6 @@ import ch.tofind.commusica.core.Core;
 import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.playlist.PlaylistTrack;
 import ch.tofind.commusica.utils.Logger;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;

@@ -2,7 +2,6 @@ package ch.tofind.commusica.media;
 
 import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.playlist.PlaylistTrack;
-import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.ObservableSortedPlaylistTrackList;
 
 public class EphemeralPlaylist implements IPlaylist {

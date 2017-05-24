@@ -6,26 +6,19 @@ import ch.tofind.commusica.media.IPlaylist;
 import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.playlist.PlaylistTrack;
-
 import ch.tofind.commusica.utils.Logger;
-import ch.tofind.commusica.utils.ObservableSortedPlaylistTrackList;
 import javafx.collections.FXCollections;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.input.*;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
-import org.jaudiotagger.audio.exceptions.CannotReadException;
-import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
-import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
-import org.jaudiotagger.tag.TagException;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @brief Represents a graphic list view of tracks.

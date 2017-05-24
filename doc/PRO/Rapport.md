@@ -12,7 +12,7 @@ Description  diagramme des cas d'utilisation avec figure. Diagramme UML, la sauv
 utiliser les packages pour la description 
 Ne pas mettre toutes les classes ! 
 ### Gestionnaire de configuration
-Nous avons choisi d'implémenter un gestionnaire de configuration utilisant le fichier commusica.properties pour permettre à l'utilisateur de configurer le programme. Elle donne accès aux paramètre suivants :               
+Nous avons choisi d'implémenter un gestionnaire de configuration utilisant le fichier commusica.properties pour permettre à l'utilisateur de configurer le programme. Elle donne accès aux paramètres suivants :               
  +  SERVER_NAME : choix nom du serveur auquel les participants pourront se connecter
  +  PLAYLIST_NAME : choix du nom de la playlist pour la soirée
  +  DEBUG : au niveau développement, choisir ou non d'afficher les logs
@@ -23,7 +23,16 @@ Nous avons choisi d'implémenter un gestionnaire de configuration utilisant le f
  +  TIME_BETWEEN_PLAYLIST_UPDATES : choix du délai de mise à jour des playlists et leurs chansons
 ###  Core
 ###  Database
+La sauvegarde et le chargement font partie des points importants de notre application, car elle a été conçue pour permettre, par exemple, à un utilisateur de sauvegarder les metadatas des chansons qui lui plaisent dans la base de données. Ce package est constitué essentiellement de la classe **DatabaseManager.java** donc le rôle est d'assurer le CRUD (Create, Read, Update, Delete) de la base des données de notre application  et d'assuer la fermeture de la connexion à celle-ci. 
+
+Pour l'implémentation, nous avons choisi le framework Hibernate qui simplifie le développement de l'application Java pour interagir avec la base des données. C'est un outil open source et léger.
+Un outil ORM (Object Relational Mapping) simplifie la création, la manipulation et l'accès aux données. C'est une technique de programmation qui mappe l'objet aux données stockées dans la base des données. 
+ 
+La performance du framework Hibernate est rapide car le cache est utilisé en interne dans le cadre hiberné. 
+Le framework Hibernate offre la possibilité de créer automatiquement les tables de la base des données. Il n'est donc pas nécessaire de les créer manuellement.
+
 ###  File
+
 ###  Network
 ###  Playlist
 ###  Interface graphique

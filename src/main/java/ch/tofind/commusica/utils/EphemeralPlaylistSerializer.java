@@ -2,7 +2,6 @@ package ch.tofind.commusica.utils;
 
 import ch.tofind.commusica.media.EphemeralPlaylist;
 import ch.tofind.commusica.media.Track;
-
 import com.google.gson.*;
 
 import java.lang.reflect.Type;

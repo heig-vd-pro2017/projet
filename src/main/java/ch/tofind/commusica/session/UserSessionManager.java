@@ -1,8 +1,5 @@
 package ch.tofind.commusica.session;
 
-import ch.tofind.commusica.core.ApplicationProtocol;
-import ch.tofind.commusica.utils.Configuration;
-
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

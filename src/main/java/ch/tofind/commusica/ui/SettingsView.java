@@ -2,13 +2,10 @@ package ch.tofind.commusica.ui;
 
 import ch.tofind.commusica.core.ApplicationProtocol;
 import ch.tofind.commusica.core.Core;
-import ch.tofind.commusica.network.Server;
 import ch.tofind.commusica.session.ServerSession;
 import ch.tofind.commusica.session.ServerSessionManager;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.MapChangeListener;
-import javafx.concurrent.ScheduledService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ComboBox;
