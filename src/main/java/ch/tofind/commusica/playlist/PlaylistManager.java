@@ -1,5 +1,6 @@
 package ch.tofind.commusica.playlist;
 
+import ch.tofind.commusica.core.Core;
 import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.media.EphemeralPlaylist;
 import ch.tofind.commusica.media.SavedPlaylist;
@@ -55,8 +56,7 @@ public class PlaylistManager {
      * @return The instance of the object.
      */
     public static PlaylistManager getInstance() {
-
-        if(instance == null) {
+        if (instance == null) {
             synchronized (PlaylistManager.class) {
                 if (instance == null) {
                     instance = new PlaylistManager();
@@ -170,12 +170,6 @@ public class PlaylistManager {
 
         // We need to refresh the view since it's not an Observable.
         UIController.getController().refreshPlaylist();
-    }
-
-    public void setEphemeralPlaylist(EphemeralPlaylist playlist) {
-        this.playlist = playlist;
-
-        LOG.info("Changed ephemeral playlist.");
     }
 
     /**

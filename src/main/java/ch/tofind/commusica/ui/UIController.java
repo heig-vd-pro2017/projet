@@ -16,7 +16,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceDialog;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -39,6 +38,9 @@ public class UIController extends Application implements Initializable {
 
     //! The used Core for this session.
     private Core core;
+
+    @FXML
+    private PlaylistsListView playlistsListView;
 
     //!
     @FXML
@@ -68,8 +70,8 @@ public class UIController extends Application implements Initializable {
         Parent root = null;
 
         try {
-            root = loader.load(fileURL);
-        } catch (IOException e) {
+            root = FXMLLoader.load(fileURL);
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
@@ -100,6 +102,10 @@ public class UIController extends Application implements Initializable {
         if (currentPlaylist != null) {
             tracksListView.showPlaylist(currentPlaylist);
         }
+    }
+
+    public void refreshPlaylistsList() {
+        playlistsListView.refresh();
     }
 
     public IPlaylist getCurrentPlaylist() {
