@@ -5,6 +5,11 @@ import ch.tofind.commusica.media.IPlaylist;
 import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.Network;
+
+import java.net.URL;
+import java.util.Optional;
+import java.util.ResourceBundle;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -16,10 +21,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceDialog;
 import javafx.stage.Stage;
 
-import java.net.URL;
-import java.util.Optional;
-import java.util.ResourceBundle;
-
 /**
  * @brief UI controller.
  *
@@ -27,10 +28,13 @@ import java.util.ResourceBundle;
  */
 public class UIController extends Application implements Initializable {
 
+    //! Logger for debugging.
     private static final Logger LOG = new Logger(UIController.class.getSimpleName());
 
+    //! Current playlist.
     private IPlaylist currentPlaylist;
 
+    //! Loader to load FXML files.
     private static FXMLLoader loader = new FXMLLoader();
 
     //! FXML file to use for the view.
@@ -56,9 +60,9 @@ public class UIController extends Application implements Initializable {
     }
 
     /**
-     * @brief
+     * @brief Start the UI.
      *
-     * @param stage
+     * @param stage The stage on which to display.
      */
     public void start(Stage stage) {
         URL fileURL = getClass().getClassLoader().getResource(FXML_FILE);
@@ -89,42 +93,42 @@ public class UIController extends Application implements Initializable {
     }
 
     /**
-     * @brief
+     * @brief Display the playlist.
      *
-     * @param playlist
+     * @param playlist The playlist to display.
      */
     public void showPlaylist(IPlaylist playlist) {
         currentPlaylist = playlist;
         tracksListView.showPlaylist(playlist);
     }
 
+    /**
+     * @brief Refresh the current playlist.
+     */
     public void refreshPlaylist() {
         if (currentPlaylist != null) {
             tracksListView.showPlaylist(currentPlaylist);
         }
     }
 
+    /**
+     * @brief Refresh the playlists' list.
+     */
     public void refreshPlaylistsList() {
         playlistsListView.refresh();
     }
 
+    /**
+     * @brief Get the current playlist.
+     *
+     * @return The current playlist.
+     */
     public IPlaylist getCurrentPlaylist() {
         return currentPlaylist;
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        loader.setController(this);
-        
-        // Display client/server choice.
-        displayServerClientDialog();
-
-        // Select the Playing playlist.
-        showPlaylist(PlaylistManager.getInstance().getPlaylist());
-    }
-
     /**
-     * Displays a popup on the main window with the given message.
+     * @brief Displays a popup on the main window with the given message.
      *
      * @param message The message of the popup.
      */
@@ -168,12 +172,23 @@ public class UIController extends Application implements Initializable {
             }
 
         } else {
+
             LOG.error("Quitting application because user didn't choose an option.");
 
             Platform.exit();
         }
     }
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        loader.setController(this);
+
+        // Display client/server choice.
+        displayServerClientDialog();
+
+        // Select the Playing playlist.
+        showPlaylist(PlaylistManager.getInstance().getPlaylist());
+    }
 
     @Override
     public void stop() {
