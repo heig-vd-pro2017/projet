@@ -182,8 +182,8 @@ public class UIController extends Application implements Initializable {
 
         Core.stop();
 
-        // IMMONDE
-        System.exit(0);
+        // Workaround, as all threads are not stopped properly
+        //System.exit(0);
 
     }
 

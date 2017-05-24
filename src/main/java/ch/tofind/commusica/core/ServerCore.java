@@ -74,8 +74,15 @@ public class ServerCore extends AbstractCore implements ICore {
         }, 0, TIME_BEFORE_PLAYLIST_UPDATE, TimeUnit.SECONDS);
     }
 
+    /**
+     * @brief What to do when there is an end of communication.
+     *
+     * @param args Args of the command.
+     *
+     * @return The result of the command.
+     */
     public String END_OF_COMMUNICATION(ArrayList<Object> args) {
-        System.out.println("End of communication server side.");
+        System.out.println("End of communication - server side.");
         return "";
     }
 
@@ -449,26 +456,34 @@ public class ServerCore extends AbstractCore implements ICore {
         return result;
     }
 
-
-    /**
-     *
-     */
-    public String SEND_PLAY_PAUSE_REQUEST(ArrayList<Object> args) {
-        Player player = Player.getCurrentPlayer();
-        if (!player.getIsPlayingProperty().get()) {
-            Player.getCurrentPlayer().play();
-        } else {
-            Player.getCurrentPlayer().pause();
-        }
-
-        return "";
-    }
-
-
     public String SEND_NEXT_TRACK_REQUEST(ArrayList<Object> args) {
 
         Player.getCurrentPlayer().load();
         Player.getCurrentPlayer().play();
+
+        return "";
+    }
+
+    /**
+     * @brief Entry point to play/pause the current track.
+     *
+     * @param args Args of the command.
+     *
+     * @return The result of the command.
+     */
+    public String SEND_PLAY_PAUSE_REQUEST(ArrayList<Object> args) {
+
+        Player player = Player.getCurrentPlayer();
+
+        if (!player.getIsPlayingProperty().getValue()) {
+
+            Player.getCurrentPlayer().play();
+
+        } else {
+
+            Player.getCurrentPlayer().pause();
+            
+        }
 
         return "";
     }

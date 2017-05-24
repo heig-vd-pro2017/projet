@@ -22,6 +22,10 @@ public class Core {
         return instance.execute(command, args);
     }
 
+    /**
+     * @brief Tells if the current Core is the server or not.
+     * @return True if the current Core is the server, otherwise false.
+     */
     public static boolean isServer() {
         return instance.isServer();
     }
