@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class EphemeralPlaylistSerializer implements JsonSerializer<EphemeralPlaylist>, JsonDeserializer<EphemeralPlaylist> {
+
     @Override
     public EphemeralPlaylist deserialize(JsonElement json, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
         // Playlist name.
