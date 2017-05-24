@@ -8,12 +8,12 @@
     -fx-cell-size: 28px;
 }
 
-.saved-playlists-list .list-cell:filled:hover {
+.saved-playlists-list .list-cell:filled:hover, .favoritePlaylist:hover, .playingPlaylist:hover {
     -fx-background-color: #DADADA;
     -fx-cursor: hand;
 }
 
-.saved-playlists-list .list-cell:selected {
+.saved-playlists-list .list-cell:selected, .selected {
     -fx-background-color: #DADADA;
     -fx-cursor: hand;
     -fx-text-fill: #F3F3F3;

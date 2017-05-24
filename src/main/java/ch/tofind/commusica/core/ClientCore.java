@@ -23,6 +23,8 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 /**
  * @brief This class represents the client side of the application.
  */
@@ -494,8 +496,9 @@ public class ClientCore extends AbstractCore implements ICore {
         multicast.stop();
 
         // Delete the unplayed tracks from the database
-        //Session session = DatabaseManager.getInstance().getSession();
-        //session.createQuery("DELETE Track WHERE date_played IS NULL").executeUpdate();
+        Session session = DatabaseManager.getInstance().getSession();
+        Query query = session.createQuery("DELETE Track WHERE date_played IS NULL");
+        DatabaseManager.getInstance().execute(query);
 
         // Close the database connection
         DatabaseManager.getInstance().close();

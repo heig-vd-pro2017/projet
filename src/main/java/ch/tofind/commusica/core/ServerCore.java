@@ -16,6 +16,7 @@ import ch.tofind.commusica.utils.Serialize;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import javax.persistence.NoResultException;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -135,33 +136,38 @@ public class ServerCore extends AbstractCore implements ICore {
      */
     public String TRACK_REQUEST(ArrayList<Object> args) {
 
-        LOG.info("In TRACK_REQUEST");
+        LOG.info("Client would like to know if the server accepts the track.");
 
-        Integer userId = Integer.parseInt((String) args.remove(0));
-
+        // Get the command arguments
+        Integer userId = Integer.parseInt((String) args.remove(0)); // A UTILISER POUR VERIFIER LES SESSIONS !!
         args.remove(0); // Remove the socket as it's not needed in this command
-
-        userSessionManager.store(userId);
-
         Track trackToReceive = Serialize.unserialize((String) args.remove(0), Track.class);
 
+        // Store the user
+        userSessionManager.store(userId);
+
+        // Get the database session to query the database
         Session session = DatabaseManager.getInstance().getSession();
 
-        String queryResult;
-
         String getTrackById = "FROM Track WHERE id = :id";
-
-        Query<Track> trackById = session.createQuery(getTrackById, Track.class);
+        Query trackById = session.createQuery(getTrackById);
         trackById.setParameter("id", trackToReceive.getId());
-        trackById.executeUpdate();
 
-        if (trackById.list().isEmpty()) {
+        Track trackInDatabase;
+        try {
+            trackInDatabase = (Track) trackById.getSingleResult();
+        } catch (NoResultException e) {
 
             LOG.info("The track was not found by ID.");
 
-            queryResult = ApplicationProtocol.TRACK_ACCEPTED + NetworkProtocol.END_OF_LINE;
+            return ApplicationProtocol.TRACK_ACCEPTED + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                    NetworkProtocol.END_OF_COMMAND;
 
-        } else {
+        }
+
+        // If track was not found, try another query by attributes
+        if (trackInDatabase == null) {
 
             String getTrackByAttributes = "FROM Track WHERE title = :title AND " +
                     "artist = :artist AND " +
@@ -169,43 +175,45 @@ public class ServerCore extends AbstractCore implements ICore {
                     "length > :lengthMin AND " +
                     "length < :lengthMax";
 
-            Query<Track> trackByAttributes = session.createQuery(getTrackByAttributes, Track.class);
+            Query trackByAttributes = session.createQuery(getTrackByAttributes);
+
             trackByAttributes.setParameter("title", trackToReceive.getTitle());
             trackByAttributes.setParameter("artist", trackToReceive.getArtist());
             trackByAttributes.setParameter("album", trackToReceive.getAlbum());
             trackByAttributes.setParameter("lengthMin", trackToReceive.getLength() - 5);
             trackByAttributes.setParameter("lengthMax", trackToReceive.getLength() + 5);
-            trackByAttributes.executeUpdate();
 
-            if (trackByAttributes.list().isEmpty()) {
+            try {
+                trackInDatabase = (Track) trackByAttributes.getSingleResult();
+            } catch (NoResultException e) {
 
                 LOG.info("The track was not found by attributes.");
 
-                queryResult = ApplicationProtocol.TRACK_ACCEPTED + NetworkProtocol.END_OF_LINE;
+                return ApplicationProtocol.TRACK_ACCEPTED + NetworkProtocol.END_OF_LINE +
+                        ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                        NetworkProtocol.END_OF_COMMAND;
 
-            } else {
-
-                Track trackInDatabase = (Track) trackByAttributes.getSingleResult();
-
-                if (Objects.equals(trackInDatabase.getUri(), "")) {
-
-                    LOG.info("The track was found in database but is not stored on filesystem.");
-
-                    queryResult = ApplicationProtocol.TRACK_ACCEPTED + NetworkProtocol.END_OF_LINE;
-
-                } else {
-
-                    LOG.info("The track was found in the system.");
-
-                    queryResult = ApplicationProtocol.TRACK_REFUSED + NetworkProtocol.END_OF_LINE;
-                }
             }
+
         }
 
-        queryResult = queryResult.concat(ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
-                NetworkProtocol.END_OF_COMMAND);
+        if (Objects.equals(trackInDatabase.getUri(), "")) {
 
-        return queryResult;
+            LOG.info("The track was found in database but is not stored on filesystem.");
+
+            return ApplicationProtocol.TRACK_ACCEPTED + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                    NetworkProtocol.END_OF_COMMAND;
+
+        } else {
+
+            LOG.info("The track was found in the system, no need to .");
+
+            return ApplicationProtocol.TRACK_REFUSED + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                    NetworkProtocol.END_OF_COMMAND;
+
+        }
     }
 
     /**
@@ -669,9 +677,15 @@ public class ServerCore extends AbstractCore implements ICore {
         server.stop();
 
         // Delete the unplayed tracks from the database
-        //Session session = DatabaseManager.getInstance().getSession();
-        //Query query = session.createQuery("DELETE Track", Track.class);
-        //query.executeUpdate();
+        Session session = DatabaseManager.getInstance().getSession();
+        Query query;
+
+        query = session.createQuery("DELETE Track WHERE date_played IS NULL");
+        DatabaseManager.getInstance().execute(query);
+
+        // Set the URI to null
+        query = session.createQuery("UPDATE Track SET uri = NULL");
+        DatabaseManager.getInstance().execute(query);
 
         // Delete the tracks folder
         File tracksDirectory = new File(Configuration.getInstance().get("TRACKS_DIRECTORY"));

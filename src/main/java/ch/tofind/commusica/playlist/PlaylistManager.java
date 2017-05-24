@@ -17,6 +17,11 @@ import javax.persistence.NoResultException;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @brief Class used to manages playlist.
+ *
+ * It can only be used as a singleton.
+ */
 public class PlaylistManager {
 
     private static final Logger LOG = new Logger(PlaylistManager.class.getSimpleName());
@@ -62,10 +67,25 @@ public class PlaylistManager {
         return instance;
     }
 
+    /**
+     * @brief Returns the ephemeral playlist currently playing.
+     *
+     * @return The ephemeral playlist currently playing.
+     */
     public EphemeralPlaylist getPlaylist() {
         return playlist;
     }
 
+    /**
+     * @brief Creates a playlist with the given name as parameter.
+     *
+     * The playlist is automatically saved into the database and added
+     * to manager list.
+     *
+     * @param name The name of the new playlist.
+     *
+     * @return The newly created playlist.
+     */
     public SavedPlaylist createPlaylist(String name) {
         SavedPlaylist playlist = new SavedPlaylist(name);
         DatabaseManager.getInstance().save(playlist);
@@ -75,20 +95,51 @@ public class PlaylistManager {
         return playlist;
     }
 
+    /**
+     * @brief Removes an existing playlist.
+     *
+     * The playlist is automatically removed from the database and from
+     * the manager list.
+     *
+     * @param playlist The playlist to remove.
+     */
     public void removePlaylist(SavedPlaylist playlist) {
         savedPlaylists.remove(playlist);
 
         DatabaseManager.getInstance().delete(playlist);
     }
 
+    /**
+     * @brief Returns the list of the saved playlists.
+     *
+     * Every time it is invoked, this method will ask the database
+     * the list of saved playlists.
+     *
+     * @return The list of the saved playlists.
+     */
     public List<SavedPlaylist> getSavedPlaylists() {
+        savedPlaylists = retrievePlaylists();
+
         return savedPlaylists;
     }
 
+    /**
+     * @brief Returns the Favorites playlist.
+     *
+     * @return The Favorites playlist.
+     */
     public SavedPlaylist getFavoritesPlaylist() {
         return favoritesPlaylist;
     }
 
+    /**
+     * @brief Adds the given track in the Favorites playlist.
+     *
+     * This method will automatically save the track passed as parameter
+     * if it is not already in the database.
+     *
+     * @param track The track to add to the Favorites playlist.
+     */
     public void addTrackToFavorites(Track track) {
         // Save the track if it isn't already done.
         DatabaseManager.getInstance().getSession().saveOrUpdate(track);
@@ -98,18 +149,26 @@ public class PlaylistManager {
         DatabaseManager.getInstance().save(playlistTrack);
     }
 
+    /**
+     * @brief Removes the given track form the Favorites playlist.
+     *
+     * This method will automatically delete the association between the
+     * track and the Favorites playlist from the database.
+     *
+     * If the currently showed playlist is the Favorites one, then the
+     * view is automatically refreshed.
+     *
+     * @param track The track to remove from the Favorites playlist.
+     */
     public void removeTrackFromFavorites(Track track) {
-        List<PlaylistTrack> list = favoritesPlaylist.getTracksList();
+        PlaylistTrack playlistTrack = favoritesPlaylist.getPlaylistTrack(track);
 
-        for (int i = 0; i < list.size(); ++i) {
-            PlaylistTrack playlistTrack = list.get(i);
-            if (playlistTrack.getTrack().equals(track)) {
-                DatabaseManager.getInstance().delete(playlistTrack);
-                list.remove(playlistTrack);
-            }
+        if (playlistTrack != null) {
+            DatabaseManager.getInstance().delete(playlistTrack);
+            favoritesPlaylist.getTracksList().remove(playlistTrack);
         }
 
-        // We need to refresh the view since it's not an Observable...
+        // We need to refresh the view since it's not an Observable.
         UIController.getController().refreshPlaylist();
     }
 
@@ -120,9 +179,9 @@ public class PlaylistManager {
     }
 
     /**
-     * Returns the playlist containing the favorited tracks.
+     * @brief Returns the Favorites playlist.
      *
-     * @return The playlist containing the favorited tracks.
+     * @return The Favorites playlist.
      */
     private SavedPlaylist retrieveFavoritesPlaylist() {
         Session session = DatabaseManager.getInstance().getSession();
@@ -161,6 +220,11 @@ public class PlaylistManager {
         return playlist;
     }
 
+    /**
+     * @brief Returns the list of saved playlists.
+     *
+     * @return The list of saved playlists.
+     */
     private List<SavedPlaylist> retrievePlaylists() {
         Session session = DatabaseManager.getInstance().getSession();
 

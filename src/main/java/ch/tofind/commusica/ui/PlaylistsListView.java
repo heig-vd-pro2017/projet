@@ -5,6 +5,7 @@ import ch.tofind.commusica.playlist.PlaylistManager;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
@@ -23,6 +24,12 @@ public class PlaylistsListView extends AnchorPane {
 
     //! SavedPlaylist manager.
     private static PlaylistManager manager = PlaylistManager.getInstance();
+
+    @FXML
+    Label favoritesLabel;
+
+    @FXML
+    Label playingLabel;
 
     @FXML
     ListView<SavedPlaylist> playlistsView;
@@ -49,15 +56,21 @@ public class PlaylistsListView extends AnchorPane {
 
     @FXML
     private void loadFavoritesPlaylist(MouseEvent e) {
-        // Clear selected playlist if there was one.
+        // Update selection.
+        playingLabel.getStyleClass().remove("selected");
         playlistsView.getSelectionModel().clearSelection();
+        favoritesLabel.getStyleClass().add("selected");
+
         UIController.getController().showPlaylist(manager.getFavoritesPlaylist());
     }
 
     @FXML
     private void loadPlayingPlaylist(MouseEvent e) {
-        // Clear selected playlist if there was one.
+        // Update selection.
+        favoritesLabel.getStyleClass().remove("selected");
         playlistsView.getSelectionModel().clearSelection();
+        playingLabel.getStyleClass().add("selected");
+
         UIController.getController().showPlaylist(manager.getPlaylist());
     }
 
@@ -80,6 +93,8 @@ public class PlaylistsListView extends AnchorPane {
             super.updateSelected(value);
 
             if (isSelected() && !isEmpty()) {
+                favoritesLabel.getStyleClass().remove("selected");
+                playingLabel.getStyleClass().remove("selected");
                 UIController.getController().showPlaylist(getItem());
             }
         }

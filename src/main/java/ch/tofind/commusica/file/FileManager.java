@@ -4,6 +4,7 @@ import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -194,12 +195,28 @@ public class FileManager {
     /**
      * @brief Delete the file from the filesystem.
      *
-     * @param file The file to delete.
+     * @param fileToDelete The file to delete.
      *
      * @return Status of the deletion.
      */
-    public boolean delete(File file) {
-        return file.delete();
+    public void delete(File fileToDelete) {
+
+        if (fileToDelete.isDirectory()) {
+
+            File[] files = fileToDelete.listFiles();
+
+            if (files != null && files.length > 0) {
+
+                for (File file : files) {
+                    delete(file);
+                }
+
+            }
+            fileToDelete.delete();
+        } else {
+            fileToDelete.delete();
+        }
+
     }
 
     /**
