@@ -1,5 +1,7 @@
 package ch.tofind.commusica.session;
 
+import ch.tofind.commusica.utils.Logger;
+
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -9,6 +11,9 @@ import java.util.concurrent.TimeUnit;
  * Manage the users sessions.
  */
 public class UserSessionManager implements ISessionManager {
+
+    //! Logger for debugging.
+    private static final Logger LOG = new Logger(UserSessionManager.class.getSimpleName());
 
     //! Shared instance of the object for all the application.
     private static UserSessionManager instance = null;
@@ -59,6 +64,11 @@ public class UserSessionManager implements ISessionManager {
         }, 0, TIME_BEFORE_SESSION_INACTIVE, TimeUnit.SECONDS);
     }
 
+    /**
+     * @brief Get the object instance.
+     *
+     * @return The instance of the object.
+     */
     public static UserSessionManager getInstance() {
 
         if(instance == null) {
@@ -314,6 +324,9 @@ public class UserSessionManager implements ISessionManager {
             UserSession userSession = entry.getValue();
 
             if (userSession.getLastUpdate().getTime() > now.getTime() - TIME_BEFORE_SESSION_INACTIVE) {
+
+                LOG.info("Removing old user session.");
+
                 activeSessions.remove(userSession.getId());
 
                 usersAskedForNextTrack.remove(userSession.getId());

@@ -4,6 +4,9 @@ import ch.tofind.commusica.core.ApplicationProtocol;
 import ch.tofind.commusica.core.Core;
 import ch.tofind.commusica.session.ServerSession;
 import ch.tofind.commusica.session.ServerSessionManager;
+
+import java.io.IOException;
+
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
@@ -13,15 +16,20 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 
-import java.io.IOException;
-
+/**
+ * @brief This class represents the settings view.
+ */
 public class SettingsView extends AnchorPane {
 
+    //! FXML file to use for the view.
     private static final String FXML_FILE = "ui/SettingsView.fxml";
 
     @FXML
     private ComboBox<ServerSession> serversList;
 
+    /**
+     * @brief View constructor.
+     */
     public SettingsView() {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource(FXML_FILE));
         loader.setRoot(this);
@@ -49,6 +57,9 @@ public class SettingsView extends AnchorPane {
         });
     }
 
+    /**
+     * @brief Inner class that defines an item of the select list.
+     */
     private class ServerSessionCell extends ListCell<ServerSession> {
         public void updateItem(ServerSession session, boolean empty) {
             super.updateItem(session, empty);

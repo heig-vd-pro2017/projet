@@ -4,6 +4,9 @@ import ch.tofind.commusica.core.ApplicationProtocol;
 import ch.tofind.commusica.core.Core;
 import ch.tofind.commusica.media.Player;
 import ch.tofind.commusica.utils.Logger;
+
+import java.io.IOException;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Slider;
@@ -12,12 +15,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
-import java.io.IOException;
-
 /**
- * @brief This class represents
+ * @brief This class represents the player controls view.
  */
 public class PlayerControlsView extends GridPane {
+
+    //! Logger for debugging.
+    private static final Logger LOG = new Logger(PlayerControlsView.class.getSimpleName());
 
     //! CSS class.
     public static final String CSS_CLASS = "player-controls-view";
@@ -28,24 +32,21 @@ public class PlayerControlsView extends GridPane {
     //! FXML file to use for the view.
     private static final String FXML_FILE = "ui/PlayerControlsView.fxml";
 
-    //! Logger for debugging.
-    private static final Logger LOG = new Logger(PlayerControlsView.class.getSimpleName());
-
     //! Player to use.
     private static Player player = Player.getCurrentPlayer();
 
+    //! Image of the play icon.
     private static final String PLAY_IMAGE = "ui/icons/play.png";
 
+    //! Image of the pause icon.
     private static final String PAUSE_IMAGE = "ui/icons/pause.png";
 
     //! Volume step.
     private static final Double VOLUME_STEP = 1.0 / 16.0; // Pourrait être récupéré depuis le fichier de configuration ?
 
-    //! Name of the view.
     @FXML
     private ImageView playPauseImageView;
 
-    //! Volume slider.
     @FXML
     private Slider volumeSlider;
 
@@ -78,32 +79,17 @@ public class PlayerControlsView extends GridPane {
         }));
     }
 
-    /**
-     * @brief Lower the volume.
-     *
-     * @param e MouseEvent that triggered the function.
-     */
     @FXML
     private void lowerVolume(MouseEvent e) {
         //volumeSlider.adjustValue(volumeSlider.getValue() - VOLUME_STEP);
         Core.execute(ApplicationProtocol.SEND_TURN_VOLUME_DOWN_REQUEST, null);
     }
 
-    /**
-     * @brief Ask for the next track.
-     *
-     * @param e MouseEvent that triggered the function.
-     */
     @FXML
     private void next(MouseEvent e) {
         Core.execute(ApplicationProtocol.SEND_NEXT_TRACK_REQUEST, null);
     }
 
-    /**
-     * @brief Play or pause the current music.
-     *
-     * @param e MouseEvent that triggered the function.
-     */
     @FXML
     private void playPause(MouseEvent e) {
         /*
@@ -118,21 +104,11 @@ public class PlayerControlsView extends GridPane {
         Core.execute(ApplicationProtocol.SEND_PLAY_PAUSE_REQUEST, null);
     }
 
-    /**
-     * @brief Ask for the previous track.
-     *
-     * @param e MouseEvent that triggered the function.
-     */
     @FXML
     private void previous(MouseEvent e) {
         Core.execute(ApplicationProtocol.SEND_PREVIOUS_TRACK_REQUEST, null);
     }
 
-    /**
-     * @brief Rise the volume.
-     *
-     * @param e MouseEvent that triggered the function.
-     */
     @FXML
     private void riseVolume(MouseEvent e) {
         //volumeSlider.adjustValue(volumeSlider.getValue() + VOLUME_STEP);

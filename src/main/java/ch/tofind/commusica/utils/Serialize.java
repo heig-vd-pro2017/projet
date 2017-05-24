@@ -13,8 +13,9 @@ public class Serialize {
     private static final GsonBuilder builder = new GsonBuilder();
 
     //! Google JSON convertor.
-    private static final Gson gson = builder.registerTypeAdapter(EphemeralPlaylist.class, new EphemeralPlaylistSerializer())
-                                            .create();
+    private static final Gson gson = builder
+            .registerTypeAdapter(EphemeralPlaylist.class, new EphemeralPlaylistSerializer())
+            .create();
 
     /**
      * @brief Serialize an object to JSON.
@@ -32,7 +33,6 @@ public class Serialize {
      *
      * @param jsonObject The object to unserialize.
      * @param objectClass The destination class for the object.
-     *
      *
      * @return The object from JSON.
      */

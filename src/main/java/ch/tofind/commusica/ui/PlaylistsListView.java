@@ -2,6 +2,9 @@ package ch.tofind.commusica.ui;
 
 import ch.tofind.commusica.media.SavedPlaylist;
 import ch.tofind.commusica.playlist.PlaylistManager;
+
+import java.io.IOException;
+
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,15 +14,15 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
-import java.io.IOException;
-
 /**
- * @brief This class represents
+ * @brief This class shows the list of all the playlists.
  */
 public class PlaylistsListView extends AnchorPane {
 
+    //! CSS file to apply to the view.
     private static final String CSS_FILE = "ui/styles/PlaylistsListView.css";
 
+    //! FXML file to use for the view.
     private static final String FXML_FILE = "ui/PlaylistsListView.fxml";
 
     //! SavedPlaylist manager.
@@ -50,30 +53,20 @@ public class PlaylistsListView extends AnchorPane {
 
         getStylesheets().add(CSS_FILE);
 
-        playlistsView.setItems(FXCollections.observableArrayList(manager.getSavedPlaylists()));
+        playlistsView.setItems(FXCollections.observableList(manager.getSavedPlaylists()));
         playlistsView.setCellFactory((ListView<SavedPlaylist> list) -> new PlaylistCell());
     }
 
-    @FXML
-    private void loadFavoritesPlaylist(MouseEvent e) {
-        // Update selection.
-        playingLabel.getStyleClass().remove("selected");
-        playlistsView.getSelectionModel().clearSelection();
-        favoritesLabel.getStyleClass().add("selected");
-
-        UIController.getController().showPlaylist(manager.getFavoritesPlaylist());
+    /**
+     * @brief Refresh the UI.
+     */
+    public void refresh() {
+        playlistsView.setItems(FXCollections.observableList(manager.getSavedPlaylists()));
     }
 
-    @FXML
-    private void loadPlayingPlaylist(MouseEvent e) {
-        // Update selection.
-        favoritesLabel.getStyleClass().remove("selected");
-        playlistsView.getSelectionModel().clearSelection();
-        playingLabel.getStyleClass().add("selected");
-
-        UIController.getController().showPlaylist(manager.getPlaylist());
-    }
-
+    /**
+     * @brief Inner class that defines a PlaylistCell
+     */
     private class PlaylistCell extends ListCell<SavedPlaylist> {
 
         @Override
@@ -98,5 +91,25 @@ public class PlaylistsListView extends AnchorPane {
                 UIController.getController().showPlaylist(getItem());
             }
         }
+    }
+
+    @FXML
+    private void loadFavoritesPlaylist(MouseEvent e) {
+        // Update selection.
+        playingLabel.getStyleClass().remove("selected");
+        playlistsView.getSelectionModel().clearSelection();
+        favoritesLabel.getStyleClass().add("selected");
+
+        UIController.getController().showPlaylist(manager.getFavoritesPlaylist());
+    }
+
+    @FXML
+    private void loadPlayingPlaylist(MouseEvent e) {
+        // Update selection.
+        favoritesLabel.getStyleClass().remove("selected");
+        playlistsView.getSelectionModel().clearSelection();
+        playingLabel.getStyleClass().add("selected");
+
+        UIController.getController().showPlaylist(manager.getPlaylist());
     }
 }

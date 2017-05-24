@@ -7,23 +7,23 @@ import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.ui.UIController;
 import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
+
+import javax.persistence.NoResultException;
+import java.util.Date;
+import java.util.List;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
-import javax.persistence.NoResultException;
-import java.util.Date;
-import java.util.List;
-
 /**
  * @brief Class used to manages playlist.
- *
- * It can only be used as a singleton.
  */
 public class PlaylistManager {
 
+    //! Logger for debugging.
     private static final Logger LOG = new Logger(PlaylistManager.class.getSimpleName());
 
     //! Shared instance of the playlist for all the application
@@ -55,8 +55,7 @@ public class PlaylistManager {
      * @return The instance of the object.
      */
     public static PlaylistManager getInstance() {
-
-        if(instance == null) {
+        if (instance == null) {
             synchronized (PlaylistManager.class) {
                 if (instance == null) {
                     instance = new PlaylistManager();
@@ -170,12 +169,6 @@ public class PlaylistManager {
 
         // We need to refresh the view since it's not an Observable.
         UIController.getController().refreshPlaylist();
-    }
-
-    public void setEphemeralPlaylist(EphemeralPlaylist playlist) {
-        this.playlist = playlist;
-
-        LOG.info("Changed ephemeral playlist.");
     }
 
     /**

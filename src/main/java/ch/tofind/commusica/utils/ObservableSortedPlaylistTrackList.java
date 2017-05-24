@@ -18,7 +18,7 @@ public class ObservableSortedPlaylistTrackList extends ObservableListBase<Playli
     //! Know which PlaylistTrack is prior to another PlaylistTrack.
     private VoteComparator comparator = new VoteComparator();
 
-    //! Number of tracks for the PlaylistTrack.
+    //! Number of tracks for the list of PlaylistTracks.
     private int count = 0;
 
     @Override

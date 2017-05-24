@@ -3,6 +3,9 @@ package ch.tofind.commusica;
 import ch.tofind.commusica.ui.UIController;
 import ch.tofind.commusica.utils.Logger;
 
+/**
+ * @brief Class that launch Commusica.
+ */
 public class Commusica {
 
     private static final Logger LOG = new Logger(Commusica.class.getSimpleName());

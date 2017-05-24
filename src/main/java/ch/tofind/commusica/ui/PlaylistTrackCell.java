@@ -5,6 +5,10 @@ import ch.tofind.commusica.core.Core;
 import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.playlist.PlaylistTrack;
 import ch.tofind.commusica.utils.Logger;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -13,11 +17,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
 /**
- * @brief This class represents
+ * @brief This class represents a cell with the PlaylistTrack information.
  */
 public class PlaylistTrackCell {
 
@@ -39,34 +40,28 @@ public class PlaylistTrackCell {
     //! Track associate to the playlistTrack.
     private Track track;
 
-    //!
     @FXML
     private AnchorPane trackPane;
 
-    //!
     @FXML
     private Label albumLabel;
 
-    //!
     @FXML
     private Label artistLabel;
 
-    //!
     @FXML
     private Label titleLabel;
 
-    //!
     @FXML
     private Label votesLabel;
 
-    //!
     @FXML
     private ImageView favoriteImageView;
 
     /**
-     * @brief Constructor.
+     * @brief Make a new cell with the PlaylistTrack informations.
      *
-     * @param playlistTrack
+     * @param playlistTrack The PlaylistTrack to show in the cell.
      */
     public PlaylistTrackCell(PlaylistTrack playlistTrack) {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource(FXML_FILE));
@@ -114,19 +109,15 @@ public class PlaylistTrackCell {
     }
 
     /**
-     * @brief
+     * @brief Get the current pane.
      *
-     * @return
+     * @return The pane.
      */
     public AnchorPane getPane() {
         return trackPane;
     }
 
-    /**
-     * @brief Downvote the track.
-     *
-     * @param event MouseEvent that triggered the function.
-     */
+
     @FXML
     private void downvote(MouseEvent event) {
         if (!UIController.getController().getCurrentPlaylist().isSaved()) {
@@ -140,11 +131,6 @@ public class PlaylistTrackCell {
         event.consume();
     }
 
-    /**
-     * @brief Favorite the track.
-     *
-     * @param event MouseEvent that triggered the function.
-     */
     @FXML
     private void favorite(MouseEvent event) {
         track.getFavoritedProperty().setValue(!track.getFavoritedProperty().getValue());
@@ -152,11 +138,6 @@ public class PlaylistTrackCell {
         event.consume();
     }
 
-    /**
-     * @brief Upvote the track.
-     *
-     * @param event MouseEvent that triggered the function.
-     */
     @FXML
     private void upvote(MouseEvent event) {
         if (!UIController.getController().getCurrentPlaylist().isSaved()) {
