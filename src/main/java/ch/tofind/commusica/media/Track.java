@@ -234,11 +234,11 @@ public class Track implements Serializable {
 
         Track track = (Track) object;
 
-        return Objects.equals(title, track.title)   &&
-               Objects.equals(artist, track.artist) &&
-               Objects.equals(album, track.album)   &&
-               getFavoritedProperty().getValue() == track.getFavoritedProperty().getValue() &&
-               length == track.length;
+        return Objects.equals(id, track.id)             ||
+                (Objects.equals(title, track.title)     &&
+                Objects.equals(artist, track.artist)    &&
+                Objects.equals(album, track.album)      &&
+                length == track.length);
     }
 
     @Override

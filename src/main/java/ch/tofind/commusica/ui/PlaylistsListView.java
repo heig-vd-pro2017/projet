@@ -50,8 +50,12 @@ public class PlaylistsListView extends AnchorPane {
 
         getStylesheets().add(CSS_FILE);
 
-        playlistsView.setItems(FXCollections.observableArrayList(manager.getSavedPlaylists()));
+        playlistsView.setItems(FXCollections.observableList(manager.getSavedPlaylists()));
         playlistsView.setCellFactory((ListView<SavedPlaylist> list) -> new PlaylistCell());
+    }
+
+    public void refresh() {
+        playlistsView.setItems(FXCollections.observableList(manager.getSavedPlaylists()));
     }
 
     @FXML

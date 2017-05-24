@@ -9,6 +9,7 @@ import ch.tofind.commusica.network.NetworkProtocol;
 import ch.tofind.commusica.network.UnicastClient;
 import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.session.ServerSessionManager;
+import ch.tofind.commusica.ui.UIController;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.Serialize;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -92,7 +93,12 @@ public class ClientCore extends AbstractCore implements ICore {
 
         if (Objects.equals(serverId, ApplicationProtocol.serverId)) {
             EphemeralPlaylist playlistUpdated = Serialize.unserialize(playlistJson, EphemeralPlaylist.class);
-            PlaylistManager.getInstance().setEphemeralPlaylist(playlistUpdated);
+
+            PlaylistManager.getInstance().getPlaylist().updateFrom(playlistUpdated);
+
+            // Refresh playlist at each reception.
+            UIController.getController().refreshPlaylist();
+            UIController.getController().refreshPlaylistsList();
         }
 
         // We add the server to the available servers list

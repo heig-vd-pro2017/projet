@@ -10,6 +10,7 @@ import ch.tofind.commusica.network.Server;
 import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.playlist.PlaylistTrack;
 import ch.tofind.commusica.session.UserSessionManager;
+import ch.tofind.commusica.ui.UIController;
 import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.Serialize;
@@ -91,6 +92,10 @@ public class ServerCore extends AbstractCore implements ICore {
 
         String inetAddressJson = Serialize.serialize(NetworkProtocol.interfaceToUse);
         String playlistJson = Serialize.serialize(PlaylistManager.getInstance().getPlaylist());
+
+        // Save the playlist into the database and refresh UI.
+        PlaylistManager.getInstance().getPlaylist().save();
+        UIController.getController().refreshPlaylistsList();
 
         String command = ApplicationProtocol.PLAYLIST_UPDATE + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
