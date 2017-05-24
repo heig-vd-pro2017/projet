@@ -4,7 +4,6 @@ import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.PlaylistTrackProperty;
-
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;

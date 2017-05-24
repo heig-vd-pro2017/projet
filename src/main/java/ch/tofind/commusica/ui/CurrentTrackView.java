@@ -3,8 +3,6 @@ package ch.tofind.commusica.ui;
 import ch.tofind.commusica.media.Player;
 import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.playlist.PlaylistManager;
-import ch.tofind.commusica.playlist.PlaylistTrack;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;

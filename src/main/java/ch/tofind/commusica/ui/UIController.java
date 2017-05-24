@@ -1,12 +1,8 @@
 package ch.tofind.commusica.ui;
 
-import ch.tofind.commusica.core.ApplicationProtocol;
 import ch.tofind.commusica.core.Core;
 import ch.tofind.commusica.media.IPlaylist;
-
-import ch.tofind.commusica.network.NetworkProtocol;
 import ch.tofind.commusica.playlist.PlaylistManager;
-import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.Network;
 import javafx.application.Application;
@@ -21,14 +17,9 @@ import javafx.scene.control.ChoiceDialog;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @brief UI controller.

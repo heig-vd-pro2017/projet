@@ -11,18 +11,17 @@ import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.session.ServerSessionManager;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.Serialize;
+import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.audio.exceptions.CannotReadException;
+import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
+import org.jaudiotagger.tag.TagException;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Objects;
-
-import org.jaudiotagger.audio.AudioFileIO;
-import org.jaudiotagger.audio.exceptions.CannotReadException;
-import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
-import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
-import org.jaudiotagger.tag.TagException;
 
 /**
  * @brief This class represents the client side of the application.

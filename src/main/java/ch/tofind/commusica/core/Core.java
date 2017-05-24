@@ -1,6 +1,6 @@
 package ch.tofind.commusica.core;
 
-import java.util.*;
+import java.util.ArrayList;
 
 /**
  * @brief This class represents a server or a client core for the current instance.

@@ -6,7 +6,6 @@ package ch.tofind.commusica.playlist;
 
 import ch.tofind.commusica.media.SavedPlaylist;
 import ch.tofind.commusica.media.Track;
-
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;

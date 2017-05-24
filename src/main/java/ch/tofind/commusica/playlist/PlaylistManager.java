@@ -7,17 +7,15 @@ import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.ui.UIController;
 import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
-
-import java.util.List;
-
-import javax.persistence.NoResultException;
-import java.util.Date;
-
-import org.hibernate.Session;
 import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
+
+import javax.persistence.NoResultException;
+import java.util.Date;
+import java.util.List;
 
 public class PlaylistManager {
 

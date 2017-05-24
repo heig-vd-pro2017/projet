@@ -3,9 +3,7 @@ package ch.tofind.commusica.ui;
 import ch.tofind.commusica.core.ApplicationProtocol;
 import ch.tofind.commusica.core.Core;
 import ch.tofind.commusica.media.Player;
-import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Slider;

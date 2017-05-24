@@ -2,7 +2,6 @@ package ch.tofind.commusica.utils;
 
 import ch.tofind.commusica.playlist.PlaylistTrack;
 import ch.tofind.commusica.playlist.VoteComparator;
-
 import javafx.collections.ObservableListBase;
 
 import java.util.ArrayList;

@@ -1,21 +1,19 @@
 package ch.tofind.commusica.media;
 
 import ch.tofind.commusica.file.FileManager;
-import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.playlist.PlaylistManager;
+import ch.tofind.commusica.utils.Configuration;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioHeader;
+import org.jaudiotagger.tag.FieldKey;
+import org.jaudiotagger.tag.Tag;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
-
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-
-import org.jaudiotagger.audio.AudioFile;
-import org.jaudiotagger.audio.AudioHeader;
-import org.jaudiotagger.tag.FieldKey;
-import org.jaudiotagger.tag.Tag;
 
 /**
  * @brief This class represents an audio track.
