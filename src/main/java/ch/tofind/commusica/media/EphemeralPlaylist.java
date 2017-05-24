@@ -6,15 +6,26 @@ import ch.tofind.commusica.playlist.PlaylistTrack;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.ObservableSortedPlaylistTrackList;
 
+/**
+ * @brief This class represents a playlist that is currently constructed.
+ * This is the "Playing" playlist in the UI.
+ */
 public class EphemeralPlaylist implements IPlaylist {
 
+    //! Logger for debugging.
     private static final Logger LOG = new Logger(EphemeralPlaylist.class.getSimpleName());
 
+    //! Playlist's tracks.
     private ObservableSortedPlaylistTrackList tracksList;
 
     //! The playlist that will be saved into the database for keeping track of this one.
     private SavedPlaylist delegate;
 
+    /**
+     * @brief Create the Playing playlist.
+     *
+     * @param playlistName The name of the playlist.
+     */
     public EphemeralPlaylist(String playlistName) {
         // TODO: Choose the playlist name
         delegate = new SavedPlaylist(playlistName);
@@ -23,28 +34,7 @@ public class EphemeralPlaylist implements IPlaylist {
     }
 
     /**
-     * @brief Add a track to the EphemeralPlaylist. It also create a PlaylistTrack to link the
-     * Track and the playlist (for DB purpose).
-     *
-     * @param track The track to add to the playlist.
-     *
-     * @return true if the track was added false otherwise.
-     */
-    public boolean addTrack(Track track) {
-        // Check that the playlist doesn't already contains the track.
-        if (tracksList.stream().noneMatch(p -> p.getTrack().equals(track))) {
-            // Create the PlaylistTrack object by associating it with the static playlist.
-            PlaylistTrack playlistTrack = new PlaylistTrack(delegate, track);
-            tracksList.add(playlistTrack);
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @brief Downvote a PlaylistTrack.
+     * @brief Downvote a track in the playlist.
      *
      * @param track The Track form the PlaylistTrack to downvote.
      *
@@ -63,7 +53,7 @@ public class EphemeralPlaylist implements IPlaylist {
     }
 
     /**
-     * @brief Upvote a PlaylistTrack.
+     * @brief Upvote a track in the playlist.
      *
      * @param track The Track form the PlaylistTrack to upvote.
      *
@@ -82,34 +72,10 @@ public class EphemeralPlaylist implements IPlaylist {
     }
 
     /**
-     * @brief Get the PlaylistTrack object where the Track is the one passed by parameter.
+     * @brief Get the playing playlist's name.
      *
-     * @param track The Track which we will search in the PlaylistTrack list.
-     *
-     * @return The PlaylistTrack object where the Track is the one passed by parameter, `null` otherwise.
+     * @return The name of the playlist.
      */
-    public PlaylistTrack getPlaylistTrack(Track track) {
-        return tracksList.stream().filter(p -> p.getTrack().equals(track)).findFirst().orElse(null);
-    }
-
-    public boolean contains(Track track) {
-        return tracksList.stream().anyMatch(p -> p.getTrack().equals(track));
-    }
-
-    public ObservableSortedPlaylistTrackList getTracksList() {
-        return tracksList;
-    }
-
-    public boolean isSaved() {
-        return false;
-    }
-
-    @Override
-    public String toString() {
-        return delegate.getName() + "\n" +
-                tracksList;
-    }
-
     public String getName() {
         return delegate.getName();
     }
@@ -127,7 +93,7 @@ public class EphemeralPlaylist implements IPlaylist {
     }
 
     /**
-     * Save the ephemeral playlist into the database.
+     * @brief Save the ephemeral playlist into the database.
      *
      * Beware, this method has an effect only if it's the one stored by the PlaylistManager.
      */
@@ -136,5 +102,46 @@ public class EphemeralPlaylist implements IPlaylist {
             LOG.info("Saving huehuehue");
             DatabaseManager.getInstance().save(delegate);
         }
+
+    }
+
+    @Override
+    public String toString() {
+        return delegate.getName() + "\n" +
+                tracksList;
+    }
+
+    @Override
+    public boolean addTrack(Track track) {
+        // Check that the playlist doesn't already contains the track.
+        if (tracksList.stream().noneMatch(p -> p.getTrack().equals(track))) {
+            // Create the PlaylistTrack object by associating it with the static playlist.
+            PlaylistTrack playlistTrack = new PlaylistTrack(delegate, track);
+            tracksList.add(playlistTrack);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean contains(Track track) {
+        return tracksList.stream().anyMatch(p -> p.getTrack().equals(track));
+    }
+
+    @Override
+    public PlaylistTrack getPlaylistTrack(Track track) {
+        return tracksList.stream().filter(p -> p.getTrack().equals(track)).findFirst().orElse(null);
+    }
+
+    @Override
+    public ObservableSortedPlaylistTrackList getTracksList() {
+        return tracksList;
+    }
+
+    @Override
+    public boolean isSaved() {
+        return false;
     }
 }

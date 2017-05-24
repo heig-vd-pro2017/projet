@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @brief This class represents a playlist.
+ * @brief This class represents a playlist that is stored in the database.
  */
 public class SavedPlaylist implements Serializable, IPlaylist {
 
@@ -132,6 +132,7 @@ public class SavedPlaylist implements Serializable, IPlaylist {
                "Date played: " + datePlayedString + '\n';
     }
 
+    @Override
     public boolean addTrack(Track track) {
         if (!contains(track)) {
             PlaylistTrack playlistTrack = new PlaylistTrack(this, track);
@@ -143,6 +144,7 @@ public class SavedPlaylist implements Serializable, IPlaylist {
         return false;
     }
 
+    @Override
     public boolean contains(Track track) {
         // Get tracks list.
         List<PlaylistTrack> tracksList = getTracksList();
@@ -150,12 +152,14 @@ public class SavedPlaylist implements Serializable, IPlaylist {
         return tracksList.stream().anyMatch(p -> p.getTrack().equals(track));
     }
 
+    @Override
     public PlaylistTrack getPlaylistTrack(Track track) {
         List<PlaylistTrack> trackList = getTracksList();
 
         return trackList.stream().filter(p -> p.getTrack().equals(track)).findFirst().orElse(null);
     }
 
+    @Override
     public List<PlaylistTrack> getTracksList() {
         Session session = DatabaseManager.getInstance().getSession();
 
@@ -165,6 +169,7 @@ public class SavedPlaylist implements Serializable, IPlaylist {
         return query.list();
     }
 
+    @Override
     public boolean isSaved() {
         return true;
     }
