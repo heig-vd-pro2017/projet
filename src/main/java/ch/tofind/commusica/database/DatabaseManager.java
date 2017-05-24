@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 /**
  * @brief This class represents the database and allows interaction with the real database
@@ -20,13 +21,13 @@ public class DatabaseManager {
     private static DatabaseManager instance = null;
 
     //! SessionFactory (Hibernate related).
-    private SessionFactory factory = null;
+    private SessionFactory factory;
 
     //! Session (Hibernate related).
-    private Session session = null;
+    private Session session;
 
     //! Transaction (Hibernate related).
-    private Transaction transaction = null;
+    private Transaction transaction;
 
     /**
      * @brief DatabaseManager single constructor. Avoid the instantiation.
@@ -68,6 +69,25 @@ public class DatabaseManager {
      */
     public Session getSession() {
         return session;
+    }
+
+    /**
+     * @brief Execute the query on the database.
+     *
+     * @param query The query to execute.
+     */
+    public void execute(Query query) {
+
+        try {
+            transaction = session.beginTransaction();
+            query.executeUpdate();
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            LOG.error(e);
+        }
     }
 
     /**

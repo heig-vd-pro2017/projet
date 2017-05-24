@@ -16,7 +16,7 @@
         <property name="artist" column="artist" type="string" length="50" not-null="true"/>
         <property name="album" column="album" type="string" length="50" not-null="true"/>
         <property name="length" column="length" type="int" not-null="true"/>
-        <property name="uri" column="uri" type="string" length="500" not-null="true" unique="true"/>
+        <property name="uri" column="uri" type="string" length="500" unique="true"/>
         <property name="dateAdded" column="date_added" type="timestamp" length="50" not-null="true"/>
         <property name="datePlayed" column="date_played" type="timestamp" length="50" not-null="false"/>
     </class>
