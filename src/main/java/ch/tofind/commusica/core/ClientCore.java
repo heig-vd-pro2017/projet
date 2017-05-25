@@ -89,7 +89,7 @@ public class ClientCore extends AbstractCore implements ICore {
         String serverName = (String) args.remove(0);
         String playlistJson = (String) args.remove(0);
 
-        LOG.info("Sending playlist: " + playlistJson);
+        LOG.info("Receiving playlist: " + playlistJson);
 
         if (Objects.equals(serverId, ApplicationProtocol.serverId)) {
             EphemeralPlaylist playlistUpdated = Serialize.unserialize(playlistJson, EphemeralPlaylist.class);
@@ -266,6 +266,24 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
+     * @brief Method invoked when the server sends the PLAYED_PAUSED command.
+     * It updates the UI to reflect the current volume.
+     *
+     * @param args Args of the command.
+     *
+     * @return END_OF_COMMUNICATION command
+     */
+    public String PLAYED_PAUSED(ArrayList<Object> args) {
+
+        LOG.info("Player plays/stops.");
+
+        String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
+        return result;
+    }
+
+    /**
      * @brief Entry point to send the NEXT_TRACK_REQUEST command.
      *
      * @param args Args of the command.
@@ -326,6 +344,24 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
+     * @brief Method invoked when the server sends the VOLUME_TURNED_UP command.
+     * It updates the UI to reflect the current volume.
+     *
+     * @param args Args of the command.
+     *
+     * @return END_OF_COMMUNICATION command
+     */
+    public String VOLUME_TURNED_UP(ArrayList<Object> args) {
+
+        LOG.info("Volume turns up.");
+
+        String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
+        return result;
+    }
+
+    /**
      * @brief Entry point to send the TURN_VOLUME_DOWN_REQUEST command.
      *
      * @param args Args of the command.
@@ -343,6 +379,24 @@ public class ClientCore extends AbstractCore implements ICore {
         sendUnicast(ApplicationProtocol.serverAddress, result);
 
         return "";
+    }
+
+    /**
+     * @brief Method invoked when the server sends the VOLUME_TURNED_DOWN command.
+     * It updates the UI to reflect the current volume.
+     *
+     * @param args Args of the command.
+     *
+     * @return END_OF_COMMUNICATION command
+     */
+    public String VOLUME_TURNED_DOWN(ArrayList<Object> args) {
+
+        LOG.info("Volume turns down.");
+
+        String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
+        return result;
     }
 
     /**
@@ -487,7 +541,7 @@ public class ClientCore extends AbstractCore implements ICore {
             client.send(message);
 
         } else {
-            LOG.error(new RuntimeException("Server was not set !"));
+            LOG.warning("Server was not set !");
         }
     }
 

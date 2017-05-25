@@ -9,6 +9,7 @@ import ch.tofind.commusica.utils.Network;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -57,39 +58,6 @@ public class UIController extends Application implements Initializable {
      */
     public static UIController getController() {
         return loader.getController();
-    }
-
-    /**
-     * @brief Start the UI.
-     *
-     * @param stage The stage on which to display.
-     */
-    public void start(Stage stage) {
-        URL fileURL = getClass().getClassLoader().getResource(FXML_FILE);
-
-        if (fileURL == null) {
-            throw new NullPointerException("FXML file not found.");
-        }
-
-        Parent root = null;
-
-        try {
-            root = FXMLLoader.load(fileURL);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add("ui/styles/main.css");
-
-        stage.setTitle("Commusica");
-        stage.setScene(scene);
-        stage.sizeToScene();
-
-        stage.show();
-
-        stage.setMinHeight(stage.getHeight());
-        stage.setMinWidth(stage.getWidth());
     }
 
     /**
@@ -142,6 +110,9 @@ public class UIController extends Application implements Initializable {
         alert.showAndWait();
     }
 
+    /**
+     * @brief Display the dialog to choose if we launch the application as server or client.
+     */
     private void displayServerClientDialog() {
         ChoiceDialog<String> dialog = new ChoiceDialog<>("Client", "Client", "Server");
         dialog.setTitle("Welcome!");
@@ -180,6 +151,36 @@ public class UIController extends Application implements Initializable {
     }
 
     @Override
+    public void start(Stage stage) {
+        URL fileURL = getClass().getClassLoader().getResource(FXML_FILE);
+
+        if (fileURL == null) {
+            throw new NullPointerException("FXML file not found.");
+        }
+
+        Parent root;
+
+        try {
+            root = FXMLLoader.load(fileURL);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add("ui/styles/main.css");
+
+        stage.setTitle("Commusica");
+        stage.setScene(scene);
+        stage.sizeToScene();
+
+        stage.show();
+
+        stage.setMinHeight(stage.getHeight());
+        stage.setMinWidth(stage.getWidth());
+
+    }
+
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
         loader.setController(this);
 
@@ -194,12 +195,20 @@ public class UIController extends Application implements Initializable {
     public void stop() {
 
         LOG.info("Stopping application...");
-
         Core.stop();
 
+        // Get all remaining running threads
+        Set<Thread> threads = Thread.getAllStackTraces().keySet();
+        Thread[] remainingRunningThreads = threads.toArray(new Thread[threads.size()]);
+
+        // Display the name of the remaining running threads
+        for (Thread remainingRunningThread : remainingRunningThreads) {
+            LOG.warning("The thread '" + remainingRunningThread.getName() + "' is still running...");
+        }
+
         // Workaround, as all threads are not stopped properly
-        //System.exit(0);
+        LOG.warning("Forcing shutdown...");
+        System.exit(0);
 
     }
-
 }

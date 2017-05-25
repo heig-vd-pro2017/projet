@@ -10,3 +10,4 @@ target/
 commusica.db
 commusica.log
 tracks
+*.pdf

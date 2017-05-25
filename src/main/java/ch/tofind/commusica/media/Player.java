@@ -243,7 +243,7 @@ public class Player {
     /**
      * @brief Set the current player's volume.
      *
-     * @param  The volume to apply on the current player.
+     * @param volume The volume to apply on the current player.
      */
     public void setVolume(double volume) {
         if (player != null) {

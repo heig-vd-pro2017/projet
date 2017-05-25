@@ -2,6 +2,7 @@ package ch.tofind.commusica.core;
 
 import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.file.FileManager;
+import ch.tofind.commusica.media.EphemeralPlaylist;
 import ch.tofind.commusica.media.Player;
 import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.network.MulticastClient;
@@ -14,6 +15,7 @@ import ch.tofind.commusica.ui.UIController;
 import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.Serialize;
+import javafx.application.Platform;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
@@ -207,7 +209,6 @@ public class ServerCore extends AbstractCore implements ICore {
                         NetworkProtocol.END_OF_COMMAND;
 
             }
-
         }
 
         if (Objects.equals(trackInDatabase.getUri(), "")) {
@@ -220,7 +221,7 @@ public class ServerCore extends AbstractCore implements ICore {
 
         } else {
 
-            LOG.info("The track was found in the system, no need to .");
+            LOG.info("The track was found in the system, no need to send it back.");
 
             return ApplicationProtocol.TRACK_REFUSED + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
@@ -304,12 +305,14 @@ public class ServerCore extends AbstractCore implements ICore {
 
         fileManager.rename(tempFile, newFile);
 
-        trackToReceive.setUri(filename);
-
-        // delete the temporary file
+        // Delete the temporary file
         fileManager.delete(tempFile);
 
-        // Update/Save the file in the database
+        // Set additionnal properties on the file
+        trackToReceive.setUri(filename);
+        trackToReceive.setFavoritedProperty(false);
+
+        // Save the track in the database
         DatabaseManager.getInstance().save(trackToReceive);
 
         // Add the track to the current Playlist
@@ -334,7 +337,7 @@ public class ServerCore extends AbstractCore implements ICore {
 
         Integer userId = Integer.parseInt((String) args.remove(0));
 
-        // remove the socket because we won't need it
+        // Remove the socket because we won't need it
         args.remove(0);
 
         String trackId = (String) args.remove(0);
@@ -354,31 +357,35 @@ public class ServerCore extends AbstractCore implements ICore {
             return result;
         }
 
-
         // Get the track from the database
         Session session = DatabaseManager.getInstance().getSession();
 
-        String queryString = String.format("from Track where id = '%s'", trackId);
+        Query trackById = session.createQuery("FROM Track WHERE id = :id");
+        trackById.setParameter("id", trackId);
 
-        Query<Track> queryId = session.createQuery(queryString, Track.class);
+        Track trackToUpvote;
 
-        // If the query has no result we send the command ERROR
-        if (queryId.list().isEmpty()) {
-            result = ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
+        try {
+            trackToUpvote = (Track) trackById.getSingleResult();
+        } catch (NoResultException e) {
+
+            LOG.info("The track was not found by ID.");
+
+            return ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.ERROR_VOTE + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
-            return result;
-        }
 
-        Track trackToUpvote = queryId.list().get(0);
+        }
 
         // Update the track properties
         PlaylistTrack playlistTrackToUpvote = PlaylistManager.getInstance().getPlaylist().getPlaylistTrack(trackToUpvote);
-        playlistTrackToUpvote.upvote();
 
-        // Update the track in the database
-        session.update(playlistTrackToUpvote);
+        // Ask the UI to execute the command when it can
+        Platform.runLater(() -> playlistTrackToUpvote.upvote());
+
+        // Update the track in the database - L'OBJET N'EXISTE PAS DANS LA DB
+        //DatabaseManager.getInstance().update(playlistTrackToUpvote);
 
         // Update the UI
         // TODO: Is it done automatically?
@@ -425,30 +432,31 @@ public class ServerCore extends AbstractCore implements ICore {
         // Get the track from the database
         Session session = DatabaseManager.getInstance().getSession();
 
-        String queryString = String.format("from Track where id = '%s'", trackId);
+        Query trackById = session.createQuery("FROM Track WHERE id = :id");
+        trackById.setParameter("id", trackId);
 
-        Query<Track> queryId = session.createQuery(queryString, Track.class);
+        Track trackToDownvote;
+        try {
+            trackToDownvote = (Track) trackById.getSingleResult();
+        } catch (NoResultException e) {
 
-        // If the query has no result we send the command ERROR
-        if (queryId.list().isEmpty()) {
-            result = ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
+            LOG.info("The track was not found by ID.");
+
+            return ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.ERROR_VOTE + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
-            return result;
+
         }
 
-        Track trackToDownvote = queryId.list().get(0);
-
         // Update the track properties
-        PlaylistTrack playlistTrackToUpvote = PlaylistManager.getInstance().getPlaylist().getPlaylistTrack(trackToDownvote);
-        playlistTrackToUpvote.downvote();
+        PlaylistTrack playlistTrackToDownvote = PlaylistManager.getInstance().getPlaylist().getPlaylistTrack(trackToDownvote);
 
-        // Update the track in the database
-        session.update(playlistTrackToUpvote);
+        // Ask the UI to execute the command when it can
+        Platform.runLater(() -> playlistTrackToDownvote.downvote());
 
-        // Update the UI
-        // TODO: Is it done automatically?
+        // Update the track in the database - L'OBJET N'EXISTE PAS DANS LA DB
+        //DatabaseManager.getInstance().update(playlistTrackToUpvote);
 
         // Tells the user its track has been voted
         result = ApplicationProtocol.TRACK_DOWNVOTED + NetworkProtocol.END_OF_LINE +
@@ -457,6 +465,14 @@ public class ServerCore extends AbstractCore implements ICore {
         return result;
     }
 
+
+    /**
+     * @brief Load next track on server side.
+     *
+     * @param args Args of the command.
+     *
+     * @return The result of the command.
+     */
     public String SEND_NEXT_TRACK_REQUEST(ArrayList<Object> args) {
 
         Player.getCurrentPlayer().load();
@@ -476,13 +492,15 @@ public class ServerCore extends AbstractCore implements ICore {
 
         Player player = Player.getCurrentPlayer();
 
-        if (!player.getIsPlayingProperty().getValue()) {
+        if (!player.isPlaying()) {
 
-            Player.getCurrentPlayer().play();
+            // Ask the UI to execute the command when it can
+            Platform.runLater(() -> player.play());
 
         } else {
 
-            Player.getCurrentPlayer().pause();
+            // Ask the UI to execute the command when it can
+            Platform.runLater(() -> player.pause());
 
         }
 
@@ -511,16 +529,20 @@ public class ServerCore extends AbstractCore implements ICore {
             Core.execute("SEND_PLAY_PAUSE_REQUEST", null);
 
             LOG.info("Play/paused.");
+
+            return ApplicationProtocol.PLAYED_PAUSED + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                    NetworkProtocol.END_OF_COMMAND;
+
         } else {
             LOG.info("User's opinion was taken into account.");
         }
 
         // Tells the user its opinion was taken into account
-        String result = ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
+        return ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.SUCCESS_VOTE + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
-        return result;
     }
 
     /**
@@ -544,7 +566,12 @@ public class ServerCore extends AbstractCore implements ICore {
 
             userSessionManager.resetPreviousTrackRequests();
 
-            // TODO Changer la musique !
+            // Get the track from the current player
+
+            // Update the track in the database
+
+            // Ask the UI to execute the command when it can
+            Platform.runLater(() -> Player.getCurrentPlayer().load());
 
             LOG.info("Next song.");
         } else {
@@ -580,8 +607,6 @@ public class ServerCore extends AbstractCore implements ICore {
 
             userSessionManager.resetPreviousTrackRequests();
 
-            // TODO Changer la musique !
-
             LOG.info("Previous song.");
         } else {
             LOG.info("User's opinion was taken into account.");
@@ -594,7 +619,6 @@ public class ServerCore extends AbstractCore implements ICore {
                 NetworkProtocol.END_OF_COMMAND;
         return result;
     }
-
 
     /**
      * @brief Receive the ask to turn the volume up by a client.
@@ -615,9 +639,15 @@ public class ServerCore extends AbstractCore implements ICore {
 
             userSessionManager.resetTurnVolumeUpRequests();
 
-            // TODO Augmenter le volume !
-
             LOG.info("Volume turns up.");
+
+            // Ask the UI to execute the command when it can
+            Platform.runLater(() -> Player.getCurrentPlayer().riseVolume());
+
+            return ApplicationProtocol.VOLUME_TURNED_UP + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                    NetworkProtocol.END_OF_COMMAND;
+
         } else {
             LOG.info("User's opinion was taken into account.");
         }
@@ -649,19 +679,24 @@ public class ServerCore extends AbstractCore implements ICore {
 
             userSessionManager.resetTurnVolumeDownRequests();
 
-            // TODO Diminuer le volume !
-
             LOG.info("Volume turns down.");
+
+            // Ask the UI to execute the command when it can
+            Platform.runLater(() -> Player.getCurrentPlayer().lowerVolume());
+
+            return ApplicationProtocol.VOLUME_TURNED_DOWN + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                    NetworkProtocol.END_OF_COMMAND;
+
         } else {
             LOG.info("User's opinion was taken into account.");
         }
 
         // Tells the user its opinion has been counted
-        String result = ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
+        return ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.SUCCESS_VOTE + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
-        return result;
     }
 
     @Override
