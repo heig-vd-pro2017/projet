@@ -1,0 +1,27 @@
+@startuml
+
+package Serveur <<Rectangle>> {
+    Object Server
+
+    Object UnicastClient_1
+    Object UnicastClient_2
+    Object UnicastClient_n
+
+    Object UserSessionManager
+
+    Object MulticastClient
+
+
+}
+package Client <<Rectangle>> {
+    Object UnicastClient
+    Object MulitcastClient
+    Object ServerSessionManager
+}
+
+
+Server -- UnicastClient_1 :lance
+Server -- UnicastClient_2 :lance
+Server -- UnicastClient_n :lance
+
+@enduml
