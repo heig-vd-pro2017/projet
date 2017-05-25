@@ -3,6 +3,7 @@ package ch.tofind.commusica.core;
 import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.file.FileManager;
 import ch.tofind.commusica.media.EphemeralPlaylist;
+import ch.tofind.commusica.media.Player;
 import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.network.MulticastClient;
 import ch.tofind.commusica.network.NetworkProtocol;
@@ -12,6 +13,7 @@ import ch.tofind.commusica.session.ServerSessionManager;
 import ch.tofind.commusica.ui.UIController;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.Serialize;
+import javafx.application.Platform;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
@@ -23,6 +25,9 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -47,7 +52,10 @@ public class ClientCore extends AbstractCore implements ICore {
     private Track trackToSend;
 
     //! The manager that saves availables servers.
-    ServerSessionManager serverSessionManager;
+    private ServerSessionManager serverSessionManager;
+
+    //! Thread pool for the unicast clients
+    private ExecutorService threadPool;
 
     /**
      * @brief Setup the core as a client.
@@ -58,6 +66,8 @@ public class ClientCore extends AbstractCore implements ICore {
         new Thread(multicast).start();
 
         serverSessionManager = ServerSessionManager.getInstance();
+
+        this.threadPool = Executors.newCachedThreadPool();
     }
 
     /**
@@ -92,13 +102,15 @@ public class ClientCore extends AbstractCore implements ICore {
         LOG.info("Receiving playlist: " + playlistJson);
 
         if (Objects.equals(serverId, ApplicationProtocol.serverId)) {
-            EphemeralPlaylist playlistUpdated = Serialize.unserialize(playlistJson, EphemeralPlaylist.class);
+            // Delegate work to JavaFX thread.
+            Platform.runLater(() -> {
+                Serialize.unserialize(playlistJson, EphemeralPlaylist.class);
 
-            PlaylistManager.getInstance().getPlaylist().updateFrom(playlistUpdated);
-
-            // Refresh playlist at each reception.
-            UIController.getController().refreshPlaylist();
-            UIController.getController().refreshPlaylistsList();
+                // Refresh playlist at each reception.
+                PlaylistManager.getInstance().getPlaylist().save();
+                UIController.getController().refreshPlaylist();
+                UIController.getController().refreshPlaylistsList();
+            });
         }
 
         // We add the server to the available servers list
@@ -266,16 +278,38 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Method invoked when the server sends the PLAYED_PAUSED command.
-     * It updates the UI to reflect the current volume.
+     * @brief Method invoked when the server sends the PLAY command.
+     * It updates the UI to reflect the current player status.
      *
      * @param args Args of the command.
      *
      * @return END_OF_COMMUNICATION command
      */
-    public String PLAYED_PAUSED(ArrayList<Object> args) {
+    public String PLAY(ArrayList<Object> args) {
 
-        LOG.info("Player plays/stops.");
+        LOG.info("Player plays.");
+
+        Platform.runLater(() -> Player.getCurrentPlayer().getIsPlayingProperty().setValue(true));
+
+        String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
+        return result;
+    }
+
+    /**
+     * @brief Method invoked when the server sends the PAUSE command.
+     * It updates the UI to reflect the current player status.
+     *
+     * @param args Args of the command.
+     *
+     * @return END_OF_COMMUNICATION command
+     */
+    public String PAUSE(ArrayList<Object> args) {
+
+        LOG.info("Player stops.");
+
+        Platform.runLater(() -> Player.getCurrentPlayer().getIsPlayingProperty().setValue(false));
 
         String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
@@ -355,6 +389,8 @@ public class ClientCore extends AbstractCore implements ICore {
 
         LOG.info("Volume turns up.");
 
+        Player.getCurrentPlayer().riseVolume();
+
         String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
@@ -393,9 +429,12 @@ public class ClientCore extends AbstractCore implements ICore {
 
         LOG.info("Volume turns down.");
 
+        Player.getCurrentPlayer().lowerVolume();
+
         String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
+
         return result;
     }
 
@@ -537,7 +576,10 @@ public class ClientCore extends AbstractCore implements ICore {
         if (ApplicationProtocol.serverAddress != null) {
 
             client = new UnicastClient(hostname, NetworkProtocol.UNICAST_PORT);
-            new Thread(client).start();
+
+            Thread threadedClient = new Thread(client);
+            threadPool.submit(threadedClient);
+
             client.send(message);
 
         } else {
@@ -552,8 +594,26 @@ public class ClientCore extends AbstractCore implements ICore {
 
     @Override
     public void stop() {
+        // Stop the executors
+        serverSessionManager.stop();
+
         // Stop the network elements
         multicast.stop();
+
+        // Try to stop all remaining threads
+        threadPool.shutdown();
+
+        // Wait 5 seconds before killing everyone
+        try {
+            threadPool.awaitTermination(5, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            LOG.error(e);
+        } finally {
+            if (!threadPool.isTerminated()) {
+                LOG.error("The thread pool can't be stopped !");
+            }
+            threadPool.shutdownNow();
+        }
 
         // Delete the unplayed tracks from the database
         Session session = DatabaseManager.getInstance().getSession();

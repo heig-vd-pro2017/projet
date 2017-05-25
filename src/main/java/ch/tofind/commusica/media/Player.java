@@ -7,8 +7,10 @@ import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.PlaylistTrackProperty;
 
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaException;
@@ -44,6 +46,8 @@ public class Player {
 
     private final BooleanProperty isPlayingProperty;
 
+    private final DoubleProperty volumeProperty;
+
     /**
      * @brief Player single constructor. Avoid the instantiation.
      */
@@ -54,9 +58,18 @@ public class Player {
         currentTrackProperty = new PlaylistTrackProperty();
         previousTrackProperty = new PlaylistTrackProperty();
         isPlayingProperty = new SimpleBooleanProperty(false);
+        volumeProperty = new SimpleDoubleProperty(0.5);
 
         previousTrackProperty.addListener((obs, oldValue, newValue) -> {
-            PlaylistManager.getInstance().getPlaylist().saveTrack(newValue.getTrack());
+            if (newValue != null) {
+                PlaylistManager.getInstance().getPlaylist().saveTrack(newValue.getTrack());
+            }
+        });
+
+        volumeProperty.addListener((obs, oldValue, newValue) -> {
+            if (player != null) {
+                player.setVolume(newValue.doubleValue());
+            }
         });
     }
 
@@ -173,6 +186,10 @@ public class Player {
         return isPlayingProperty;
     }
 
+    public DoubleProperty getVolumeProperty() {
+        return volumeProperty;
+    }
+
     /**
      * @brief Get the playing status of the running player.
      *
@@ -220,20 +237,14 @@ public class Player {
      * @brief Rise the volume of the player.
      */
     public void riseVolume() {
-        if (player != null) {
-            double currentVolume = player.getVolume();
-            player.setVolume(currentVolume + volumeStep);
-        }
+        volumeProperty.setValue(volumeProperty.getValue() + volumeStep);
     }
 
     /**
      * @brief Lower the volume of the player.
      */
     public void lowerVolume() {
-        if (player != null) {
-            double currentVolume = player.getVolume();
-            player.setVolume(currentVolume - volumeStep);
-        }
+        volumeProperty.setValue(volumeProperty.getValue() - volumeStep);
     }
 
     /**
@@ -241,18 +252,18 @@ public class Player {
      *
      * @return The volume of the current player.
      */
-    public double getVolume() {
+    /*public double getVolume() {
         return player.getVolume();
-    }
+    }*/
 
     /**
      * @brief Set the current player's volume.
      *
      * @param volume The volume to apply on the current player.
      */
-    public void setVolume(double volume) {
+    /*public void setVolume(double volume) {
         if (player != null) {
             player.setVolume(volume);
         }
-    }
+    }*/
 }

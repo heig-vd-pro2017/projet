@@ -2,7 +2,6 @@ package ch.tofind.commusica.core;
 
 import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.file.FileManager;
-import ch.tofind.commusica.media.EphemeralPlaylist;
 import ch.tofind.commusica.media.Player;
 import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.network.MulticastClient;
@@ -10,16 +9,17 @@ import ch.tofind.commusica.network.NetworkProtocol;
 import ch.tofind.commusica.network.Server;
 import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.playlist.PlaylistTrack;
+import ch.tofind.commusica.session.ServerSessionManager;
 import ch.tofind.commusica.session.UserSessionManager;
 import ch.tofind.commusica.ui.UIController;
 import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.Serialize;
+
 import javafx.application.Platform;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 
 import javax.persistence.NoResultException;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -29,6 +29,9 @@ import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 /**
  * @brief This class represents the server side of the application.
@@ -45,16 +48,16 @@ public class ServerCore extends AbstractCore implements ICore {
     private static final String name = Configuration.getInstance().get("SERVER_NAME");
 
     //! Client to use for multicast.
-    MulticastClient multicast;
+    private MulticastClient multicast;
 
     //! The server.
-    Server server;
+    private Server server;
 
     //! The manager to know how many users are active.
-    UserSessionManager userSessionManager;
+    private UserSessionManager userSessionManager;
 
     //! Broadcast the playlist on schedule.
-    ScheduledExecutorService broadcastPlaylist;
+    private ScheduledExecutorService broadcastPlaylist;
 
     /**
      * @brief Setup the core as a server.
@@ -102,10 +105,12 @@ public class ServerCore extends AbstractCore implements ICore {
         String inetAddressJson = Serialize.serialize(NetworkProtocol.interfaceToUse);
         String playlistJson = Serialize.serialize(PlaylistManager.getInstance().getPlaylist());
 
-        // Save the playlist into the database and refresh UI.
-        PlaylistManager.getInstance().getPlaylist().save();
-        UIController.getController().refreshPlaylistsList();
-        UIController.getController().refreshPlaylist();
+        Platform.runLater(() -> {
+            // Save the playlist into the database and refresh UI.
+            PlaylistManager.getInstance().getPlaylist().save();
+            UIController.getController().refreshPlaylistsList();
+            UIController.getController().refreshPlaylist();
+        });
 
         String command = ApplicationProtocol.PLAYLIST_UPDATE + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
@@ -528,11 +533,19 @@ public class ServerCore extends AbstractCore implements ICore {
 
             Core.execute("SEND_PLAY_PAUSE_REQUEST", null);
 
-            LOG.info("Play/paused.");
+            if (Player.getCurrentPlayer().isPlaying()) {
+                LOG.info("Player stops playing.");
 
-            return ApplicationProtocol.PLAYED_PAUSED + NetworkProtocol.END_OF_LINE +
-                    ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
-                    NetworkProtocol.END_OF_COMMAND;
+                return ApplicationProtocol.PAUSE + NetworkProtocol.END_OF_LINE +
+                        ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                        NetworkProtocol.END_OF_COMMAND;
+            } else {
+                LOG.info("Player starts playing.");
+
+                return ApplicationProtocol.PLAY + NetworkProtocol.END_OF_LINE +
+                        ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                        NetworkProtocol.END_OF_COMMAND;
+            }
 
         } else {
             LOG.info("User's opinion was taken into account.");
@@ -713,6 +726,10 @@ public class ServerCore extends AbstractCore implements ICore {
     public void stop() {
 
         LOG.warning("Server shutting down...");
+
+        // Stop the executors
+        userSessionManager.stop();
+        ServerSessionManager.getInstance().stop();
 
         // Try to stop all remaining threads
         broadcastPlaylist.shutdown();

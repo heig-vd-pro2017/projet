@@ -3,6 +3,8 @@ package ch.tofind.commusica;
 import ch.tofind.commusica.ui.UIController;
 import ch.tofind.commusica.utils.Logger;
 
+import java.util.Set;
+
 public class Commusica {
 
     private static final Logger LOG = new Logger(Commusica.class.getSimpleName());
@@ -12,6 +14,5 @@ public class Commusica {
         LOG.info("Starting application...");
 
         UIController.launch(UIController.class);
-
     }
 }
