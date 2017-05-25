@@ -118,6 +118,14 @@ public class EphemeralPlaylist implements IPlaylist {
 
     }
 
+    public void saveTrack(Track track) {
+        PlaylistTrack playlistTrack = getPlaylistTrack(track);
+
+        if (playlistTrack != null) {
+            DatabaseManager.getInstance().save(playlistTrack);
+        }
+    }
+
     @Override
     public String toString() {
         return delegate.getName() + "\n" +
@@ -128,6 +136,8 @@ public class EphemeralPlaylist implements IPlaylist {
     public boolean addTrack(Track track) {
         // Check that the playlist doesn't already contains the track.
         if (tracksList.stream().noneMatch(p -> p.getTrack().equals(track))) {
+            DatabaseManager.getInstance().save(track);
+
             // Create the PlaylistTrack object by associating it with the static playlist.
             PlaylistTrack playlistTrack = new PlaylistTrack(delegate, track);
             tracksList.add(playlistTrack);

@@ -1,6 +1,7 @@
 package ch.tofind.commusica.media;
 
 import ch.tofind.commusica.playlist.PlaylistManager;
+import ch.tofind.commusica.playlist.PlaylistTrack;
 import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.PlaylistTrackProperty;
@@ -53,6 +54,10 @@ public class Player {
         currentTrackProperty = new PlaylistTrackProperty();
         previousTrackProperty = new PlaylistTrackProperty();
         isPlayingProperty = new SimpleBooleanProperty(false);
+
+        previousTrackProperty.addListener((obs, oldValue, newValue) -> {
+            PlaylistManager.getInstance().getPlaylist().saveTrack(newValue.getTrack());
+        });
     }
 
     /**
