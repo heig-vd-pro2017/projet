@@ -78,6 +78,9 @@ public class DatabaseManager {
     public void execute(Query query) {
 
         try {
+            // Wait while transaction is still active.
+            while(transaction != null && transaction.isActive());
+
             transaction = session.beginTransaction();
             query.executeUpdate();
             transaction.commit();
@@ -97,6 +100,9 @@ public class DatabaseManager {
     public void save(Object object) {
 
         try {
+            // Wait while transaction is still active.
+            while(transaction != null && transaction.isActive());
+
             transaction = session.beginTransaction();
             session.saveOrUpdate(object);
             transaction.commit();
@@ -115,6 +121,9 @@ public class DatabaseManager {
      */
     public void delete(Object object) {
         try {
+            // Wait while transaction is still active.
+            while(transaction != null && transaction.isActive());
+
             transaction = session.beginTransaction();
             session.delete(object);
             transaction.commit();
@@ -133,6 +142,9 @@ public class DatabaseManager {
      */
     public void update(Object object) {
         try {
+            // Wait while transaction is still active.
+            while(transaction != null && transaction.isActive());
+
             transaction = session.beginTransaction();
             session.update(object);
             transaction.commit();
