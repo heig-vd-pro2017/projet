@@ -181,11 +181,23 @@ Cettre classe réprsenté la musique, elle regroupe tous les informations concer
   + ```public Track(AudioFile audioFile)```
    Il permet de créer un track à partir d'un fichier audio. Il est utile lorsqu'ont souhaite transférer un fichier et souhaitez effectuer un contrôle sur un track au lieu de vérifier le fichier Audio lui même.
 
+
 ##  Package network
-Une autre partie importante de notre programme était la gestion du réseau entre les client et le serveur.   
+Une autre partie importante de notre programme était la gestion du réseau entre les client et le serveur. Nous nous somme longuement penché sur la question de qui devait avoir quelles responsabilités. Notre application demande plusieurs points au niveau du réseau:
+
++ Avoir un protocole réseau qui se base sur des commandes avec arguments.
++ Le serveur doit pouvoir gérer plusieurs clients mais sans devoir garder une connexion constante entre chaque client et le serveur.
++ Les clients doivent pouvoir avoir une découverte des serveurs disponibles.
++ Les serveur doivent pouvoir envoyer une mise à jour de leur liste de lecture actuelle à tous les clients. Ces derniers ne devront traiter que les informations qui viennent du serveur auquel ils sont connectés.
++ Un client ne doit pas pouvoir upvoter/downvoter plusieurs fois le même morceau.
+
+Nous avons décidé de partir sur une architecture avec un thread réceptionniste `Server` au niveau du serveur qui va attendre une nouvelle connexion d'un client sur son socket et lancer un thread `UnicastClient` qui va s'occuper de la communication avec le client. Cette communication se fait via un socket unicast puisque toutes les informations mise à part la mise à jour de la playlist vont transiter du client au serveur.  
+La classe `UnicastClient` va recevoir les commandes venant du réseau et en renvoyer. Sa force est qu'elle peut être utilisée aussi bien du côté serveur que du côté client grâce à un système de lecture de flux d'entrée tant que la fin d'une commande n'est pas détectée ou que l'autre partie n'a pas fermé son socket. Le socket est fermé lorsque la commande `END_OF_COMMUNICATION` est reçue.  
+Après la réception de la ligne `END_OF_COMMAND`, la lecture du flux d'entrée est arrêtée et la commande est séparée pour en extraire la partie commande et ses différents arguments. **PAS FINI**
+
 
 ##  Package playlist
-Le package **playlist** met en oeuvre ce qui a trait à la gestion des playlists, dans notre cas : 
+Le package **playlist** met en œuvre ce qui a trait à la gestion des playlists, dans notre cas :
 
 + Le lien entre une certaine chanson et les playlists dans lesquelles elle se trouve.
 + La sélection d'une certaine playlist.
@@ -204,7 +216,7 @@ La classe **PlaylistManager** représente un gestionnaire de playlists et a plus
 La classe **PlaylistTrack** permet non seulement de représenter le lien entre une chanson et une playlist mais aussi de connaître le nombre de votes de la chanson, ce qui sera ensuite utile au niveau de la classe **VoteComparator** qui organise les chansons dans la playlist selon le nombre de votes. Cela peut être fait grâce au fait que **PlaylistTrack** met à disposition une variable **votesProperty** à laquelle un observeur a été ajouté afin que l'interface graphique se réorganise correctement.
 
 #### PlaylistTrackId
-Cette classe permet de créer le lien entre une certaine playlist et une chanson. Grâce à l'implémentation d'un hashcode, on peut se servir de celui-ci afin de vérifier que la chanson reliée à la playlist n'existe pas déjà. 
+Cette classe permet de créer le lien entre une certaine playlist et une chanson. Grâce à l'implémentation d'un hashcode, on peut se servir de celui-ci afin de vérifier que la chanson reliée à la playlist n'existe pas déjà.
 
 #### VoteComparator
 Le comparateur de vote ne possède qu'une fonction. Celle-ci sert tout simplement à déterminer entre deux chansons, laquelle a le plus grand nombre de votes. Cela a été créé dans le but de réorganiser la playlist en commençant par les chansons les plus votées.
