@@ -2,8 +2,8 @@
 
 
 class DatabaseManager{
-- Logger LOG
--DatabaseManager instance
+- final Logger LOG
+-static DatabaseManager instance
 -SessionFactory factory
 -Session session
 -Transaction transaction
@@ -14,7 +14,7 @@ class DatabaseManager{
 +void save(Object object)
 +void delete(Object object)
 +void update(Object object)
-+void close() 
++void close()
 }
 
 

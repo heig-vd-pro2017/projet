@@ -40,8 +40,8 @@ class VoteComparator{
 }
 
 class PlaylistManager{
-- Logger LOG
--PlaylistManager instance
+- final Logger LOG
+-static PlaylistManager instance
 -List<SavedPlaylist> savedPlaylists
 -EphemeralPlaylist playlist
 -SavedPlaylist favoritesPlaylist

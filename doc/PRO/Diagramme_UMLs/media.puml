@@ -2,7 +2,7 @@
 
 
 class EphemeralPlaylist{
--Logger LOG
+-final Logger LOG
 -ObservableSortedPlaylistTrackList tracksList
 -SavedPlaylist delegate
 
@@ -41,16 +41,16 @@ class Track{
 }
 
 class iPlaylist{
-+boolean addTrack(Track track)
-+boolean contains(Track track)
-+PlaylistTrack getPlaylistTrack(Track track)
-+ List<PlaylistTrack> getTracksList()
-+ boolean isSaved()
+~boolean addTrack(Track track)
+~boolean contains(Track track)
+~PlaylistTrack getPlaylistTrack(Track track)
+~ List<PlaylistTrack> getTracksList()
+~boolean isSaved()
 }
 
 class Player{
--Logger LOG
--Player currentPlayer
+-final Logger LOG
+-static Player currentPlayer
 -MediaPlayer player
 -IntegerProperty currentTimeProperty
 -PlaylistTrackProperty currentTrackProperty

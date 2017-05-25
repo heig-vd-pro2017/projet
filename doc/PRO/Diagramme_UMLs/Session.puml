@@ -1,0 +1,77 @@
+@startuml
+
+
+class ISession{
++ Integer getId()
++ void update()
++ Date getLastUpdate()
+
+}
+
+class ISessionManager{
+void stop()
+}
+
+class ServerSession{
+-Integer id
+-InetAddress serverIp
+-String serverName
+-Date updated
++ServerSession(Integer id, InetAddress serverIp, String serverName)
++void update()
++Date getLastUpdate()
+...()
+}
+
+class ServerSessionManager{
+- Logger LOG
+- ObservableMap<Integer, ServerSession> availableServers
+-ScheduledExecutorService scheduledExecutorService
+-ServerSessionManager instance
+
+- ServerSessionManager()
++ ServerSessionManager getInstance()
++void store(Integer id, InetAddress serverIp, String serverName)
++ObservableMap<Integer, ServerSession> getAvailableServers()
++void serverChooser(Map<Integer, ServerSession> serverList)
++void deleteObsoleteSessions()
++void stop()
+}
+
+class UserSessionManager{
+- Logger LOG
+- UserSessionManager instance
+- Map<Integer, UserSession> activeSessions
+- Map<Integer, UserSession> inactiveSessions
+-Set<Integer> usersAskedForPlayPause
+-Set<Integer> usersAskedForNextTrack
+-...
++ UserSessionManager()
++ void store(Integer id)
++ int countActiveSessions()
++ int countInactiveSessions()
++ int countPlayPauseRequests()
++ void downvote(Integer userId, String trackId)
+....()
+}
+ class UserSession {
+- Integer id
+- Date updated
+- Set<String> upvotedTracks
+- Set<String> downvotedTracks
++ UserSession(Integer id)
++ Set<String> getUpvotedTracks()
++ Set<String> getDownvotedTracks()
++ void addUpvotedTrack(String trackId)
++ void addDownvotedTrack(String trackId)
+...()
+ }
+
+ UserSession <-- UserSessionManager
+ ISession <.. UserSession
+ ISessionManager <.. UserSessionManager
+ ISession <.. ServerSession
+ ServerSession <-- ServerSessionManager
+ ISessionManager <.. ServerSessionManager
+
+@enduml

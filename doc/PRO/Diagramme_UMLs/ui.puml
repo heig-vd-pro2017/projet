@@ -1,0 +1,45 @@
+@startuml
+
+
+class PlaylistsListView{
+-String CSS_FILE
+-String FXML_FILE
+-PlaylistManager manager
+~Label favoritesLabel
+~Label playingLabel
+~ListView<SavedPlaylist> playlistsView
++ PlaylistsListView()
++void refresh()
+-void loadFavoritesPlaylist(MouseEvent e)
+-void loadFavoritesPlaylist(MouseEvent e)
+}
+
+
+class UIController{
+-Logger LOG
+-IPlaylist currentPlaylist
+-String FXML_FILE
+-PlaylistsListView playlistsListView
+-TracksListView tracksListView
++UIController getController()
++void showPlaylist(IPlaylist playlist)
++void refreshPlaylist()
++void refreshPlaylistsList()
++IPlaylist getCurrentPlaylist()
++void showAlert(String title, String message, Alert.AlertType type)
+...()
+}
+
+class TracksListView{
+- Logger LOG
+- PlaylistManager playlistManager
+
+
++ TracksListView()
++void showPlaylist(IPlaylist playlist)
++void initializeDragAndDrop()
+}
+ TracksListView <-- UIController
+ PlaylistsListView <-- UIController
+
+@enduml

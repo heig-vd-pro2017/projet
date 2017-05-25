@@ -2,11 +2,11 @@
 
 
 class FileManager{
-- Logger LOG
-- FileManager instance
-+ String OUTPUT_DIRECTORY
+- final Logger LOG
+- static FileManager instance
++ Static OUTPUT_DIRECTORY
 
-+FileManager()
+-FileManager()
 +FileManager getInstance()
 +File retrieveFile(InputStream inputStream, int fileSize)
 +String getFormatExtension(File file)
@@ -18,15 +18,15 @@ class FileManager{
 
 class FilesFormats{
 
-+byte[] MP3_HEADER
-+int MP3_HEADER_OFFSET
-+String MP3_EXTENSION
-+byte[] M4A_HEADER
-+int M4A_HEADER_OFFSET
-+String M4A_EXTENSION
-+ byte[] WAV_HEADER
-+int WAV_HEADER_OFFSET
-+String WAV_EXTENSION
++final byte[] MP3_HEADER
++final int MP3_HEADER_OFFSET
++final String MP3_EXTENSION
++final byte[] M4A_HEADER
++final int M4A_HEADER_OFFSET
++final String M4A_EXTENSION
++ final byte[] WAV_HEADER
++final int WAV_HEADER_OFFSET
++final String WAV_EXTENSION
 
 }
 
