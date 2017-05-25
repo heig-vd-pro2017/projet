@@ -9,3 +9,4 @@
 * La musique jouée par le serveur ne s'affiche pas chez le client
 * Beaucoup de bugs au niveau de l'ajout de favoris
 * Pas de différence graphique entre client et serveur
+* Les track déjà jouées sont quand même affectée par les votes chez le client (elles devraient rester en haut).
