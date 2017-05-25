@@ -1,11 +1,9 @@
 package ch.tofind.commusica.media;
 
 import ch.tofind.commusica.database.DatabaseManager;
-import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.playlist.PlaylistTrack;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.ObservableSortedPlaylistTrackList;
-import javafx.application.Platform;
 
 /**
  * @brief This class represents a playlist that is currently constructed.
@@ -82,42 +80,6 @@ public class EphemeralPlaylist implements IPlaylist {
     public String getName() {
         return delegate.getName();
     }
-
-    /**
-     * Updates the current playlist from the playlist given as parameter.
-     *
-     * @param playlist The playlist to update from.
-     */
-    /*public void updateFrom(EphemeralPlaylist playlist) {
-        delegate.setName(playlist.getName());
-
-        playlist.tracksList.forEach(item -> {
-            PlaylistTrack playlistTrack = getPlaylistTrack(item.getTrack());
-            // If the track isn't in the playlist yet, we add it.
-            if (playlistTrack == null) {
-                addTrack(item.getTrack());
-            }
-            // Otherwise, we update the votes value.
-            else {
-                // We tell the JavaFX thread to execute this method. If we don't an exception will be raised since we
-                // are not on the same thread.
-                Platform.runLater(() -> playlistTrack.getVotesProperty().setValue(item.getVotesProperty().getValue()));
-            }
-        });
-
-        save();
-    }*/
-
-    /**
-     * @brief Save the ephemeral playlist into the database.
-     *
-     * Beware, this method has an effect only if it's the one stored by the PlaylistManager.
-     */
-    /*public void save() {
-        //if (PlaylistManager.getInstance().getPlaylist() == this) {
-            DatabaseManager.getInstance().save(delegate);
-        //}
-    }*/
 
     public void saveTrack(Track track) {
         PlaylistTrack playlistTrack = getPlaylistTrack(track);
