@@ -9,6 +9,7 @@ import ch.tofind.commusica.network.NetworkProtocol;
 import ch.tofind.commusica.network.Server;
 import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.playlist.PlaylistTrack;
+import ch.tofind.commusica.session.ServerSessionManager;
 import ch.tofind.commusica.session.UserSessionManager;
 import ch.tofind.commusica.ui.UIController;
 import ch.tofind.commusica.utils.Configuration;
@@ -718,6 +719,7 @@ public class ServerCore extends AbstractCore implements ICore {
 
         // Stop the executors
         userSessionManager.stop();
+        ServerSessionManager.getInstance().stop();
 
         // Try to stop all remaining threads
         broadcastPlaylist.shutdown();
