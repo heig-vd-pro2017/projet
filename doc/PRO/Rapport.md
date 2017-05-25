@@ -33,8 +33,20 @@ Un outil ORM simplifie la création des données, la manipulation de données et
 La performance du framework hibernate est rapide car le cache est utilisé en interne dans le cadre hiberné. 
 Le framework Hibernate offre la possibilité de créer automatiquement les tables de la base des données. Il m'est donc pas nécessaires de créer manuellement des tables dans la base de données.
 ###  File
+ Le package File a pour rôle d'assuré la gestion des fichiers en interagissant avec le file système . Il est constitué de 02 classe **FileManager** et **FilesFormats**. 
+ 
+ + **FilesFormats**: Vue que notre application supporte trois formats mp3, m4a et wav, la classe permet de définit les caractéristique d'un fichier c'est à dire tous les éléments nous permettant de savoir le type du fichier.
+ + **FileManager**:
+   Cette classe permet de supprimer, stocké et déterminé le type de fichier.  Pour retrouver l'extension du fichier nous avons procédé de telle maniéré :
+ 
+	+ Pour les fichiers mp3, on regarde les 3 premiers bytes depuis le début du fichier.
+	+ Pour les m4a, on regarde les premiers octets mais en partant du quatrième octet  depuis le début du fichier
+	+  Pour les wav, à partir du huitième octet depuis le début du fichier. 
 
+Connaitre le type de fichier nous permettra de traiter que les fichiers supporté pas notre plateforme et aussi en termes de sécurité éviter qu'un utilisateur face planter le serveur en envoyant un fichier qui n'est pas supporté par celui-ci.
+   
 ###  Network
+
 ###  Playlist
 ###  Interface graphique
 ###  Utils
