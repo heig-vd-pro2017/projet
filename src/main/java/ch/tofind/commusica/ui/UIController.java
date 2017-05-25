@@ -18,9 +18,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+
 import javafx.scene.control.Alert;
-import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * @brief UI controller.
@@ -40,9 +42,6 @@ public class UIController extends Application implements Initializable {
 
     //! FXML file to use for the view.
     private static final String FXML_FILE = "ui/main.fxml";
-
-    //! The used Core for this session.
-    private Core core;
 
     @FXML
     private PlaylistsListView playlistsListView;
@@ -114,34 +113,31 @@ public class UIController extends Application implements Initializable {
      * @brief Display the dialog to choose if we launch the application as server or client.
      */
     private void displayServerClientDialog() {
-        ChoiceDialog<String> dialog = new ChoiceDialog<>("Client", "Client", "Server");
-        dialog.setTitle("Welcome!");
-        dialog.setHeaderText("Before entering the wonderful Commusica realm, please choose your gender (only two lol).");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initStyle(StageStyle.UTILITY);
 
-        Optional<String> result = dialog.showAndWait();
+        alert.setHeaderText(null);
+        alert.setTitle("Welcome!");
+        alert.setContentText("Welcome to Commusica!\n\nWould you like to be the server?");
+
+        ButtonType yesButton = new ButtonType("Yes");
+        ButtonType noButton = new ButtonType("No");
+
+        alert.getButtonTypes().setAll(yesButton, noButton);
+
+        Optional<ButtonType> result = alert.showAndWait();
 
         if (result.isPresent()) {
-
             Network.configureNetwork();
 
-            if (result.get().equals("Client")) {
-
-                LOG.info("Launching as client.");
-
-                Core.setupAsClient();
-
-            } else if (result.get().equals("Server")) {
-
+            if (result.get() == yesButton) {
                 LOG.info("Launching as server.");
-
                 Core.setupAsServer();
-
-            } else {
-
-                LOG.error("WTF?");
-
             }
-
+            else {
+                LOG.info("Launching as client.");
+                Core.setupAsClient();
+            }
         } else {
 
             LOG.error("Quitting application because user didn't choose an option.");
@@ -177,7 +173,6 @@ public class UIController extends Application implements Initializable {
 
         stage.setMinHeight(stage.getHeight());
         stage.setMinWidth(stage.getWidth());
-
     }
 
     @Override
@@ -193,7 +188,6 @@ public class UIController extends Application implements Initializable {
 
     @Override
     public void stop() {
-
         LOG.info("Stopping application...");
         Core.stop();
 
@@ -209,6 +203,5 @@ public class UIController extends Application implements Initializable {
         // Workaround, as all threads are not stopped properly
         LOG.warning("Forcing shutdown...");
         System.exit(0);
-
     }
 }
