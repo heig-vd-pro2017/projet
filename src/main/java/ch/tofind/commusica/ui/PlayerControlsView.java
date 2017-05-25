@@ -93,15 +93,8 @@ public class PlayerControlsView extends GridPane {
 
     @FXML
     private void playPause(MouseEvent e) {
-        /*
-        if(player.isPlaying()) {
-            player.pause();
-        } else {
-            player.play();
-        }
 
-        player.setVolume(volumeSlider.getValue());
-        */
+        //player.setVolume(volumeSlider.getValue());
         Core.execute(ApplicationProtocol.SEND_PLAY_PAUSE_REQUEST, null);
     }
 
