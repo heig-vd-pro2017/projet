@@ -185,7 +185,29 @@ Cettre classe réprsenté la musique, elle regroupe tous les informations concer
 Une autre partie importante de notre programme était la gestion du réseau entre les client et le serveur.   
 
 ##  Package playlist
-Le package **playlist**
+Le package **playlist** met en oeuvre ce qui a trait à la gestion des playlists, dans notre cas : 
+
++ Le lien entre une certaine chanson et les playlists dans lesquelles elle se trouve.
++ La sélection d'une certaine playlist.
++ La gestion des upvotes et downvotes concernant les chansons contenues dans une playlist spécifique.
+
+### Classes du package
+#### PlaylistManager
+La classe **PlaylistManager** représente un gestionnaire de playlists et a plusieurs utilités :
++ Récupérer la playlist en cours de création
++ Récupérer les playlists sauvegardées
++ Récupérer la playlist des favoris
++ Ajouter/supprimer des chansons à la playlist des favoris
++ Créer/supprimer une playlist
+
+#### PlaylistTrack
+La classe **PlaylistTrack** permet non seulement de représenter le lien entre une chanson et une playlist mais aussi de connaître le nombre de votes de la chanson, ce qui sera ensuite utile au niveau de la classe **VoteComparator** qui organise les chansons dans la playlist selon le nombre de votes. Cela peut être fait grâce au fait que **PlaylistTrack** met à disposition une variable **votesProperty** à laquelle un observeur a été ajouté afin que l'interface graphique se réorganise correctement.
+
+#### PlaylistTrackId
+Cette classe permet de créer le lien entre une certaine playlist et une chanson. Grâce à l'implémentation d'un hashcode, on peut se servir de celui-ci afin de vérifier que la chanson reliée à la playlist n'existe pas déjà. 
+
+#### VoteComparator
+Le comparateur de vote ne possède qu'une fonction. Celle-ci sert tout simplement à déterminer entre deux chansons, laquelle a le plus grand nombre de votes. Cela a été créé dans le but de réorganiser la playlist en commençant par les chansons les plus votées.
 
 ##  Package ui
 
