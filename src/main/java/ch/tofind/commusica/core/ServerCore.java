@@ -436,7 +436,6 @@ public class ServerCore extends AbstractCore implements ICore {
         trackById.setParameter("id", trackId);
 
         Track trackToDownvote;
-
         try {
             trackToDownvote = (Track) trackById.getSingleResult();
         } catch (NoResultException e) {
@@ -609,7 +608,6 @@ public class ServerCore extends AbstractCore implements ICore {
         return result;
     }
 
-
     /**
      * @brief Receive the ask to turn the volume up by a client.
      *
@@ -629,9 +627,11 @@ public class ServerCore extends AbstractCore implements ICore {
 
             userSessionManager.resetTurnVolumeUpRequests();
 
-            // TODO Augmenter le volume !
-
             LOG.info("Volume turns up.");
+
+            // Ask the UI to update the view when it can
+            Platform.runLater(() -> Player.getCurrentPlayer().riseVolume());
+
         } else {
             LOG.info("User's opinion was taken into account.");
         }
@@ -663,9 +663,11 @@ public class ServerCore extends AbstractCore implements ICore {
 
             userSessionManager.resetTurnVolumeDownRequests();
 
-            // TODO Diminuer le volume !
-
             LOG.info("Volume turns down.");
+
+            // Ask the UI to execute the command when it can
+            Platform.runLater(() -> Player.getCurrentPlayer().lowerVolume());
+
         } else {
             LOG.info("User's opinion was taken into account.");
         }

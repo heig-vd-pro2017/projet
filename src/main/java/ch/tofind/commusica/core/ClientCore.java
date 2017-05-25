@@ -89,7 +89,7 @@ public class ClientCore extends AbstractCore implements ICore {
         String serverName = (String) args.remove(0);
         String playlistJson = (String) args.remove(0);
 
-        LOG.info("Sending playlist: " + playlistJson);
+        LOG.info("Receiving playlist: " + playlistJson);
 
         if (Objects.equals(serverId, ApplicationProtocol.serverId)) {
             EphemeralPlaylist playlistUpdated = Serialize.unserialize(playlistJson, EphemeralPlaylist.class);
