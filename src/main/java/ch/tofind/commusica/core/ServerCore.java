@@ -105,10 +105,12 @@ public class ServerCore extends AbstractCore implements ICore {
         String inetAddressJson = Serialize.serialize(NetworkProtocol.interfaceToUse);
         String playlistJson = Serialize.serialize(PlaylistManager.getInstance().getPlaylist());
 
-        // Save the playlist into the database and refresh UI.
-        PlaylistManager.getInstance().getPlaylist().save();
-        UIController.getController().refreshPlaylistsList();
-        UIController.getController().refreshPlaylist();
+        Platform.runLater(() -> {
+            // Save the playlist into the database and refresh UI.
+            PlaylistManager.getInstance().getPlaylist().save();
+            UIController.getController().refreshPlaylistsList();
+            UIController.getController().refreshPlaylist();
+        });
 
         String command = ApplicationProtocol.PLAYLIST_UPDATE + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +

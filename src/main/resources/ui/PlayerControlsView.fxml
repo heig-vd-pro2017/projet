@@ -50,7 +50,7 @@
     </Label>
 
     <!-- Volume slider -->
-    <Slider fx:id="volumeSlider" focusTraversable="false" max="1.0" maxHeight="10.0" maxWidth="120.0" minHeight="10.0" minWidth="120.0" value="0.8" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+    <Slider fx:id="volumeSlider" disable="true" focusTraversable="false" max="1.0" maxHeight="10.0" maxWidth="120.0" minHeight="10.0" minWidth="120.0" value="0.5" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
 
     <!-- Volume '+' button -->
     <Label onMouseClicked="#riseVolume" text="+" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
