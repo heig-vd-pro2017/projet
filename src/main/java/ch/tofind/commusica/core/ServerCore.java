@@ -103,7 +103,6 @@ public class ServerCore extends AbstractCore implements ICore {
         String playlistJson = Serialize.serialize(PlaylistManager.getInstance().getPlaylist());
 
         // Save the playlist into the database and refresh UI.
-        PlaylistManager.getInstance().getPlaylist().save();
         UIController.getController().refreshPlaylistsList();
         UIController.getController().refreshPlaylist();
 

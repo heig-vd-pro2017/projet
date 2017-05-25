@@ -32,6 +32,8 @@ public class EphemeralPlaylist implements IPlaylist {
         delegate = new SavedPlaylist(playlistName);
 
         tracksList = new ObservableSortedPlaylistTrackList();
+
+        DatabaseManager.getInstance().save(delegate);
     }
 
     /**
@@ -86,7 +88,7 @@ public class EphemeralPlaylist implements IPlaylist {
      *
      * @param playlist The playlist to update from.
      */
-    public void updateFrom(EphemeralPlaylist playlist) {
+    /*public void updateFrom(EphemeralPlaylist playlist) {
         delegate.setName(playlist.getName());
 
         playlist.tracksList.forEach(item -> {
@@ -104,19 +106,18 @@ public class EphemeralPlaylist implements IPlaylist {
         });
 
         save();
-    }
+    }*/
 
     /**
      * @brief Save the ephemeral playlist into the database.
      *
      * Beware, this method has an effect only if it's the one stored by the PlaylistManager.
      */
-    public void save() {
-        if (PlaylistManager.getInstance().getPlaylist() == this) {
+    /*public void save() {
+        //if (PlaylistManager.getInstance().getPlaylist() == this) {
             DatabaseManager.getInstance().save(delegate);
-        }
-
-    }
+        //}
+    }*/
 
     public void saveTrack(Track track) {
         PlaylistTrack playlistTrack = getPlaylistTrack(track);
@@ -124,6 +125,10 @@ public class EphemeralPlaylist implements IPlaylist {
         if (playlistTrack != null) {
             DatabaseManager.getInstance().save(playlistTrack);
         }
+    }
+
+    public void setName(String name) {
+        delegate.setName(name);
     }
 
     @Override
@@ -136,9 +141,9 @@ public class EphemeralPlaylist implements IPlaylist {
     public boolean addTrack(Track track) {
         // Check that the playlist doesn't already contains the track.
         if (tracksList.stream().noneMatch(p -> p.getTrack().equals(track))) {
-            if (PlaylistManager.getInstance().getPlaylist() == this) {
-                DatabaseManager.getInstance().save(track);
-            }
+            //if (PlaylistManager.getInstance().getPlaylist() == this) {
+            DatabaseManager.getInstance().save(track);
+            //}
 
             // Create the PlaylistTrack object by associating it with the static playlist.
             PlaylistTrack playlistTrack = new PlaylistTrack(delegate, track);

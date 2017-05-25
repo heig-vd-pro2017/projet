@@ -7,11 +7,11 @@ import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.network.MulticastClient;
 import ch.tofind.commusica.network.NetworkProtocol;
 import ch.tofind.commusica.network.UnicastClient;
-import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.session.ServerSessionManager;
 import ch.tofind.commusica.ui.UIController;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.Serialize;
+import javafx.application.Platform;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
@@ -92,9 +92,8 @@ public class ClientCore extends AbstractCore implements ICore {
         LOG.info("Receiving playlist: " + playlistJson);
 
         if (Objects.equals(serverId, ApplicationProtocol.serverId)) {
-            EphemeralPlaylist playlistUpdated = Serialize.unserialize(playlistJson, EphemeralPlaylist.class);
-
-            PlaylistManager.getInstance().getPlaylist().updateFrom(playlistUpdated);
+            // Delegate work to JavaFX thread.
+            Platform.runLater(() -> Serialize.unserialize(playlistJson, EphemeralPlaylist.class));
 
             // Refresh playlist at each reception.
             UIController.getController().refreshPlaylist();
