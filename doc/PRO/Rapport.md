@@ -37,7 +37,7 @@ Dans ce rapport, nous allons expliquer notre démarche de travail et les princip
 ## Objectif
 Le but de notre programme est de proposer une application client-serveur qui permettra aux clients d'envoyer des fichiers musicaux au serveur pour que celui-ci les joue. Il se démarque d'une simple application de lecture en continu (streaming) dans le fait que la liste de lecture ne peut être changée que par les clients par le biais d'un système de votes positifs ou négatifs. Ceux-ci permettent à un morceau présent d'être placé plus en avant ou en arrière dans la liste de lecture. Ceci permet donc à chacun de donner son avis, tout en centralisant la lecture de la musique sur un seul ordinateur. En plus de cela, l'application met à disposition les fonctionnalités suivantes pour une expérience encore plus communautaire:
 
-- Vote pour passer au morceau suivant. Lorsqu'une majorité (plus de 50 pourcent) des clients ont voté pour passer au morceau suivant, la piste en écoute est remplacée par le morceau qui la suit dans la liste de lecture.
+- Vote pour passer au morceau suivant. Lorsqu'une majorité absolue (plus de 50 pourcent) des clients ont voté pour passer au morceau suivant, la piste en écoute est remplacée par le morceau qui la suit dans la liste de lecture.
 - Même principe de vote pour augmenter ou diminuer le volume.
 - Système de favoris pour permettre aux utilisateurs de sauvegarder les informations (titre, auteur, etc.) en local dans une liste de lecture spécifique.
 
@@ -108,8 +108,7 @@ public synchronized String execute(String command, ArrayList<Object> args) {
     return result;
 }
 ```
-
-On reçoit une commande et un tableau correspondant aux arguments de la méthode à invoquer. Ensuite, le programme essaie de trouver la méthode ayant un nom correspondant à la commande, si elle est disponible dans l'instance de la classe. Si c'est le cas, elle va l'invoquer et donc exécuter ladite méthode, sinon une exception est levée. C'est grâce à cette méthode que tout prend son sens, car on a maintenant une instance d'`AbstractCore` qui est soit `ClientCore` soit `ServerCore` avec une seule méthode pour en appeler d'autres qui seront, elles, implémentées dans les sous-classes d' `AbstractCore`.
+Nous recevons une commande et un tableau correspondant aux arguments de la méthode à invoquer. Ensuite, le programme essaie de trouver la méthode ayant un nom correspondant à la commande, si elle est disponible dans l'instance de la classe. Si c'est le cas, cette dernière va l'invoquer et donc exécuter ladite méthode, sinon une exception est levée. C'est grâce à cette méthode que tout prend son sens, car on a maintenant une instance d'`AbstractCore` qui est soit `ClientCore` soit `ServerCore` avec une seule méthode pour en appeler d'autres qui seront, elles, implémentées dans les sous-classes d' `AbstractCore`.
 
 #### ServerCore et ClientCore
 Ces deux classes héritant de `AbstractCore` et implémentant `ICore` sont les classes les plus importantes du projet. C'est ici que la majorité des actions (transfert de la musique, action à effectuer lors d'un appui sur un bouton, etc.) se fera. Lors de l'envoi des commandes, ces classes fonctionnent avec un système d'états dans lequel ces derniers peuvent être changés en recevant des commandes depuis le réseau ou depuis le code. Elles ont une forte interaction avec les classes s'occupant des échanges réseau puisque c'est ici que toutes les informations reçues depuis le réseau vont passer. Grâce à la réflexivité offerte par l'`AbstractCore`, il est donc extrêmement facile de définir de nouvelles méthodes dans ces classes. Pour cela, il faut déclarer une méthode portant le nom d'une commande - commandes qui seront toutes listées dans la classe `ApplicationProtocol`.
@@ -217,7 +216,7 @@ La classe **PlaylistManager** représente un gestionnaire de playlists et a plus
 #### PlaylistTrack
 La classe **PlaylistTrack** permet non seulement de représenter le lien entre une chanson et une playlist, mais aussi de connaître le nombre de votes de la chanson, ce qui sera ensuite utile au niveau de la classe **VoteComparator** qui organise les chansons dans la playlist selon le nombre de votes. Cela peut être fait grâce au fait que **PlaylistTrack** met à disposition une variable **votesProperty** à laquelle un observeur a été ajouté afin que l'interface graphique se réorganise correctement.
 #### PlaylistTrackId
-Cette classe permet de créer le lien entre une certaine playlist et une chanson. Grâce à l'implémentation d'un hashcode, on peut se servir de celui-ci afin de vérifier que la chanson reliée à la playlist n'existe pas déjà.
+Cette classe permet de créer le lien entre une certaine playlist et une chanson. Grâce à l'implémentation d'un hashcode, nous pouvons se servir de celui-ci afin de vérifier que la chanson reliée à la playlist n'existe pas déjà.
 #### VoteComparator
 Le comparateur de vote ne possède qu'une fonction. Celle-ci sert tout simplement à déterminer entre deux chansons, laquelle a le plus grand nombre de votes. Cela a été créé dans le but de réorganiser la playlist en commençant par les chansons les plus votées.
 
@@ -270,13 +269,11 @@ Cette classe permet de récupérer les informations nécessaires à l'affichage 
 #### Serialize
 Grâce à la librairie Gson de Google, cette classe est utilisée dans la sérialisation et désérialisation d'objets.
 
-## Parties manquantes par rapport au cahier des charges
-
 ## Tests réalisés
 
 ## Problèmes subsistants
 
-## Améliorations futures
+## Améliorations potentielles
 
 ## Planification / organisation
 
