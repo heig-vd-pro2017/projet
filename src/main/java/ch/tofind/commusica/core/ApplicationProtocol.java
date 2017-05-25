@@ -62,7 +62,9 @@ public final class ApplicationProtocol {
 
     public static final String PLAY_PAUSE_REQUEST = "PLAY_PAUSE_REQUEST";
 
-    public static final String PLAYED_PAUSED = "PLAYED_PAUSED";
+    public static final String PLAY = "PLAY";
+
+    public static final String PAUSE = "PAUSE";
 
     public static final String SEND_NEXT_TRACK_REQUEST = "SEND_NEXT_TRACK_REQUEST";
 

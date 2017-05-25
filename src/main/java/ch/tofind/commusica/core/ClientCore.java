@@ -275,16 +275,34 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Method invoked when the server sends the PLAYED_PAUSED command.
-     * It updates the UI to reflect the current volume.
+     * @brief Method invoked when the server sends the PLAY command.
+     * It updates the UI to reflect the current player status.
      *
      * @param args Args of the command.
      *
      * @return END_OF_COMMUNICATION command
      */
-    public String PLAYED_PAUSED(ArrayList<Object> args) {
+    public String PLAY(ArrayList<Object> args) {
 
-        LOG.info("Player plays/stops.");
+        LOG.info("Player plays.");
+
+        String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
+                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                NetworkProtocol.END_OF_COMMAND;
+        return result;
+    }
+
+    /**
+     * @brief Method invoked when the server sends the PAUSE command.
+     * It updates the UI to reflect the current player status.
+     *
+     * @param args Args of the command.
+     *
+     * @return END_OF_COMMUNICATION command
+     */
+    public String PAUSE(ArrayList<Object> args) {
+
+        LOG.info("Player stops.");
 
         String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +

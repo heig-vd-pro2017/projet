@@ -531,11 +531,19 @@ public class ServerCore extends AbstractCore implements ICore {
 
             Core.execute("SEND_PLAY_PAUSE_REQUEST", null);
 
-            LOG.info("Play/paused.");
+            if (Player.getCurrentPlayer().isPlaying()) {
+                LOG.info("Player stops playing.");
 
-            return ApplicationProtocol.PLAYED_PAUSED + NetworkProtocol.END_OF_LINE +
-                    ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
-                    NetworkProtocol.END_OF_COMMAND;
+                return ApplicationProtocol.PAUSE + NetworkProtocol.END_OF_LINE +
+                        ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                        NetworkProtocol.END_OF_COMMAND;
+            } else {
+                LOG.info("Player starts playing.");
+
+                return ApplicationProtocol.PLAY + NetworkProtocol.END_OF_LINE +
+                        ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                        NetworkProtocol.END_OF_COMMAND;
+            }
 
         } else {
             LOG.info("User's opinion was taken into account.");
