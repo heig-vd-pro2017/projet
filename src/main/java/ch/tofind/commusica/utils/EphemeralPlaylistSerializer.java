@@ -78,7 +78,7 @@ public class EphemeralPlaylistSerializer implements JsonSerializer<EphemeralPlay
             }
         }
 
-        if (playFinished) {
+        if (playFinished && Player.getCurrentPlayer().getCurrentTrackProperty().getValue() != null) {
             Player.getCurrentPlayer().getPreviousTrackProperty().setValue(Player.getCurrentPlayer().getCurrentTrackProperty().getValue());
             Player.getCurrentPlayer().getCurrentTrackProperty().setValue(null);
         }

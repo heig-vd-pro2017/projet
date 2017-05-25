@@ -56,7 +56,9 @@ public class Player {
         isPlayingProperty = new SimpleBooleanProperty(false);
 
         previousTrackProperty.addListener((obs, oldValue, newValue) -> {
-            PlaylistManager.getInstance().getPlaylist().saveTrack(newValue.getTrack());
+            if (newValue != null) {
+                PlaylistManager.getInstance().getPlaylist().saveTrack(newValue.getTrack());
+            }
         });
     }
 
