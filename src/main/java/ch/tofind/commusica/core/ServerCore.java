@@ -487,11 +487,13 @@ public class ServerCore extends AbstractCore implements ICore {
 
         if (!player.getIsPlayingProperty().getValue()) {
 
-            Player.getCurrentPlayer().play();
+            // Ask the UI to update the view when it can
+            Platform.runLater(() -> player.play());
 
         } else {
 
-            Player.getCurrentPlayer().pause();
+            // Ask the UI to update the view when it can
+            Platform.runLater(() -> player.pause());
 
         }
 

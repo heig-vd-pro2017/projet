@@ -487,7 +487,7 @@ public class ClientCore extends AbstractCore implements ICore {
             client.send(message);
 
         } else {
-            LOG.error(new RuntimeException("Server was not set !"));
+            LOG.warning("Server was not set !");
         }
     }
 
