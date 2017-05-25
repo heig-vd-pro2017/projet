@@ -177,6 +177,7 @@ public class UIController extends Application implements Initializable {
 
         stage.setMinHeight(stage.getHeight());
         stage.setMinWidth(stage.getWidth());
+
     }
 
     @Override

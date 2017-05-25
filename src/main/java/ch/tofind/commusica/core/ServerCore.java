@@ -2,6 +2,7 @@ package ch.tofind.commusica.core;
 
 import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.file.FileManager;
+import ch.tofind.commusica.media.EphemeralPlaylist;
 import ch.tofind.commusica.media.Player;
 import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.network.MulticastClient;
@@ -14,6 +15,7 @@ import ch.tofind.commusica.ui.UIController;
 import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.Serialize;
+import javafx.application.Platform;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
@@ -310,7 +312,7 @@ public class ServerCore extends AbstractCore implements ICore {
         trackToReceive.setUri(filename);
         trackToReceive.setFavoritedProperty(false);
 
-        // Update/Save the file in the database
+        // Save the track in the database
         DatabaseManager.getInstance().save(trackToReceive);
 
         // Add the track to the current Playlist
@@ -335,7 +337,7 @@ public class ServerCore extends AbstractCore implements ICore {
 
         Integer userId = Integer.parseInt((String) args.remove(0));
 
-        // remove the socket because we won't need it
+        // Remove the socket because we won't need it
         args.remove(0);
 
         String trackId = (String) args.remove(0);
@@ -358,27 +360,32 @@ public class ServerCore extends AbstractCore implements ICore {
         // Get the track from the database
         Session session = DatabaseManager.getInstance().getSession();
 
-        String queryString = String.format("from Track where id = '%s'", trackId);
+        Query trackById = session.createQuery("FROM Track WHERE id = :id");
+        trackById.setParameter("id", trackId);
 
-        Query<Track> queryId = session.createQuery(queryString, Track.class);
+        Track trackToUpvote;
 
-        // If the query has no result we send the command ERROR
-        if (queryId.list().isEmpty()) {
-            result = ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
+        try {
+            trackToUpvote = (Track) trackById.getSingleResult();
+        } catch (NoResultException e) {
+
+            LOG.info("The track was not found by ID.");
+
+            return ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.ERROR_VOTE + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
-            return result;
-        }
 
-        Track trackToUpvote = queryId.list().get(0);
+        }
 
         // Update the track properties
         PlaylistTrack playlistTrackToUpvote = PlaylistManager.getInstance().getPlaylist().getPlaylistTrack(trackToUpvote);
-        playlistTrackToUpvote.upvote();
 
-        // Update the track in the database
-        session.update(playlistTrackToUpvote);
+        // Ask the UI to update the view when it can
+        Platform.runLater(() -> playlistTrackToUpvote.upvote());
+
+        // Update the track in the database - L'OBJET N'EXISTE PAS DANS LA DB
+        //DatabaseManager.getInstance().update(playlistTrackToUpvote);
 
         // Update the UI
         // TODO: Is it done automatically?
