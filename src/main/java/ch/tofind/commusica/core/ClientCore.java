@@ -3,6 +3,7 @@ package ch.tofind.commusica.core;
 import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.file.FileManager;
 import ch.tofind.commusica.media.EphemeralPlaylist;
+import ch.tofind.commusica.media.Player;
 import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.network.MulticastClient;
 import ch.tofind.commusica.network.NetworkProtocol;
@@ -102,12 +103,14 @@ public class ClientCore extends AbstractCore implements ICore {
 
         if (Objects.equals(serverId, ApplicationProtocol.serverId)) {
             // Delegate work to JavaFX thread.
-            Platform.runLater(() -> Serialize.unserialize(playlistJson, EphemeralPlaylist.class));
+            Platform.runLater(() -> {
+                Serialize.unserialize(playlistJson, EphemeralPlaylist.class);
 
-            // Refresh playlist at each reception.
-            PlaylistManager.getInstance().getPlaylist().save();
-            UIController.getController().refreshPlaylist();
-            UIController.getController().refreshPlaylistsList();
+                // Refresh playlist at each reception.
+                PlaylistManager.getInstance().getPlaylist().save();
+                UIController.getController().refreshPlaylist();
+                UIController.getController().refreshPlaylistsList();
+            });
         }
 
         // We add the server to the available servers list
@@ -382,6 +385,8 @@ public class ClientCore extends AbstractCore implements ICore {
 
         LOG.info("Volume turns up.");
 
+        Player.getCurrentPlayer().riseVolume();
+
         String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
@@ -420,9 +425,12 @@ public class ClientCore extends AbstractCore implements ICore {
 
         LOG.info("Volume turns down.");
 
+        Player.getCurrentPlayer().lowerVolume();
+
         String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
+
         return result;
     }
 

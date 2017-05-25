@@ -3,7 +3,6 @@ package ch.tofind.commusica.ui;
 import ch.tofind.commusica.core.ApplicationProtocol;
 import ch.tofind.commusica.core.Core;
 import ch.tofind.commusica.media.Player;
-import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
 
 import java.io.IOException;
@@ -42,9 +41,6 @@ public class PlayerControlsView extends GridPane {
     //! Image of the pause icon.
     private static final String PAUSE_IMAGE = "ui/icons/pause.png";
 
-    //! Volume step.
-    private static final Double VOLUME_STEP = Double.valueOf(Configuration.getInstance().get("VOLUME_STEP"));
-
     @FXML
     private ImageView playPauseImageView;
 
@@ -68,10 +64,8 @@ public class PlayerControlsView extends GridPane {
         getStyleClass().add(CSS_CLASS);
         getStylesheets().add(CSS_FILE);
 
-        volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (player != null) {
-                player.setVolume(newValue.doubleValue());
-            }
+        player.getVolumeProperty().addListener((obs, oldValue, newValue) -> {
+            volumeSlider.setValue(newValue.doubleValue());
         });
 
         playPauseImageView.setImage(new Image(player.isPlaying() ? PAUSE_IMAGE : PLAY_IMAGE));
@@ -82,7 +76,6 @@ public class PlayerControlsView extends GridPane {
 
     @FXML
     private void lowerVolume(MouseEvent e) {
-        //volumeSlider.adjustValue(volumeSlider.getValue() - VOLUME_STEP);
         Core.execute(ApplicationProtocol.SEND_TURN_VOLUME_DOWN_REQUEST, null);
     }
 
@@ -93,8 +86,6 @@ public class PlayerControlsView extends GridPane {
 
     @FXML
     private void playPause(MouseEvent e) {
-
-        //player.setVolume(volumeSlider.getValue());
         Core.execute(ApplicationProtocol.SEND_PLAY_PAUSE_REQUEST, null);
     }
 
@@ -105,7 +96,6 @@ public class PlayerControlsView extends GridPane {
 
     @FXML
     private void riseVolume(MouseEvent e) {
-        //volumeSlider.adjustValue(volumeSlider.getValue() + VOLUME_STEP);
         Core.execute(ApplicationProtocol.SEND_TURN_VOLUME_UP_REQUEST, null);
     }
 }
