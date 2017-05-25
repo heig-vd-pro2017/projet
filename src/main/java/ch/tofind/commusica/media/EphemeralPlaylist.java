@@ -103,9 +103,7 @@ public class EphemeralPlaylist implements IPlaylist {
     public boolean addTrack(Track track) {
         // Check that the playlist doesn't already contains the track.
         if (tracksList.stream().noneMatch(p -> p.getTrack().equals(track))) {
-            //if (PlaylistManager.getInstance().getPlaylist() == this) {
             DatabaseManager.getInstance().save(track);
-            //}
 
             // Create the PlaylistTrack object by associating it with the static playlist.
             PlaylistTrack playlistTrack = new PlaylistTrack(delegate, track);
