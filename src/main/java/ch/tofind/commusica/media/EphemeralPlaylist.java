@@ -5,6 +5,7 @@ import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.playlist.PlaylistTrack;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.ObservableSortedPlaylistTrackList;
+import javafx.application.Platform;
 
 /**
  * @brief This class represents a playlist that is currently constructed.
@@ -80,12 +81,25 @@ public class EphemeralPlaylist implements IPlaylist {
         return delegate.getName();
     }
 
+    /**
+     * Updates the current playlist from the playlist given as parameter.
+     *
+     * @param playlist The playlist to update from.
+     */
     public void updateFrom(EphemeralPlaylist playlist) {
         delegate.setName(playlist.getName());
 
-        playlist.tracksList.forEach(playlistTrack -> {
-            if (getPlaylistTrack(playlistTrack.getTrack()) == null) {
-                addTrack(playlistTrack.getTrack());
+        playlist.tracksList.forEach(item -> {
+            PlaylistTrack playlistTrack = getPlaylistTrack(item.getTrack());
+            // If the track isn't in the playlist yet, we add it.
+            if (playlistTrack == null) {
+                addTrack(item.getTrack());
+            }
+            // Otherwise, we update the votes value.
+            else {
+                // We tell the JavaFX thread to execute this method. If we don't an exception will be raised since we
+                // are not on the same thread.
+                Platform.runLater(() -> playlistTrack.getVotesProperty().setValue(item.getVotesProperty().getValue()));
             }
         });
 
@@ -99,10 +113,17 @@ public class EphemeralPlaylist implements IPlaylist {
      */
     public void save() {
         if (PlaylistManager.getInstance().getPlaylist() == this) {
-            LOG.info("Saving huehuehue");
             DatabaseManager.getInstance().save(delegate);
         }
 
+    }
+
+    public void saveTrack(Track track) {
+        PlaylistTrack playlistTrack = getPlaylistTrack(track);
+
+        if (playlistTrack != null) {
+            DatabaseManager.getInstance().save(playlistTrack);
+        }
     }
 
     @Override
@@ -115,6 +136,8 @@ public class EphemeralPlaylist implements IPlaylist {
     public boolean addTrack(Track track) {
         // Check that the playlist doesn't already contains the track.
         if (tracksList.stream().noneMatch(p -> p.getTrack().equals(track))) {
+            DatabaseManager.getInstance().save(track);
+
             // Create the PlaylistTrack object by associating it with the static playlist.
             PlaylistTrack playlistTrack = new PlaylistTrack(delegate, track);
             tracksList.add(playlistTrack);
