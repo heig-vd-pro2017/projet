@@ -1,6 +1,7 @@
 package ch.tofind.commusica.media;
 
 import ch.tofind.commusica.database.DatabaseManager;
+import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.playlist.PlaylistTrack;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.ObservableSortedPlaylistTrackList;
@@ -30,8 +31,6 @@ public class EphemeralPlaylist implements IPlaylist {
         delegate = new SavedPlaylist(playlistName);
 
         tracksList = new ObservableSortedPlaylistTrackList();
-
-        DatabaseManager.getInstance().save(delegate);
     }
 
     /**
@@ -79,6 +78,12 @@ public class EphemeralPlaylist implements IPlaylist {
      */
     public String getName() {
         return delegate.getName();
+    }
+
+    public void save() {
+        if (PlaylistManager.getInstance().getPlaylist() == this) {
+            DatabaseManager.getInstance().save(delegate);
+        }
     }
 
     public void saveTrack(Track track) {

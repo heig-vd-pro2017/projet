@@ -27,6 +27,9 @@ public class EphemeralPlaylistSerializer implements JsonSerializer<EphemeralPlay
 
         PlaylistManager.getInstance().getPlaylist().setName(name);
 
+        // To know if a playlist has been played entirely or not.
+        boolean playFinished = true;
+
         JsonArray tracks = json.getAsJsonObject().getAsJsonArray("tracks");
         if (tracks != null) {
 
@@ -44,7 +47,8 @@ public class EphemeralPlaylistSerializer implements JsonSerializer<EphemeralPlay
 
                 boolean isPlaying = jsonPlaylistTrack.get("isPlaying").getAsBoolean();
 
-                Track track = new Track(id, title, artist, album, length, "");
+                // URI is track's hash for database Unique Constraint on URI field.
+                Track track = new Track(id, title, artist, album, length, id);
 
                 PlaylistTrack playlistTrack = PlaylistManager.getInstance().getPlaylist().getPlaylistTrack(track);
 
@@ -61,9 +65,22 @@ public class EphemeralPlaylistSerializer implements JsonSerializer<EphemeralPlay
                 }
 
                 if (isPlaying) {
+                    playFinished = false;
+
+                    PlaylistTrack playingTrack = Player.getCurrentPlayer().getCurrentTrackProperty().getValue();
+
+                    if (playingTrack != playlistTrack) {
+                        Player.getCurrentPlayer().getPreviousTrackProperty().setValue(playingTrack);
+                    }
+
                     Player.getCurrentPlayer().getCurrentTrackProperty().setValue(playlistTrack);
                 }
             }
+        }
+
+        if (playFinished) {
+            Player.getCurrentPlayer().getPreviousTrackProperty().setValue(Player.getCurrentPlayer().getCurrentTrackProperty().getValue());
+            Player.getCurrentPlayer().getCurrentTrackProperty().setValue(null);
         }
 
         return PlaylistManager.getInstance().getPlaylist();

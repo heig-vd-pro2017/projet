@@ -7,6 +7,7 @@ import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.network.MulticastClient;
 import ch.tofind.commusica.network.NetworkProtocol;
 import ch.tofind.commusica.network.UnicastClient;
+import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.session.ServerSessionManager;
 import ch.tofind.commusica.ui.UIController;
 import ch.tofind.commusica.utils.Logger;
@@ -104,6 +105,7 @@ public class ClientCore extends AbstractCore implements ICore {
             Platform.runLater(() -> Serialize.unserialize(playlistJson, EphemeralPlaylist.class));
 
             // Refresh playlist at each reception.
+            PlaylistManager.getInstance().getPlaylist().save();
             UIController.getController().refreshPlaylist();
             UIController.getController().refreshPlaylistsList();
         }
