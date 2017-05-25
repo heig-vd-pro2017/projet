@@ -1,0 +1,21 @@
+@startuml
+
+
+class DatabaseManager{
+- Logger LOG
+-DatabaseManager instance
+-SessionFactory factory
+-Session session
+-Transaction transaction
+-DatabaseManager()
++DatabaseManager getInstance()
++Session getSession()
++void execute(Query query)
++void save(Object object)
++void delete(Object object)
++void update(Object object)
++void close() 
+}
+
+
+@enduml
