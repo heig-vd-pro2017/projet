@@ -6,43 +6,68 @@ import ch.tofind.commusica.media.Track;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * @brief Class that makes a link between a track and a playlist
+ */
 public class PlaylistTrackId implements Serializable {
 
-    //! SavedPlaylist related to the track
+    //! SavedPlaylist related to the track.
     private SavedPlaylist playlist;
 
-    //! Track related to the playlist
+    //! Track related to the playlist.
     private Track track;
 
     /**
-     * Create a link between playlist and track
+     * @brief Create a link between playlist and track.
      */
     public PlaylistTrackId() {
 
     }
 
     /**
-     * Create a link between playlist and track
-     * @param playlist
-     * @param track
+     * @brief Create a link between a playlist and a track.
+     *
+     * @param playlist The playlist.
+     * @param track The track.
      */
     public PlaylistTrackId(SavedPlaylist playlist, Track track) {
         this.playlist = playlist;
         this.track = track;
 
     }
+
+    /**
+     * @brief Set the playlist of the PlaylistTrack.
+     *
+     * @param playlist The playlist.
+     */
     public void setPlaylist(SavedPlaylist playlist) {
         this.playlist = playlist;
     }
 
+    /**
+     * @brief Get the playlist of the PlaylistTrack.
+     *
+     * @return The playlist.
+     */
     public SavedPlaylist getPlaylist() {
         return playlist;
     }
 
+    /**
+     * @brief Set the track of the PlaylistTrack.
+     *
+     * @param track The track.
+     */
     public void setTrack(Track track) {
         this.track = track;
     }
 
+    /**
+     * @brief Get the track of the PlaylistTrack.
+     *
+     * @return The track.
+     */
     public Track getTrack() {
         return track;
     }

@@ -6,26 +6,21 @@ import ch.tofind.commusica.media.IPlaylist;
 import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.playlist.PlaylistTrack;
-
 import ch.tofind.commusica.utils.Logger;
-import ch.tofind.commusica.utils.ObservableSortedPlaylistTrackList;
-import javafx.collections.FXCollections;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.input.*;
-import org.jaudiotagger.audio.AudioFile;
-import org.jaudiotagger.audio.AudioFileIO;
-import org.jaudiotagger.audio.exceptions.CannotReadException;
-import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
-import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
-import org.jaudiotagger.tag.TagException;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+
+import javafx.collections.FXCollections;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
+
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
 
 /**
  * @brief Represents a graphic list view of tracks.
@@ -35,6 +30,7 @@ import java.util.List;
  */
 public class TracksListView extends ListView<PlaylistTrack> {
 
+    //! Logger for debugging.
     private static Logger LOG = new Logger(TracksListView.class.getSimpleName());
 
     //! SavedPlaylist manager.
@@ -92,6 +88,10 @@ public class TracksListView extends ListView<PlaylistTrack> {
         setItems(FXCollections.observableList(playlist.getTracksList()));
     }
 
+
+    /**
+     * @brief Allows the drag and drop to add tracks.
+     */
     private void initializeDragAndDrop() {
         setOnDragOver(event -> {
             if (event.getDragboard().hasFiles()) {

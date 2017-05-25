@@ -3,6 +3,8 @@ package ch.tofind.commusica.ui;
 import ch.tofind.commusica.media.Player;
 import ch.tofind.commusica.media.Track;
 
+import java.io.IOException;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -11,10 +13,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
-import java.io.IOException;
-
 /**
- * @brief This class represents
+ * @brief This class represents the previous track view.
  */
 public class PreviousTrackView extends GridPane {
 
@@ -33,8 +33,10 @@ public class PreviousTrackView extends GridPane {
     //! FXML file to use for the view.
     private static final String FXML_FILE = "ui/PreviousTrackView.fxml";
 
+    //! The player of the previous track.
     private static final Player player = Player.getCurrentPlayer();
 
+    //! The previous track.
     private Track previousTrack;
 
     @FXML

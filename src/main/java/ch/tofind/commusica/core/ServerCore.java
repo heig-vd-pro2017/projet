@@ -10,6 +10,7 @@ import ch.tofind.commusica.network.Server;
 import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.playlist.PlaylistTrack;
 import ch.tofind.commusica.session.UserSessionManager;
+import ch.tofind.commusica.ui.UIController;
 import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.Serialize;
@@ -73,8 +74,15 @@ public class ServerCore extends AbstractCore implements ICore {
         }, 0, TIME_BEFORE_PLAYLIST_UPDATE, TimeUnit.SECONDS);
     }
 
+    /**
+     * @brief What to do when there is an end of communication.
+     *
+     * @param args Args of the command.
+     *
+     * @return The result of the command.
+     */
     public String END_OF_COMMUNICATION(ArrayList<Object> args) {
-        System.out.println("End of communication server side.");
+        System.out.println("End of communication - server side.");
         return "";
     }
 
@@ -91,6 +99,11 @@ public class ServerCore extends AbstractCore implements ICore {
 
         String inetAddressJson = Serialize.serialize(NetworkProtocol.interfaceToUse);
         String playlistJson = Serialize.serialize(PlaylistManager.getInstance().getPlaylist());
+
+        // Save the playlist into the database and refresh UI.
+        PlaylistManager.getInstance().getPlaylist().save();
+        UIController.getController().refreshPlaylistsList();
+        UIController.getController().refreshPlaylist();
 
         String command = ApplicationProtocol.PLAYLIST_UPDATE + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
@@ -444,26 +457,34 @@ public class ServerCore extends AbstractCore implements ICore {
         return result;
     }
 
-
-    /**
-     *
-     */
-    public String SEND_PLAY_PAUSE_REQUEST(ArrayList<Object> args) {
-        Player player = Player.getCurrentPlayer();
-        if (!player.getIsPlayingProperty().get()) {
-            Player.getCurrentPlayer().play();
-        } else {
-            Player.getCurrentPlayer().pause();
-        }
-
-        return "";
-    }
-
-
     public String SEND_NEXT_TRACK_REQUEST(ArrayList<Object> args) {
 
         Player.getCurrentPlayer().load();
         Player.getCurrentPlayer().play();
+
+        return "";
+    }
+
+    /**
+     * @brief Entry point to play/pause the current track.
+     *
+     * @param args Args of the command.
+     *
+     * @return The result of the command.
+     */
+    public String SEND_PLAY_PAUSE_REQUEST(ArrayList<Object> args) {
+
+        Player player = Player.getCurrentPlayer();
+
+        if (!player.getIsPlayingProperty().getValue()) {
+
+            Player.getCurrentPlayer().play();
+
+        } else {
+
+            Player.getCurrentPlayer().pause();
+
+        }
 
         return "";
     }

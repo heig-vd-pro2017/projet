@@ -2,6 +2,7 @@ package ch.tofind.commusica.utils;
 
 import ch.tofind.commusica.media.Track;
 import ch.tofind.commusica.playlist.PlaylistTrack;
+
 import javafx.beans.property.ObjectPropertyBase;
 
 /**

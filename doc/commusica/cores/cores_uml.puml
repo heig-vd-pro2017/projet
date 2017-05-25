@@ -1,0 +1,28 @@
+@startuml
+
+interface ICore {
+    + sendUnicast(hostname: InetAddress, message: String): void
+    + sendMulticast(String msg): void
+}
+
+class Core {
+    + {static} execute(command: String , args: ArrayList<Object>): String
+}
+
+abstract AbstractCore {
+    + execute(command: String , args: ArrayList<Object>): String
+}
+
+class ClientCore
+class ServerCore
+
+AbstractCore <|-- ClientCore
+AbstractCore <|-- ServerCore
+
+ClientCore .|> ICore
+ICore <|. ServerCore
+
+Core --> "1" AbstractCore
+
+
+@enduml

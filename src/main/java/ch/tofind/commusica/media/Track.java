@@ -1,21 +1,19 @@
 package ch.tofind.commusica.media;
 
 import ch.tofind.commusica.file.FileManager;
-import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.playlist.PlaylistManager;
+import ch.tofind.commusica.utils.Configuration;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioHeader;
+import org.jaudiotagger.tag.FieldKey;
+import org.jaudiotagger.tag.Tag;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
-
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-
-import org.jaudiotagger.audio.AudioFile;
-import org.jaudiotagger.audio.AudioHeader;
-import org.jaudiotagger.tag.FieldKey;
-import org.jaudiotagger.tag.Tag;
 
 /**
  * @brief This class represents an audio track.
@@ -138,6 +136,7 @@ public class Track implements Serializable {
 
     /**
      * @brief Get the track's ID.
+     *
      * @return The track's ID.
      */
     public String getId() {
@@ -146,6 +145,7 @@ public class Track implements Serializable {
 
     /**
      * @brief Get the track's title.
+     *
      * @return The track's title.
      */
     public String getTitle() {
@@ -154,6 +154,7 @@ public class Track implements Serializable {
 
     /**
      * @brief Get the track's artist.
+     *
      * @return The track's artist.
      */
     public String getArtist() {
@@ -162,6 +163,7 @@ public class Track implements Serializable {
 
     /**
      * @brief Get the track's album.
+     *
      * @return The track's album.
      */
     public String getAlbum() {
@@ -170,6 +172,7 @@ public class Track implements Serializable {
 
     /**
      * @brief Get the track's length.
+     *
      * @return The track's length.
      */
     public Integer getLength() {
@@ -178,6 +181,7 @@ public class Track implements Serializable {
 
     /**
      * @brief Get the track's URI.
+     *
      * @return The track's URI.
      */
     public String getUri() {
@@ -186,6 +190,7 @@ public class Track implements Serializable {
 
     /**
      * @brief Set the uri of the track.
+     *
      * @param uri The URI of the track.
      */
     public void setUri(String uri) {
@@ -194,6 +199,7 @@ public class Track implements Serializable {
 
     /**
      * @brief Get the date when the track was added.
+     *
      * @return The added date.
      */
     public Date getDateAdded() {
@@ -202,6 +208,7 @@ public class Track implements Serializable {
 
     /**
      * @brief Get the date when the track was played.
+     *
      * @return The played date.
      */
     public Date getDatePlayed() {
@@ -209,7 +216,8 @@ public class Track implements Serializable {
     }
 
     /**
-     * Returns the property about if the track is a favorite or not.
+     * @brief Returns the property about if the track is a favorite or not.
+     *
      * @return The property about if the track is a favorite or not.
      */
     public BooleanProperty getFavoritedProperty() {
@@ -236,11 +244,11 @@ public class Track implements Serializable {
 
         Track track = (Track) object;
 
-        return Objects.equals(title, track.title)   &&
-               Objects.equals(artist, track.artist) &&
-               Objects.equals(album, track.album)   &&
-               getFavoritedProperty().getValue() == track.getFavoritedProperty().getValue() &&
-               length == track.length;
+        return Objects.equals(id, track.id)             ||
+                (Objects.equals(title, track.title)     &&
+                Objects.equals(artist, track.artist)    &&
+                Objects.equals(album, track.album)      &&
+                length == track.length);
     }
 
     @Override

@@ -28,6 +28,12 @@ public class UnicastClient implements Runnable {
     //! Where to read the input.
     private BufferedReader in;
 
+    /**
+     * @brief Create a unicast client by hostname and port.
+     *
+     * @param hostname Where to send information.
+     * @param port On which port we send information.
+     */
     public UnicastClient(InetAddress hostname, int port) {
 
         try {
@@ -39,6 +45,11 @@ public class UnicastClient implements Runnable {
         }
     }
 
+    /**
+     * @brief Create a unicast client using an already existing socket.
+     *
+     * @param socket The socket which has already been connected to a server.
+     */
     public UnicastClient(Socket socket) {
 
         this.socket = socket;

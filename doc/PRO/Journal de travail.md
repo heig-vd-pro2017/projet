@@ -1,6 +1,14 @@
 # Journal de travail
 *Le journal de travail débute le 15.03.2017*
 
+## 25.05.2017
+### David Truan
+* Début de l'explication des cores dans le rapport.
+
+## 24.05.2017
+### David Truan
+* Correction de bugs liés é la majorités des votes et au lancement des morceaux (1h).
+
 ## 22.05.2017
 ### Ludovic Delafontaine
 * Finalisation du protocol applicatif (3h00)
