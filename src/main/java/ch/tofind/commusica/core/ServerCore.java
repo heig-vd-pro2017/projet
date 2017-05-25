@@ -559,8 +559,8 @@ public class ServerCore extends AbstractCore implements ICore {
 
             // Update the track in the database
 
-            //
-            // TODO Changer la musique !
+            // Ask the UI to update the view when it can
+            Platform.runLater(() -> Player.getCurrentPlayer().load());
 
             LOG.info("Next song.");
         } else {
@@ -595,8 +595,6 @@ public class ServerCore extends AbstractCore implements ICore {
             userSessionManager.resetNextTrackRequests();
 
             userSessionManager.resetPreviousTrackRequests();
-
-            // TODO Changer la musique !
 
             LOG.info("Previous song.");
         } else {
