@@ -3,6 +3,7 @@ package ch.tofind.commusica.ui;
 import ch.tofind.commusica.core.ApplicationProtocol;
 import ch.tofind.commusica.core.Core;
 import ch.tofind.commusica.media.Player;
+import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
 
 import java.io.IOException;
@@ -42,7 +43,7 @@ public class PlayerControlsView extends GridPane {
     private static final String PAUSE_IMAGE = "ui/icons/pause.png";
 
     //! Volume step.
-    private static final Double VOLUME_STEP = 1.0 / 16.0; // Pourrait être récupéré depuis le fichier de configuration ?
+    private static final Double VOLUME_STEP = Double.valueOf(Configuration.getInstance().get("VOLUME_STEP"));
 
     @FXML
     private ImageView playPauseImageView;

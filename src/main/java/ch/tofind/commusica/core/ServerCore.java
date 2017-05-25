@@ -207,7 +207,6 @@ public class ServerCore extends AbstractCore implements ICore {
                         NetworkProtocol.END_OF_COMMAND;
 
             }
-
         }
 
         if (Objects.equals(trackInDatabase.getUri(), "")) {
@@ -220,7 +219,7 @@ public class ServerCore extends AbstractCore implements ICore {
 
         } else {
 
-            LOG.info("The track was found in the system, no need to .");
+            LOG.info("The track was found in the system, no need to send it back.");
 
             return ApplicationProtocol.TRACK_REFUSED + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
@@ -304,10 +303,12 @@ public class ServerCore extends AbstractCore implements ICore {
 
         fileManager.rename(tempFile, newFile);
 
-        trackToReceive.setUri(filename);
-
-        // delete the temporary file
+        // Delete the temporary file
         fileManager.delete(tempFile);
+
+        // Set additionnal properties on the file
+        trackToReceive.setUri(filename);
+        trackToReceive.setFavoritedProperty(false);
 
         // Update/Save the file in the database
         DatabaseManager.getInstance().save(trackToReceive);
@@ -353,7 +354,6 @@ public class ServerCore extends AbstractCore implements ICore {
                     NetworkProtocol.END_OF_COMMAND;
             return result;
         }
-
 
         // Get the track from the database
         Session session = DatabaseManager.getInstance().getSession();
@@ -544,6 +544,11 @@ public class ServerCore extends AbstractCore implements ICore {
 
             userSessionManager.resetPreviousTrackRequests();
 
+            // Get the track from the current player
+
+            // Update the track in the database
+
+            //
             // TODO Changer la musique !
 
             LOG.info("Next song.");

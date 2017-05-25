@@ -194,18 +194,20 @@ public class UIController extends Application implements Initializable {
     public void stop() {
 
         LOG.info("Stopping application...");
-
         Core.stop();
 
-        Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
-        Thread[] threadArray = threadSet.toArray(new Thread[threadSet.size()]);
+        // Get all remaining running threads
+        Set<Thread> threads = Thread.getAllStackTraces().keySet();
+        Thread[] remainingRunningThreads = threads.toArray(new Thread[threads.size()]);
 
-        for (Thread t : threadArray) {
-            System.out.println(t);
+        // Display the name of the remaining running threads
+        for (Thread remainingRunningThread : remainingRunningThreads) {
+            LOG.warning("The thread '" + remainingRunningThread.getName() + "' is still running...");
         }
 
         // Workaround, as all threads are not stopped properly
-        //System.exit(0);
+        LOG.warning("Forcing shutdown...");
+        System.exit(0);
 
     }
 }

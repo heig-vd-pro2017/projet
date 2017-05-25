@@ -225,6 +225,15 @@ public class Track implements Serializable {
     }
 
     /**
+     * @brief Set the property about if the track is a favorite or not.
+     *
+     * @param favorited The property about if the track is a favorite or not.
+     */
+    public void setFavoritedProperty(boolean favorited) {
+        favoritedProperty = new SimpleBooleanProperty(favorited);
+    }
+
+    /**
      * @brief Update the object.
      */
     public void update() {
