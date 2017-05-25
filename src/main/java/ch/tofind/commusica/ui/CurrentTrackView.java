@@ -123,9 +123,7 @@ public class CurrentTrackView extends GridPane {
 
     @FXML
     private void downvote(MouseEvent e) {
-        if(player.getCurrentTrack() != null) {
-            playlistManager.getPlaylist().downvoteTrack(player.getCurrentTrack());
-        }
+        // Left blank for possible future use.
     }
 
     @FXML
@@ -137,8 +135,6 @@ public class CurrentTrackView extends GridPane {
 
     @FXML
     private void upvote(MouseEvent e) {
-        if(player.getCurrentTrack() != null) {
-            playlistManager.getPlaylist().upvoteTrack(player.getCurrentTrack());
-        }
+        // Left blank for possible future use.
     }
 }

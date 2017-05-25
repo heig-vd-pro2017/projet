@@ -289,6 +289,8 @@ public class ClientCore extends AbstractCore implements ICore {
 
         LOG.info("Player plays.");
 
+        Platform.runLater(() -> Player.getCurrentPlayer().getIsPlayingProperty().setValue(true));
+
         String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
@@ -306,6 +308,8 @@ public class ClientCore extends AbstractCore implements ICore {
     public String PAUSE(ArrayList<Object> args) {
 
         LOG.info("Player stops.");
+
+        Platform.runLater(() -> Player.getCurrentPlayer().getIsPlayingProperty().setValue(false));
 
         String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
