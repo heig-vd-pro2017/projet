@@ -109,10 +109,7 @@ Ces deux classe qui héritent de `AbstractCore` et qui implémentent `ICore` son
 Grace à ses classes, nous avons réglé le problème de contrôleur central par lequel tout transitera. La réception des commandes à invoquer sera expliquée plus tard dans le chapitre sur le paquet `Network` et lors des explications sur la liaison entre l'interface graphique et le code.
 
 
-
-
-
-###  Database
+### Package database
 La sauvegarde et le chargement font partie des points importants de notre application, car elle a été conçue pour permettre, par exemple, à un utilisateur de sauvegarder les metadatas des chansons qui lui plaisent dans la base de données. Ce package est constitué essentiellement de la classe **DatabaseManager.java** donc le rôle est d'assurer le CRUD (Create, Read, Update, Delete) de la base des données de notre application  et d'assuer la fermeture de la connexion à celle-ci.
 
 Pour l'implémentation nous avons choisir le framework Hibernate qui simplifie le développement de l'application java pour interagir avec la base des données. C'est un outil open source, léger. ORM(Object Relational Mapping)
@@ -121,8 +118,8 @@ Un outil ORM simplifie la création des données, la manipulation de données et
 La performance du framework hibernate est rapide car le cache est utilisé en interne dans le cadre hiberné.
 Le framework Hibernate offre la possibilité de créer automatiquement les tables de la base des données. Il m'est donc pas nécessaires de créer manuellement des tables dans la base de données.
 
-###  File
- Le package File a pour rôle d'assuré la gestion des fichiers en interagissant avec le file système . Il est constitué de 02 classe **FileManager** et **FilesFormats**.
+### Package file
+ Le package **file** a pour rôle d'assurer la gestion des fichiers en interagissant avec le filesystem . Il est constitué de 02 classe **FileManager** et **FilesFormats**.
 
  + **FilesFormats**: Vue que notre application supporte trois formats mp3, m4a et wav, la classe permet de définit les caractéristique d'un fichier c'est à dire tous les éléments nous permettant de savoir le type du fichier.
  + **FileManager**:
@@ -135,15 +132,15 @@ Le framework Hibernate offre la possibilité de créer automatiquement les table
 
 Connaitre le type de fichier nous permettra de traiter que les fichiers supporté pas notre plateforme et aussi en termes de sécurité éviter qu'un utilisateur face planter le serveur en envoyant un fichier qui n'est pas supporté par celui-ci.
 
-##  File
 
-##  Network
+###  Package network  
 
-##  Playlist
+###  Package playlist
+Le package **playlist** 
 
-##  Interface graphique
+###  Package ui
 
-##  Utils
+###  Package utils
 
 # Parties manquantes par rapport au cahier des charges
 
