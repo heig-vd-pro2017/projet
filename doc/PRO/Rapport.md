@@ -30,27 +30,24 @@ toc: yes
 # Introduction
 Durant le quatrième semestre de la section TIC de l'HEIG-VD, nous devons effectuer un projet par groupes de cinq ou six personnes, le but étant de mettre en œuvre les connaissances que nous avons acquises au long des semestres précédents à travers un projet conséquent. Nous devrons prendre conscience des difficultés liées au travail de groupe, ainsi qu'apprendre à planifier un travail sur plusieurs mois. Au terme du semestre, nous devons rendre une programme complet et fonctionnel, avec une documentation adéquate et être capables de le présenter et le défendre.
 Dans le cadre du projet, l'équipe de programmation est composée du chef d'équipe Ludovic Delafontaine, de son remplaçant Lucas Elisei et des membres David Truan, Thibaut Togue, Yosra Harbaoui et Denise Gemesio.  
-Dans ce rapport, nous allons expliquer notre démarche de travail et les principaux choix d'architecture et de design de code que nous avons choisi. Il sera structuré en partie représentant les principaux paquets de notre applications. Nous développerons plus ou moins les paquets selon leur importance au sein de notre projet.
+Dans ce rapport, nous allons expliquer notre démarche de travail et les principaux choix d'architecture et de design de code que nous avons choisis. Il sera structuré selon les principaux paquets de notre application. Plus un paquet ou une classe est complexe et importante au sein de notre projet, plus la description sera importante et entrera dans les détails.
 
 
 ## Objectif
-Le but de notre programme est de proposer une application client-serveur qui permettra aux clients d'envoyer des fichiers musicaux au serveur pour que celui-ci les joue. Il se démarque d'une simple application de streaming dans le fait que la liste de lecture ne peut être changée que par les clients par le biais d'un système de votes positifs ou négatifs. Ceux-ci permettent à un morceau présent d'être placé plus en avant ou en arrière dans la liste de lecture. Ceci permet donc à chacun de donner son avis, tout en centralisant la lecture de la musique sur un seul ordinateur. En plus de cela l'application met à disposition les fonctionnalités suivantes pour une expérience encore plus communautaire:
-+ Vote pour passer au morceau suivant. Lorsqu'une majorité (plus de 50%) des clients ont voté pour passer au morceau suivant, la piste en cours de lecture est remplacée par le morceau qui la suit dans la liste de lecture.
-+ Même principe de vote pour augmenté ou diminuer le volume.
-+ Système de favoris pour permettre aux utilisateurs de sauvegarder les informations (titre, auteur, etc...) en local dans une playlist spécifique.  
+Le but de notre programme est de proposer une application client-serveur qui permettra aux clients d'envoyer des fichiers musicaux au serveur pour que celui-ci les joue. Il se démarque d'une simple application de streaming dans le fait que la liste de lecture ne peut être changée que par les clients par le biais d'un système de votes positifs ou négatifs. Ceux-ci permettent à un morceau présent d'être placé plus en avant ou en arrière dans la liste de lecture. Ceci permet donc à chacun de donner son avis, tout en centralisant la lecture de la musique sur un seul ordinateur. En plus de cela, l'application met à disposition les fonctionnalités suivantes pour une expérience encore plus communautaire:
++ Vote pour passer au morceau suivant. Lorsqu'une majorité (plus de 50%) des clients ont voté pour passer au morceau suivant, la piste en écoute est remplacée par le morceau qui la suit dans la liste de lecture.
++ Le même principe de vote est appliqué pour augmenter ou diminuer le volume.
++ Système de favoris pour permettre aux utilisateurs de sauvegarder les informations (titre, auteur, etc.) en local dans une playlist spécifique.  
 
 Cette application visera principalement les soirées avec plusieurs personnes et répondra à l'éternel problème de devoir se passer une prise jack ou de devoir se battre pour pouvoir passer un morceau que l'on aime.
 
-*Le but est de réaliser un programme client-serveur permettant d'écouter de la musique. Son utilité prend tout son sens lors d'évènements festifs et communautaires. En effet, notre programme permet aux utilisateurs d'envoyer leurs propres chansons à un serveur défini par l'organisateur de la soirée. Des fonctionnalités spéciales permettent de vivre une expérience musicale unique :
-- Voter pour ou contre une chanson permet de la placer plus en avant ou en arrière dans la queue de lecture.  
-- Monter le volume, arrêter et redémarrer la musique sont exécutés si la majorité du public le désire.
-- Ajouter des chansons écoutées durant la soirée dans une liste de favoris afin de retrouver le titre et l'artiste d'un coup de coeur.*
-
 ## Abstraction / Conception / Architecture
 Description  diagramme des cas d'utilisation avec figure. Diagramme UML, la sauvegarde...
+
 ## Implémentation / Description technique
 utiliser les packages pour la description
 Ne pas mettre toutes les classes !
+
 ### Gestionnaire de configuration
 
 Nous avons choisi d'implémenter un gestionnaire de configuration utilisant le fichier commusica.properties pour permettre à l'utilisateur de configurer le programme. Elle donne accès aux paramètres suivants :
@@ -64,11 +61,10 @@ Nous avons choisi d'implémenter un gestionnaire de configuration utilisant le f
 - TIME_BEFORE_SESSION_INACTIVE : choix du délai d'inactivité d'une session
 - TIME_BETWEEN_PLAYLIST_UPDATES : choix du délai de mise à jour des playlists et leurs chansons
 
-### Core
-Pour garder un niveau d'abstraction le plus élevé possible, nous avons voulu faire transiter toutes les informations venant du réseau et de actions utilisateurs via l'interface graphique par un contrôleur. Le but étant d'avoir le même point d'entrée que l'on soit client ou serveur. Pour cela il nous fallait une sorte de contrôleur central qui puisse être appelé de la même façon peut importe le choix de l'identité client/serveur mais en pouvant avoir des méthodes distincte selon que l'on choisisse d'être l'un ou l'autre. Notre raisonnement nous a mené à nous tourner vers la réflectivité offerte par **Java** pour résoudre ce problème. Ce mécanisme permet d'instancier à l'exécution des méthodes en utilisant la méthode `invoke(Object obj, Object... args)` en ayant comme premier paramètre un String représentant le nom de la méthode à invoquer et en deuxième paramètre un tableau d'`Object` contentant les différents arguments que la méthode invoquée pourra utiliser (voir utilisation dans notre programme plus loin **FIGURE**).  
+### Package core
+Pour garder un niveau d'abstraction le plus élevé possible, nous avons voulu faire transiter à travers un contrôleur toutes les informations venant du réseau et des utilisateurs, le but étant d'avoir le même point d'entrée que l'on soit client ou serveur. Pour cela, il nous fallait un contrôleur central qui puisse être appelé de la même façon quel que soit le choix de l'identité - client ou serveur. C'est alors à celui-ci de vérifier l'existence d'une fonction et de communiquer l'action à exécuter à l'entité concernée. Notre raisonnement nous a mené à nous tourner vers la réflexivité offerte par **Java** pour résoudre ce problème. Ce mécanisme permet d'instancier des méthodes à l'exécution en utilisant la méthode `invoke(Object obj, Object... args)` ayant comme premier paramètre un String représentant le nom de la méthode à invoquer et comme deuxième paramètre un tableau d'`Object` contentant les différents arguments dont la méthode invoquée a besoin (voir utilisation dans notre programme **FIGURE**).
 
-
-Il nous fallait maintenant une classe qui puisse jouer le rôle du contrôleur. Nous avons développer les **Core** pour cela qui sont tous dans le paquet *core*.
+Il nous fallait maintenant une classe qui puisse jouer le rôle du contrôleur. Nous avons développé les **Core** pour cela qui sont tous dans le paquet *core*.
 ![Classes principales du package *core*](fr)
 
 #### Classes du package
