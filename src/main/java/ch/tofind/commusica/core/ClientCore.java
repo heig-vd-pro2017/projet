@@ -23,6 +23,9 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -47,7 +50,10 @@ public class ClientCore extends AbstractCore implements ICore {
     private Track trackToSend;
 
     //! The manager that saves availables servers.
-    ServerSessionManager serverSessionManager;
+    private ServerSessionManager serverSessionManager;
+
+    //! Thread pool for the unicast clients
+    private ExecutorService threadPool;
 
     /**
      * @brief Setup the core as a client.
@@ -58,6 +64,8 @@ public class ClientCore extends AbstractCore implements ICore {
         new Thread(multicast).start();
 
         serverSessionManager = ServerSessionManager.getInstance();
+
+        this.threadPool = Executors.newCachedThreadPool();
     }
 
     /**
@@ -536,7 +544,10 @@ public class ClientCore extends AbstractCore implements ICore {
         if (ApplicationProtocol.serverAddress != null) {
 
             client = new UnicastClient(hostname, NetworkProtocol.UNICAST_PORT);
-            new Thread(client).start();
+
+            Thread threadedClient = new Thread(client);
+            threadPool.submit(threadedClient);
+
             client.send(message);
 
         } else {
@@ -551,8 +562,26 @@ public class ClientCore extends AbstractCore implements ICore {
 
     @Override
     public void stop() {
+        // Stop the executors
+        serverSessionManager.stop();
+
         // Stop the network elements
         multicast.stop();
+
+        // Try to stop all remaining threads
+        threadPool.shutdown();
+
+        // Wait 5 seconds before killing everyone
+        try {
+            threadPool.awaitTermination(5, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            LOG.error(e);
+        } finally {
+            if (!threadPool.isTerminated()) {
+                LOG.error("The thread pool can't be stopped !");
+            }
+            threadPool.shutdownNow();
+        }
 
         // Delete the unplayed tracks from the database
         Session session = DatabaseManager.getInstance().getSession();

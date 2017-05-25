@@ -23,7 +23,7 @@ public interface IPlaylist {
      * @brief Check if a track is already contained in the playlist or not.
      *
      * @param track The track to check in the playlist.
-     *
+     * 
      * @return true if the track was found false otherwise.
      */
     boolean contains(Track track);

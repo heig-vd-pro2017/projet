@@ -159,6 +159,7 @@ public class ServerSessionManager implements ISessionManager {
 
     @Override
     public void stop() {
+
         scheduledExecutorService.shutdown();
 
         instance = null;
