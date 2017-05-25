@@ -47,8 +47,7 @@ public class EphemeralPlaylistSerializer implements JsonSerializer<EphemeralPlay
 
                 boolean isPlaying = jsonPlaylistTrack.get("isPlaying").getAsBoolean();
 
-                // URI is track's hash for database Unique Constraint on URI field.
-                Track track = new Track(id, title, artist, album, length, id);
+                Track track = new Track(id, title, artist, album, length, null);
 
                 PlaylistTrack playlistTrack = PlaylistManager.getInstance().getPlaylist().getPlaylistTrack(track);
 

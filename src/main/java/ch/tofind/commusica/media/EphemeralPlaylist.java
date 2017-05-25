@@ -5,12 +5,18 @@ import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.playlist.PlaylistTrack;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.ObservableSortedPlaylistTrackList;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
+
+import java.util.List;
 
 /**
  * @brief This class represents a playlist that is currently constructed.
  * This is the "Playing" playlist in the UI.
  */
 public class EphemeralPlaylist implements IPlaylist {
+
+    private List<Track> dbTracks;
 
     //! Logger for debugging.
     private static final Logger LOG = new Logger(EphemeralPlaylist.class.getSimpleName());
@@ -31,6 +37,8 @@ public class EphemeralPlaylist implements IPlaylist {
         delegate = new SavedPlaylist(playlistName);
 
         tracksList = new ObservableSortedPlaylistTrackList();
+
+        dbTracks = retrieveDbTracks();
     }
 
     /**
@@ -83,6 +91,8 @@ public class EphemeralPlaylist implements IPlaylist {
     public void save() {
         if (PlaylistManager.getInstance().getPlaylist() == this) {
             DatabaseManager.getInstance().save(delegate);
+
+            dbTracks = retrieveDbTracks();
         }
     }
 
@@ -108,7 +118,9 @@ public class EphemeralPlaylist implements IPlaylist {
     public boolean addTrack(Track track) {
         // Check that the playlist doesn't already contains the track.
         if (tracksList.stream().noneMatch(p -> p.getTrack().equals(track))) {
-            DatabaseManager.getInstance().save(track);
+            if (dbTracks.stream().noneMatch(item -> item.getId().equals(track.getId()))) {
+                DatabaseManager.getInstance().save(track);
+            }
 
             // Create the PlaylistTrack object by associating it with the static playlist.
             PlaylistTrack playlistTrack = new PlaylistTrack(delegate, track);
@@ -138,5 +150,13 @@ public class EphemeralPlaylist implements IPlaylist {
     @Override
     public boolean isSaved() {
         return false;
+    }
+
+    private List<Track> retrieveDbTracks() {
+        Session session = DatabaseManager.getInstance().getSession();
+
+        Query<Track> query = session.createQuery("from Track", Track.class);
+
+        return query.list();
     }
 }
