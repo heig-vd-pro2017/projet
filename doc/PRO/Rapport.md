@@ -43,34 +43,16 @@ Le but de notre programme est de proposer une application client-serveur qui per
 Cette application visera principalement les soirées avec plusieurs personnes et répondra à l'éternel problème de devoir se passer une prise jack ou de devoir se battre pour pouvoir passer un morceau que l'on aime.
 
 
-*Le but est de réaliser un programme client-serveur permettant d'écouter de la musique. Son utilité prend tout son sens lors d'évènements festifs et communautaires. En effet, notre programme permet aux utilisateurs d'envoyer leurs propres chansons à un serveur défini par l'organisateur de la soirée. Des fonctionnalités spéciales permettent de vivre une expérience musicale unique :
-- Voter pour ou contre une chanson permet de la placer plus en avant ou en arrière dans la queue de lecture.  
-- Monter le volume, arrêter et redémarrer la musique sont exécutés si la majorité du public le désire.
-- Ajouter des chansons écoutées durant la soirée dans une liste de favoris afin de retrouver le titre et l'artiste d'un coup de coeur.*
-
-## Abstraction / Conception / Architecture
-Description  diagramme des cas d'utilisation avec figure. Diagramme UML, la sauvegarde...
-## Implémentation / Description technique
-utiliser les packages pour la description
-Ne pas mettre toutes les classes !
-### Gestionnaire de configuration
-=======
-Dans le cadre du projet, l'équipe de programmation est composée du chef d'équipe Ludovic Delafontaine, de son remplaçant Lucas Elisei et des membres David Truan, Thibaut Togue, Yosra Harbaoui et Denise Gemesio.
-
-# Objectif
-Le but est de réaliser un programme client-serveur permettant d'écouter de la musique. Son utilité prend tout son sens lors d'évènements festifs et communautaires. En effet, notre programme permet aux utilisateurs d'envoyer leurs propres chansons à un serveur défini par l'organisateur de la soirée. Des fonctionnalités spéciales permettent de vivre une expérience musicale uniques :
-- Voter pour ou contre une chanson permet de la placer plus en avant ou en arrière dans la queue de lecture.  
-- Monter le volume, arrêter et redémarrer la musique sont exécutés si la majorité du public le désire.
-- Ajouter des chansons écoutées durant la soirée dans une liste de favoris afin de retrouver le titre et l'artiste d'un coup de coeur.
-
 # Abstraction / Conception / Architecture
 Description  diagramme des cas d'utilisation avec figure. Diagramme UML, la sauvegarde...
+
 
 # Implémentation / Description technique
 utiliser les packages pour la description
 Ne pas mettre toutes les classes !
 
-### Gestionnaire de configuration
+
+## Gestionnaire de configuration
 Nous avons choisi d'implémenter un gestionnaire de configuration utilisant le fichier commusica.properties pour permettre à l'utilisateur de configurer le programme. Elle donne accès aux paramètres suivants :               
  +  SERVER_NAME : choix nom du serveur auquel les participants pourront se connecter
  +  PLAYLIST_NAME : choix du nom de la playlist pour la soirée
@@ -82,16 +64,15 @@ Nous avons choisi d'implémenter un gestionnaire de configuration utilisant le f
  +  TIME_BETWEEN_PLAYLIST_UPDATES : choix du délai de mise à jour des playlists et leurs chansons
 
 
-
-### Core
+## Package Core
 Pour garder un niveau d'abstraction le plus élevé possible, nous avons voulu faire transiter toutes les informations venant du réseau et de actions utilisateurs via l'interface graphique par un contrôleur. Le but étant d'avoir le même point d'entrée que l'on soit client ou serveur. Pour cela il nous fallait une sorte de contrôleur central qui puisse être appelé de la même façon peut importe le choix de l'identité client/serveur mais en pouvant avoir des méthodes distincte selon que l'on choisisse d'être l'un ou l'autre. Notre raisonnement nous a mené à nous tourner vers la réflectivité offerte par **Java** pour résoudre ce problème. Ce mécanisme permet d'instancier à l'exécution des méthodes en utilisant la méthode `invoke(Object obj, Object... args)` en ayant comme premier paramètre un String représentant le nom de la méthode à invoquer et en deuxième paramètre un tableau d'`Object` contentant les différents arguments que la méthode invoquée pourra utiliser (voir utilisation dans notre programme plus loin **FIGURE**).  
 
 
 Il nous fallait maintenant une classe qui puisse jouer le rôle du contrôleur. Nous avons développer les **Core** pour cela qui sont tous dans le paquet *core*.
 ![Classes principales du package *core*](fr)
 
-#### Classes du package
-##### Core
+### Classes du package
+#### Core
 Classe statique qui joue le rôle de point d'entrée. Elle dispose d'un attribut `AbstractCore` qui sera instancier soit en `ClientCore` ou en `ServerCore`. Elle met aussi à disposition des méthodes statiques qui nous permettrons de les appeler depuis les autres classes du programme.  
 Parmi ces méthodes, la plus importante est la suivante:  
 
@@ -102,7 +83,7 @@ public static String execute(String command, ArrayList<Object> args)
 
 Elle contient aussi des méthodes lui permettant de se paramétrer comme client ou serveur.
 
-##### AbstractCore
+#### AbstractCore
 Cette classe abstraite met à disposition les méthodes pour permettre à ses sous-classes de s'exécuter correctement. Contrairement à `Core` cette classe va utiliser la réflectivité dans se méthode execute() comme ceci:  
 
 ```java
@@ -125,22 +106,21 @@ public synchronized String execute(String command, ArrayList<Object> args) {
 
 On reçoit une commande et un tableau correspondant aux arguments de la méthode à invoquer. Ensuite le programme essaie de retrouver la méthode ayant un nom correspondant à la commande envoyée si elle est disponible dans l'instance de la classe. Si c'est le cas elle va l'invoquer et donc exécuter ladite méthode. C'est ici que tout prend son sens car on a maintenant une instance d'`AbstractCore` qui est soit `ClientCore` ou `ServerCore` avec une seule méthode pour en appeler d'autres qui seront-elles implémentées dans les sous-classes de `AbstractCore`.
 
-##### ServerCore et ClientCore
+#### ServerCore et ClientCore
 Ces deux classe qui héritent de `AbstractCore` et qui implémentent `ICore` sont les parties les plus importantes du projet et c'est ici que la majorité des actions (transfert de la musique, action à effectuer lors d'un appui dur un bouton, etc...) se fera. Lors de l'envoie des commandes ces classes fonctionnent un peu avec un système d'états qui peuvent être changé en recevant des commandes depuis le réseau ou depuis le code. Elles ont une forte interaction avec les classes s'occupant du réseau puisque c'est ici que toutes les informations reçues depuis le réseau vont passer. Grace à la réflectivité offerte par l'`AbstractCore` il est donc extrêmement facile de définir de nouvelles méthodes dans ces classes. Il suffi de passer les bonnes commandes à la méthode `execute()`.
 
-##### Synthèse du paquet core
+#### Synthèse du paquet core
 Grace à ses classes, nous avons réglé le problème de contrôleur central par lequel tout transitera. La réception des commandes à invoquer sera expliquée plus tard dans le chapitre sur le paquet `Network` et lors des explications sur la liaison entre l'interface graphique et le code.
 
 
-
-### Package database
+## Package database
 La sauvegarde et le chargement font partie des points importants de notre application, car elle a été conçue pour permettre, par exemple, à un utilisateur de sauvegarder les metadatas des chansons qui lui plaisent dans la base de données. Ce package est constitué essentiellement de la classe **DatabaseManager.java** donc le rôle est d'assurer le CRUD (Create, Read, Update, Delete) de la base des données de notre application  et d'assuer la fermeture de la connexion à celle-ci.
 
 Pour l'implémentation, nous avons choisi le framework Hibernate qui simplifie le développement de l'application Java pour interagir avec la base des données. C'est un outil open source et léger.
 Un outil ORM (Object Relational Mapping) simplifie la création, la manipulation et l'accès aux données. C'est une technique de programmation qui mappe l'objet aux données stockées dans la base des données.
 
 
-### Package file
+## Package file
  Le package **file** a pour rôle d'assurer la gestion des fichiers en interagissant avec le système de fichiers . Il est constitué de deux classes:  **FileManager** et **FilesFormats**.
 
 La performance du framework Hibernate est rapide car le cache est utilisé en interne dans le cadre hiberné.
@@ -158,23 +138,15 @@ Le framework Hibernate offre la possibilité de créer automatiquement les table
 Connaitre le type de fichier nous permettra de traiter que les fichiers supporté pas notre plateforme et aussi en termes de sécurité éviter qu'un utilisateur face planter le serveur en envoyant un fichier qui n'est pas supporté par celui-ci.
 
 
-###  Package network  
-
-###  Package playlist
-Le package **playlist** 
-#### Classe du package.
-####  Network
-####  Media
-
-##### EphermeralPlaylist.
-
+##  Package media
+### Classes du package
+#### EphermeralPlaylist
                
  ![](EphermeralPlaylist.png)
  
  La classe EphermeralPlaylist représente la playlist en cour de construction c'est à dire playlist en cour de lecture. Cela permet de mettre ajout l'interface graphique lors d'une action d'un élément du playlist. La mise à jour se faire grâce au pattern observer à travers la liste **ObservableSortedPlaylistTrackList**, qui joue en même temps le rôle d’observable et observe. Elle est observer des tracks de la liste dans le but de changer l'état de la playlist en cas de vote et downvote, observable dans le cas où il envoie des notification lors des mise à jours.Nous avons aussi dans cette classe le champs **delegate** La liste de lecture qui sera enregistrée dans la base de données pour le suivi de celle-ci. 
  
- 
-##### Player.
+#### Player
 
  ![](Player.png)
  
@@ -191,14 +163,12 @@ Comme son nom l'indique, il s'agit d'une classe permettant de réaliser les acti
 
 Nous avons aussi dans cette classe utilisée les JavaFX's properties dans le but de mettre à jour de maniéré automatique l'interface utilisateur lorsqu'une modification se produit.
 
-##### SavedPlaylist. 
+#### SavedPlaylist 
 
 Comme son l'indique elle permet juste de sauvegardé les playlist.
 
-##### Track. 
+#### Track
 
-
-  
 ![](Track.png)
 
 Cettre classe réprsenté la musique, elle regroupe tous les informations concernant une musique. Nous remarquons dans cette classe que nous avons trois constructeurs.
@@ -208,42 +178,33 @@ Cettre classe réprsenté la musique, elle regroupe tous les informations concer
 
   + ```public Track(AudioFile audioFile)```
    Il permet de créer un track à partir d'un fichier audio. Il est utile lorsqu'ont souhaite transférer un fichier et souhaitez effectuer un contrôle sur un track au lieu de vérifier le fichier Audio lui même.
-  
-  
 
-  
->>>>>>> cc837bfc03b77080ec8c0ed19bfef08ac3920354
+##  Package network  
 
-###  Package ui
+##  Package playlist
+Le package **playlist**
 
-###  Package utils
+##  Package ui
 
-# Parties manquantes par rapport au cahier des charges
+##  Package utils
 
-# Tests réalisés
+## Parties manquantes par rapport au cahier des charges
 
-# Problèmes subsistants
+## Tests réalisés
 
-# Améliorations futures
+## Problèmes subsistants
 
-# Planification / organisation
+## Améliorations futures
 
-# Conclusion du projet
+## Planification / organisation
 
-# Bilan du projet
- 
-   
-###  Network
+# Conclusion
 
-###  Playlist
-###  Interface graphique
-###  Utils
+# Bilan 
 
 ## Bilan du groupe
 
 ## Ludovic
-
-
 ## Lucas
 ## David
 ## Thibaut
