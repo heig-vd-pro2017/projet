@@ -36,24 +36,26 @@ Dans ce rapport, nous allons expliquer notre démarche de travail et les princip
 
 ## Objectif
 Le but de notre programme est de proposer une application client-serveur qui permettra aux clients d'envoyer des fichiers musicaux au serveur pour que celui-ci les joue. Il se démarque d'une simple application de streaming dans le fait que la liste de lecture ne peut être changée que par les clients par le biais d'un système de votes positifs ou négatifs. Ceux-ci permettent à un morceau présent d'être placé plus en avant ou en arrière dans la liste de lecture. Ceci permet donc à chacun de donner son avis, tout en centralisant la lecture de la musique sur un seul ordinateur. En plus de cela l'application met à disposition les fonctionnalités suivantes pour une expérience encore plus communautaire:
-+ Vote pour passer au morceau suivant. Lorsqu'une majorité (plus de 50%) des clients ont voté pour passer au morceau suivant, la piste en cours de lecture est remplacée par le morceau qui la suit dans la liste de lecture.
-+ Même principe de vote pour augmenté ou diminuer le volume.
-+ Système de favoris pour permettre aux utilisateurs de sauvegarder les informations (titre, auteur, etc...) en local dans une playlist spécifique.  
+
+ +  Vote pour passer au morceau suivant. Lorsqu'une majorité (plus de 50%) des clients ont voté pour passer au morceau suivant, la piste en cours de lecture est remplacée par le morceau qui la suit dans la liste de lecture.
+ +  Même principe de vote pour augmenté ou diminuer le volume.
+ +  Système de favoris pour permettre aux utilisateurs de sauvegarder les informations (titre, auteur, etc...) en local dans une playlist spécifique.  
 
 Cette application visera principalement les soirées avec plusieurs personnes et répondra à l'éternel problème de devoir se passer une prise jack ou de devoir se battre pour pouvoir passer un morceau que l'on aime.
 
 
-# Abstraction / Conception / Architecture
+# Conception / Architecture
 Description  diagramme des cas d'utilisation avec figure. Diagramme UML, la sauvegarde...
 
 
-# Implémentation / Description technique
+# Description technique
 utiliser les packages pour la description
 Ne pas mettre toutes les classes !
 
 
 ## Gestionnaire de configuration
-Nous avons choisi d'implémenter un gestionnaire de configuration utilisant le fichier commusica.properties pour permettre à l'utilisateur de configurer le programme. Elle donne accès aux paramètres suivants :               
+Nous avons choisi d'implémenter un gestionnaire de configuration utilisant le fichier commusica.properties pour permettre à l'utilisateur de configurer le programme. Elle donne accès aux paramètres suivants :    
+
  +  SERVER_NAME : choix nom du serveur auquel les participants pourront se connecter
  +  PLAYLIST_NAME : choix du nom de la playlist pour la soirée
  +  DEBUG : au niveau développement, choisir ou non d'afficher les logs
@@ -184,18 +186,19 @@ Cettre classe réprsenté la musique, elle regroupe tous les informations concer
 ##  Package playlist
 Le package **playlist** met en oeuvre ce qui a trait à la gestion des playlists, dans notre cas : 
 
-+ Le lien entre une certaine chanson et les playlists dans lesquelles elle se trouve.
-+ La sélection d'une certaine playlist.
-+ La gestion des upvotes et downvotes concernant les chansons contenues dans une playlist spécifique.
+  +  Le lien entre une certaine chanson et les playlists dans lesquelles elle se trouve.
+  +  La sélection d'une certaine playlist.
+  +  La gestion des upvotes et downvotes concernant les chansons contenues dans une playlist spécifique.
 
 ### Classes du package
 #### PlaylistManager
 La classe **PlaylistManager** représente un gestionnaire de playlists et a plusieurs utilités :
-+ Récupérer la playlist en cours de création
-+ Récupérer les playlists sauvegardées
-+ Récupérer la playlist des favoris
-+ Ajouter/supprimer des chansons à la playlist des favoris
-+ Créer/supprimer une playlist
+
+  +  Récupérer la playlist en cours de création
+  +  Récupérer les playlists sauvegardées
+  +  Récupérer la playlist des favoris
+  +  Ajouter/supprimer des chansons à la playlist des favoris
+  +  Créer/supprimer une playlist
 #### PlaylistTrack
 La classe **PlaylistTrack** permet non seulement de représenter le lien entre une chanson et une playlist mais aussi de connaître le nombre de votes de la chanson, ce qui sera ensuite utile au niveau de la classe **VoteComparator** qui organise les chansons dans la playlist selon le nombre de votes. Cela peut être fait grâce au fait que **PlaylistTrack** met à disposition une variable **votesProperty** à laquelle un observeur a été ajouté afin que l'interface graphique se réorganise correctement.
 #### PlaylistTrackId
@@ -203,7 +206,32 @@ Cette classe permet de créer le lien entre une certaine playlist et une chanson
 #### VoteComparator
 Le comparateur de vote ne possède qu'une fonction. Celle-ci sert tout simplement à déterminer entre deux chansons, laquelle a le plus grand nombre de votes. Cela a été créé dans le but de réorganiser la playlist en commençant par les chansons les plus votées.
 
-##  Package ui
+##  Package et ressources ui
+Concernant l'interface graphique, nous avons utilisé la librairie JavaFx. Celle-ci nous a permis de faire usage de l'outil SceneBuilder afin de développer en premier lieu un mock-up qui s'est ensuite développé, à travers plusieurs étapes en l'interface graphique que nous avons aujourd'hui. Le fonctionnement JavaFX demande à avoir deux notions qui communiquent entre elles: un ou plusieurs fichiers FXML qui définissent l'arrangement de la fenêtre et une ou plusieurs classes Java qui permettent de lancer la fenêtre et communiquer avec ses composants.
+Il est donc intéressant de connaître le cheminement que nous avons parcouru jusqu'au résultat actuel.
+Dans un premier temps, nous avons développé un fichier FXML grâce à SceneBuilder. Grâce à celui-ci, nous avons pu apprendre les bons usages FXML. Nous avons ensuite créé un fichier Java depuis lequel nous étions capable lancer la fenêtre au démarrage du programme. Cependant, le code se développant devenant de plus en plus important, nous avons pris la décision de diviser aussi bien les fichier FXML que les fichier Java en plusieurs sections permettant d'avoir un regard plus précis sur chaque partie de notre implémentation.
+Ainsi, nous avons aujourd'hui plusieurs classes Java et fichiers FXML qui sont reliés à leur classe principale **UIController.java** respectivement **main.fxml**.
+### Classes du package
+La description des classes se fera selon l'ordre des vues dans l'interface graphique, en partant de la vue en haut à gauche pour finir par la vue en bas au centre. Nous allons tout d'abord commencer par la classe principale.
+#### UIController
+**UIController** est la classe qui permet de lier le reste des classes entre elles. Lorsque le programme est lancé, c'est cette classe qui est lancée. Elle va en premier lieu faire apparaître une fenêtre demandant à l'utilisateur si celui-ci veut être le serveur. Son lancement a lieu dans la fonction **initialize()**. Au moment du choix de l'utilisateur, l'interface annonce au Core quelle configuration a été choisie et la fenêtre principale du programme peut être lancée.
+La classe **UIController** permet également de fermer la fenêtre proprement lorsque l'utilisateur décidera d'arrêter le programme.
+#### PlaylistsListView
+*En haut à gauche*
+#### TrackListView
+*En haut au centre*
+##### PlaylistTrackCell
+*Dans TrackListView*
+#### SettingsView
+*En haut à droite*
+#### PreviousTrackView
+*En bas à gauche*
+#### PlayerControlsView
+*En bas au milieu*
+#### CurrentTrackView
+*En bas au milieu*
+### Fichiers FXML
+
 
 ##  Package utils
 Le package **utils** réunit tous les utilitaires dont nous avons eu besoin au sein de plusieurs classes et dont l'implémentation n'avait aucun sens au sein desdites classes. L'utilité de chaque classe diffère alors énormément.
@@ -214,10 +242,11 @@ Cette classe permet la récupération des configurations de base du programme. E
 Cette classe permet de sérialiser et désérialiser une playlist en JSON. L'utilité de cette classe réside alors principalement dans la communication réseau.
 #### Logger
 Cette classe a été créée uniquement pour assouvir le besoin d'un débogueur indiquant dans quelle classe a lieu une action. Des couleurs ont été attribuées aux différentes notifications.
-+ Bleu pour les informations
-+ Rouge pour les erreurs
-+ Vert pour les succès
-+ Jaune pour les warnings
+
+  +  Bleu pour les informations
+  +  Rouge pour les erreurs
+  +  Vert pour les succès
+  +  Jaune pour les warnings
 L'affichage des logs peut tout à fait être désactivé au niveau du fichier de configuration **commusica.properties** en réglant la valeur de **DEBUG** à 0.
 #### Network
 Cette classe permet de récupérer toutes les informations basiques de la machine concernant le réseau. Elle va en outre permettre de récupérer les interfaces disponibles nécessaires à la connexion à un certain serveur et de configurer le réseau pour le reste de l'application. 
