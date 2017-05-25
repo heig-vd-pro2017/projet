@@ -149,7 +149,7 @@ Connaitre le type de fichier nous permettra de traiter que les fichiers supporté
 
  ![](EphermeralPlaylist.png)
 
- La classe EphermeralPlaylist représente la playlist en cour de construction c'est-à-dire playlist en cour de lecture. Cela permet de mettre ajout l'interface graphique lors d'une action d'un élément du playlist. La mise à jour se faire grâce au pattern observer à travers la liste **ObservableSortedPlaylistTrackList**, qui joue en même temps le rôle d?observable et observe. Elle est observer des tracks de la liste dans le but de changer l'état de la playlist en cas de vote et downvote, observable dans le cas où il envoie des notification lors des mise à jours.Nous avons aussi dans cette classe le champs **delegate** La liste de lecture qui sera enregistrée dans la base de données pour le suivi de celle-ci.
+ La classe EphermeralPlaylist représente la playlist en cour de construction c'est-à-dire playlist en cour de lecture. Cela permet de mettre ajout l'interface graphique lors d'une action d'un élément du playlist. La mise à jour se faire grâce au pattern observer à travers la liste **ObservableSortedPlaylistTrackList**, qui joue en même temps le rôle d'observable et observe. Elle observe des tracks de la liste dans le but de changer l'état de la playlist en cas de vote et downvote, observable dans le cas où il envoie des notifications lors des mises à jour. Nous avons aussi dans cette classe le champ **delegate** la liste de lecture qui sera enregistrée dans la base de données pour le suivi de celle-ci.
 
 #### Player
 
@@ -160,13 +160,13 @@ Comme son nom l'indique, il s'agit d'une classe permettant de réaliser les actio
  + Facile à implémenter
  + Peut jouer plus de format que sourceDataLine par exemple mp3 n'est pas supporté par sourceDataLine.
 
- Le concept de javaFX média est basé sur les entités suivantes:
+ Le concept de JavaFX média est basé sur les entités suivantes:
 
   + **Média** media resource, contient des informations sur les médias, telles que sa source, sa résolution et ses métadonnées
-  + **MédiaPlayer** le composant clé fournissant les côntroles pour la lecture de média.
+  + **MédiaPlayer** le composant clé fournissant les contrôles pour la lecture de média.
   + MediaView permettant de supporter l'animation, la translucidité et les effets.
 
-Nous avons aussi dans cette classe utilisée les JavaFX's properties dans le but de mettre à jour de maniéré automatique l'interface utilisateur lorsqu'une modification se produit.
+Nous avons aussi utilisé dans cette classe les JavaFX's properties dans le but de mettre à jour de maniéré automatique l'interface utilisateur lorsqu'une modification se produit.
 
 #### SavedPlaylist
 
@@ -224,10 +224,10 @@ Cette classe permet de créer le lien entre une certaine playlist et une chanson.
 Le comparateur de vote ne possède qu'une fonction. Celle-ci sert tout simplement à déterminer entre deux chansons, laquelle a le plus grand nombre de votes. Cela a été créé dans le but de réorganiser la playlist en commençant par les chansons les plus votées.
 
 ##  Package et ressources ui
-Concernant l'interface graphique, nous avons utilisé la librairie JavaFx. Celle-ci nous a permis de faire usage de l'outil SceneBuilder afin de développer en premier lieu un mock-up qui s'est ensuite développé, à travers plusieurs étapes en l'interface graphique que nous avons aujourd'hui. Le fonctionnement JavaFX demande à avoir deux notions qui communiquent entre elles: un ou plusieurs fichiers FXML qui définissent l'arrangement de la fenêtre et une ou plusieurs classes Java qui permettent de lancer la fenêtre et communiquer avec ses composants.
+Concernant l'interface graphique, nous avons utilisé la librairie JavaFX. Celle-ci nous a permis de faire usage de l'outil SceneBuilder afin de développer en premier lieu une maquette qui s'est ensuite développée, à travers plusieurs étapes en l'interface graphique que nous avons aujourd'hui. Le fonctionnement JavaFX demande à avoir deux notions qui communiquent entre elles: un ou plusieurs fichiers FXML qui définissent l'arrangement de la fenêtre et une ou plusieurs classes Java qui permettent de lancer la fenêtre et communiquer avec ses composants.
 Il est donc intéressant de connaître le cheminement que nous avons parcouru jusqu'au résultat actuel.
-Dans un premier temps, nous avons développé un fichier FXML grâce à SceneBuilder. Grâce à celui-ci, nous avons pu apprendre les bons usages FXML. Nous avons ensuite créé un fichier Java depuis lequel nous étions capable lancer la fenêtre au démarrage du programme. Cependant, le code se développant devenant de plus en plus important, nous avons pris la décision de diviser aussi bien les fichier FXML que les fichier Java en plusieurs sections permettant d'avoir un regard plus précis sur chaque partie de notre implémentation.
-Ainsi, nous avons aujourd'hui plusieurs classes Java et fichiers FXML qui sont reliés à leur classe principale **UIController.java** respectivement **main.fxml**.
+Dans un premier temps, nous avons développé un fichier FXML grâce à SceneBuilder. Grâce à celui-ci, nous avons pu apprendre les bons usages FXML. Nous avons ensuite créé un fichier Java depuis lequel nous étions capables lancer la fenêtre au démarrage du programme. Cependant, le code se développant devenant de plus en plus important, nous avons pris la décision de diviser aussi bien les fichiers FXML que les fichiers Java en plusieurs sections permettant d'avoir un regard plus précis sur chaque partie de notre implémentation.
+Ainsi, nous avons aujourd'hui plusieurs classes Java et plusieurs fichiers FXML qui sont reliés à leur classe principale **UIController.java** respectivement **main.fxml**.
 ### Classes du package
 La description des classes se fera selon l'ordre des vues dans l'interface graphique, en partant de la vue en haut à gauche pour finir par la vue en bas au centre. Nous allons tout d'abord commencer par la classe principale.
 #### UIController
@@ -263,7 +263,7 @@ Cette classe a été créée uniquement pour assouvir le besoin d'un débogueur indiq
   +  Bleu pour les informations
   +  Rouge pour les erreurs
   +  Vert pour les succès
-  +  Jaune pour les warnings
+  +  Jaune pour les avertissements
 L'affichage des logs peut tout à fait être désactivé au niveau du fichier de configuration **commusica.properties** en réglant la valeur de **DEBUG** à 0.
 #### Network
 Cette classe permet de récupérer toutes les informations basiques de la machine concernant le réseau. Elle va en outre permettre de récupérer les interfaces disponibles nécessaires à la connexion à un certain serveur et de configurer le réseau pour le reste de l'application.
