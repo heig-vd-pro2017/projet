@@ -1,0 +1,81 @@
+@startuml
+
+
+class EphemeralPlaylist{
+-Logger LOG
+-ObservableSortedPlaylistTrackList tracksList
+-SavedPlaylist delegate
+
++EphemeralPlaylist(String playlistName)
++boolean downvoteTrack(Track track)
++boolean upvoteTrack(Track track)
++ObservableSortedPlaylistTrackList getTracksList()
+
+}
+
+class SavedPlaylist{
+-Integer id
+-String name
+-Date dateAdded
+-Date datePlayed
+...
++SavedPlaylist()
++SavedPlaylist(String name)
+}
+
+class Track{
+-String id
+-String title
+-String artist
+-String album
+-String urI
+...
+
++Track()
++Track(String id, String title, String artist, String album, ..)
++Track(AudioFile audioFile)
++BooleanProperty getFavoritedProperty()
++void setFavoritedProperty(boolean favorited)
+
+
+}
+
+class iPlaylist{
++boolean addTrack(Track track)
++boolean contains(Track track)
++PlaylistTrack getPlaylistTrack(Track track)
++ List<PlaylistTrack> getTracksList()
++ boolean isSaved()
+}
+
+class Player{
+-Logger LOG
+-Player currentPlayer
+-MediaPlayer player
+-IntegerProperty currentTimeProperty
+-PlaylistTrackProperty currentTrackProperty
+...
+
++BooleanProperty getIsPlayingProperty()
++boolean isPlaying()
++void play()
++void pause()
++void stop()
++void lowerVolume()
+
+}
+
+
+Track <-- EphemeralPlaylist
+
+SavedPlaylist <-- EphemeralPlaylist
+Track <-- SavedPlaylist
+
+iPlaylist <.. SavedPlaylist
+iPlaylist <.. EphemeralPlaylist
+Track <-- Player
+
+
+
+
+@enduml

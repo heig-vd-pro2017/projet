@@ -1,0 +1,64 @@
+@startuml
+
+
+class PlaylistTrackId{
+- SavedPlaylist playlist
+- Track track
++ PlaylistTrackId()
++ PlaylistTrackId(SavedPlaylist playlist, Track track)
++ void setPlaylist(SavedPlaylist playlist)
++ SavedPlaylist getPlaylist()
++ void setTrack(Track track)
++ Track getTrack()
++boolean equals(Object object)
++int hashCode()
+
+}
+
+class PlaylistTrack{
+- PlaylistTrackId id
+- BooleanProperty beenPlayedProperty
+- Integer votes
+- IntegerProperty votesProperty
++PlaylistTrack(SavedPlaylist playlist, Track track)
++BooleanProperty getBeenPlayedProperty()
++SavedPlaylist getPlaylist()
++Track getTrack()
++IntegerProperty getVotesProperty()
++PlaylistTrackId getId()
++ void upvote()
++ void downvote()
+....()
+
+
+
+}
+
+class VoteComparator{
++ int compare(PlaylistTrack x, PlaylistTrack y)
+
+}
+
+class PlaylistManager{
+- Logger LOG
+-PlaylistManager instance
+-List<SavedPlaylist> savedPlaylists
+-EphemeralPlaylist playlist
+-SavedPlaylist favoritesPlaylist
+-PlaylistManager()
+
+PlaylistManager getInstance()
+EphemeralPlaylist getPlaylist()
+SavedPlaylist createPlaylist(String name)
+void removePlaylist(SavedPlaylist playlist)
+...()
+}
+
+PlaylistTrack <-- PlaylistTrackId
+
+PlaylistTrack <-- VoteComparator
+
+
+
+
+@enduml

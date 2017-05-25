@@ -1,0 +1,36 @@
+@startuml
+
+
+class FileManager{
+- Logger LOG
+- FileManager instance
++ String OUTPUT_DIRECTORY
+
++FileManager()
++FileManager getInstance()
++File retrieveFile(InputStream inputStream, int fileSize)
++String getFormatExtension(File file)
++byte[] getBytes(File file, int nbBytes)
++void delete(File fileToDelete)
++void rename(File file, File newFilename)
++String getMD5Checksum(File file)
+}
+
+class FilesFormats{
+
++byte[] MP3_HEADER
++int MP3_HEADER_OFFSET
++String MP3_EXTENSION
++byte[] M4A_HEADER
++int M4A_HEADER_OFFSET
++String M4A_EXTENSION
++ byte[] WAV_HEADER
++int WAV_HEADER_OFFSET
++String WAV_EXTENSION
+
+}
+
+
+
+
+@enduml
