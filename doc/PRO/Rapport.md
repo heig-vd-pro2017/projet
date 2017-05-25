@@ -29,7 +29,7 @@ toc: yes
 
 # Introduction
 Durant le quatrième semestre de la section TIC de l'HEIG-VD, nous devons effectuer un projet par groupes de cinq ou six personnes, le but étant de mettre en œuvre les connaissances que nous avons acquises au long des semestres précédents à travers un projet conséquent. Nous devrons prendre conscience des difficultés liées au travail de groupe, ainsi qu'apprendre à planifier un travail sur plusieurs mois. Au terme du semestre, nous devons rendre une programme complet et fonctionnel, avec une documentation adéquate et être capables de le présenter et le défendre.
-<<<<<<< HEAD
+
 Dans le cadre du projet, l'équipe de programmation est composée du chef d'équipe Ludovic Delafontaine, de son remplaçant Lucas Elisei et des membres David Truan, Thibaut Togue, Yosra Harbaoui et Denise Gemesio.  
 Dans ce rapport, nous allons expliquer notre démarche de travail et les principaux choix d'architecture et de design de code que nous avons choisi. Il sera structuré en partie représentant les principaux paquets de notre applications. Nous développerons plus ou moins les paquets selon leur importance au sein de notre projet.
 
@@ -70,8 +70,7 @@ Description  diagramme des cas d'utilisation avec figure. Diagramme UML, la sauv
 utiliser les packages pour la description
 Ne pas mettre toutes les classes !
 
-## Gestionnaire de configuration
->>>>>>> fb804aa220f9fc4c3e00a22c8f38e14249a4e81b
+### Gestionnaire de configuration
 Nous avons choisi d'implémenter un gestionnaire de configuration utilisant le fichier commusica.properties pour permettre à l'utilisateur de configurer le programme. Elle donne accès aux paramètres suivants :               
  +  SERVER_NAME : choix nom du serveur auquel les participants pourront se connecter
  +  PLAYLIST_NAME : choix du nom de la playlist pour la soirée
@@ -82,7 +81,6 @@ Nous avons choisi d'implémenter un gestionnaire de configuration utilisant le f
  +  TIME_BEFORE_SESSION_INACTIVE : choix du délai d'inactivité d'une session
  +  TIME_BETWEEN_PLAYLIST_UPDATES : choix du délai de mise à jour des playlists et leurs chansons
 
-<<<<<<< HEAD
 
 
 ### Core
@@ -135,16 +133,8 @@ Grace à ses classes, nous avons réglé le problème de contrôleur central par
 
 
 
-
-
 ###  Database
-La sauvegarde et le chargement font partie des points importants de notre application, car elle a été conçue pour permettre, par exemple, à un utilisateur de sauvegarder les metadatas des chansons qui lui plaisent dans la base de données. Ce package est constitué essentiellement de la classe **DatabaseManager.java** donc le rôle est d'assurer le CRUD (Create, Read, Update, Delete) de la base des données de notre application  et d'assurer la fermeture de la connexion à celle-ci.
-=======
-##  Core
-
-##  Database
 La sauvegarde et le chargement font partie des points importants de notre application, car elle a été conçue pour permettre, par exemple, à un utilisateur de sauvegarder les metadatas des chansons qui lui plaisent dans la base de données. Ce package est constitué essentiellement de la classe **DatabaseManager.java** donc le rôle est d'assurer le CRUD (Create, Read, Update, Delete) de la base des données de notre application  et d'assuer la fermeture de la connexion à celle-ci.
->>>>>>> fb804aa220f9fc4c3e00a22c8f38e14249a4e81b
 
 Pour l'implémentation, nous avons choisi le framework Hibernate qui simplifie le développement de l'application Java pour interagir avec la base des données. C'est un outil open source et léger.
 Un outil ORM (Object Relational Mapping) simplifie la création, la manipulation et l'accès aux données. C'est une technique de programmation qui mappe l'objet aux données stockées dans la base des données.
@@ -153,10 +143,66 @@ La performance du framework Hibernate est rapide car le cache est utilisé en in
 Le framework Hibernate offre la possibilité de créer automatiquement les tables de la base des données. Il n'est donc pas nécessaire de les créer manuellement.
 
 ##  File
+Le package File a pour rôle d'assuré la gestion des fichiers en interagissant avec le file système . Il est constitué de 02 classe **FileManager** et **FilesFormats**. 
+ 
+ + **FilesFormats**: Vue que notre application supporte trois formats mp3, m4a et wav, la classe permet de définit les caractéristique d'un fichier c'est à dire tous les éléments nous permettant de savoir le type du fichier.
+ + **FileManager**:
+   Cette classe permet de supprimer, stocké et déterminé le type de fichier.  Pour retrouver l'extension du fichier nous avons procédé de telle maniéré :
+ 
+	+ Pour les fichiers mp3, on regarde les 3 premiers bytes depuis le début du fichier.
+	+ Pour les m4a, on regarde les premiers octets mais en partant du quatrième octet  depuis le début du fichier
+	+  Pour les wav, à partir du huitième octet depuis le début du fichier. 
 
-##  Network
+Connaitre le type de fichier nous permettra de traiter que les fichiers supporté pas notre plateforme et aussi en termes de sécurité éviter qu'un utilisateur face planter le serveur en envoyant un fichier qui n'est pas supporté par celui-ci.
 
-##  Playlist
+
+#### Classe du package.
+####  Network####  Media
+
+##### EphermeralPlaylist.
+
+               
+ ![](EphermeralPlaylist.png)
+ 
+ La classe EphermeralPlaylist représente la playlist en cour de construction c'est à dire playlist en cour de lecture. Cela permet de mettre ajout l'interface graphique lors d'une action d'un élément du playlist. La mise à jour se faire grâce au pattern observer à travers la liste **ObservableSortedPlaylistTrackList**, qui joue en même temps le rôle d’observable et observe. Elle est observer des tracks de la liste dans le but de changer l'état de la playlist en cas de vote et downvote, observable dans le cas où il envoie des notification lors des mise à jours.Nous avons aussi dans cette classe le champs **delegate** La liste de lecture qui sera enregistrée dans la base de données pour le suivi de celle-ci. 
+ 
+ 
+##### Player.
+
+ ![](Player.png)
+ 
+Comme son nom l'indique, il s'agit d'une classe permettant de réaliser les action de base sur la musique(play, pause, stop, next, previous). Pour l'implémentation on avait le choix entre **Mediaplayer** et **sourceDataLine**, nous avons préféré utilise **Mediaplayer** pour des raisons suivantes:
+ + Facile à implémenter
+ + Peut jouer plus de format que sourceDataLine par exemple mp3 n'est pas supporté par sourceDataLine.
+ 
+ Le concept de javaFX média est basé sur les entités suivantes:
+  
+  + **Média** media resource, contient des informations sur les médias, telles que sa source, sa résolution et ses métadonnées 
+  + **MédiaPlayer** le composant clé fournissant les côntroles pour la lecture de média.
+  + MediaView permettant de supporter l'animation, la translucidité et les effets.
+
+Nous avons aussi dans cette classe utilisée les JavaFX's properties dans le but de mettre à jour de maniéré automatique l'interface utilisateur lorsqu'une modification se produit.
+##### SavedPlaylist. 
+
+Comme son l'indique elle permet juste de sauvegardé les playlist.
+
+##### Track. 
+
+
+  
+![](Track.png)
+
+Cettre classe réprsenté la musique, elle regroupe tous les informations concernant une musique. Nous remarquons dans cette classe que nous avons trois constructeurs.
+
+  + Le constructeur vide: toutes les classes peersistantes doivent avoir un constructeur par défaut  pour que hibernate puisse les instancier en utilisant le constructeur **Constructor.newInstance()**.
+  +  ```public Track(String id, String title, String artist, String album, Integer length, String uri)```: Qui est un constructeur normale prénant en paramètre tous les champs de la classe.
+
+  + ```public Track(AudioFile audioFile)```
+   Il permet de créer un track à partir d'un fichier audio. Il est utile lorsqu'ont souhaite transférer un fichier et souhaitez effectuer un contrôle sur un track au lieu de vérifier le fichier Audio lui même.
+  
+  
+
+  
 
 ##  Interface graphique
 
@@ -175,36 +221,18 @@ Le framework Hibernate offre la possibilité de créer automatiquement les table
 # Conclusion du projet
 
 # Bilan du projet
-
-<<<<<<< HEAD
-Pour l'implémentation nous avons choisir le framework Hibernate qui simplifie le développement de l'application java pour interagir avec la base des données. C'est un outil open source, léger. ORM(Object Relational Mapping) 
-Un outil ORM simplifie la création des données, la manipulation de données et l'accès aux données. C'est une technique de programme qui mappe l'objet aux données stockées dans la base des données. 
  
-La performance du framework hibernate est rapide car le cache est utilisé en interne dans le cadre hiberné. 
-Le framework Hibernate offre la possibilité de créer automatiquement les tables de la base des données. Il m'est donc pas nécessaires de créer manuellement des tables dans la base de données.
-###  File
- Le package File a pour rôle d'assuré la gestion des fichiers en interagissant avec le file système . Il est constitué de 02 classe **FileManager** et **FilesFormats**. 
- 
- + **FilesFormats**: Vue que notre application supporte trois formats mp3, m4a et wav, la classe permet de définit les caractéristique d'un fichier c'est à dire tous les éléments nous permettant de savoir le type du fichier.
- + **FileManager**:
-   Cette classe permet de supprimer, stocké et déterminé le type de fichier.  Pour retrouver l'extension du fichier nous avons procédé de telle maniéré :
- 
-	+ Pour les fichiers mp3, on regarde les 3 premiers bytes depuis le début du fichier.
-	+ Pour les m4a, on regarde les premiers octets mais en partant du quatrième octet  depuis le début du fichier
-	+  Pour les wav, à partir du huitième octet depuis le début du fichier. 
-
-Connaitre le type de fichier nous permettra de traiter que les fichiers supporté pas notre plateforme et aussi en termes de sécurité éviter qu'un utilisateur face planter le serveur en envoyant un fichier qui n'est pas supporté par celui-ci.
    
 ###  Network
 
 ###  Playlist
 ###  Interface graphique
 ###  Utils
-=======
+
 ## Bilan du groupe
 
 ## Ludovic
->>>>>>> b5f2a15d1e48670a22e8977c42a9a94731c2672f
+
 
 ## Lucas
 ## David
