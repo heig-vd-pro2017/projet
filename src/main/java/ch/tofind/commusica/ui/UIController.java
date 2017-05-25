@@ -21,6 +21,7 @@ import javafx.scene.Scene;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -113,19 +114,18 @@ public class UIController extends Application implements Initializable {
      * @brief Display the dialog to choose if we launch the application as server or client.
      */
     private void displayServerClientDialog() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.initStyle(StageStyle.UTILITY);
+        Dialog<ButtonType> dialog = new Dialog<>();
 
-        alert.setHeaderText(null);
-        alert.setTitle("Welcome!");
-        alert.setContentText("Welcome to Commusica!\n\nWould you like to be the server?");
+        dialog.setContentText("Welcome to Commusica!\n\nWould you like to be the server?");
+        dialog.setHeaderText(null);
+        dialog.setTitle("Welcome!");
 
         ButtonType yesButton = new ButtonType("Yes");
         ButtonType noButton = new ButtonType("No");
 
-        alert.getButtonTypes().setAll(yesButton, noButton);
+        dialog.getDialogPane().getButtonTypes().setAll(yesButton, noButton);
 
-        Optional<ButtonType> result = alert.showAndWait();
+        Optional<ButtonType> result = dialog.showAndWait();
 
         if (result.isPresent()) {
             Network.configureNetwork();
