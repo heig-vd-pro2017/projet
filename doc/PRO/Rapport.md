@@ -45,15 +45,16 @@ utiliser les packages pour la description
 Ne pas mettre toutes les classes !
 
 ## Gestionnaire de configuration
-Nous avons choisi d'implémenter un gestionnaire de configuration utilisant le fichier commusica.properties pour permettre à l'utilisateur de configurer le programme. Elle donne accès aux paramètres suivants :               
- +  SERVER_NAME : choix nom du serveur auquel les participants pourront se connecter
- +  PLAYLIST_NAME : choix du nom de la playlist pour la soirée
- +  DEBUG : au niveau développement, choisir ou non d'afficher les logs
- +  DATE_FORMAT : choix du format de la date
- +  VOLUME_STEP : choix du pas d'augmentation et abaissement de la musique
- +  TRACKS_DIRECTORY : choix du chemin relatif où les chansons seront stockées
- +  TIME_BEFORE_SESSION_INACTIVE : choix du délai d'inactivité d'une session
- +  TIME_BETWEEN_PLAYLIST_UPDATES : choix du délai de mise à jour des playlists et leurs chansons
+Nous avons choisi d'implémenter un gestionnaire de configuration utilisant le fichier commusica.properties pour permettre à l'utilisateur de configurer le programme. Elle donne accès aux paramètres suivants :
+
+- SERVER_NAME : choix nom du serveur auquel les participants pourront se connecter
+- PLAYLIST_NAME : choix du nom de la playlist pour la soirée
+- DEBUG : au niveau développement, choisir ou non d'afficher les logs
+- DATE_FORMAT : choix du format de la date
+- VOLUME_STEP : choix du pas d'augmentation et abaissement de la musique
+- TRACKS_DIRECTORY : choix du chemin relatif où les chansons seront stockées
+- TIME_BEFORE_SESSION_INACTIVE : choix du délai d'inactivité d'une session
+- TIME_BETWEEN_PLAYLIST_UPDATES : choix du délai de mise à jour des playlists et leurs chansons
 
 ##  Core
 
@@ -107,6 +108,6 @@ https://blog.axopen.com/2013/11/les-cles-primaires-composees-avec-hibernate-4/
 https://vladmihalcea.com/2016/08/01/the-best-way-to-map-a-composite-primary-key-with-jpa-and-hibernate/
 
 # Annexes
-## Cahier des charges
-## Journal de travail
-## Panification initiale et son évolution
+- Cahier des charges
+- Journal de travail
+- Panification initiale et son évolution

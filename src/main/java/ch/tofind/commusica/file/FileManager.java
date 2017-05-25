@@ -4,7 +4,6 @@ import ch.tofind.commusica.utils.Configuration;
 import ch.tofind.commusica.utils.Logger;
 
 import java.io.*;
-import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
