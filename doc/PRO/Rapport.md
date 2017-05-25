@@ -211,19 +211,40 @@ La classe **PlaylistManager** représente un gestionnaire de playlists et a plus
 + Récupérer la playlist des favoris
 + Ajouter/supprimer des chansons à la playlist des favoris
 + Créer/supprimer une playlist
-
 #### PlaylistTrack
 La classe **PlaylistTrack** permet non seulement de représenter le lien entre une chanson et une playlist mais aussi de connaître le nombre de votes de la chanson, ce qui sera ensuite utile au niveau de la classe **VoteComparator** qui organise les chansons dans la playlist selon le nombre de votes. Cela peut être fait grâce au fait que **PlaylistTrack** met à disposition une variable **votesProperty** à laquelle un observeur a été ajouté afin que l'interface graphique se réorganise correctement.
-
 #### PlaylistTrackId
+<<<<<<< HEAD
 Cette classe permet de créer le lien entre une certaine playlist et une chanson. Grâce à l'implémentation d'un hashcode, on peut se servir de celui-ci afin de vérifier que la chanson reliée à la playlist n'existe pas déjà.
 
+=======
+Cette classe permet de créer le lien entre une certaine playlist et une chanson. Grâce à l'implémentation d'un hashcode, on peut se servir de celui-ci afin de vérifier que la chanson reliée à la playlist n'existe pas déjà. 
+>>>>>>> de4e535a48c013eb9b1357d68717936f62d685f5
 #### VoteComparator
 Le comparateur de vote ne possède qu'une fonction. Celle-ci sert tout simplement à déterminer entre deux chansons, laquelle a le plus grand nombre de votes. Cela a été créé dans le but de réorganiser la playlist en commençant par les chansons les plus votées.
 
 ##  Package ui
 
 ##  Package utils
+Le package **utils** réunit tous les utilitaires dont nous avons eu besoin au sein de plusieurs classes et dont l'implémentation n'avait aucun sens au sein desdites classes. L'utilité de chaque classe diffère alors énormément.
+### Classes du package
+#### Configuration
+Cette classe permet la récupération des configurations de base du programme. Elle fixe le fichier de configuration que nous avons introduit précédemment, au chapitre **Gestionnaire de configuration** et en tire des informations. 
+#### EphemeralPlaylistSerializer
+Cette classe permet de sérialiser et désérialiser une playlist en JSON. L'utilité de cette classe réside alors principalement dans la communication réseau.
+#### Logger
+Cette classe a été créée uniquement pour assouvir le besoin d'un débogueur indiquant dans quelle classe a lieu une action. Des couleurs ont été attribuées aux différentes notifications.
++ Bleu pour les informations
++ Rouge pour les erreurs
++ Vert pour les succès
++ Jaune pour les warnings
+L'affichage des logs peut tout à fait être désactivé au niveau du fichier de configuration **commusica.properties** en réglant la valeur de **DEBUG** à 0.
+#### Network
+Cette classe permet de récupérer toutes les informations basiques de la machine concernant le réseau. Elle va en outre permettre de récupérer les interfaces disponibles nécessaires à la connexion à un certain serveur et de configurer le réseau pour le reste de l'application. 
+#### ObservableSortedPlaylistTracklist
+Cette classe permet de récupérer les informations nécessaires à l'affichage des chansons dans la playlist en écoute. Cet utilitaire a été créé afin de pouvoir faciliter la récupération d'informations depuis les classes mettant en oeuvre l'interface graphique.
+#### Serialize
+Grâce à la librairie Gson de Google, cette classe est utilisée dans la sérialisation et désérialisation d'objets.
 
 ## Parties manquantes par rapport au cahier des charges
 
