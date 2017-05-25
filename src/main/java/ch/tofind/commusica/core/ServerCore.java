@@ -432,30 +432,32 @@ public class ServerCore extends AbstractCore implements ICore {
         // Get the track from the database
         Session session = DatabaseManager.getInstance().getSession();
 
-        String queryString = String.format("from Track where id = '%s'", trackId);
+        Query trackById = session.createQuery("FROM Track WHERE id = :id");
+        trackById.setParameter("id", trackId);
 
-        Query<Track> queryId = session.createQuery(queryString, Track.class);
+        Track trackToDownvote;
 
-        // If the query has no result we send the command ERROR
-        if (queryId.list().isEmpty()) {
-            result = ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
+        try {
+            trackToDownvote = (Track) trackById.getSingleResult();
+        } catch (NoResultException e) {
+
+            LOG.info("The track was not found by ID.");
+
+            return ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.ERROR_VOTE + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
-            return result;
+
         }
 
-        Track trackToDownvote = queryId.list().get(0);
-
         // Update the track properties
-        PlaylistTrack playlistTrackToUpvote = PlaylistManager.getInstance().getPlaylist().getPlaylistTrack(trackToDownvote);
-        playlistTrackToUpvote.downvote();
+        PlaylistTrack playlistTrackToDownvote = PlaylistManager.getInstance().getPlaylist().getPlaylistTrack(trackToDownvote);
 
-        // Update the track in the database
-        session.update(playlistTrackToUpvote);
+        // Ask the UI to update the view when it can
+        Platform.runLater(() -> playlistTrackToDownvote.downvote());
 
-        // Update the UI
-        // TODO: Is it done automatically?
+        // Update the track in the database - L'OBJET N'EXISTE PAS DANS LA DB
+        //DatabaseManager.getInstance().update(playlistTrackToUpvote);
 
         // Tells the user its track has been voted
         result = ApplicationProtocol.TRACK_DOWNVOTED + NetworkProtocol.END_OF_LINE +
