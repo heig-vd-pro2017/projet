@@ -10,7 +10,7 @@ import java.util.List;
 public interface IPlaylist {
 
     /**
-     * @brief Add a track to the EphemeralPlaylist. It also create a PlaylistTrack to link the
+     * @brief Add a track to the playlist. It also create a PlaylistTrack to link the
      * Track and the playlist (for DB purpose).
      *
      * @param track The track to add to the playlist.
@@ -19,6 +19,13 @@ public interface IPlaylist {
      */
     boolean addTrack(Track track);
 
+    /**
+     * @brief Check if a track is already contained in the playlist or not.
+     *
+     * @param track The track to check in the playlist.
+     *
+     * @return true if the track was found false otherwise.
+     */
     boolean contains(Track track);
 
     /**
@@ -30,7 +37,17 @@ public interface IPlaylist {
      */
     PlaylistTrack getPlaylistTrack(Track track);
 
+    /**
+     * @brief Get the tracks of the playlist.
+     *
+     * @return The track of the playlist.
+     */
     List<PlaylistTrack> getTracksList();
 
+    /**
+     * @brief Check if the playlist is saved or not.
+     *
+     * @return true if the playlist was saved false otherwise.
+     */
     boolean isSaved();
 }

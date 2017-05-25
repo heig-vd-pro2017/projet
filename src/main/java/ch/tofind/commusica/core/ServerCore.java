@@ -381,7 +381,7 @@ public class ServerCore extends AbstractCore implements ICore {
         // Update the track properties
         PlaylistTrack playlistTrackToUpvote = PlaylistManager.getInstance().getPlaylist().getPlaylistTrack(trackToUpvote);
 
-        // Ask the UI to update the view when it can
+        // Ask the UI to execute the command when it can
         Platform.runLater(() -> playlistTrackToUpvote.upvote());
 
         // Update the track in the database - L'OBJET N'EXISTE PAS DANS LA DB
@@ -452,7 +452,7 @@ public class ServerCore extends AbstractCore implements ICore {
         // Update the track properties
         PlaylistTrack playlistTrackToDownvote = PlaylistManager.getInstance().getPlaylist().getPlaylistTrack(trackToDownvote);
 
-        // Ask the UI to update the view when it can
+        // Ask the UI to execute the command when it can
         Platform.runLater(() -> playlistTrackToDownvote.downvote());
 
         // Update the track in the database - L'OBJET N'EXISTE PAS DANS LA DB
@@ -465,6 +465,14 @@ public class ServerCore extends AbstractCore implements ICore {
         return result;
     }
 
+
+    /**
+     * @brief Load next track on server side.
+     *
+     * @param args Args of the command.
+     *
+     * @return The result of the command.
+     */
     public String SEND_NEXT_TRACK_REQUEST(ArrayList<Object> args) {
 
         Player.getCurrentPlayer().load();
@@ -484,14 +492,14 @@ public class ServerCore extends AbstractCore implements ICore {
 
         Player player = Player.getCurrentPlayer();
 
-        if (!player.getIsPlayingProperty().getValue()) {
+        if (!player.isPlaying()) {
 
-            // Ask the UI to update the view when it can
+            // Ask the UI to execute the command when it can
             Platform.runLater(() -> player.play());
 
         } else {
 
-            // Ask the UI to update the view when it can
+            // Ask the UI to execute the command when it can
             Platform.runLater(() -> player.pause());
 
         }
@@ -521,16 +529,20 @@ public class ServerCore extends AbstractCore implements ICore {
             Core.execute("SEND_PLAY_PAUSE_REQUEST", null);
 
             LOG.info("Play/paused.");
+
+            return ApplicationProtocol.PLAYED_PAUSED + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                    NetworkProtocol.END_OF_COMMAND;
+
         } else {
             LOG.info("User's opinion was taken into account.");
         }
 
         // Tells the user its opinion was taken into account
-        String result = ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
+        return ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.SUCCESS_VOTE + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
-        return result;
     }
 
     /**
@@ -558,7 +570,7 @@ public class ServerCore extends AbstractCore implements ICore {
 
             // Update the track in the database
 
-            // Ask the UI to update the view when it can
+            // Ask the UI to execute the command when it can
             Platform.runLater(() -> Player.getCurrentPlayer().load());
 
             LOG.info("Next song.");
@@ -629,8 +641,12 @@ public class ServerCore extends AbstractCore implements ICore {
 
             LOG.info("Volume turns up.");
 
-            // Ask the UI to update the view when it can
+            // Ask the UI to execute the command when it can
             Platform.runLater(() -> Player.getCurrentPlayer().riseVolume());
+
+            return ApplicationProtocol.VOLUME_TURNED_UP + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                    NetworkProtocol.END_OF_COMMAND;
 
         } else {
             LOG.info("User's opinion was taken into account.");
@@ -668,16 +684,19 @@ public class ServerCore extends AbstractCore implements ICore {
             // Ask the UI to execute the command when it can
             Platform.runLater(() -> Player.getCurrentPlayer().lowerVolume());
 
+            return ApplicationProtocol.VOLUME_TURNED_DOWN + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                    NetworkProtocol.END_OF_COMMAND;
+
         } else {
             LOG.info("User's opinion was taken into account.");
         }
 
         // Tells the user its opinion has been counted
-        String result = ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
+        return ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.SUCCESS_VOTE + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
-        return result;
     }
 
     @Override

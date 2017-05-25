@@ -62,6 +62,8 @@ public final class ApplicationProtocol {
 
     public static final String PLAY_PAUSE_REQUEST = "PLAY_PAUSE_REQUEST";
 
+    public static final String PLAYED_PAUSED = "PLAYED_PAUSED";
+
     public static final String SEND_NEXT_TRACK_REQUEST = "SEND_NEXT_TRACK_REQUEST";
 
     public static final String NEXT_TRACK_REQUEST = "NEXT_TRACK_REQUEST";
@@ -74,9 +76,13 @@ public final class ApplicationProtocol {
 
     public static final String TURN_VOLUME_UP_REQUEST = "TURN_VOLUME_UP_REQUEST";
 
+    public static final String VOLUME_TURNED_UP = "VOLUME_TURNED_UP";
+
     public static final String SEND_TURN_VOLUME_DOWN_REQUEST = "SEND_TURN_VOLUME_DOWN_REQUEST";
 
     public static final String TURN_VOLUME_DOWN_REQUEST = "TURN_VOLUME_DOWN_REQUEST";
+
+    public static final String VOLUME_TURNED_DOWN = "VOLUME_TURNED_DOWN";
 
     // Success messages
     public static final String SUCCESS_VOTE = Configuration.getInstance().get("SUCCESS_VOTE");
