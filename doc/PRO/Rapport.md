@@ -209,6 +209,24 @@ Le comparateur de vote ne possède qu'une fonction. Celle-ci sert tout simplemen
 ##  Package ui
 
 ##  Package utils
+Le package **utils** réunit tous les utilitaires dont nous avons eu besoin au sein de plusieurs classes et dont l'implémentation n'avait aucun sens au sein desdites classes. L'utilité de chaque classe diffère alors énormément.
+### Classes du package
+#### Configuration
+Cette classe permet la récupération des configurations de base du programme. Elle fixe le fichier de configuration que nous avons introduit précédemment, au chapitre **Gestionnaire de configuration** et en tire des informations. 
+#### EphemeralPlaylistSerializer
+Cette classe permet de sérialiser et désérialiser une playlist en JSON. L'utilité de cette classe réside alors principalement dans la communication réseau.
+#### Logger
+Cette classe a été créée uniquement pour assouvir le besoin d'un débogueur indiquant dans quelle classe a lieu une action. Des couleurs ont été attribuées aux différentes notifications.
++ Bleu pour les informations
++ Rouge pour les erreurs
++ Vert pour les succès
++ Jaune pour les warnings
+L'affichage des logs peut tout à fait être désactivé au niveau du fichier de configuration **commusica.properties** en réglant la valeur de **DEBUG** à 0.
+#### Network
+
+#### ObservableSortedPlaylistTracklist
+#### PlaylistTrackProperty
+#### Serialize
 
 ## Parties manquantes par rapport au cahier des charges
 
