@@ -8,7 +8,7 @@ header-includes:
     - \fancyhead[CO,CE]{Commusica}
     - \fancyhead[LO,LE]{}
     - \fancyhead[RO,RE]{}
-    - \renewcommand{\contentsname}{Table des matières}
+    - \renewcommand{\contentsname}{Table des matiÃ¨res}
     - \lstset{breaklines=true}
     - \lstset{backgroundcolor=\color[RGB]{248,248,248}}
     - \lstset{language=java}
@@ -28,20 +28,20 @@ toc: yes
 \newpage
 
 # Introduction
-Durant le quatrième semestre de la section TIC de l'HEIG-VD, nous devons effectuer un projet par groupes de cinq ou six personnes, le but étant de mettre en oeuvre les connaissances que nous avons acquises au long des semestres précédents à travers un projet conséquent. Nous devrons prendre conscience des difficultés liées au travail de groupe, ainsi qu'apprendre à planifier un travail sur plusieurs mois. Au terme du semestre, nous devons rendre un programme complet et fonctionnel, avec une documentation adéquate et être capables de le présenter et le défendre.
+Durant le quatriÃ¨me semestre de la section TIC de l'HEIG-VD, nous devons effectuer un projet par groupes de cinq ou six personnes, le but Ã©tant de mettre en oeuvre les connaissances que nous avons acquises au long des semestres prÃ©cÃ©dents Ã  travers un projet consÃ©quent. Nous devrons prendre conscience des difficultÃ©s liÃ©es au travail de groupe, ainsi qu'apprendre Ã  planifier un travail sur plusieurs mois. Au terme du semestre, nous devons rendre un programme complet et fonctionnel, avec une documentation adÃ©quate et Ãªtre capables de le prÃ©senter et le dÃ©fendre.
 
-Dans le cadre du projet, l'équipe de programmation est composée du chef d'équipe Ludovic Delafontaine, de son remplaçant Lucas Elisei et des membres David Truan, Thibaut Togue, Yosra Harbaoui et Denise Gemesio.  
-Dans ce rapport, nous allons expliquer notre démarche de travail et les principaux choix d'architecture et de design de code. Il sera structuré en partie représentant les principaux paquets de notre application. Nous développerons plus ou moins les paquets selon leur importance au sein de notre projet.
+Dans le cadre du projet, l'Ã©quipe de programmation est composÃ©e du chef d'Ã©quipe Ludovic Delafontaine, de son remplaÃ§ant Lucas Elisei et des membres David Truan, Thibaut Togue, Yosra Harbaoui et Denise Gemesio.  
+Dans ce rapport, nous allons expliquer notre dÃ©marche de travail et les principaux choix d'architecture et de design de code. Il sera structurÃ© selon les principaux paquets de notre application. Plus un paquet ou une classe est complexe et importante au sein de notre projet, plus la description sera dense et entrera dans les dÃ©tails.
 
 
 ## Objectif
-Le but de notre programme est de proposer une application client-serveur qui permettra aux clients d'envoyer des fichiers musicaux au serveur pour que celui-ci les joue. Il se démarque d'une simple application de lecture en continu (streaming) dans le fait que la liste de lecture ne peut être changée que par les clients par le biais d'un système de votes positifs ou négatifs. Ceux-ci permettent à un morceau présent d'être placé plus en avant ou en arrière dans la liste de lecture. Ceci permet donc à chacun de donner son avis, tout en centralisant la lecture de la musique sur un seul ordinateur. En plus de cela, l'application met à disposition les fonctionnalités suivantes pour une expérience encore plus communautaire:
+Le but de notre programme est de proposer une application client-serveur qui permettra aux clients d'envoyer des fichiers musicaux au serveur pour que celui-ci les joue. Il se dÃ©marque d'une simple application de lecture en continu (streaming) dans le fait que la liste de lecture ne peut Ãªtre changÃ©e que par les clients par le biais d'un systÃ¨me de votes positifs ou nÃ©gatifs. Ceux-ci permettent Ã  un morceau prÃ©sent d'Ãªtre placÃ© plus en avant ou en arriÃ¨re dans la liste de lecture. Ceci permet donc Ã  chacun de donner son avis, tout en centralisant la lecture de la musique sur un seul ordinateur. En plus de cela, l'application met Ã  disposition les fonctionnalitÃ©s suivantes pour une expÃ©rience encore plus communautaire:
 
-- Vote pour passer au morceau suivant. Lorsqu'une majorité (plus de 50 pour cent) des clients ont voté pour passer au morceau suivant, la piste en cours de lecture est remplacée par le morceau qui la suit dans la liste de lecture.
-- Même principe de vote pour augmenter ou diminuer le volume.
-- Système de favoris pour permettre aux utilisateurs de sauvegarder les informations (titre, auteur, etc.) en local dans une liste de lecture spécifique.
+- Vote pour passer au morceau suivant. Lorsqu'une majoritÃ© (plus de 50 pourcent) des clients ont votÃ© pour passer au morceau suivant, la piste en Ã©coute est remplacÃ©e par le morceau qui la suit dans la liste de lecture.
+- MÃªme principe de vote pour augmenter ou diminuer le volume.
+- SystÃ¨me de favoris pour permettre aux utilisateurs de sauvegarder les informations (titre, auteur, etc.) en local dans une liste de lecture spÃ©cifique.
 
-Cette application visera principalement les soirées avec plusieurs personnes et répondra à l'éternel problème de devoir se passer une prise jack ou de devoir se battre pour pouvoir passer un morceau que l'on aime.
+Cette application visera principalement les soirÃ©es avec plusieurs personnes et rÃ©pondra Ã  l'Ã©ternel problÃ¨me de devoir se passer une prise jack ou de devoir se battre pour pouvoir passer un morceau que l'on aime.
 
 
 # Conception / Architecture
@@ -55,41 +55,41 @@ Ne pas mettre toutes les classes !
 
 
 ## Gestionnaire de configuration
-Nous avons choisi d'implémenter un gestionnaire de configuration utilisant le fichier commusica.properties pour permettre à l'utilisateur de configurer le programme. Elle donne accès aux paramètres suivants :    
+Nous avons choisi d'implÃ©menter un gestionnaire de configuration utilisant le fichier commusica.properties pour permettre Ã  l'utilisateur de configurer le programme. Il donne accÃ¨s aux paramÃ¨tres suivants :    
 
  +  SERVER_NAME : choix du nom du serveur auquel les participants pourront se connecter
- +  PLAYLIST_NAME : choix du nom de la liste de lecture pour la soirée
+ +  PLAYLIST_NAME : choix du nom de la liste de lecture pour la soirÃ©e
  +  DEBUG : permets de choisir d'afficher ou non la sortie du programme
  +  DATE_FORMAT : choix du format de la date
  +  VOLUME_STEP : choix du pas d'augmentation et abaissement de la musique
- +  TRACKS_DIRECTORY : choix du chemin relatif où les chansons seront stockées
- +  TIME_BEFORE_SESSION_INACTIVE : choix du délai d'inactivité d'une session
- +  TIME_BETWEEN_PLAYLIST_UPDATES : choix du délai de mise à jour des playlists et leurs chansons
+ +  TRACKS_DIRECTORY : choix du chemin relatif oÃ¹ les chansons seront stockÃ©es
+ +  TIME_BEFORE_SESSION_INACTIVE : choix du dÃ©lai d'inactivitÃ© d'une session
+ +  TIME_BETWEEN_PLAYLIST_UPDATES : choix du dÃ©lai de mise Ã  jour des playlists et leurs chansons
 
 
-## Package Core
-Pour garder un niveau d'abstraction le plus élevé possible, nous avons voulu faire transiter toutes les informations venant du réseau et des actions utilisateurs via l'interface graphique par un contrôleur. Le but étant d'avoir le même point d'entrée que l'on soit client ou serveur. Pour cela, il nous fallait une sorte de contrôleur central qui puisse être appelé de la même façon, peu importe le choix de l'identité client/serveur, mais en pouvant avoir des méthodes distinctes selon que l'on choisisse d'être l'un ou l'autre. Notre raisonnement nous a menés à nous tourner vers la réflectivité offerte par **Java** pour résoudre ce problème. Ce mécanisme permet d'instancier à l'exécution des méthodes en utilisant la méthode `invoke(Object obj, Object... args)` en ayant comme premier paramètre un String représentant le nom de la méthode à invoquer et en deuxième paramètre un tableau d'Object` contentant les différents arguments que la méthode invoquée pourra utiliser (voir utilisation dans notre programme plus loin **FIGURE**).  
+## Package core
+Pour garder un niveau d'abstraction le plus Ã©levÃ© possible, nous avons voulu faire transiter Ã  travers un contrÃ´leur toutes les informations venant du rÃ©seau et des utilisateurs, le but Ã©tant d'avoir le mÃªme point d'entrÃ©e que l'on soit client ou serveur. Pour cela, il nous fallait un contrÃ´leur central qui puisse Ãªtre appelÃ© de la mÃªme faÃ§on, quel que le choix de l'identitÃ© - client ou serveur. C'est alors Ã  celui-ci de vÃ©rifier l'existence d'une fonction et de communiquer l'action Ã  exÃ©cuter Ã  l'entitÃ© concernÃ©e. Notre raisonnement nous a menÃ© Ã  nous tourner vers la rÃ©flexivitÃ© offerte par **Java** pour rÃ©soudre ce problÃ¨me. Ce mÃ©canisme permet d'instancier des mÃ©thodes Ã  l'exÃ©cution en utilisant la mÃ©thode `invoke(Object obj, Object... args)` ayant comme premier paramÃ¨tre un String reprÃ©sentant le nom de la mÃ©thode Ã  invoquer et comme deuxiÃ¨me paramÃ¨tre un tableau d'`Object` contentant les diffÃ©rents arguments dont la mÃ©thode invoquÃ©e a besoin (voir utilisation dans notre programme **FIGURE**).
 
 
-Il nous fallait maintenant une classe qui puisse jouer le rôle du contrôleur. Nous avons développé les **Core** pour cela qui sont tous dans le paquet *core*.
+Il nous fallait maintenant une classe qui puisse jouer le rÃ´le du contrÃ´leur. Nous avons dÃ©veloppÃ© les **Core** pour cela qui sont tous dans le paquet *core*.
 ![Classes principales du package *core*](fr)
 
 ### Classes du package
 #### Core
-Classe statique qui joue le rôle de point d'entrée. Elle dispose d'un attribut `AbstractCore` qui sera instancié soit en `ClientCore` ou en `ServerCore`. Elle met aussi à disposition des méthodes statiques qui nous permettront de les appeler depuis les autres classes du programme.  
-Parmi ces méthodes, la plus importante est la suivante:  
+C'est une classe statique qui joue le rÃ´le de point d'entrÃ©e. Elle dispose d'un attribut `AbstractCore` qui sera instanciÃ© soit en `ClientCore` ou en `ServerCore`. Elle met aussi Ã  disposition des mÃ©thodes statiques qui nous permettront de les appeler depuis les autres classes du programme.  
+Parmi ces mÃ©thodes, la plus importante est la suivante:  
 
 ```java
 public static String execute(String command, ArrayList<Object> args)
 ```
- Cette méthode se contente d'appeler la méthode du même nom de l'instance de `AbstractCore` de la classe et sera appelée partout ou une action du Core est demandée.
-Elle contient aussi des méthodes lui permettant de se paramétrer comme client ou serveur.
+ Cette mÃ©thode se contente d'appeler la mÃ©thode du mÃªme nom de l'instance de `AbstractCore` de la classe et sera appelÃ©e partout oÃ¹ une action du Core est demandÃ©e.
+Elle contient aussi des mÃ©thodes lui permettant de se paramÃ©trer comme client ou serveur.
 
 #### ICore
-Interface qui définit le nécessaire à un core à savoir des méthodes permettant d'envoyer des messages en Unicast ou en Multicast et une méthode pour stopper le core. Toutes les classes héritant de `AbstarctCore` doivent implémenter cette interface.
+C'est un interface qui dÃ©finit ce qui est nÃ©cessaire au Core Ã  savoir des mÃ©thodes permettant d'envoyer des messages en Unicast ou en Multicast et une mÃ©thode pour stopper le Core. Toutes les classes hÃ©ritant de `AbstractCore` doivent implÃ©menter cette interface.
 
 #### AbstractCore
-Cette classe abstraite met à disposition les méthodes pour permettre à ses sous-classes de s'exécuter correctement. Contrairement à `Core` cette classe va utiliser la réflectivité dans se méthode execute() comme ceci:  
+Cette classe abstraite met Ã  disposition les mÃ©thodes permettant Ã  ses sous-classes de s'exÃ©cuter correctement. Contrairement Ã  `Core` cette classe va utiliser la rÃ©flexivitÃ© dans sa mÃ©thode execute(), comme ceci:  
 
 ```java
 public synchronized String execute(String command, ArrayList<Object> args) {
@@ -109,38 +109,37 @@ public synchronized String execute(String command, ArrayList<Object> args) {
 }
 ```
 
-On reçoit une commande et un tableau correspondant aux arguments de la méthode à invoquer. Ensuite, le programme essaie de retrouver la méthode ayant un nom correspondant à la commande envoyée si elle est disponible dans l'instance de la classe. Si c'est le cas, elle va l'invoquer et donc exécuter ladite méthode, sinon une exception est levée. C'est grâce à cette méthode que tout prend son sens, car on a maintenant une instance d'AbstractCore` qui est soit `ClientCore` ou `ServerCore` avec une seule méthode pour en appeler d'autres qui seront-elles implémentées dans les sous-classes de `AbstractCore`.
+On reÃ§oit une commande et un tableau correspondant aux arguments de la mÃ©thode Ã  invoquer. Ensuite, le programme essaie de trouver la mÃ©thode ayant un nom correspondant Ã  la commande, si elle est disponible dans l'instance de la classe. Si c'est le cas, elle va l'invoquer et donc exÃ©cuter ladite mÃ©thode, sinon une exception est levÃ©e. C'est grÃ¢ce Ã  cette mÃ©thode que tout prend son sens, car on a maintenant une instance d'`AbstractCore` qui est soit `ClientCore` soit `ServerCore` avec une seule mÃ©thode pour en appeler d'autres qui seront, elles, implÃ©mentÃ©es dans les sous-classes d' `AbstractCore`.
 
 #### ServerCore et ClientCore
-Ces deux classes héritant de `AbstractCore` implémentant `ICore` sont les parties les plus importantes du projet et c'est ici que la majorité des actions (transfert de la musique, action à effectuer lors d'un appui dur un bouton, etc.) se fera. Lors de l'envoi des commandes, ces classes fonctionnent un peu avec un système d'états qui peuvent être changés en recevant des commandes depuis le réseau ou depuis le code. Elles ont une forte interaction avec les classes s'occupant des échanges réseau puisque c'est ici que toutes les informations reçues depuis le réseau vont passer. Grâce à la réflectivité offerte par l'`AbstractCore` il est donc extrêmement facile de définir de nouvelles méthodes dans ces classes. Pour cela il faut déclarer une méthode portant le nom d'une commande (commandes qui seront toutes listées dans la classe `ApplicationProtocol`).
+Ces deux classes hÃ©ritant de `AbstractCore` et implÃ©mentant `ICore` sont les classes les plus importantes du projet. C'est ici que la majoritÃ© des actions (transfert de la musique, action Ã  effectuer lors d'un appui sur un bouton, etc.) se fera. Lors de l'envoi des commandes, ces classes fonctionnent avec un systÃ¨me d'Ã©tats dans lequel ces derniers peuvent Ãªtre changÃ©s en recevant des commandes depuis le rÃ©seau ou depuis le code. Elles ont une forte interaction avec les classes s'occupant des Ã©changes rÃ©seau puisque c'est ici que toutes les informations reÃ§ues depuis le rÃ©seau vont passer. GrÃ¢ce Ã  la rÃ©flexivitÃ© offerte par l'`AbstractCore`, il est donc extrÃªmement facile de dÃ©finir de nouvelles mÃ©thodes dans ces classes. Pour cela, il faut dÃ©clarer une mÃ©thode portant le nom d'une commande - commandes qui seront toutes listÃ©es dans la classe `ApplicationProtocol`.
 
-### Synthèse du paquet core
-Grâce à ses classes, nous avons réglé le problème de contrôleur central par lequel tout transitera. La réception des commandes à invoquer sera expliquée plus tard dans le chapitre sur le paquet `Network` et lors des explications sur la liaison entre l'interface graphique et le code.
+### SynthÃ¨se du paquet core
+GrÃ¢ce Ã  ces classes, nous avons rÃ©glÃ© le problÃ¨me de contrÃ´leur central par lequel tout transitera. La rÃ©ception des commandes Ã  invoquer sera expliquÃ©e plus tard dans le chapitre sur le paquet `Network` et lors des explications sur la liaison entre l'interface graphique et le code.
 
 
 ## Package database
-La sauvegarde et le chargement font partie des points importants de notre application, car elle a été conçue pour permettre, par exemple, à un utilisateur de sauvegarder les metadatas des chansons qui lui plaisent dans la base de données. Ce package est constitué essentiellement de la classe **DatabaseManager.java** donc le rôle est d'assurer le CRUD (Create, Read, Update, Delete) de la base des données de notre application  et d'assurer la fermeture de la connexion à celle-ci.
+La sauvegarde et le chargement font partie des points importants de notre application, car elle a Ã©tÃ© conÃ§ue pour permettre, par exemple, Ã  un utilisateur de sauvegarder les metadatas des chansons qui lui plaisent dans la base de donnÃ©es. Ce package est constituÃ© essentiellement de la classe **DatabaseManager** donc le rÃ´le est d'assurer le CRUD (Create, Read, Update, Delete) de la base de donnÃ©es de notre application et d'assurer la fermeture de la connexion Ã  celle-ci.
 
-Pour l'implémentation, nous avons choisi le framework Hibernate qui simplifie le développement de l'application Java pour interagir avec la base des données. C'est un outil open source et léger.
-Un outil ORM (Object Relational Mapping) simplifie la création, la manipulation et l'accès aux données. C'est une technique de programmation qui mappe l'objet aux données stockées dans la base des données.
+Pour l'implÃ©mentation, nous avons choisi le framework Hibernate qui simplifie le dÃ©veloppement de l'application Java pour interagir avec la base de donnÃ©es. C'est un outil open source et lÃ©ger.
+Un outil ORM (Object Relational Mapping) simplifie la crÃ©ation, la manipulation et l'accÃ¨s aux donnÃ©es. C'est une technique de programmation qui mappe l'objet aux donnÃ©es stockÃ©es dans la base de donnÃ©es.
 
 
 ## Package file
- Le package **file** a pour rôle d'assurer la gestion des fichiers en interagissant avec le système de fichiers . Il est constitué de deux classes:  **FileManager** et **FilesFormats**.
+Le package **file** a pour rÃ´le d'assurer la gestion des fichiers en interagissant avec le systÃ¨me de fichiers . Il est constituÃ© de deux classes: **FileManager** et **FilesFormats**.
 
-La performance du framework Hibernate est rapide, car le cache est utilisé en interne dans le cadre hiberné.
-Le framework Hibernate offre la possibilité de créer automatiquement les tables de la base des données. Il n'est donc pas nécessaire de les créer manuellement.
+La performance du framework Hibernate est rapide, car le cache est utilisÃ© en interne dans le cadre hibernÃ©.
+Le framework Hibernate offre la possibilitÃ© de crÃ©er automatiquement les tables de la base de donnÃ©es. Il n'est donc pas nÃ©cessaire de les crÃ©er manuellement.
 
- + **FilesFormats**: Vu que notre application supporte trois formats mp3, m4a et wav, la classe permet de définit les caractéristiques d'un fichier c'est-à-dire tous les éléments nous permettant de savoir le type du fichier.
- + **FileManager**:
-   Cette classe permet de supprimer, stocker et déterminer le type de fichier.
- Pour retrouver l'extension du fichier, nous avons procédé de telle manière :
+ + **FilesFormats**: vu que notre application supporte trois formats mp3, m4a et wav, la classe permet de dÃ©finir les caractÃ©ristiques d'un fichier, c'est-Ã -dire tous les Ã©lÃ©ments nous permettant de connaÃ®tre le type du fichier.
+ + **FileManager**: cette classe permet de supprimer, stocker et dÃ©terminer le type de fichier.
+ Pour retrouver l'extension du fichier, nous avons procÃ©dÃ© de la maniÃ¨re suivante :
 
-	+ Pour les fichiers mp3, on regarde les 3 premiers bytes depuis le début du fichier.
-	+ Pour les m4a, on regarde les premiers octets, mais en partant du quatrième octet  depuis le début du fichier
-	+  Pour les wav, à partir du huitième octet depuis le début du fichier.
+	+ Pour les fichiers mp3, nous regardons les trois premiers bytes depuis le dÃ©but du fichier.
+	+ Pour les m4a, on regarde les premiers octets, mais en partant du quatriÃ¨me octet depuis le dÃ©but du fichier
+	+  Pour les wav, Ã  partir du huitiÃ¨me octet depuis le dÃ©but du fichier.
 
-Connaitre le type de fichier nous permettra de traiter que les fichiers supportés pas notre plateforme et aussi en termes de sécurité éviter qu'un utilisateur face planter le serveur en envoyant un fichier qui n'est pas supporté par celui-ci.
+ConnaÃ®tre le type de fichier nous permettra de traiter uniquement les fichiers supportÃ©s pas notre plateforme et aussi, en termes de sÃ©curitÃ©, Ã©viter qu'un utilisateur fasse planter le serveur en envoyant un fichier qui n'est pas supportÃ© par celui-ci.
 
 
 ##  Package media
@@ -149,100 +148,99 @@ Connaitre le type de fichier nous permettra de traiter que les fichiers supporté
 
  ![](EphermeralPlaylist.png)
 
- La classe EphermeralPlaylist représente la playlist en cour de construction c'est-à-dire playlist en cour de lecture. Cela permet de mettre ajout l'interface graphique lors d'une action d'un élément du playlist. La mise à jour se faire grâce au pattern observer à travers la liste **ObservableSortedPlaylistTrackList**, qui joue en même temps le rôle d'observable et observe. Elle observe des tracks de la liste dans le but de changer l'état de la playlist en cas de vote et downvote, observable dans le cas où il envoie des notifications lors des mises à jour. Nous avons aussi dans cette classe le champ **delegate** la liste de lecture qui sera enregistrée dans la base de données pour le suivi de celle-ci.
+ La classe EphermeralPlaylist reprÃ©sente la playlist en cours de construction, c'est-Ã -dire la playlist en cours de lecture. Cela permet de mettre Ã  jour l'interface graphique lors d'une action sur un Ã©lÃ©ment de la playlist. La mise Ã  jour se fait grÃ¢ce au pattern observeur Ã  travers la liste **ObservableSortedPlaylistTrackList**, qui joue en mÃªme temps le rÃ´le d'observable et d'observeur. Elle observe des chansons de la liste dans le but de changer l'Ã©tat de la playlist en cas d'upvote ou downvote, et devient observable dans le cas oÃ¹ elle envoie des notifications lors des mises Ã  jour. Dans cette classe, nous avons aussi le champ **delegate** qui reprÃ©sente la liste de lecture qui sera enregistrÃ©e dans la base de donnÃ©es pour le suivi de celle-ci.
 
 #### Player
 
  ![](Player.png)
 
-Comme son nom l'indique, il s'agit d'une classe permettant de réaliser les action de base sur la musique(play, pause, stop, next, previous). Pour l'implémentation on avait le choix entre **Mediaplayer** et **sourceDataLine**, nous avons préféré utilise **Mediaplayer** pour des raisons suivantes:
+Comme son nom l'indique, il s'agit d'une classe permettant de rÃ©aliser les actions de base sur la musique (play, pause, stop, next, previous). Pour l'implÃ©mentation, nous avions le choix entre **Mediaplayer** et **sourceDataLine**, nous avons prÃ©fÃ©rÃ© utiliser **Mediaplayer** pour les raisons suivantes:
 
- + Facile à implémenter
- + Peut jouer plus de format que sourceDataLine par exemple mp3 n'est pas supporté par sourceDataLine.
+ + Facile Ã  implÃ©menter
+ + Accepte plus de formats que sourceDataLine. Par exemple, mp3 n'est pas supportÃ© par sourceDataLine.
 
- Le concept de JavaFX média est basé sur les entités suivantes:
+ Le concept de JavaFX media est basÃ© sur les entitÃ©s suivantes:
 
-  + **Média** media resource, contient des informations sur les médias, telles que sa source, sa résolution et ses métadonnées
-  + **MédiaPlayer** le composant clé fournissant les contrôles pour la lecture de média.
-  + MediaView permettant de supporter l'animation, la translucidité et les effets.
+  + **Media** media resource, contient des informations sur les mÃ©dias, telles que leur source, leur rÃ©solution et leurs mÃ©tadonnÃ©es
+  + **MediaPlayer** est le composant clÃ© fournissant les contrÃ´les pour la lecture de mÃ©dias.
+  + **MediaView** permettant de supporter l'animation, la transluciditÃ© et les effets.
 
-Nous avons aussi utilisé dans cette classe les JavaFX's properties dans le but de mettre à jour de maniéré automatique l'interface utilisateur lorsqu'une modification se produit.
+Nous avons aussi utilisÃ© dans cette classe les propriÃ©tÃ©s JavaFX dans le but de mettre Ã  jour de maniÃ¨re automatique l'interface utilisateur lorsqu'une modification se produit.
 
 #### SavedPlaylist
 
-Comme son l'indique elle permet juste de sauvegardé les playlist.
+********* Est-ce qu'on a vraiment besoin de dÃ©velopper cette classe? ********
+
+Comme son nom l'indique, elle permet de sauvegarder les playlists.
 
 #### Track
 
 ![](Track.png)
 
-Cettre classe réprsenté la musique, elle regroupe tous les informations concernant une musique. Nous remarquons dans cette classe que nous avons trois constructeurs.
+Cette classe reprÃ©sentÃ© une chanson, elle en regroupe toutes les informations nÃ©cessaires Ã  une identitÃ© unique. Nous remarquons, dans cette classe, que nous avons trois constructeurs :
 
-  + Le constructeur vide: toutes les classes peersistantes doivent avoir un constructeur par défaut  pour que hibernate puisse les instancier en utilisant le constructeur **Constructor.newInstance()**.
-  +  ```public Track(String id, String title, String artist, String album, Integer length, String uri)```: Qui est un constructeur normale prénant en paramètre tous les champs de la classe.
-
-  + ```public Track(AudioFile audioFile)```
-   Il permet de créer un track à partir d'un fichier audio. Il est utile lorsqu'ont souhaite transférer un fichier et souhaitez effectuer un contrôle sur un track au lieu de vérifier le fichier Audio lui même.
+  + Le constructeur vide : toutes les classes persistantes doivent avoir un constructeur par dÃ©faut pour que Hibernate puisse les instancier en utilisant le constructeur **Constructor.newInstance()**.
+  +  ```public Track(String id, String title, String artist, String album, Integer length, String uri)``` : constructeur permettant de crÃ©er une instance de **Track** lorsque tous les paramÃ¨tres sont connus.
+  + ```public Track(AudioFile audioFile)``` : constructeur permettant de crÃ©er une instance de **Track** Ã  partir d'un fichier audio. Il est utile lorsque nous souhaitons transfÃ©rer un fichier et effectuer un contrÃ´le sur une chanson au lieu de vÃ©rifier le fichier audio lui-mÃªme.
 
 
 ##  Package network
-Une autre partie importante de notre programme était la gestion du réseau entre les client et le serveur. Nous nous somme longuement penché sur la question de qui devait avoir quelles responsabilités. Notre application demande plusieurs points au niveau du réseau:
+Une autre partie importante de notre programme Ã©tait la gestion du rÃ©seau entre les client et le serveur. Nous nous sommes longuement penchÃ©s sur la question de qui devait avoir quelles responsabilitÃ©s. Notre application demande plusieurs points au niveau du rÃ©seau:
 
-+ Avoir un protocole réseau qui se base sur des commandes avec arguments.
-+ Le serveur doit pouvoir gérer plusieurs clients, mais sans devoir garder une connexion constante entre chaque client et le serveur.
-+ Les clients doivent pouvoir avoir une découverte des serveurs disponibles.
-+ Les serveur doivent pouvoir envoyer une mise à jour de leur liste de lecture actuelle à tous les clients. Ces derniers ne devront traiter que les informations qui viennent du serveur auquel ils sont connectés.
-+ Un client ne doit pas pouvoir upvoter/downvoter plusieurs fois le même morceau.
++ Avoir un protocole rÃ©seau qui se base sur des commandes avec arguments.
++ Le serveur doit pouvoir gÃ©rer plusieurs clients, mais sans devoir garder une connexion constante entre chaque client et le serveur.
++ Les clients doivent pouvoir avoir une dÃ©couverte des serveurs disponibles.
++ Les serveur doivent pouvoir envoyer une mise Ã  jour de leur liste de lecture actuelle Ã  tous les clients. Ces derniers ne devront traiter que les informations qui viennent du serveur auquel ils sont connectÃ©s.
++ Un client ne doit pas pouvoir upvoter/downvoter plusieurs fois le mÃªme morceau.
 
-Nous avons décidé de partir sur une architecture avec un thread réceptionniste `Server` au niveau du serveur qui va attendre une nouvelle connexion d'un client sur son socket et lancer un thread `UnicastClient` qui va s'occuper de la communication avec le client. Cette communication se fait via un socket unicast puisque toutes les informations mise à part la mise à jour de la playlist vont transiter du client au serveur.  
-La classe `UnicastClient` va recevoir les commandes venant du réseau et en renvoyer. Sa force est qu'elle peut être utilisée aussi bien du côté serveur que du côté client grâce à un système de lecture de flux d'entrée tant que la fin d'une commande n'est pas détectée ou que l'autre partie n'a pas fermé son socket. Le socket est fermé lorsque la commande `END_OF_COMMUNICATION` est reçue.  
-Après la réception de la ligne `END_OF_COMMAND`, la lecture du flux d'entrée est arrêtée et la commande est séparée pour en extraire la partie commande et ses différents arguments. **PAS FINI**
+Nous avons dÃ©cidÃ© d'opter pour une architecture avec un thread rÃ©ceptionniste `Server` au niveau du serveur qui va attendre une nouvelle connexion de client sur son socket et lancer un thread `UnicastClient` qui va s'occuper de la communication avec le client. Cette communication se fait via un socket unicast puisque toutes les informations, mis Ã  part la mise Ã  jour de la playlist, vont transiter du client au serveur.  
+La classe `UnicastClient` va recevoir les commandes venant du rÃ©seau et en renvoyer. Sa force rÃ©side dans le fait qu'elle peut Ãªtre utilisÃ©e aussi bien du cÃ´tÃ© serveur que du cÃ´tÃ© client grÃ¢ce Ã  un systÃ¨me de lecture de flux d'entrÃ©e, tant que la fin d'une commande n'est pas dÃ©tectÃ©e ou que l'autre partie n'a pas fermÃ© son socket. Le socket est fermÃ© lorsque la commande `END_OF_COMMUNICATION` est reÃ§ue.  
+AprÃ¨s la rÃ©ception de la ligne `END_OF_COMMAND`, la lecture du flux d'entrÃ©e est arrÃªtÃ©e et la commande est sÃ©parÃ©e pour en extraire la partie commande et ses diffÃ©rents arguments. **PAS FINI**
 
 
 ##  Package playlist
-Le package **playlist** met en ?uvre ce qui a trait à la gestion des playlists, dans notre cas :
+Le package **playlist** met en oeuvre ce qui a trait Ã  la gestion des playlists, dans notre cas :
 
   +  Le lien entre une certaine chanson et les playlists dans lesquelles elle se trouve.
-  +  La sélection d'une certaine playlist.
-  +  La gestion des upvotes et downvotes concernant les chansons contenues dans une playlist spécifique.
+  +  La sÃ©lection d'une certaine playlist.
+  +  La gestion des upvotes et downvotes concernant les chansons contenues dans une playlist spÃ©cifique.
 
 ### Classes du package
 #### PlaylistManager
-La classe **PlaylistManager** représente un gestionnaire de playlists et a plusieurs utilités :
+La classe **PlaylistManager** reprÃ©sente un gestionnaire de playlists et a plusieurs utilitÃ©s :
 
-  +  Récupérer la playlist en cours de création
-  +  Récupérer les playlists sauvegardées
-  +  Récupérer la playlist des favoris
-  +  Ajouter/supprimer des chansons à la playlist des favoris
-  +  Créer/supprimer une playlist
+  +  RÃ©cupÃ©rer la playlist en cours de crÃ©ation
+  +  RÃ©cupÃ©rer les playlists sauvegardÃ©es
+  +  RÃ©cupÃ©rer la playlist des favoris
+  +  Ajouter/supprimer des chansons Ã  la playlist des favoris
+  +  CrÃ©er/supprimer une playlist
 #### PlaylistTrack
-La classe **PlaylistTrack** permet non seulement de représenter le lien entre une chanson et une playlist, mais aussi de connaître le nombre de votes de la chanson, ce qui sera ensuite utile au niveau de la classe **VoteComparator** qui organise les chansons dans la playlist selon le nombre de votes. Cela peut être fait grâce au fait que **PlaylistTrack** met à disposition une variable **votesProperty** à laquelle un observeur a été ajouté afin que l'interface graphique se réorganise correctement.
+La classe **PlaylistTrack** permet non seulement de reprÃ©senter le lien entre une chanson et une playlist, mais aussi de connaÃ®tre le nombre de votes de la chanson, ce qui sera ensuite utile au niveau de la classe **VoteComparator** qui organise les chansons dans la playlist selon le nombre de votes. Cela peut Ãªtre fait grÃ¢ce au fait que **PlaylistTrack** met Ã  disposition une variable **votesProperty** Ã  laquelle un observeur a Ã©tÃ© ajoutÃ© afin que l'interface graphique se rÃ©organise correctement.
 #### PlaylistTrackId
-Cette classe permet de créer le lien entre une certaine playlist et une chanson. Grâce à l'implémentation d'un hashcode, on peut se servir de celui-ci afin de vérifier que la chanson reliée à la playlist n'existe pas déjà.
-
+Cette classe permet de crÃ©er le lien entre une certaine playlist et une chanson. GrÃ¢ce Ã  l'implÃ©mentation d'un hashcode, on peut se servir de celui-ci afin de vÃ©rifier que la chanson reliÃ©e Ã  la playlist n'existe pas dÃ©jÃ .
 #### VoteComparator
-Le comparateur de vote ne possède qu'une fonction. Celle-ci sert tout simplement à déterminer entre deux chansons, laquelle a le plus grand nombre de votes. Cela a été créé dans le but de réorganiser la playlist en commençant par les chansons les plus votées.
+Le comparateur de vote ne possÃ¨de qu'une fonction. Celle-ci sert tout simplement Ã  dÃ©terminer entre deux chansons, laquelle a le plus grand nombre de votes. Cela a Ã©tÃ© crÃ©Ã© dans le but de rÃ©organiser la playlist en commenÃ§ant par les chansons les plus votÃ©es.
 
 ##  Package et ressources ui
-Concernant l'interface graphique, nous avons utilisé la librairie JavaFX. Celle-ci nous a permis de faire usage de l'outil SceneBuilder afin de développer en premier lieu une maquette qui s'est ensuite développée, à travers plusieurs étapes en l'interface graphique que nous avons aujourd'hui. Le fonctionnement JavaFX demande à avoir deux notions qui communiquent entre elles: un ou plusieurs fichiers FXML qui définissent l'arrangement de la fenêtre et une ou plusieurs classes Java qui permettent de lancer la fenêtre et communiquer avec ses composants.
-Il est donc intéressant de connaître le cheminement que nous avons parcouru jusqu'au résultat actuel.
-Dans un premier temps, nous avons développé un fichier FXML grâce à SceneBuilder. Grâce à celui-ci, nous avons pu apprendre les bons usages FXML. Nous avons ensuite créé un fichier Java depuis lequel nous étions capables lancer la fenêtre au démarrage du programme. Cependant, le code se développant devenant de plus en plus important, nous avons pris la décision de diviser aussi bien les fichiers FXML que les fichiers Java en plusieurs sections permettant d'avoir un regard plus précis sur chaque partie de notre implémentation.
-Ainsi, nous avons aujourd'hui plusieurs classes Java et plusieurs fichiers FXML qui sont reliés à leur classe principale **UIController.java** respectivement **main.fxml**.
+Concernant l'interface graphique, nous avons utilisÃ© la librairie JavaFX. Celle-ci nous a permis de faire usage de l'outil SceneBuilder afin de dÃ©velopper en premier lieu une maquette qui s'est ensuite dÃ©veloppÃ©e, Ã  travers plusieurs Ã©tapes en l'interface graphique que nous avons aujourd'hui. Le fonctionnement JavaFX demande Ã  avoir deux notions qui communiquent entre elles: un ou plusieurs fichiers FXML qui dÃ©finissent l'arrangement de la fenÃªtre et une ou plusieurs classes Java qui permettent de lancer la fenÃªtre et communiquer avec ses composants.
+Il est donc intÃ©ressant de connaÃ®tre le cheminement que nous avons parcouru jusqu'au rÃ©sultat actuel.
+Dans un premier temps, nous avons dÃ©veloppÃ© un fichier FXML grÃ¢ce Ã  SceneBuilder. GrÃ¢ce Ã  celui-ci, nous avons pu apprendre les bons usages FXML. Nous avons ensuite crÃ©Ã© un fichier Java depuis lequel nous Ã©tions capables lancer la fenÃªtre au dÃ©marrage du programme. Cependant, le code se dÃ©veloppant devenant de plus en plus important, nous avons pris la dÃ©cision de diviser aussi bien les fichiers FXML que les fichiers Java en plusieurs sections permettant d'avoir un regard plus prÃ©cis sur chaque partie de notre implÃ©mentation.
+Ainsi, nous avons aujourd'hui plusieurs classes Java et plusieurs fichiers FXML qui sont reliÃ©s Ã  leur classe principale **UIController.java** respectivement **main.fxml**.
 ### Classes du package
-La description des classes se fera selon l'ordre des vues dans l'interface graphique, en partant de la vue en haut à gauche pour finir par la vue en bas au centre. Nous allons tout d'abord commencer par la classe principale.
+La description des classes se fera selon l'ordre des vues dans l'interface graphique, en partant de la vue en haut Ã  gauche pour finir par la vue en bas au centre. Nous allons tout d'abord commencer par la classe principale.
 #### UIController
-**UIController** est la classe qui permet de lier le reste des classes entre elles. Lorsque le programme est lancé, c'est cette classe qui est lancée. Elle va en premier lieu faire apparaître une fenêtre demandant à l'utilisateur si celui-ci veut être le serveur. Son lancement a lieu dans la fonction **initialize()**. Au moment du choix de l'utilisateur, l'interface annonce au Core quelle configuration a été choisie et la fenêtre principale du programme peut être lancée.
-La classe **UIController** permet également de fermer la fenêtre proprement lorsque l'utilisateur décidera d'arrêter le programme.
+**UIController** est la classe qui permet de lier le reste des classes entre elles. Lorsque le programme est lancÃ©, c'est cette classe qui est lancÃ©e. Elle va en premier lieu faire apparaÃ®tre une fenÃªtre demandant Ã  l'utilisateur si celui-ci veut Ãªtre le serveur. Son lancement a lieu dans la fonction **initialize()**. Au moment du choix de l'utilisateur, l'interface annonce au Core quelle configuration a Ã©tÃ© choisie et la fenÃªtre principale du programme peut Ãªtre lancÃ©e.
+La classe **UIController** permet Ã©galement de fermer la fenÃªtre proprement lorsque l'utilisateur dÃ©cidera d'arrÃªter le programme.
 #### PlaylistsListView
-*En haut à gauche*
+*En haut Ã  gauche*
 #### TrackListView
 *En haut au centre*
 ##### PlaylistTrackCell
 *Dans TrackListView*
 #### SettingsView
-*En haut à droite*
+*En haut Ã  droite*
 #### PreviousTrackView
-*En bas à gauche*
+*En bas Ã  gauche*
 #### PlayerControlsView
 *En bas au milieu*
 #### CurrentTrackView
@@ -251,34 +249,34 @@ La classe **UIController** permet également de fermer la fenêtre proprement lors
 
 
 ##  Package utils
-Le package **utils** réunit tous les utilitaires dont nous avons eu besoin au sein de plusieurs classes et dont l'implémentation n'avait aucun sens au sein desdites classes. L'utilité de chaque classe diffère alors énormément.
+Le package **utils** rÃ©unit tous les utilitaires dont nous avons eu besoin au sein de plusieurs classes et dont l'implÃ©mentation n'avait aucun sens au sein desdites classes. L'utilitÃ© de chaque classe diffÃ¨re alors Ã©normÃ©ment.
 ### Classes du package
 #### Configuration
-Cette classe permet la récupération des configurations de base du programme. Elle fixe le fichier de configuration que nous avons introduit précédemment, au chapitre **Gestionnaire de configuration** et en tire des informations.
+Cette classe permet la rÃ©cupÃ©ration des configurations de base du programme. Elle fixe le fichier de configuration que nous avons introduit prÃ©cÃ©demment, au chapitre **Gestionnaire de configuration** et en tire des informations.
 #### EphemeralPlaylistSerializer
-Cette classe permet de sérialiser et désérialiser une playlist en JSON. L'utilité de cette classe réside alors principalement dans la communication réseau.
+Cette classe permet de sÃ©rialiser et dÃ©sÃ©rialiser une playlist en JSON. L'utilitÃ© de cette classe rÃ©side alors principalement dans la communication rÃ©seau.
 #### Logger
-Cette classe a été créée uniquement pour assouvir le besoin d'un débogueur indiquant dans quelle classe a lieu une action. Des couleurs ont été attribuées aux différentes notifications.
+Cette classe a Ã©tÃ© crÃ©Ã©e uniquement pour assouvir le besoin d'un dÃ©bogueur indiquant dans quelle classe a lieu une action. Des couleurs ont Ã©tÃ© attribuÃ©es aux diffÃ©rentes notifications.
 
   +  Bleu pour les informations
   +  Rouge pour les erreurs
-  +  Vert pour les succès
+  +  Vert pour les succÃ¨s
   +  Jaune pour les avertissements
-L'affichage des logs peut tout à fait être désactivé au niveau du fichier de configuration **commusica.properties** en réglant la valeur de **DEBUG** à 0.
+L'affichage des logs peut tout Ã  fait Ãªtre dÃ©sactivÃ© au niveau du fichier de configuration **commusica.properties** en rÃ©glant la valeur de **DEBUG** Ã  0.
 #### Network
-Cette classe permet de récupérer toutes les informations basiques de la machine concernant le réseau. Elle va en outre permettre de récupérer les interfaces disponibles nécessaires à la connexion à un certain serveur et de configurer le réseau pour le reste de l'application.
+Cette classe permet de rÃ©cupÃ©rer toutes les informations basiques de la machine concernant le rÃ©seau. Elle va en outre permettre de rÃ©cupÃ©rer les interfaces disponibles nÃ©cessaires Ã  la connexion Ã  un certain serveur et de configurer le rÃ©seau pour le reste de l'application.
 #### ObservableSortedPlaylistTracklist
-Cette classe permet de récupérer les informations nécessaires à l'affichage des chansons dans la playlist en écoute. Cet utilitaire a été créé afin de pouvoir faciliter la récupération d'informations depuis les classes mettant en oeuvre l'interface graphique.
+Cette classe permet de rÃ©cupÃ©rer les informations nÃ©cessaires Ã  l'affichage des chansons dans la playlist en Ã©coute. Cet utilitaire a Ã©tÃ© crÃ©Ã© afin de pouvoir faciliter la rÃ©cupÃ©ration d'informations depuis les classes mettant en oeuvre l'interface graphique.
 #### Serialize
-Grâce à la librairie Gson de Google, cette classe est utilisée dans la sérialisation et désérialisation d'objets.
+GrÃ¢ce Ã  la librairie Gson de Google, cette classe est utilisÃ©e dans la sÃ©rialisation et dÃ©sÃ©rialisation d'objets.
 
 ## Parties manquantes par rapport au cahier des charges
 
-## Tests réalisés
+## Tests rÃ©alisÃ©s
 
-## Problèmes subsistants
+## ProblÃ¨mes subsistants
 
-## Améliorations futures
+## AmÃ©liorations futures
 
 ## Planification / organisation
 
@@ -304,4 +302,4 @@ https://vladmihalcea.com/2016/08/01/the-best-way-to-map-a-composite-primary-key-
 # Annexes
 ## Cahier des charges
 ## Journal de travail
-## Panification initiale et son évolution
+## Panification initiale et son Ã©volution
