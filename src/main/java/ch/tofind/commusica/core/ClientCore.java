@@ -278,43 +278,53 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Method invoked when the server sends the PLAY command.
+     * @brief Method invoked when the server sends the PLAY command by multicast.
      * It updates the UI to reflect the current player status.
      *
      * @param args Args of the command.
      *
-     * @return END_OF_COMMUNICATION command
+     * @return An empty String.
      */
     public String PLAY(ArrayList<Object> args) {
 
         LOG.info("Player plays.");
 
-        Platform.runLater(() -> Player.getCurrentPlayer().getIsPlayingProperty().setValue(true));
+        // Retrieve the server id
+        Integer serverId = Integer.valueOf((String) args.remove(0));
 
-        String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
-                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
-                NetworkProtocol.END_OF_COMMAND;
-        return result;
+        // Test if it is our current server sending the information
+        if (Objects.equals(serverId, ApplicationProtocol.serverId)) {
+
+            Platform.runLater(() -> Player.getCurrentPlayer().getIsPlayingProperty().setValue(true));
+
+        }
+
+        return "";
     }
 
     /**
-     * @brief Method invoked when the server sends the PAUSE command.
+     * @brief Method invoked when the server sends the PAUSE command by multicast.
      * It updates the UI to reflect the current player status.
      *
      * @param args Args of the command.
      *
-     * @return END_OF_COMMUNICATION command
+     * @return An empty String.
      */
     public String PAUSE(ArrayList<Object> args) {
 
         LOG.info("Player stops.");
 
-        Platform.runLater(() -> Player.getCurrentPlayer().getIsPlayingProperty().setValue(false));
+        // Retrieve the server id
+        Integer serverId = Integer.valueOf((String) args.remove(0));
 
-        String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
-                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
-                NetworkProtocol.END_OF_COMMAND;
-        return result;
+        // Test if it is our current server sending the information
+        if (Objects.equals(serverId, ApplicationProtocol.serverId)) {
+
+            Platform.runLater(() -> Player.getCurrentPlayer().getIsPlayingProperty().setValue(false));
+
+        }
+
+        return "";
     }
 
     /**
