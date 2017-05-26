@@ -271,10 +271,24 @@ Ainsi, nous avons aujourd'hui plusieurs classes Java et plusieurs fichiers FXML 
 ### Classes du package
 La description des classes se fera selon l'ordre des vues dans l'interface graphique, en partant de la vue en haut à gauche pour finir par la vue en bas au centre. Nous allons tout d'abord commencer par la classe principale.
 #### UIController
-`UIController` est la classe qui permet de lier le reste des classes entre elles. Lorsque le programme est lancé, c'est cette classe qui est lancée. Elle va en premier lieu faire apparaître une fenêtre demandant à l'utilisateur si celui-ci veut être le serveur. Son lancement a lieu dans la fonction `initialize()`. Au moment du choix de l'utilisateur, l'interface annonce au Core quelle configuration a été choisie et la fenêtre principale du programme peut être lancée.
-La classe `UIController` permet également de fermer la fenêtre proprement lorsque l'utilisateur décidera d'arrêter le programme.
+`UIController` est la classe qui permet de lier le reste des classes entre elles. Lorsque le programme est lancé, c'est cette classe qui est lancée. Elle va en premier lieu faire apparaître une fenêtre demandant à l'utilisateur si celui-ci veut être le serveur. Son lancement a lieu dans la fonction `initialize()`. Au moment du choix de l'utilisateur, l'interface annonce au Core quelle configuration a été choisie et la fenêtre principale du programme peut être lancée. La partie en haut à gauche contenant les playlists est directement mise à jour et la playlist sélectionnée par défaut est celle en cours de construction.
+Mis à part la configuration initiale de la fenêtre, `UIController` permet aussi toutes les actions basiques de l'interface graphique : 
+
++  Afficher des alertes
++  Obtenir la playlist actuellement visualisée
++  Mettre à jour et afficher les playlists
++  Fermer la fenêtre proprement lorsque l'utilisateur décide d'arrêter le programme
+`UIController` va tout simplement faire appel aux différentes classes du package `ui` afin de s'informer de l'état de chaque partie composant l'UI lors d'une demande depuis l'extérieur.
 #### PlaylistsListView
-*En haut à gauche*
+`PlaylistsListView` concerne la vue en haut à gauche affichant les playlists disponibles :
+
+  +  **PLAYING** : la playlist en cours de création
+  +  **FAVORITES** : la playlist des favoris
+  +  **SAVED** : la liste des playlists sauvegardées d'anciens événements
+Comme spécifié au chapitre précédent, la liste sélectionnée par défaut est la liste en cours de création.
+Dans la classe `PlaylistsListView`, nous faisons usage d'une méthode de la classe `FXCollections` permettant d'attacher un observeur à n'importe quel objet du programme. Ainsi, nous pouvons facilement modifier l'affichage des playlists au fur et à mesure des actions faites au niveau du serveur ou du client.
+
+
 #### TrackListView
 *En haut au centre*
 ##### PlaylistTrackCell
@@ -305,12 +319,14 @@ Cette classe a été créée uniquement pour assouvir le besoin d'un débogueur 
   +  Vert pour les succès
   +  Jaune pour les avertissements
 L'affichage des logs peut tout à fait être désactivé au niveau du fichier de configuration `commusica.properties` en réglant la valeur de `DEBUG` à 0.
+
 #### Network
 Cette classe permet de récupérer toutes les informations basiques de la machine concernant le réseau. Elle va en outre permettre de récupérer les interfaces disponibles nécessaires à la connexion à un certain serveur et de configurer le réseau pour le reste de l'application.
 #### ObservableSortedPlaylistTracklist
 Cette classe permet de récupérer les informations nécessaires à l'affichage des chansons dans la playlist en écoute. Cet utilitaire a été créé afin de pouvoir faciliter la récupération d'informations depuis les classes mettant en oeuvre l'interface graphique.
 #### Serialize
 Grâce à la librairie Gson de Google, cette classe est utilisée dans la sérialisation et désérialisation d'objets.
+#### Session Ce package permet de gérer les sessions des utilisateurs. Avant tous nous allons monter l'importance de la session pour une communication client-serveur. La session permet aux serveurs de mémorise des informations relatives au client, d'une requête à l'autre. Le contenu d'une session est conservé jusqu'à ce que l'utilisateur ferme sa connexion, reste inactif trop longtemps. ##### ServerSessionCette classe permet de gérer la session d'un serveur. Le champs privé update permet de définir le temps que la session reste toujours valable.#####  ServerSessionManager Cette classe comme son nom l'indique permet de gérer les différentes sessions des serveurs. Il constitué : + D’une MAP permettant de stocké les sessions des différents serveurs.+ ScheduledExecutorService permettant de nettoyer les anciennes sessions des différentes anciennes sessions. Il faut noter ici que ScheduledExecutorService est un service qui peut planifier des tâches à exécuter après un délai ou à éxecuté à plusieurs reprises avec un intervalle de temps fixe entre chaque exécution de manière asynchrone par un thread de travail, et non par le thread passant la tâche à ScheduledExecutorService. Nous utilisons dans notre cas pour supprimer tous les sessions donc le délai a expiré.  ##### UserSessionCette classe permet de gérer la session d'un utilisateur. Le champs privé update permet de définir le temps que la session reste toujours valable.##### UserSessionManager  Cette classe comme son nom l'indique permet de gérer les différentes sessions des utilisateurs. 
 
 ## Tests réalisés
 
