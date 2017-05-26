@@ -32,13 +32,21 @@ public class EphemeralPlaylistSerializer implements JsonSerializer<EphemeralPlay
         if (playing != null) {
             playingTrackId = playing.getAsJsonPrimitive("id").getAsString();
             playingTrackTime = playing.getAsJsonPrimitive("time").getAsInt();
+
+            Double volume = playing.getAsJsonPrimitive("volume").getAsDouble();
+            Player.getCurrentPlayer().getVolumeProperty().setValue(volume);
+
+            boolean isPlaying = playing.getAsJsonPrimitive("playing").getAsBoolean();
+            Player.getCurrentPlayer().getIsPlayingProperty().setValue(isPlaying);
         }
         else {
             if (Player.getCurrentPlayer().getCurrentTrackProperty().getValue() != null) {
                 Player.getCurrentPlayer().getPreviousTrackProperty().setValue(Player.getCurrentPlayer().getCurrentTrackProperty().getValue());
             }
+            
             Player.getCurrentPlayer().getCurrentTrackProperty().setValue(null);
             Player.getCurrentPlayer().getCurrentTimeProperty().setValue(0);
+            Player.getCurrentPlayer().getIsPlayingProperty().setValue(false);
         }
 
         JsonArray tracks = json.getAsJsonObject().getAsJsonArray("tracks");
@@ -126,8 +134,12 @@ public class EphemeralPlaylistSerializer implements JsonSerializer<EphemeralPlay
 
         if (playingTrack != null) {
             JsonObject playing = new JsonObject();
+
             playing.addProperty("id", playingTrack.getId());
             playing.addProperty("time", Player.getCurrentPlayer().getCurrentTimeProperty().getValue());
+            playing.addProperty("playing", Player.getCurrentPlayer().getIsPlayingProperty().getValue());
+            playing.addProperty("volume", Player.getCurrentPlayer().getVolumeProperty().doubleValue());
+
             root.add("playing", playing);
         }
 
