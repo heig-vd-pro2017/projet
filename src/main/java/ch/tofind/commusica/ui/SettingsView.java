@@ -2,13 +2,11 @@ package ch.tofind.commusica.ui;
 
 import ch.tofind.commusica.core.ApplicationProtocol;
 import ch.tofind.commusica.core.Core;
-import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.session.ServerSession;
 import ch.tofind.commusica.session.ServerSessionManager;
 
 import java.io.IOException;
 
-import ch.tofind.commusica.utils.Configuration;
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
@@ -65,12 +63,9 @@ public class SettingsView extends AnchorPane {
     private void initializeServersNameField() {
         serverNameField.setVisible(Core.isServer());
 
-        serverNameField.setText(Configuration.getInstance().get("SERVER_NAME"));
-
-        serverNameField.textProperty().addListener((obs, oldValue, newValue) -> {
-            ApplicationProtocol.serverName = newValue;
-            PlaylistManager.getInstance().getPlaylist().setName(newValue);
-        });
+        serverNameField.setText(ApplicationProtocol.serverName);
+        serverNameField.setEditable(false);
+        serverNameField.setDisable(true);
     }
 
     private void initializeServersList() {
