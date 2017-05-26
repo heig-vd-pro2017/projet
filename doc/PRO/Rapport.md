@@ -237,7 +237,7 @@ Une autre partie importante de notre programme était la gestion du réseau entr
 
 Nous avons décidé d'opter pour une architecture avec un thread réceptionniste `Server` au niveau du serveur qui va attendre une nouvelle connexion de client sur son socket et lancer un thread `UnicastClient` qui va s'occuper de la communication avec le client. Cette communication se fait via un socket unicast puisque toutes les informations, mis à part la mise à jour de la playlist, vont transiter du client au serveur.  
 La classe `UnicastClient` va recevoir les commandes venant du réseau et en renvoyer. Sa force réside dans le fait qu'elle peut être utilisée aussi bien du côté serveur que du côté client grâce à un système de lecture de flux d'entrée, tant que la fin d'une commande n'est pas détectée ou que l'autre partie n'a pas fermé son socket. Le socket est fermé lorsque la commande `END_OF_COMMUNICATION` est reçue.  
-Après la réception de la ligne `END_OF_COMMAND`, la lecture du flux d'entrée est arrêtée et la commande est séparée pour en extraire la partie commande et ses différents arguments. **PAS FINI**
+Après la réception de la ligne `END_OF_COMMAND`, la lecture du flux d'entrée est arrêtée et la commande est séparée pour en extraire la partie commande et ses différents arguments.
 
 
 ##  Package playlist
@@ -263,7 +263,7 @@ Cette classe permet de créer le lien entre une certaine playlist et une chanson
 #### VoteComparator
 Le comparateur de vote ne possède qu'une fonction. Celle-ci sert tout simplement à déterminer entre deux chansons, laquelle a le plus grand nombre de votes. Cela a été créé dans le but de réorganiser la playlist en commençant par les chansons les plus votées.
 
-##  Package et ressources ui
+##  Package et ressources UI
 Concernant l'interface graphique, nous avons utilisé la librairie JavaFX. Celle-ci nous a permis de faire usage de l'outil SceneBuilder afin de développer en premier lieu une maquette qui s'est ensuite développée, à travers plusieurs étapes en l'interface graphique que nous avons aujourd'hui. Le fonctionnement JavaFX demande à avoir deux notions qui communiquent entre elles: un ou plusieurs fichiers FXML qui définissent l'arrangement de la fenêtre et une ou plusieurs classes Java qui permettent de lancer la fenêtre et communiquer avec ses composants.
 Il est donc intéressant de connaître le cheminement que nous avons parcouru jusqu'au résultat actuel.
 Dans un premier temps, nous avons développé un fichier FXML grâce à SceneBuilder. Grâce à celui-ci, nous avons pu apprendre les bons usages FXML. Nous avons ensuite créé un fichier Java depuis lequel nous étions capables lancer la fenêtre au démarrage du programme. Cependant, le code se développant devenant de plus en plus important, nous avons pris la décision de diviser aussi bien les fichiers FXML que les fichiers Java en plusieurs sections permettant d'avoir un regard plus précis sur chaque partie de notre implémentation.
@@ -272,7 +272,7 @@ Ainsi, nous avons aujourd'hui plusieurs classes Java et plusieurs fichiers FXML 
 La description des classes se fera selon l'ordre des vues dans l'interface graphique, en partant de la vue en haut à gauche pour finir par la vue en bas au centre. Nous allons tout d'abord commencer par la classe principale.
 #### UIController
 `UIController` est la classe qui permet de lier le reste des classes entre elles. Lorsque le programme est lancé, c'est cette classe qui est lancée. Elle va en premier lieu faire apparaître une fenêtre demandant à l'utilisateur si celui-ci veut être le serveur. Son lancement a lieu dans la fonction `initialize()`. Au moment du choix de l'utilisateur, l'interface annonce au Core quelle configuration a été choisie et la fenêtre principale du programme peut être lancée. La partie en haut à gauche contenant les playlists est directement mise à jour et la playlist sélectionnée par défaut est celle en cours de construction.
-Mis à part la configuration initiale de la fenêtre, `UIController` permet aussi toutes les actions basiques de l'interface graphique : 
+Mis à part la configuration initiale de la fenêtre, `UIController` permet aussi toutes les actions basiques de l'interface graphique :
 
 +  Afficher des alertes
 +  Obtenir la playlist actuellement visualisée

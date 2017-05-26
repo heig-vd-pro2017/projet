@@ -1,0 +1,15 @@
+@startuml
+start
+
+repeat
+
+:Lecture d'une ligne;
+
+repeat while (END_OF_COMMAND ou\nsocket fermé)
+
+:This is on defined on
+several **lines**;
+
+
+stop
+@enduml
