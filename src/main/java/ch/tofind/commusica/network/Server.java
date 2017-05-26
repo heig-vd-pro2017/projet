@@ -64,7 +64,7 @@ public class Server implements Runnable {
             LOG.error(e);
         } finally {
             if (!threadPool.isTerminated()) {
-                LOG.error("The thread pool can't be stopped !");
+                LOG.error("Forcing shutdown of the thread pool.");
             }
             threadPool.shutdownNow();
         }

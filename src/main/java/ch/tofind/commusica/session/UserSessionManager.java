@@ -323,7 +323,7 @@ public class UserSessionManager implements ISessionManager {
 
             UserSession userSession = entry.getValue();
 
-            if (userSession.getLastUpdate().getTime() > now.getTime() - TIME_BEFORE_SESSION_INACTIVE) {
+            if (userSession.getLastUpdate().getTime() < now.getTime() - TIME_BEFORE_SESSION_INACTIVE) {
 
                 LOG.info("Removing old user session.");
 
