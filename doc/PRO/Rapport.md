@@ -1,25 +1,4 @@
 ---
-title: Commusica
-
-subtitle: Tests
-
-author:
-- name: Ludovic Delafontaine
-  book: TEST
-- name: Lucas Elisei
-  book: TEST
-- name: David Truan
-  book: TEST
-- name: Denise Gemesio
-  book: TEST
-- name: Thibaut Togue
-  book: TEST
-- name: Yosra Harbaoui
-  book: TEST
-
-date: HEIG-VD 2017 - PRO
-
-
 lang: fr
 
 numbersections: true
@@ -32,6 +11,8 @@ header-includes:
     - \usepackage{fancyhdr}
     - \usepackage[T1]{fontenc}
     - \usepackage{xcolor}
+    - \usepackage{graphicx}
+    - \usepackage{tikz}
 
     # Some beautiful colors.
     - \definecolor{pblue}{rgb}{0.13, 0.13, 1.0}
@@ -75,6 +56,42 @@ header-includes:
     - \AfterEndEnvironment{lstlisting}{\end{minipage}}
 
 ---
+\makeatletter
+\renewcommand{\@maketitle}{%
+\newpage
+\null
+\vfil
+\begingroup
+\let\footnote\thanks
+\begin{center}
+{\LARGE\@title}\vskip1.5em
+\includegraphics[width=10cm, height=10cm]{logo.png}\vskip1.5em
+{\LARGE Rapport final}\vskip1.5em
+{\large\@author}\vskip1.5em
+{\large\@date}
+\end{center}
+\endgroup
+\vfil
+}
+\makeatother
+
+\title{Commusica\\Le lecteur de musique communautaire et égalitaire}
+
+\author{Chef de projet: Ludovic Delafontaine\\
+   Chef adjoint: Lucas Elisei\\
+   Membres: David Truan, Denise Gemesio, Thibaut Togue, Yosra Harbaoui\\
+   Responsable du cours: René Rentsch}
+
+\date{HEIG-VD - Semestre d'été 2017}
+
+\maketitle
+
+\begin{tikzpicture}[remember picture,overlay]
+   \node[anchor=north east,inner sep=0.25cm] at (current page.north east)
+              {\includegraphics[scale=0.3]{heig-vd.png}};
+\end{tikzpicture}
+
+\newpage
 
 \newpage
 
