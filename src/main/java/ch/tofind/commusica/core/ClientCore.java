@@ -78,7 +78,7 @@ public class ClientCore extends AbstractCore implements ICore {
      * @return An empty String.
      */
     public String END_OF_COMMUNICATION(ArrayList<Object> args) {
-        System.out.println("End of communication client side.");
+        LOG.info("End of communication client side.");
         return "";
     }
 

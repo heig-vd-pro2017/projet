@@ -87,7 +87,7 @@ public class ServerCore extends AbstractCore implements ICore {
      * @return The result of the command.
      */
     public String END_OF_COMMUNICATION(ArrayList<Object> args) {
-        System.out.println("End of communication - server side.");
+        LOG.info("End of communication - server side.");
         return "";
     }
 
@@ -319,8 +319,9 @@ public class ServerCore extends AbstractCore implements ICore {
         Query trackById = session.createQuery("FROM Track WHERE id = :id");
         trackById.setParameter("id", trackToReceive.getId());
 
-        Track trackToSave = null;
+        Track trackToSave;
 
+        // Check if track in database to modify it or create a new one.
         try {
 
             trackToSave = (Track) trackById.getSingleResult();
