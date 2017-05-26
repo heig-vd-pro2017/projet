@@ -1,5 +1,6 @@
 package ch.tofind.commusica.playlist;
 
+import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.media.SavedPlaylist;
 import ch.tofind.commusica.media.Track;
 
@@ -8,6 +9,8 @@ import java.util.Objects;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ReadOnlyBooleanProperty;
+import javafx.beans.property.ReadOnlyBooleanWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -20,7 +23,7 @@ public class PlaylistTrack implements Serializable {
     private PlaylistTrackId id;
 
     //! Know if the track has been played or not.
-    private BooleanProperty beenPlayedProperty;
+    private ReadOnlyBooleanWrapper hasBeenPlayed;
 
     /**
      * Number of votes for the track.
@@ -35,7 +38,7 @@ public class PlaylistTrack implements Serializable {
      * @brief Empty constructor for Hibernate.
      */
     private PlaylistTrack() {
-
+        hasBeenPlayed = new ReadOnlyBooleanWrapper(false);
     }
 
     /**
@@ -45,8 +48,9 @@ public class PlaylistTrack implements Serializable {
      * @param track The track.
      */
     public PlaylistTrack(SavedPlaylist playlist, Track track) {
+        this();
+
         this.id = new PlaylistTrackId(playlist, track);
-        this.beenPlayedProperty = new SimpleBooleanProperty(false);
         this.votes = 0;
         this.votesProperty = new SimpleIntegerProperty(this.votes);
 
@@ -60,8 +64,8 @@ public class PlaylistTrack implements Serializable {
      *
      * @return A BooleanProperty telling if the PlaylistTrack has been played or not.
      */
-    public BooleanProperty getBeenPlayedProperty() {
-        return beenPlayedProperty;
+    public ReadOnlyBooleanProperty hasBeenPlayed() {
+        return hasBeenPlayed.getReadOnlyProperty();
     }
 
     /**
@@ -104,7 +108,7 @@ public class PlaylistTrack implements Serializable {
      * @brief Upvote the current PlaylistTrack.
      */
     public void upvote() {
-        if (!beenPlayedProperty.getValue()) {
+        if (!hasBeenPlayed.getValue()) {
             votesProperty.setValue(votesProperty.intValue() + 1);
         }
     }
@@ -113,7 +117,7 @@ public class PlaylistTrack implements Serializable {
      * @brief Downvote the current PlaylistTrack.
      */
     public void downvote() {
-        if (!beenPlayedProperty.getValue()) {
+        if (!hasBeenPlayed.getValue()) {
             votesProperty.setValue(votesProperty.intValue() - 1);
         }
     }
@@ -122,7 +126,13 @@ public class PlaylistTrack implements Serializable {
      * @brief Update the PlaylistTrack.
      */
     public void update() {
-        beenPlayedProperty.setValue(true);
+        // Sanity check.
+        if (!hasBeenPlayed.getValue()) {
+            getTrack().update();
+            DatabaseManager.getInstance().save(getTrack());
+
+            hasBeenPlayed.setValue(true);
+        }
     }
 
     @Override

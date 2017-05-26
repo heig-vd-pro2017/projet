@@ -9,9 +9,7 @@ import ch.tofind.commusica.playlist.PlaylistTrack;
 import com.google.gson.*;
 
 import java.lang.reflect.Type;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 /**
  * @brief This class is used to tell the step to un/serialize an ephemeral playlist from/to JSON.
@@ -27,8 +25,21 @@ public class EphemeralPlaylistSerializer implements JsonSerializer<EphemeralPlay
 
         PlaylistManager.getInstance().getPlaylist().setName(name);
 
-        // To know if a playlist has been played entirely or not.
-        boolean playFinished = true;
+        String playingTrackId = null;
+        Integer playingTrackTime = null;
+
+        JsonObject playing = json.getAsJsonObject().getAsJsonObject("playing");
+        if (playing != null) {
+            playingTrackId = playing.getAsJsonPrimitive("id").getAsString();
+            playingTrackTime = playing.getAsJsonPrimitive("time").getAsInt();
+        }
+        else {
+            if (Player.getCurrentPlayer().getCurrentTrackProperty().getValue() != null) {
+                Player.getCurrentPlayer().getPreviousTrackProperty().setValue(Player.getCurrentPlayer().getCurrentTrackProperty().getValue());
+            }
+            Player.getCurrentPlayer().getCurrentTrackProperty().setValue(null);
+            Player.getCurrentPlayer().getCurrentTimeProperty().setValue(0);
+        }
 
         JsonArray tracks = json.getAsJsonObject().getAsJsonArray("tracks");
         if (tracks != null) {
@@ -45,7 +56,7 @@ public class EphemeralPlaylistSerializer implements JsonSerializer<EphemeralPlay
 
                 Integer votes = jsonPlaylistTrack.get("votes").getAsInt();
 
-                boolean isPlaying = jsonPlaylistTrack.get("isPlaying").getAsBoolean();
+                boolean beenPlayed = jsonPlaylistTrack.get("beenPlayed").getAsBoolean();
 
                 Track track = new Track(id, title, artist, album, length, null);
 
@@ -63,23 +74,24 @@ public class EphemeralPlaylistSerializer implements JsonSerializer<EphemeralPlay
                     playlistTrack.getVotesProperty().setValue(votes);
                 }
 
-                if (isPlaying) {
-                    playFinished = false;
+                // If 'beenPlayed' field has not been updated.
+                if (beenPlayed && !playlistTrack.hasBeenPlayed().getValue()) {
+                    playlistTrack.update();
+                }
 
+                if (id.equals(playingTrackId)) {
                     PlaylistTrack playingTrack = Player.getCurrentPlayer().getCurrentTrackProperty().getValue();
 
                     if (playingTrack != playlistTrack) {
                         Player.getCurrentPlayer().getPreviousTrackProperty().setValue(playingTrack);
                     }
+                    else {
+                        Player.getCurrentPlayer().getCurrentTimeProperty().setValue(playingTrackTime);
+                    }
 
                     Player.getCurrentPlayer().getCurrentTrackProperty().setValue(playlistTrack);
                 }
             }
-        }
-
-        if (playFinished && Player.getCurrentPlayer().getCurrentTrackProperty().getValue() != null) {
-            Player.getCurrentPlayer().getPreviousTrackProperty().setValue(Player.getCurrentPlayer().getCurrentTrackProperty().getValue());
-            Player.getCurrentPlayer().getCurrentTrackProperty().setValue(null);
         }
 
         return PlaylistManager.getInstance().getPlaylist();
@@ -106,12 +118,18 @@ public class EphemeralPlaylistSerializer implements JsonSerializer<EphemeralPlay
             playlistTrack.addProperty("length", item.getTrack().getLength());
 
             playlistTrack.addProperty("votes", item.getVotesProperty().getValue());
-
-            playlistTrack.addProperty("isPlaying", playingTrack == item.getTrack());
+            playlistTrack.addProperty("beenPlayed", item.hasBeenPlayed().getValue());
 
             tracks.add(playlistTrack);
         });
         root.add("tracks", tracks);
+
+        if (playingTrack != null) {
+            JsonObject playing = new JsonObject();
+            playing.addProperty("id", playingTrack.getId());
+            playing.addProperty("time", Player.getCurrentPlayer().getCurrentTimeProperty().getValue());
+            root.add("playing", playing);
+        }
 
         return root;
     }

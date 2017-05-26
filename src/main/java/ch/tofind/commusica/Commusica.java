@@ -14,5 +14,7 @@ public class Commusica {
         LOG.info("Starting application...");
 
         UIController.launch(UIController.class);
+
+        System.exit(0);
     }
 }

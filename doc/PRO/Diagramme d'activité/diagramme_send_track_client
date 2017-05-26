@@ -1,0 +1,17 @@
+@startuml
+start
+
+- Client demande au serveur si le \n  track qui veut envoiyé est valide.
+
+    if (le track est accepté par le serveur?) then (oui)
+
+         if(extension est ok?) then(oui)
+              - sérialisation de l'objet en JSON \n pour l'envoi sur le réseau
+              - envoi track serialisé
+        else(nom)
+          - echec d'envoi
+      endif
+      else(nom)
+        endif
+stop
+@enduml

@@ -63,7 +63,10 @@ public class ObservableSortedPlaylistTrackList extends ObservableListBase<Playli
             return null;
         }
 
-        return get(count++);
+        PlaylistTrack nextTrack = get(count++);
+        nextTrack.update();
+
+        return nextTrack;
     }
 
     public void remove(PlaylistTrack track) {
