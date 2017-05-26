@@ -4,18 +4,28 @@ title: Commusica
 subtitle: Tests
 
 author:
-- Ludovic Delafontaine
-- Lucas Elisei
-- David Truan
-- Denise Gemesio
-- Thibaut Togue
-- Yosra Harbaoui
+- name: Ludovic Delafontaine
+  book: TEST
+- name: Lucas Elisei
+  book: TEST
+- name: David Truan
+  book: TEST
+- name: Denise Gemesio
+  book: TEST
+- name: Thibaut Togue
+  book: TEST
+- name: Yosra Harbaoui
+  book: TEST
 
 date: HEIG-VD 2017 - PRO
 
+
+lang: fr
+
+numbersections: true
+
+papersize: a4
 geometry: margin=2cm
-
-
 
 header-includes:
     - \usepackage{etoolbox}
@@ -37,12 +47,8 @@ header-includes:
     - \fancyhead[LO,LE]{Commusica}
     - \fancyhead[RO,RE]{PRO 2017}
 
-    # Redefine TOC title.
-    - \renewcommand{\contentsname}{Table des matières}
+    # Redefine TOC style.
     - \setcounter{tocdepth}{2}
-
-    # Redefine TOF title.
-    - \renewcommand{\listfigurename}{Table des figures}
 
     # 'listings' settings.
     - \lstset{breaklines = true}
@@ -67,6 +73,7 @@ header-includes:
     # 'listings' not page breaking.
     - \BeforeBeginEnvironment{lstlisting}{\begin{minipage}{\textwidth}}
     - \AfterEndEnvironment{lstlisting}{\end{minipage}}
+
 ---
 
 \newpage
@@ -272,7 +279,7 @@ Ainsi, nous avons aujourd'hui plusieurs classes Java et plusieurs fichiers FXML 
 La description des classes se fera selon l'ordre des vues dans l'interface graphique, en partant de la vue en haut à gauche pour finir par la vue en bas au centre. Nous allons tout d'abord commencer par la classe principale.
 #### UIController
 `UIController` est la classe qui permet de lier le reste des classes entre elles. Lorsque le programme est lancé, c'est cette classe qui est lancée. Elle va en premier lieu faire apparaître une fenêtre demandant à l'utilisateur si celui-ci veut être le serveur. Son lancement a lieu dans la fonction `initialize()`. Au moment du choix de l'utilisateur, l'interface annonce au Core quelle configuration a été choisie et la fenêtre principale du programme peut être lancée. La partie en haut à gauche contenant les playlists est directement mise à jour et la playlist sélectionnée par défaut est celle en cours de construction.
-Mis à part la configuration initiale de la fenêtre, `UIController` permet aussi toutes les actions basiques de l'interface graphique : 
+Mis à part la configuration initiale de la fenêtre, `UIController` permet aussi toutes les actions basiques de l'interface graphique :
 
 +  Afficher des alertes
 +  Obtenir la playlist actuellement visualisée
