@@ -53,7 +53,7 @@ public class ClientServerDialog extends Application {
             } else {
                 LOG.info("Launching as client.");
                 Core.setupAsClient();
-                
+
             }
         } else {
 
