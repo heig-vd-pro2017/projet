@@ -1,5 +1,6 @@
 package ch.tofind.commusica.session;
 
+import ch.tofind.commusica.core.ApplicationProtocol;
 import ch.tofind.commusica.utils.Logger;
 
 import java.net.InetAddress;
@@ -106,6 +107,12 @@ public class ServerSessionManager implements ISessionManager {
                 LOG.info("Removing old server session.");
 
                 Platform.runLater(() -> availableServers.remove(serverSession.getId()));
+
+                if (serverSession.getId() == ApplicationProtocol.serverId) {
+                    ApplicationProtocol.serverId = null;
+                    ApplicationProtocol.serverAddress = null;
+                    ApplicationProtocol.serverName = null;
+                }
             }
         }
     }
