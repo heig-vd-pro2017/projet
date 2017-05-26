@@ -32,7 +32,15 @@ public class PlaylistTrack implements Serializable {
     private IntegerProperty votesProperty;
 
     /**
+     * @brief Empty constructor for Hibernate.
+     */
+    private PlaylistTrack() {
+
+    }
+
+    /**
      * @brief Create a PlaylistTrack with it's properties.
+     *
      * @param playlist The playlist.
      * @param track The track.
      */
@@ -49,6 +57,7 @@ public class PlaylistTrack implements Serializable {
 
     /**
      * @brief Know if a PlaylistTrack has already been played or not.
+     *
      * @return A BooleanProperty telling if the PlaylistTrack has been played or not.
      */
     public BooleanProperty getBeenPlayedProperty() {

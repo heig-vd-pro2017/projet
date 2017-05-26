@@ -216,7 +216,7 @@ public class ServerCore extends AbstractCore implements ICore {
             }
         }
 
-        if (Objects.equals(trackInDatabase.getUri(), "")) {
+        if (Objects.isNull(trackInDatabase.getUri())) {
 
             LOG.info("The track was found in database but is not stored on filesystem.");
 
@@ -313,15 +313,33 @@ public class ServerCore extends AbstractCore implements ICore {
         // Delete the temporary file
         fileManager.delete(tempFile);
 
+        // Get the track from the database
+        Session session = DatabaseManager.getInstance().getSession();
+
+        Query trackById = session.createQuery("FROM Track WHERE id = :id");
+        trackById.setParameter("id", trackToReceive.getId());
+
+        Track trackToSave = null;
+
+        try {
+
+            trackToSave = (Track) trackById.getSingleResult();
+
+        } catch (NoResultException e) {
+
+            trackToSave = trackToReceive;
+
+        }
+
         // Set additionnal properties on the file
-        trackToReceive.setUri(filename);
-        trackToReceive.setFavoritedProperty(false);
+        trackToSave.setUri(filename);
+        trackToSave.setFavoritedProperty(false);
 
         // Save the track in the database
-        DatabaseManager.getInstance().save(trackToReceive);
+        DatabaseManager.getInstance().save(trackToSave);
 
         // Add the track to the current Playlist
-        PlaylistManager.getInstance().getPlaylist().addTrack(trackToReceive);
+        PlaylistManager.getInstance().getPlaylist().addTrack(trackToSave);
 
         result = ApplicationProtocol.TRACK_SAVED + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +

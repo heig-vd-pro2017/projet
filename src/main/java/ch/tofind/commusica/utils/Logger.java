@@ -64,8 +64,8 @@ public class Logger {
             Date now = new Date();
             SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss Z");
 
-            System.out.printf("%s - %s\n", format.format(now), className);
-            System.out.printf("%s: %s\n", level, message);
+            System.out.printf("%s - %s - %s: %s\n", format.format(now), className, level, message);
+            //System.out.printf("%s: %s\n", level, message);
         }
     }
 
