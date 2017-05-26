@@ -1,29 +1,56 @@
 ---
 title: Commusica
-author:
-    - tofind
 header-includes:
+    - \usepackage{etoolbox}
     - \usepackage{fancyhdr}
+    - \usepackage[T1]{fontenc}
+    - \usepackage{xcolor}
+
+    # Some beautiful colors.
+    - \definecolor{pblue}{rgb}{0.13, 0.13, 1.0}
+    - \definecolor{pgray}{rgb}{0.46, 0.45, 0.48}
+    - \definecolor{pgreen}{rgb}{0.0, 0.5, 0.0}
+    - \definecolor{pred}{rgb}{0.9, 0.0, 0.0}
+
+    - \renewcommand{\ttdefault}{pcr}
+
+    # 'fancyhdr' settings.
     - \pagestyle{fancy}
-    - \fancyhead[CO,CE]{Commusica}
-    - \fancyhead[LO,LE]{}
-    - \fancyhead[RO,RE]{}
+    - \fancyhead[CO,CE]{}
+    - \fancyhead[LO,LE]{Commusica}
+    - \fancyhead[RO,RE]{PRO 2017}
+
+    # Redefine TOC title.
     - \renewcommand{\contentsname}{Table des matières}
-    - \lstset{breaklines=true}
-    - \lstset{backgroundcolor=\color[RGB]{248,248,248}}
-    - \lstset{language=java}
-    - \lstset{basicstyle=\small\ttfamily}
-    - \lstset{extendedchars=true}
-    - \lstset{tabsize=2}
-    - \lstset{columns=fixed}
-    - \lstset{showstringspaces=false}
-    - \lstset{frame=trbl}
-    - \lstset{frameround=tttt}
-    - \lstset{framesep=4pt}
-    - \lstset{numbers=left}
-    - \lstset{numberstyle=\tiny\ttfamily}
-toc: yes
+
+    # 'listings' settings.
+    - \lstset{breaklines = true}
+    - \lstset{backgroundcolor = \color{black!10}}
+    - \lstset{basicstyle = \ttfamily}
+    - \lstset{breakatwhitespace = true}
+    - \lstset{columns = fixed}
+    - \lstset{commentstyle = \color{pgreen}}
+    - \lstset{extendedchars = true}
+    - \lstset{frame = trbl}
+    - \lstset{frameround = none}
+    - \lstset{framesep = 2pt}
+    - \lstset{keywordstyle = \bfseries}
+    - \lstset{keywordsprefix = {@}}                           # Java annotations.
+    - \lstset{language = Java}
+    - \lstset{numbers = left}
+    - \lstset{numberstyle = \tiny\ttfamily}
+    - \lstset{showstringspaces = false}
+    - \lstset{stringstyle = \color{pred}}
+    - \lstset{tabsize = 2}
+
+    # 'listings' not page breaking.
+    - \BeforeBeginEnvironment{lstlisting}{\begin{minipage}{\textwidth}}
+    - \AfterEndEnvironment{lstlisting}{\end{minipage}}
 ---
+
+\newpage
+
+\tableofcontents
 
 \newpage
 
