@@ -28,9 +28,6 @@ public class FileManager {
      */
     private FileManager() {
 
-        File outputDirectory = new File(OUTPUT_DIRECTORY);
-
-        outputDirectory.mkdir();
     }
 
     /**
@@ -60,6 +57,10 @@ public class FileManager {
      * @return The stored file.
      */
     public File retrieveFile(InputStream inputStream, int fileSize) {
+
+        File outputDirectory = new File(OUTPUT_DIRECTORY);
+
+        outputDirectory.mkdir();
 
         byte[] networkPacketSize = new byte[8192];
 
