@@ -277,9 +277,18 @@ Mis à part la configuration initiale de la fenêtre, `UIController` permet auss
 +  Afficher des alertes
 +  Obtenir la playlist actuellement visualisée
 +  Mettre à jour et afficher les playlists
-+  Fermer la fenêtre proprement lorsque l'utilisateur décide d'arrêter le programme.
++  Fermer la fenêtre proprement lorsque l'utilisateur décide d'arrêter le programme
+`UIController` va tout simplement faire appel aux différentes classes du package `ui` afin de s'informer de l'état de chaque partie composant l'UI lors d'une demande depuis l'extérieur.
 #### PlaylistsListView
-*En haut à gauche*
+`PlaylistsListView` concerne la vue en haut à gauche affichant les playlists disponibles :
+
+  +  **PLAYING** : la playlist en cours de création
+  +  **FAVORITES** : la playlist des favoris
+  +  **SAVED** : la liste des playlists sauvegardées d'anciens événements
+Comme spécifié au chapitre précédent, la liste sélectionnée par défaut est la liste en cours de création.
+Dans la classe `PlaylistsListView`, nous faisons usage d'une méthode de la classe `FXCollections` permettant d'attacher un observeur à n'importe quel objet du programme. Ainsi, nous pouvons facilement modifier l'affichage des playlists au fur et à mesure des actions faites au niveau du serveur ou du client.
+
+
 #### TrackListView
 *En haut au centre*
 ##### PlaylistTrackCell
