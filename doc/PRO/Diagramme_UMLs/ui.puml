@@ -2,9 +2,9 @@
 
 
 class PlaylistsListView{
--String CSS_FILE
--String FXML_FILE
--PlaylistManager manager
+-final String CSS_FILE
+-final String FXML_FILE
+-static PlaylistManager manager
 ~Label favoritesLabel
 ~Label playingLabel
 ~ListView<SavedPlaylist> playlistsView
@@ -16,7 +16,7 @@ class PlaylistsListView{
 
 
 class UIController{
--Logger LOG
+-final Logger LOG
 -IPlaylist currentPlaylist
 -String FXML_FILE
 -PlaylistsListView playlistsListView
@@ -31,8 +31,8 @@ class UIController{
 }
 
 class TracksListView{
-- Logger LOG
-- PlaylistManager playlistManager
+- static Logger LOG
+- static PlaylistManager playlistManager
 
 
 + TracksListView()
