@@ -263,22 +263,33 @@ Cette classe permet de créer le lien entre une certaine playlist et une chanson
 #### VoteComparator
 Le comparateur de vote ne possède qu'une fonction. Celle-ci sert tout simplement à déterminer entre deux chansons, laquelle a le plus grand nombre de votes. Cela a été créé dans le but de réorganiser la playlist en commençant par les chansons les plus votées.
 
-##  Package et ressources UI
-Concernant l'interface graphique, nous avons utilisé la librairie JavaFX. Celle-ci nous a permis de faire usage de l'outil SceneBuilder afin de développer en premier lieu une maquette qui s'est ensuite développée, à travers plusieurs étapes en l'interface graphique que nous avons aujourd'hui. Le fonctionnement JavaFX demande à avoir deux notions qui communiquent entre elles: un ou plusieurs fichiers FXML qui définissent l'arrangement de la fenêtre et une ou plusieurs classes Java qui permettent de lancer la fenêtre et communiquer avec ses composants.
+##  Package et ressources ui
+Concernant l'interface graphique, nous avons utilisé la librairie JavaFX. Celle-ci nous a permis de faire usage de l'outil SceneBuilder afin de développer, en premier lieu, une maquette qui s'est ensuite développée, à travers plusieurs étapes, en l'interface graphique que nous connaissons aujourd'hui. Le fonctionnement JavaFX demande à avoir deux notions qui communiquent entre elles: un ou plusieurs fichiers FXML qui définissent l'arrangement de la fenêtre et une ou plusieurs classes Java qui permettent de lancer la fenêtre et communiquer avec ses composants.
 Il est donc intéressant de connaître le cheminement que nous avons parcouru jusqu'au résultat actuel.
 Dans un premier temps, nous avons développé un fichier FXML grâce à SceneBuilder. Grâce à celui-ci, nous avons pu apprendre les bons usages FXML. Nous avons ensuite créé un fichier Java depuis lequel nous étions capables lancer la fenêtre au démarrage du programme. Cependant, le code se développant devenant de plus en plus important, nous avons pris la décision de diviser aussi bien les fichiers FXML que les fichiers Java en plusieurs sections permettant d'avoir un regard plus précis sur chaque partie de notre implémentation.
 Ainsi, nous avons aujourd'hui plusieurs classes Java et plusieurs fichiers FXML qui sont reliés à leur classe principale `UIController.java` respectivement `main.fxml`.
+
 ### Classes du package
-La description des classes se fera selon l'ordre des vues dans l'interface graphique, en partant de la vue en haut à gauche pour finir par la vue en bas au centre. Nous allons tout d'abord commencer par la classe principale.
+La description des classes se fera selon l'ordre des vues dans l'interface graphique, en partant de la vue en haut à gauche pour finir par la vue en bas au centre. Nous allons tout d'abord commencer par la fenêtre de configuration apparaissant au lancement du programme, pour continuer avec le controleur. Le reste des classes sera ensuite abordé.
+
+#### ClientServerDialog
+`ClientServerDialog` est la première fenêtre lancée par le programme. Son lancement se passe alors dans la classe principale `Commusica`. Cette fenêtre permettra tout simplement de choisir entre deux rôles : celui du serveur ou de l'utilisateur lambda.
+Le choix sera communiqué au Core qui prendra connaissance de la décision, configurera le programme et exécutera le lancement de l'interface graphique appropriée.
+Après cela, cette classe lancera l'`UIController`.
+Dans le cas où l'utilisateur ne répond pas à la question posée dans la fenêtre de dialogue et la ferme, le programme s'arrête.
+**REVENIR DESSUS QUAND IMPLEM TERMINEE**
+
 #### UIController
-`UIController` est la classe qui permet de lier le reste des classes entre elles. Lorsque le programme est lancé, c'est cette classe qui est lancée. Elle va en premier lieu faire apparaître une fenêtre demandant à l'utilisateur si celui-ci veut être le serveur. Son lancement a lieu dans la fonction `initialize()`. Au moment du choix de l'utilisateur, l'interface annonce au Core quelle configuration a été choisie et la fenêtre principale du programme peut être lancée. La partie en haut à gauche contenant les playlists est directement mise à jour et la playlist sélectionnée par défaut est celle en cours de construction.
-Mis à part la configuration initiale de la fenêtre, `UIController` permet aussi toutes les actions basiques de l'interface graphique :
+`UIController` est la classe qui permet de lier le reste des classes entre elles. Elle va, en premier lieu, mettre à jour la partie en haut à gauche contenant les playlists et la playlist sélectionnée sera par défaut celle en cours de construction.
+Mis à part la configuration initiale de la fenêtre, `UIController` permet aussi toutes les actions basiques de l'interface graphique : 
 
 +  Afficher des alertes
 +  Obtenir la playlist actuellement visualisée
 +  Mettre à jour et afficher les playlists
 +  Fermer la fenêtre proprement lorsque l'utilisateur décide d'arrêter le programme
 `UIController` va tout simplement faire appel aux différentes classes du package `ui` afin de s'informer de l'état de chaque partie composant l'UI lors d'une demande depuis l'extérieur.
+**REVENIR DESSUS QUAND IMPLEM TERMINEE**
+
 #### PlaylistsListView
 `PlaylistsListView` concerne la vue en haut à gauche affichant les playlists disponibles :
 
@@ -288,13 +299,25 @@ Mis à part la configuration initiale de la fenêtre, `UIController` permet auss
 Comme spécifié au chapitre précédent, la liste sélectionnée par défaut est la liste en cours de création.
 Dans la classe `PlaylistsListView`, nous faisons usage d'une méthode de la classe `FXCollections` permettant d'attacher un observeur à n'importe quel objet du programme. Ainsi, nous pouvons facilement modifier l'affichage des playlists au fur et à mesure des actions faites au niveau du serveur ou du client.
 
+#### TracksListView
+La classe `TracksListView` agit sur le panneau en haut au centre de l'interface graphique principale. Ce panneau représente la queue de lecture, avec, en haut, la chanson la plus votée et, en bas, la chanson la moins votée. Evidemment, l'ordre de lecture va donc du haut vers le bas. 
+** A PLACER DANS LE CHAPITRE FXML **
+Cette vue a été partagée en plusieurs parties. En effet, par soucis de clarté, nous avons un fichier FXML (`TracksListView`) qui s'occupe de gérer l'affichage des détails de la chanson et un autre fichier FXML (`trackCell`) qui s'occupe de gérer l'affichage et les actions sur les boutons **upvote**, **downvote** et **favori**.
+**************************************
+La classe `TracksListView` n'est cependant pas complète dans l'affichage et les actions du panneau central du haut. En effet, cette classe permet d'afficher une playlist et glisser/déposer un élément média audio au sein de celui-ci. La liste de lecture est initialisée comme liste observable, ce qui fait que dès qu'un changement subviendra, celle-ci se mettra à jour. La question des upvotes, downvotes et favoris est elle traitée dans une autre classe implémentée spécialement pour cet usage et décrite deux chapitres plus loin.
 
-#### TrackListView
-*En haut au centre*
+##### initializeDragAndDrop()
+La méthode `initializeDragAndDrop()` de la classe `TracksListView` mérite une explication plus détaillée. Nous avons longtemps réfléchi à la meilleure façon d'implémenter le téléchargement d'une chanson. Le "drag and drop" (glisser/déposer) nous a finalement semblé être la technique la plus intuitive d'ajout de chansons.
+Cette méthode relativement complexe nous permet donc de déterminer quand une personne est a déposé un fichier dans le panneau et ce grâce à la méthode JavaFX `setOnDragDropped()` de la classe `TransferMode`. C'est alors que nous allons faire usage du constructeur de la classe `Track` prenant en paramètre un `AudioFile`. 
+Si c'est le serveur qui a glissé/déposé une chanson, alors la méthode appellera directement la méthode du `PlaylistManager` permettant d'ajouter une chanson.
+Dans le cas du client, la méthode passera d'abord par la classe `Core` à laquelle il enverra la commande `SEND_TRACK_REQUEST` avec comme argument l'URI de la chanson.
+Nous remarquons ici, encore une fois, l'intérêt et l'importance de la classe `Core`.
+
 ##### PlaylistTrackCell
 *Dans TrackListView*
 #### SettingsView
 *En haut à droite*
+*Attendre la version finale*
 #### PreviousTrackView
 *En bas à gauche*
 #### PlayerControlsView
@@ -326,7 +349,27 @@ Cette classe permet de récupérer toutes les informations basiques de la machin
 Cette classe permet de récupérer les informations nécessaires à l'affichage des chansons dans la playlist en écoute. Cet utilitaire a été créé afin de pouvoir faciliter la récupération d'informations depuis les classes mettant en oeuvre l'interface graphique.
 #### Serialize
 Grâce à la librairie Gson de Google, cette classe est utilisée dans la sérialisation et désérialisation d'objets.
-#### Session Ce package permet de gérer les sessions des utilisateurs. Avant tous nous allons monter l'importance de la session pour une communication client-serveur. La session permet aux serveurs de mémorise des informations relatives au client, d'une requête à l'autre. Le contenu d'une session est conservé jusqu'à ce que l'utilisateur ferme sa connexion, reste inactif trop longtemps. ##### ServerSessionCette classe permet de gérer la session d'un serveur. Le champs privé update permet de définir le temps que la session reste toujours valable.#####  ServerSessionManager Cette classe comme son nom l'indique permet de gérer les différentes sessions des serveurs. Il constitué : + D’une MAP permettant de stocké les sessions des différents serveurs.+ ScheduledExecutorService permettant de nettoyer les anciennes sessions des différentes anciennes sessions. Il faut noter ici que ScheduledExecutorService est un service qui peut planifier des tâches à exécuter après un délai ou à éxecuté à plusieurs reprises avec un intervalle de temps fixe entre chaque exécution de manière asynchrone par un thread de travail, et non par le thread passant la tâche à ScheduledExecutorService. Nous utilisons dans notre cas pour supprimer tous les sessions donc le délai a expiré.  ##### UserSessionCette classe permet de gérer la session d'un utilisateur. Le champs privé update permet de définir le temps que la session reste toujours valable.##### UserSessionManager  Cette classe comme son nom l'indique permet de gérer les différentes sessions des utilisateurs. 
+#### Session
+ Ce package permet de gérer les sessions des utilisateurs. Avant tous nous allons monter l'importance de la session pour une communication client-serveur. La session permet aux serveurs de mémorise des informations relatives au client, d'une requête à l'autre. Le contenu d'une session est conservé jusqu'à ce que l'utilisateur ferme sa connexion, reste inactif trop longtemps.
+ 
+##### ServerSession
+Cette classe permet de gérer la session d'un serveur. Le champs privé update permet de définir le temps que la session reste toujours valable.
+
+#####  ServerSessionManager 
+Cette classe comme son nom l'indique permet de gérer les différentes sessions des serveurs. Il constitué :
+
+ + D’une MAP permettant de stocké les sessions des différents serveurs.
+
++ ScheduledExecutorService permettant de nettoyer les anciennes sessions des différentes anciennes sessions. Il faut noter ici que ScheduledExecutorService est un service qui peut planifier des tâches à exécuter après un délai ou à éxecuté à plusieurs reprises avec un intervalle de temps fixe entre chaque exécution de manière asynchrone par un thread de travail, et non par le thread passant la tâche à ScheduledExecutorService. Nous utilisons dans notre cas pour supprimer tous les sessions donc le délai a expiré.
+  
+##### UserSession
+Cette classe permet de gérer la session d'un utilisateur. Le champs privé update permet de définir le temps que la session reste toujours valable.
+
+##### UserSessionManager
+
+  Cette classe comme son nom l'indique permet de gérer les différentes sessions des utilisateurs. 
+
+
 
 ## Tests réalisés
 
