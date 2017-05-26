@@ -26,9 +26,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -261,18 +259,62 @@ public class ServerCore extends AbstractCore implements ICore {
         // Retrieve the file from the network
         FileManager fileManager = FileManager.getInstance();
 
-        String result;
+        File tempFile = null;
 
-        File tempFile;
+        // Try to retreive the file for 15 secs. After that, continue the process
+        ExecutorService executor = Executors.newCachedThreadPool();
+
+        Callable<Object> task = () -> {
+
+            File retreivedFile = null;
+            try {
+                retreivedFile = fileManager.retrieveFile(socket.getInputStream(), fileSize);
+            } catch (IOException e) {
+
+                // Delete the file
+                if (retreivedFile != null) {
+                    fileManager.delete(retreivedFile);
+                }
+
+                LOG.error(e);
+            }
+            return retreivedFile;
+        };
+
+        Future<Object> future = executor.submit(task);
+
         try {
-            tempFile = fileManager.retrieveFile(socket.getInputStream(), fileSize);
-        } catch (IOException e) {
-            LOG.error(e);
+            tempFile = (File) future.get(5, TimeUnit.SECONDS);
+        } catch (TimeoutException ex) {
+
+            // Delete the temp file
+            if (tempFile != null) {
+                fileManager.delete(tempFile);
+            }
 
             return ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.ERROR_DURING_TRANSFER + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
+
+        } catch (InterruptedException e) {
+
+            LOG.error(e);
+
+            // Delete the temp file
+            if (tempFile != null) {
+                fileManager.delete(tempFile);
+            }
+
+            return ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.ERROR_DURING_TRANSFER + NetworkProtocol.END_OF_LINE +
+                    NetworkProtocol.END_OF_COMMAND;
+
+        } catch (ExecutionException e) {
+            LOG.error(e);
+        } finally {
+            future.cancel(true);
         }
 
         // Compare the checksums to avoid files corruption
@@ -295,11 +337,10 @@ public class ServerCore extends AbstractCore implements ICore {
         } catch (Exception e) {
             fileManager.delete(tempFile);
             LOG.error(e);
-            result = ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
+            return ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.ERROR_FILE_NOT_SUPPORTED + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
-            return result;
         }
 
         // Save the file under its new name on the filesystem
@@ -342,10 +383,9 @@ public class ServerCore extends AbstractCore implements ICore {
         // Add the track to the current Playlist
         PlaylistManager.getInstance().getPlaylist().addTrack(trackToSave);
 
-        result = ApplicationProtocol.TRACK_SAVED + NetworkProtocol.END_OF_LINE +
+        return ApplicationProtocol.TRACK_SAVED + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
-        return result;
     }
 
     /**
