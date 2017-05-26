@@ -30,7 +30,7 @@ import javafx.stage.StageStyle;
  *
  * Controller meant to interact with the interface.
  */
-public class UIController extends Application implements Initializable {
+public class UIController implements Initializable {
 
     //! Logger for debugging.
     private static final Logger LOG = new Logger(UIController.class.getSimpleName());
@@ -110,43 +110,6 @@ public class UIController extends Application implements Initializable {
         alert.showAndWait();
     }
 
-    /**
-     * @brief Display the dialog to choose if we launch the application as server or client.
-     */
-    private void displayServerClientDialog() {
-        Dialog<ButtonType> dialog = new Dialog<>();
-
-        dialog.setContentText("Welcome to Commusica!\n\nWould you like to be the server?");
-        dialog.setHeaderText(null);
-        dialog.setTitle("Welcome!");
-
-        ButtonType yesButton = new ButtonType("Yes");
-        ButtonType noButton = new ButtonType("No");
-
-        dialog.getDialogPane().getButtonTypes().setAll(yesButton, noButton);
-
-        Optional<ButtonType> result = dialog.showAndWait();
-
-        if (result.isPresent()) {
-            Network.configureNetwork();
-
-            if (result.get() == yesButton) {
-                LOG.info("Launching as server.");
-                Core.setupAsServer();
-            }
-            else {
-                LOG.info("Launching as client.");
-                Core.setupAsClient();
-            }
-        } else {
-
-            LOG.error("Quitting application because user didn't choose an option.");
-
-            Platform.exit();
-        }
-    }
-
-    @Override
     public void start(Stage stage) {
         URL fileURL = getClass().getClassLoader().getResource(FXML_FILE);
 
@@ -179,14 +142,10 @@ public class UIController extends Application implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         loader.setController(this);
 
-        // Display client/server choice.
-        displayServerClientDialog();
-
         // Select the Playing playlist.
         showPlaylist(PlaylistManager.getInstance().getPlaylist());
     }
 
-    @Override
     public void stop() {
         LOG.info("Stopping application...");
         Core.stop();
