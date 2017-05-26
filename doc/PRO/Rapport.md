@@ -1,5 +1,22 @@
 ---
 title: Commusica
+
+subtitle: Tests
+
+author:
+- Ludovic Delafontaine
+- Lucas Elisei
+- David Truan
+- Denise Gemesio
+- Thibaut Togue
+- Yosra Harbaoui
+
+date: HEIG-VD 2017 - PRO
+
+geometry: margin=2cm
+
+
+
 header-includes:
     - \usepackage{etoolbox}
     - \usepackage{fancyhdr}
@@ -22,6 +39,10 @@ header-includes:
 
     # Redefine TOC title.
     - \renewcommand{\contentsname}{Table des matières}
+    - \setcounter{tocdepth}{2}
+
+    # Redefine TOF title.
+    - \renewcommand{\listfigurename}{Table des figures}
 
     # 'listings' settings.
     - \lstset{breaklines = true}
@@ -37,8 +58,8 @@ header-includes:
     - \lstset{keywordstyle = \bfseries}
     - \lstset{keywordsprefix = {@}}                           # Java annotations.
     - \lstset{language = Java}
-    - \lstset{numbers = left}
-    - \lstset{numberstyle = \tiny\ttfamily}
+    - \lstset{numbers=left,xleftmargin=2em,xrightmargin=0.25em}
+    - \lstset{numberstyle = \small\ttfamily}
     - \lstset{showstringspaces = false}
     - \lstset{stringstyle = \color{pred}}
     - \lstset{tabsize = 2}
@@ -51,6 +72,8 @@ header-includes:
 \newpage
 
 \tableofcontents
+
+\listoffigures
 
 \newpage
 
@@ -99,7 +122,6 @@ Pour garder un niveau d'abstraction le plus élevé possible, nous avons voulu f
 
 
 Il nous fallait maintenant une classe qui puisse jouer le rôle du contrôleur. Nous avons développé les **Core** pour cela qui sont tous dans le paquet *core*.
-![Classes principales du package *core*](fr)
 
 ### Classes du package
 #### Core
@@ -172,13 +194,9 @@ Connaître le type de fichier nous permettra de traiter uniquement les fichiers 
 ### Classes du package
 #### EphermeralPlaylist
 
- ![](EphermeralPlaylist.png)
-
  La classe EphermeralPlaylist représente la playlist en cours de construction, c'est-à-dire la playlist en cours de lecture. Cela permet de mettre à jour l'interface graphique lors d'une action sur un élément de la playlist. La mise à jour se fait grâce au pattern observeur à travers la liste **ObservableSortedPlaylistTrackList**, qui joue en même temps le rôle d'observable et d'observeur. Elle observe des chansons de la liste dans le but de changer l'état de la playlist en cas d'upvote ou downvote, et devient observable dans le cas où elle envoie des notifications lors des mises à jour. Dans cette classe, nous avons aussi le champ **delegate** qui représente la liste de lecture qui sera enregistrée dans la base de données pour le suivi de celle-ci.
 
 #### Player
-
- ![](Player.png)
 
 Comme son nom l'indique, il s'agit d'une classe permettant de réaliser les actions de base sur la musique (play, pause, stop, next, previous). Pour l'implémentation, nous avions le choix entre **Mediaplayer** et **sourceDataLine**, nous avons préféré utiliser **Mediaplayer** pour les raisons suivantes:
 
@@ -200,8 +218,6 @@ Nous avons aussi utilisé dans cette classe les propriétés JavaFX dans le but 
 Comme son nom l'indique, elle permet de sauvegarder les playlists.
 
 #### Track
-
-![](Track.png)
 
 Cette classe représenté une chanson, elle en regroupe toutes les informations nécessaires à une identité unique. Nous remarquons, dans cette classe, que nous avons trois constructeurs :
 
