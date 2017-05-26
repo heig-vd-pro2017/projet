@@ -108,16 +108,20 @@ public class Track implements Serializable {
         this.album = "Unknown";
         this.length = header.getTrackLength();
 
-        if (!Objects.equals(tags.getFirst(FieldKey.TITLE), "")) {
-            this.title = tags.getFirst(FieldKey.TITLE);
-        }
+        // if the tags couldn't get retrieved
+        if (!Objects.equals(tags, null)) {
 
-        if (!Objects.equals(tags.getFirst(FieldKey.ARTIST), "")) {
-            this.artist = tags.getFirst(FieldKey.ARTIST);
-        }
+            if (!Objects.equals(tags.getFirst(FieldKey.TITLE), "")) {
+                this.title = tags.getFirst(FieldKey.TITLE);
+            }
 
-        if (!Objects.equals(tags.getFirst(FieldKey.ALBUM), "")) {
-            this.album = tags.getFirst(FieldKey.ALBUM);
+            if (!Objects.equals(tags.getFirst(FieldKey.ARTIST), "")) {
+                this.artist = tags.getFirst(FieldKey.ARTIST);
+            }
+
+            if (!Objects.equals(tags.getFirst(FieldKey.ALBUM), "")) {
+                this.album = tags.getFirst(FieldKey.ALBUM);
+            }
         }
 
         this.uri = audioFile.getFile().toString();
