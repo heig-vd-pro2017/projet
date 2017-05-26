@@ -1,5 +1,6 @@
 package ch.tofind.commusica.playlist;
 
+import ch.tofind.commusica.core.ApplicationProtocol;
 import ch.tofind.commusica.database.DatabaseManager;
 import ch.tofind.commusica.media.EphemeralPlaylist;
 import ch.tofind.commusica.media.SavedPlaylist;
@@ -42,8 +43,7 @@ public class PlaylistManager {
      * PlaylistManager single constructor. Avoid the instantiation.
      */
     private PlaylistManager() {
-        // TODO: Is this the right place ?
-        String playlistName = Configuration.getInstance().get("PLAYLIST_NAME");
+        String playlistName = ApplicationProtocol.serverName;//Configuration.getInstance().get("PLAYLIST_NAME");
         playlist = new EphemeralPlaylist(playlistName);
         savedPlaylists = retrievePlaylists();
         favoritesPlaylist = retrieveFavoritesPlaylist();
