@@ -11,7 +11,6 @@
         <id name="id" type="int" column="id">
             <generator class="increment"/>
         </id>
-
         <version name="version" column="version"/>
         <property name="name" column="name" type="string" length="50" not-null="true"/>
         <property name="dateAdded" column="date_added" type="timestamp" length="50" not-null="true"/>

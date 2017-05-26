@@ -9,8 +9,8 @@
             This class represents the link between a playlist and a track
         </meta>
         <composite-id name="id" class="ch.tofind.commusica.playlist.PlaylistTrackId">
-            <key-many-to-one name="playlist" column="playlist_id"/>
-            <key-many-to-one name="track" column="track_id"/>
+            <key-many-to-one on-delete="cascade" name="playlist" column="playlist_id" foreign-key="ch.tofind.commusica.media.SavedPlaylist"/>
+            <key-many-to-one on-delete="cascade" name="track" column="track_id" foreign-key="ch.tofind.commusica.media.Track"/>
         </composite-id>
         <property name="votes" column="votes" type="int" not-null="true"/>
     </class>
