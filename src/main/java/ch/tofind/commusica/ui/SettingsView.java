@@ -2,11 +2,13 @@ package ch.tofind.commusica.ui;
 
 import ch.tofind.commusica.core.ApplicationProtocol;
 import ch.tofind.commusica.core.Core;
+import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.session.ServerSession;
 import ch.tofind.commusica.session.ServerSessionManager;
 
 import java.io.IOException;
 
+import ch.tofind.commusica.utils.Configuration;
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
@@ -54,11 +56,25 @@ public class SettingsView extends AnchorPane {
 
         ServerSessionManager.getInstance().getAvailableServers().addListener((MapChangeListener<Integer, ServerSession>) change -> serversList.setItems(FXCollections.observableArrayList(change.getMap().values())));
 
-        // Visibility.
-        serverNameField.setVisible(Core.isServer());
-        serverNameLabel.setVisible(Core.isServer());
-        serversList.setVisible(!Core.isServer());
+        initializeServersList();
         serversListLabel.setVisible(!Core.isServer());
+        initializeServersNameField();
+        serverNameLabel.setVisible(Core.isServer());
+    }
+
+    private void initializeServersNameField() {
+        serverNameField.setVisible(Core.isServer());
+
+        serverNameField.setText(Configuration.getInstance().get("SERVER_NAME"));
+
+        serverNameField.textProperty().addListener((obs, oldValue, newValue) -> {
+            ApplicationProtocol.serverName = newValue;
+            PlaylistManager.getInstance().getPlaylist().setName(newValue);
+        });
+    }
+
+    private void initializeServersList() {
+        serversList.setVisible(!Core.isServer());
 
         serversList.setPromptText("Select a server");
 
