@@ -34,7 +34,9 @@ public class EphemeralPlaylistSerializer implements JsonSerializer<EphemeralPlay
             playingTrackTime = playing.getAsJsonPrimitive("time").getAsInt();
         }
         else {
-            Player.getCurrentPlayer().getPreviousTrackProperty().setValue(Player.getCurrentPlayer().getCurrentTrackProperty().getValue());
+            if (Player.getCurrentPlayer().getCurrentTrackProperty().getValue() != null) {
+                Player.getCurrentPlayer().getPreviousTrackProperty().setValue(Player.getCurrentPlayer().getCurrentTrackProperty().getValue());
+            }
             Player.getCurrentPlayer().getCurrentTrackProperty().setValue(null);
             Player.getCurrentPlayer().getCurrentTimeProperty().setValue(0);
         }
