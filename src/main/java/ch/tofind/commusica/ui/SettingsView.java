@@ -12,8 +12,10 @@ import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 /**
@@ -25,7 +27,16 @@ public class SettingsView extends AnchorPane {
     private static final String FXML_FILE = "ui/SettingsView.fxml";
 
     @FXML
+    private TextField serverNameField;
+
+    @FXML
+    private Label serverNameLabel;
+
+    @FXML
     private ComboBox<ServerSession> serversList;
+
+    @FXML
+    private Label serversListLabel;
 
     /**
      * @brief View constructor.
@@ -42,6 +53,12 @@ public class SettingsView extends AnchorPane {
         }
 
         ServerSessionManager.getInstance().getAvailableServers().addListener((MapChangeListener<Integer, ServerSession>) change -> serversList.setItems(FXCollections.observableArrayList(change.getMap().values())));
+
+        // Visibility.
+        serverNameField.setVisible(Core.isServer());
+        serverNameLabel.setVisible(Core.isServer());
+        serversList.setVisible(!Core.isServer());
+        serversListLabel.setVisible(!Core.isServer());
 
         serversList.setPromptText("Select a server");
 
