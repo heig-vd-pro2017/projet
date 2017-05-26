@@ -107,8 +107,6 @@ Ne pas mettre toutes les classes !
 ## Gestionnaire de configuration
 Nous avons choisi d'implémenter un gestionnaire de configuration utilisant le fichier commusica.properties pour permettre à l'utilisateur de configurer le programme. Il donne accès aux paramètres suivants :    
 
- +  SERVER_NAME : choix du nom du serveur auquel les participants pourront se connecter
- +  PLAYLIST_NAME : choix du nom de la liste de lecture pour la soirée
  +  DEBUG : permets de choisir d'afficher ou non la sortie du programme
  +  DATE_FORMAT : choix du format de la date
  +  VOLUME_STEP : choix du pas d'augmentation et abaissement de la musique
@@ -300,32 +298,51 @@ Comme spécifié au chapitre précédent, la liste sélectionnée par défaut es
 Dans la classe `PlaylistsListView`, nous faisons usage d'une méthode de la classe `FXCollections` permettant d'attacher un observeur à n'importe quel objet du programme. Ainsi, nous pouvons facilement modifier l'affichage des playlists au fur et à mesure des actions faites au niveau du serveur ou du client.
 
 #### TracksListView
-La classe `TracksListView` agit sur le panneau en haut au centre de l'interface graphique principale. Ce panneau représente la queue de lecture, avec, en haut, la chanson la plus votée et, en bas, la chanson la moins votée. Evidemment, l'ordre de lecture va donc du haut vers le bas. 
-** A PLACER DANS LE CHAPITRE FXML **
-Cette vue a été partagée en plusieurs parties. En effet, par soucis de clarté, nous avons un fichier FXML (`TracksListView`) qui s'occupe de gérer l'affichage des détails de la chanson et un autre fichier FXML (`trackCell`) qui s'occupe de gérer l'affichage et les actions sur les boutons **upvote**, **downvote** et **favori**.
-**************************************
-La classe `TracksListView` n'est cependant pas complète dans l'affichage et les actions du panneau central du haut. En effet, cette classe permet d'afficher une playlist et glisser/déposer un élément média audio au sein de celui-ci. La liste de lecture est initialisée comme liste observable, ce qui fait que dès qu'un changement subviendra, celle-ci se mettra à jour. La question des upvotes, downvotes et favoris est elle traitée dans une autre classe implémentée spécialement pour cet usage et décrite deux chapitres plus loin.
+La classe `TracksListView` agit sur le panneau en haut au centre de l'interface graphique principale en le dessinant et définissant les usages basiques de celui-ci.
+Cette classe permet d'afficher une playlist et glisser/déposer un élément audio au sein du panneau, grâce à la méthode `initializeDragAndDrop()`. La liste de lecture est initialisée comme liste observable, ce qui fait que dès qu'un changement subvient, celle-ci se met à jour. Cependant, elle n'est pas encore peuplée par les chansons contenues dans la playlist. Cette question ainsi que celle des upvotes, downvotes et favoris sont traitées dans une autre classe implémentée spécialement pour cet usage : `PlaylistTrackCell`.
 
 ##### initializeDragAndDrop()
 La méthode `initializeDragAndDrop()` de la classe `TracksListView` mérite une explication plus détaillée. Nous avons longtemps réfléchi à la meilleure façon d'implémenter le téléchargement d'une chanson. Le "drag and drop" (glisser/déposer) nous a finalement semblé être la technique la plus intuitive d'ajout de chansons.
-Cette méthode relativement complexe nous permet donc de déterminer quand une personne est a déposé un fichier dans le panneau et ce grâce à la méthode JavaFX `setOnDragDropped()` de la classe `TransferMode`. C'est alors que nous allons faire usage du constructeur de la classe `Track` prenant en paramètre un `AudioFile`. 
+Cette méthode relativement complexe nous permet donc de déterminer quand une personne  a déposé un fichier dans le panneau et ce, grâce à la méthode JavaFX `setOnDragDropped()` de la classe `TransferMode`. C'est alors que nous allons faire usage du constructeur de la classe `Track` prenant en paramètre un `AudioFile`. 
 Si c'est le serveur qui a glissé/déposé une chanson, alors la méthode appellera directement la méthode du `PlaylistManager` permettant d'ajouter une chanson.
 Dans le cas du client, la méthode passera d'abord par la classe `Core` à laquelle il enverra la commande `SEND_TRACK_REQUEST` avec comme argument l'URI de la chanson.
 Nous remarquons ici, encore une fois, l'intérêt et l'importance de la classe `Core`.
 
 ##### PlaylistTrackCell
-*Dans TrackListView*
-#### SettingsView
-*En haut à droite*
-*Attendre la version finale*
-#### PreviousTrackView
-*En bas à gauche*
-#### PlayerControlsView
-*En bas au milieu*
-#### CurrentTrackView
-*En bas au milieu*
-### Fichiers FXML
+`PlaylistTrackCell` est une classe utilisée dans chaque cellule de la liste afin de définir les boutons d'upvote, downvote et favoris et leurs actions. Elle va également permettre de définir le titre, l'artiste, l'album et le nombre de votes d'une chanson.
+Concernant les votes, deux fonctions - une pour les votes positifs et l'autre pour les votes négatifs - permettent de communiquer avec le `Core` à travers des commandes. Les commandes - `SEND_DOWNVOTE_TRACK_REQUEST` et `SEND_UPVOTE_TRACK_REQUEST` - sont utilisées dans ces deux cas spécifiques car l'incidence qu'aura un vote sera globale à tous les participants. Ainsi, le `Core` doit être averti du fait que l'événement a eu lieu pour en informer le serveur afin qu'il renvoie l'information à tout le monde. Encore une fois, le `Core` use de son pouvoir de messager à travers le programme.
+Dans le cas des favoris, il n'y a nul besoin de passer par le `Core` car tout ce que l'utilisateur veut, c'est enregistrer l'information dans sa liste personnelle de chansons favorites.
 
+#### SettingsView
+**TODO**
+*En haut à droite*
+
+#### PreviousTrackView
+Dans le panneau en bas à gauche, nous pouvons apercevoir un espace réservé à la chanson qui vient de se terminer. Ce panneau nous a semblé utile de par le fait que, souvent, nous nous sommes personnellement retrouvés à vouloir noter le nom d'une chanson que nous venions d'écouter et, le temps de prendre notre téléphone pour identifier ladite chanson, celle-ci avait eu le temps de se terminer. Ainsi, ce panneau offre la possibilité à tout un chacun de retrouver facilement et sauvegarder en un seul "clic" les informations d'une chanson.
+Pour ce panneau, nous n'avons pas repris le même type de cellule que dans le panneau central du haut, car il n'y a pas de sens au fait de pouvoir upvoter ou downvoter une chanson déjà écoutée. C'est pourquoi, nous avons créé un panneau sur mesure contenant uniquement l'étoile des favoris et permettant ainsi uniquement d'ajouter la chanson dans ses favoris.
+
+#### CurrentTrackView
+Dans le panneau du bas, au milieu, nous pouvons apercevoir le résumé de la chanson actuellement en écoute. Les boutons ainsi que les informations sont exactement les mêmes que dans le cas de la dernière chanson grisée affichée dans la liste de lecture du panneau en haut au centre.
+Nous avons choisi cet affichage de façon à pouvoir faciliter l'accès à la chanson actuelle si jamais l'utilisateur avait décidé de faire défiler la liste de lecture et aurait perdu de vue la chanson actuelle.
+Le vrai défi de cette classe a cependant été celui de pouvoir remplir la jauge d'écoute selon l'avancement de la chanson. Cela a évidemment été fait à travers un observeur sur l'instance de `Player` qui possède l'information sur le temps écoulé.
+Sur la gauche du panneau central, nous pouvons également apercevoir des boutons de controle.
+
+##### PlayerControlsView
+`PlayerControlsView` qui se trouve dans le même panneau que `CurrentTrackView`représente les boutons "play/pause", "chanson suivante", "chanson précédente" et "volume". Ces quatre boutons représentent en fait cinq actions distinctes qui transiteront toutes à travers le `Core`. En effet, nous nous trouvons encore une fois face à une classe de l'interface graphique dont le `Core` est indispensable à son bon fonctionnement.
+Le `Core` est en mesure de déterminer vers qui il devra tourner la demande d'action à travers l'une des commandes suivantes :
+
+  +  SEND_TURN_VOLUME_DOWN_REQUEST : pour baisser le volume
+  +  SEND_TURN_VOLUME_UP_REQUEST : pour augmenter le volume
+  +  SEND_NEXT_TRACK_REQUEST : pour écouter la chanson suivante
+  +  SEND_PREVIOUS_TRACK_REQUEST : pour écouter la chanson précédente
+  +  SEND_PLAY_PAUSE_REQUEST : pour arrêter ou démarrer la musique
+Dans ces cas précis, c'est la classe `UserSessionManager`qui sera concernée par la commande. 
+Finalement, nous voyons dans cette classe encore une trace de ce que nous avions initialement implémenté. En effet, comme dans tous controleurs de musique, les boutons play/pause, chanson suivante et chanson précédente sont toujours présents. Cependant, dans le concept que nous visions à créer, nous n'avons jamais voulu permettre aux utilisateurs de revenir en arrière mais bien de se trouver dans un flux continu de musique.
+
+### Fichiers FXML
+Le fichier FXML de base, tout comme le fichier Java de base, a été découpé en plusieurs parties histoire de pouvoir plus facilement comprendre l'implémentation et la modifier.
+Comme dans les fichiers Java, nous avons un fichier principal, sans surprise `main.fxml` qui permet de découper l'interface principale en plusieurs panneaux. Ensuite, pour chacun des panneaux, nous avons des fichiers portant le même nom que leurs classes Java.
+Ce qu'il faut savoir par rapport aux fichiers FXML, c'est que nous avons dû ajouter un ID à chaque structure dont les actions nous intéressaient, et, pour certaines, nous avons également dû lier une action à une certaine méthode. Ainsi, dès l'instant que, dans le code Java, nous rencontrons un `@FXML`, cela veut dire que nous avons un lien direct avec les structures des fichiers FXML.
 
 ##  Package utils
 Le package `utils` réunit tous les utilitaires dont nous avons eu besoin au sein de plusieurs classes et dont l'implémentation n'avait aucun sens au sein desdites classes. L'utilité de chaque classe diffère alors énormément.
