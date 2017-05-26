@@ -255,8 +255,13 @@ Ainsi, nous avons aujourd'hui plusieurs classes Java et plusieurs fichiers FXML 
 ### Classes du package
 La description des classes se fera selon l'ordre des vues dans l'interface graphique, en partant de la vue en haut à gauche pour finir par la vue en bas au centre. Nous allons tout d'abord commencer par la classe principale.
 #### UIController
-`UIController` est la classe qui permet de lier le reste des classes entre elles. Lorsque le programme est lancé, c'est cette classe qui est lancée. Elle va en premier lieu faire apparaître une fenêtre demandant à l'utilisateur si celui-ci veut être le serveur. Son lancement a lieu dans la fonction `initialize()`. Au moment du choix de l'utilisateur, l'interface annonce au Core quelle configuration a été choisie et la fenêtre principale du programme peut être lancée.
-La classe `UIController` permet également de fermer la fenêtre proprement lorsque l'utilisateur décidera d'arrêter le programme.
+`UIController` est la classe qui permet de lier le reste des classes entre elles. Lorsque le programme est lancé, c'est cette classe qui est lancée. Elle va en premier lieu faire apparaître une fenêtre demandant à l'utilisateur si celui-ci veut être le serveur. Son lancement a lieu dans la fonction `initialize()`. Au moment du choix de l'utilisateur, l'interface annonce au Core quelle configuration a été choisie et la fenêtre principale du programme peut être lancée. La partie en haut à gauche contenant les playlists est directement mise à jour et la playlist sélectionnée par défaut est celle en cours de construction.
+Mis à part la configuration initiale de la fenêtre, `UIController` permet aussi toutes les actions basiques de l'interface graphique : 
+
++  Afficher des alertes
++  Obtenir la playlist actuellement visualisée
++  Mettre à jour et afficher les playlists
++  Fermer la fenêtre proprement lorsque l'utilisateur décide d'arrêter le programme.
 #### PlaylistsListView
 *En haut à gauche*
 #### TrackListView
