@@ -245,41 +245,13 @@ public class Player {
      * @brief Rise the volume of the player.
      */
     public void riseVolume() {
-        if (volumeProperty.get() + volumeStep > MAX_VOLUME) {
-            volumeProperty.setValue(MAX_VOLUME);
-        } else {
-            volumeProperty.setValue(volumeProperty.getValue() + volumeStep);
-        }
+        volumeProperty.setValue(Math.min(volumeProperty.getValue() + volumeStep, MAX_VOLUME));
     }
 
     /**
      * @brief Lower the volume of the player.
      */
     public void lowerVolume() {
-        if (volumeProperty.get() - volumeStep < MIN_VOLUME) {
-            volumeProperty.setValue(MIN_VOLUME);
-        } else {
-            volumeProperty.setValue(volumeProperty.getValue() - volumeStep);
-        }
+        volumeProperty.setValue(Math.max(volumeProperty.getValue() - volumeStep, MIN_VOLUME));
     }
-
-    /**
-     * @brief Get the current player's volume.
-     *
-     * @return The volume of the current player.
-     */
-    /*public double getVolume() {
-        return player.getVolume();
-    }*/
-
-    /**
-     * @brief Set the current player's volume.
-     *
-     * @param volume The volume to apply on the current player.
-     */
-    /*public void setVolume(double volume) {
-        if (player != null) {
-            player.setVolume(volume);
-        }
-    }*/
 }
