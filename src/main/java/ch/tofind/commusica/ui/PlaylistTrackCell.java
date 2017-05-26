@@ -92,14 +92,14 @@ public class PlaylistTrackCell {
         }));
 
         // Set value at loading.
-        if (playlistTrack.getBeenPlayedProperty().getValue()) {
+        if (playlistTrack.hasBeenPlayed().getValue()) {
             trackPane.getStyleClass().add("played-song");
         } else {
             trackPane.getStyleClass().remove("played-song");
         }
 
         // Listen to changes.
-        playlistTrack.getBeenPlayedProperty().addListener(((observable, oldValue, newValue) -> {
+        playlistTrack.hasBeenPlayed().addListener(((observable, oldValue, newValue) -> {
             if (newValue) {
                 trackPane.getStyleClass().add("played-song");
             } else {
