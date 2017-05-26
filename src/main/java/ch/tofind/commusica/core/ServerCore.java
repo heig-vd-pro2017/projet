@@ -490,45 +490,76 @@ public class ServerCore extends AbstractCore implements ICore {
 
 
     /**
-     * @brief Load next track on server side.
+     * @brief Sends a vote for the next track from the server side.
      *
      * @param args Args of the command.
      *
-     * @return The result of the command.
+     * @return An empty String.
      */
     public String SEND_NEXT_TRACK_REQUEST(ArrayList<Object> args) {
 
-        Player.getCurrentPlayer().load();
-        Player.getCurrentPlayer().play();
+        ArrayList<Object> id = new ArrayList<>();
+
+        id.add(Integer.toString(ApplicationProtocol.myId));
+        NEXT_TRACK_REQUEST(id);
 
         return "";
     }
 
     /**
-     * @brief Entry point to play/pause the current track.
+     * @brief Entry point to send a play/pause vote from the server side.
      *
      * @param args Args of the command.
      *
-     * @return The result of the command.
+     * @return An empty String.
      */
     public String SEND_PLAY_PAUSE_REQUEST(ArrayList<Object> args) {
 
-        Player player = Player.getCurrentPlayer();
+        // New args array since the one passed in parameter is null
+        ArrayList<Object> id = new ArrayList<>();
 
-        if (!player.isPlaying()) {
+        id.add(Integer.toString(ApplicationProtocol.myId));
 
-            // Ask the UI to execute the command when it can
-            Platform.runLater(() -> player.play());
-
-        } else {
-
-            // Ask the UI to execute the command when it can
-            Platform.runLater(() -> player.pause());
-
-        }
-
+        PLAY_PAUSE_REQUEST(id);
         return "";
     }
+
+
+    /**
+     * @brief Entry point to send an upvote from the server side.
+     *
+     * @param args Args of the command.
+     *
+     * @return An empty String.
+     */
+    public String SEND_UPVOTE_TRACK_REQUEST(ArrayList<Object> args) {
+
+        args.add(0, Integer.toString(ApplicationProtocol.myId));
+
+        // add a null Object instead of the socket
+        args.add(1, null);
+        UPVOTE_TRACK_REQUEST(args);
+        return "";
+    }
+
+
+    /**
+     * @brief Entry point to send a downvote from the server side.
+     *
+     * @param args Args of the command.
+     *
+     * @return An empty String.
+     */
+    public String SEND_DOWNVOTE_TRACK_REQUEST(ArrayList<Object> args) {
+
+        args.add(0, Integer.toString(ApplicationProtocol.myId));
+
+        // add a null Object instead of the socket
+        args.add(1, null);
+        DOWNVOTE_TRACK_REQUEST(args);
+        return "";
+    }
+
 
     /**
      * @brief Entry point to send the PLAY_PAUSE_REQUEST command.
@@ -549,21 +580,35 @@ public class ServerCore extends AbstractCore implements ICore {
 
             userSessionManager.resetPlayPauseRequests();
 
-            Core.execute("SEND_PLAY_PAUSE_REQUEST", null);
+            Player player = Player.getCurrentPlayer();
 
-            if (Player.getCurrentPlayer().isPlaying()) {
-                LOG.info("Player stops playing.");
+            String result = "";
 
-                return ApplicationProtocol.PAUSE + NetworkProtocol.END_OF_LINE +
-                        ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
-                        NetworkProtocol.END_OF_COMMAND;
-            } else {
+            // Test if the player is on pause or playing
+            if (!player.isPlaying()) {
+
+                // Ask the UI to execute the command when it can
+                Platform.runLater(() -> player.play());
+
                 LOG.info("Player starts playing.");
 
-                return ApplicationProtocol.PLAY + NetworkProtocol.END_OF_LINE +
+                result = ApplicationProtocol.PLAY + NetworkProtocol.END_OF_LINE +
                         ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                         NetworkProtocol.END_OF_COMMAND;
+
+            } else {
+
+                // Ask the UI to execute the command when it can
+                Platform.runLater(() -> player.pause());
+                LOG.info("Player stops playing.");
+
+                result = ApplicationProtocol.PAUSE + NetworkProtocol.END_OF_LINE +
+                        ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                        NetworkProtocol.END_OF_COMMAND;
+
             }
+
+            sendMulticast(result);
 
         } else {
             LOG.info("User's opinion was taken into account.");
@@ -651,6 +696,18 @@ public class ServerCore extends AbstractCore implements ICore {
         return result;
     }
 
+
+    public String SEND_VOLUME_UP_REQUEST(ArrayList<Object> args) {
+
+        ArrayList<Object> id = new ArrayList<>();
+
+        id.add(Integer.toString(ApplicationProtocol.myId));
+        TURN_VOLUME_UP_REQUEST(id);
+
+        return "";
+    }
+
+
     /**
      * @brief Receive the ask to turn the volume up by a client.
      *
@@ -689,6 +746,16 @@ public class ServerCore extends AbstractCore implements ICore {
                 ApplicationProtocol.SUCCESS_VOTE + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
         return result;
+    }
+
+    public String SEND_VOLUME_DOWN_REQUEST(ArrayList<Object> args) {
+
+        ArrayList<Object> id = new ArrayList<>();
+
+        id.add(Integer.toString(ApplicationProtocol.myId));
+        TURN_VOLUME_DOWN_REQUEST(id);
+
+        return "";
     }
 
     /**
