@@ -48,6 +48,14 @@ public class Player {
 
     private final DoubleProperty volumeProperty;
 
+    //! Minimum value for the volumeProperty
+    private final double MIN_VOLUME = 0.0;
+
+    //! Maximum value for the volumeProperty
+    private final double MAX_VOLUME = 1.0;
+
+
+
     /**
      * @brief Player single constructor. Avoid the instantiation.
      */
@@ -58,7 +66,7 @@ public class Player {
         currentTrackProperty = new PlaylistTrackProperty();
         previousTrackProperty = new PlaylistTrackProperty();
         isPlayingProperty = new SimpleBooleanProperty(false);
-        volumeProperty = new SimpleDoubleProperty(0.5);
+        volumeProperty = new SimpleDoubleProperty(MAX_VOLUME / 2.0);
 
         previousTrackProperty.addListener((obs, oldValue, newValue) -> {
             if (newValue != null) {
@@ -237,14 +245,22 @@ public class Player {
      * @brief Rise the volume of the player.
      */
     public void riseVolume() {
-        volumeProperty.setValue(volumeProperty.getValue() + volumeStep);
+        if (volumeProperty.get() + volumeStep > MAX_VOLUME) {
+            volumeProperty.setValue(MAX_VOLUME);
+        } else {
+            volumeProperty.setValue(volumeProperty.getValue() + volumeStep);
+        }
     }
 
     /**
      * @brief Lower the volume of the player.
      */
     public void lowerVolume() {
-        volumeProperty.setValue(volumeProperty.getValue() - volumeStep);
+        if (volumeProperty.get() - volumeStep < MIN_VOLUME) {
+            volumeProperty.setValue(MIN_VOLUME);
+        } else {
+            volumeProperty.setValue(volumeProperty.getValue() - volumeStep);
+        }
     }
 
     /**

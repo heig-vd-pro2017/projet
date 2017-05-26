@@ -98,7 +98,7 @@ public class ServerCore extends AbstractCore implements ICore {
      *
      * @param args Args of the command.
      *
-     * @return The result of the command.
+     * @return An empty String.
      */
     public String SEND_PLAYLIST_UPDATE(ArrayList<Object> args) {
 
@@ -129,7 +129,7 @@ public class ServerCore extends AbstractCore implements ICore {
      *
      * @param args Args of the command.
      *
-     * @return The result of the command.
+     * @return The END_OF_COMMUNICATION command.
      */
     public String NEW_ACTIVE_CLIENT(ArrayList<Object> args) {
 
@@ -410,8 +410,6 @@ public class ServerCore extends AbstractCore implements ICore {
         // Update the track in the database - L'OBJET N'EXISTE PAS DANS LA DB
         //DatabaseManager.getInstance().update(playlistTrackToUpvote);
 
-        // Update the UI
-        // TODO: Is it done automatically?
 
         // Tells the user its track has been voted
         result = ApplicationProtocol.TRACK_UPVOTED + NetworkProtocol.END_OF_LINE +
@@ -649,6 +647,12 @@ public class ServerCore extends AbstractCore implements ICore {
             // Ask the UI to execute the command when it can
             Platform.runLater(() -> Player.getCurrentPlayer().load());
 
+            // Send the PLAY command by multicast so the client knows it has to update
+            // it UI to the PLAY state.
+            sendMulticast(ApplicationProtocol.PLAY + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                    NetworkProtocol.END_OF_COMMAND);
+
             LOG.info("Next song.");
         } else {
             LOG.info("User's opinion was taken into account.");
@@ -667,7 +671,7 @@ public class ServerCore extends AbstractCore implements ICore {
      *
      * @param args Args of the command.
      *
-     * @return The result of the command.
+     * @return A SUCCESS command.
      */
     public String PREVIOUS_TRACK_REQUEST(ArrayList<Object> args) {
 
@@ -696,8 +700,14 @@ public class ServerCore extends AbstractCore implements ICore {
         return result;
     }
 
-
-    public String SEND_VOLUME_UP_REQUEST(ArrayList<Object> args) {
+    /**
+     * @brief Entry point to send a volume up request from the server side.
+     *
+     * @param args Args of the command.
+     *
+     * @return An empty String.
+     */
+    public String SEND_TURN_VOLUME_UP_REQUEST(ArrayList<Object> args) {
 
         ArrayList<Object> id = new ArrayList<>();
 
@@ -706,7 +716,6 @@ public class ServerCore extends AbstractCore implements ICore {
 
         return "";
     }
-
 
     /**
      * @brief Receive the ask to turn the volume up by a client.
@@ -721,6 +730,8 @@ public class ServerCore extends AbstractCore implements ICore {
 
         Integer userId = Integer.parseInt((String) args.remove(0));
 
+        String result = "";
+
         userSessionManager.turnVolumeUp(userId);
 
         if (userSessionManager.countTurnVolumeUpRequests() > userSessionManager.countActiveSessions() / 2) {
@@ -732,23 +743,32 @@ public class ServerCore extends AbstractCore implements ICore {
             // Ask the UI to execute the command when it can
             Platform.runLater(() -> Player.getCurrentPlayer().riseVolume());
 
-            return ApplicationProtocol.VOLUME_TURNED_UP + NetworkProtocol.END_OF_LINE +
+            result = ApplicationProtocol.VOLUME_TURNED_UP + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
+
+            sendMulticast(result);
 
         } else {
             LOG.info("User's opinion was taken into account.");
         }
 
         // Tells the user its opinion was taken into account
-        String result = ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
+        result = ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.SUCCESS_VOTE + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
         return result;
     }
 
-    public String SEND_VOLUME_DOWN_REQUEST(ArrayList<Object> args) {
+    /**
+     * @brief Entry point to send a volume down request from the server side.
+     *
+     * @param args Args of the command.
+     *
+     * @return An empty String.
+     */
+    public String SEND_TURN_VOLUME_DOWN_REQUEST(ArrayList<Object> args) {
 
         ArrayList<Object> id = new ArrayList<>();
 
@@ -771,6 +791,8 @@ public class ServerCore extends AbstractCore implements ICore {
 
         Integer userId = Integer.parseInt((String) args.remove(0));
 
+        String result = "";
+
         userSessionManager.turnVolumeDown(userId);
 
         if (userSessionManager.countTurnVolumeDownRequests() > userSessionManager.countActiveSessions() / 2) {
@@ -782,19 +804,23 @@ public class ServerCore extends AbstractCore implements ICore {
             // Ask the UI to execute the command when it can
             Platform.runLater(() -> Player.getCurrentPlayer().lowerVolume());
 
-            return ApplicationProtocol.VOLUME_TURNED_DOWN + NetworkProtocol.END_OF_LINE +
+            result = ApplicationProtocol.VOLUME_TURNED_DOWN + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
+
+            sendMulticast(result);
 
         } else {
             LOG.info("User's opinion was taken into account.");
         }
 
-        // Tells the user its opinion has been counted
-        return ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
+        result = ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.SUCCESS_VOTE + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
+
+        // Tells the user its opinion has been counted
+        return result;
     }
 
     @Override
