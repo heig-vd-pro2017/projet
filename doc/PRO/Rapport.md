@@ -319,12 +319,14 @@ Cette classe a été créée uniquement pour assouvir le besoin d'un débogueur 
   +  Vert pour les succès
   +  Jaune pour les avertissements
 L'affichage des logs peut tout à fait être désactivé au niveau du fichier de configuration `commusica.properties` en réglant la valeur de `DEBUG` à 0.
+
 #### Network
 Cette classe permet de récupérer toutes les informations basiques de la machine concernant le réseau. Elle va en outre permettre de récupérer les interfaces disponibles nécessaires à la connexion à un certain serveur et de configurer le réseau pour le reste de l'application.
 #### ObservableSortedPlaylistTracklist
 Cette classe permet de récupérer les informations nécessaires à l'affichage des chansons dans la playlist en écoute. Cet utilitaire a été créé afin de pouvoir faciliter la récupération d'informations depuis les classes mettant en oeuvre l'interface graphique.
 #### Serialize
 Grâce à la librairie Gson de Google, cette classe est utilisée dans la sérialisation et désérialisation d'objets.
+#### Session Ce package permet de gérer les sessions des utilisateurs. Avant tous nous allons monter l'importance de la session pour une communication client-serveur. La session permet aux serveurs de mémorise des informations relatives au client, d'une requête à l'autre. Le contenu d'une session est conservé jusqu'à ce que l'utilisateur ferme sa connexion, reste inactif trop longtemps. ##### ServerSessionCette classe permet de gérer la session d'un serveur. Le champs privé update permet de définir le temps que la session reste toujours valable.#####  ServerSessionManager Cette classe comme son nom l'indique permet de gérer les différentes sessions des serveurs. Il constitué : + D’une MAP permettant de stocké les sessions des différents serveurs.+ ScheduledExecutorService permettant de nettoyer les anciennes sessions des différentes anciennes sessions. Il faut noter ici que ScheduledExecutorService est un service qui peut planifier des tâches à exécuter après un délai ou à éxecuté à plusieurs reprises avec un intervalle de temps fixe entre chaque exécution de manière asynchrone par un thread de travail, et non par le thread passant la tâche à ScheduledExecutorService. Nous utilisons dans notre cas pour supprimer tous les sessions donc le délai a expiré.  ##### UserSessionCette classe permet de gérer la session d'un utilisateur. Le champs privé update permet de définir le temps que la session reste toujours valable.##### UserSessionManager  Cette classe comme son nom l'indique permet de gérer les différentes sessions des utilisateurs. 
 
 ## Tests réalisés
 
