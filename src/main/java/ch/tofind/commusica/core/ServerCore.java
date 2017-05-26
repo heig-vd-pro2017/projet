@@ -26,9 +26,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -87,7 +85,7 @@ public class ServerCore extends AbstractCore implements ICore {
      * @return The result of the command.
      */
     public String END_OF_COMMUNICATION(ArrayList<Object> args) {
-        System.out.println("End of communication - server side.");
+        LOG.info("End of communication - server side.");
         return "";
     }
 
@@ -98,7 +96,7 @@ public class ServerCore extends AbstractCore implements ICore {
      *
      * @param args Args of the command.
      *
-     * @return The result of the command.
+     * @return An empty String.
      */
     public String SEND_PLAYLIST_UPDATE(ArrayList<Object> args) {
 
@@ -129,7 +127,7 @@ public class ServerCore extends AbstractCore implements ICore {
      *
      * @param args Args of the command.
      *
-     * @return The result of the command.
+     * @return The END_OF_COMMUNICATION command.
      */
     public String NEW_ACTIVE_CLIENT(ArrayList<Object> args) {
 
@@ -261,18 +259,62 @@ public class ServerCore extends AbstractCore implements ICore {
         // Retrieve the file from the network
         FileManager fileManager = FileManager.getInstance();
 
-        String result;
+        File tempFile = null;
 
-        File tempFile;
+        // Try to retreive the file for 15 secs. After that, continue the process
+        ExecutorService executor = Executors.newCachedThreadPool();
+
+        Callable<Object> task = () -> {
+
+            File retreivedFile = null;
+            try {
+                retreivedFile = fileManager.retrieveFile(socket.getInputStream(), fileSize);
+            } catch (IOException e) {
+
+                // Delete the file
+                if (retreivedFile != null) {
+                    fileManager.delete(retreivedFile);
+                }
+
+                LOG.error(e);
+            }
+            return retreivedFile;
+        };
+
+        Future<Object> future = executor.submit(task);
+
         try {
-            tempFile = fileManager.retrieveFile(socket.getInputStream(), fileSize);
-        } catch (IOException e) {
-            LOG.error(e);
+            tempFile = (File) future.get(5, TimeUnit.SECONDS);
+        } catch (TimeoutException ex) {
+
+            // Delete the temp file
+            if (tempFile != null) {
+                fileManager.delete(tempFile);
+            }
 
             return ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.ERROR_DURING_TRANSFER + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
+
+        } catch (InterruptedException e) {
+
+            LOG.error(e);
+
+            // Delete the temp file
+            if (tempFile != null) {
+                fileManager.delete(tempFile);
+            }
+
+            return ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.ERROR_DURING_TRANSFER + NetworkProtocol.END_OF_LINE +
+                    NetworkProtocol.END_OF_COMMAND;
+
+        } catch (ExecutionException e) {
+            LOG.error(e);
+        } finally {
+            future.cancel(true);
         }
 
         // Compare the checksums to avoid files corruption
@@ -295,11 +337,10 @@ public class ServerCore extends AbstractCore implements ICore {
         } catch (Exception e) {
             fileManager.delete(tempFile);
             LOG.error(e);
-            result = ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
+            return ApplicationProtocol.ERROR + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.ERROR_FILE_NOT_SUPPORTED + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
-            return result;
         }
 
         // Save the file under its new name on the filesystem
@@ -319,8 +360,9 @@ public class ServerCore extends AbstractCore implements ICore {
         Query trackById = session.createQuery("FROM Track WHERE id = :id");
         trackById.setParameter("id", trackToReceive.getId());
 
-        Track trackToSave = null;
+        Track trackToSave;
 
+        // Check if track in database to modify it or create a new one.
         try {
 
             trackToSave = (Track) trackById.getSingleResult();
@@ -341,10 +383,9 @@ public class ServerCore extends AbstractCore implements ICore {
         // Add the track to the current Playlist
         PlaylistManager.getInstance().getPlaylist().addTrack(trackToSave);
 
-        result = ApplicationProtocol.TRACK_SAVED + NetworkProtocol.END_OF_LINE +
+        return ApplicationProtocol.TRACK_SAVED + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
-        return result;
     }
 
     /**
@@ -410,8 +451,6 @@ public class ServerCore extends AbstractCore implements ICore {
         // Update the track in the database - L'OBJET N'EXISTE PAS DANS LA DB
         //DatabaseManager.getInstance().update(playlistTrackToUpvote);
 
-        // Update the UI
-        // TODO: Is it done automatically?
 
         // Tells the user its track has been voted
         result = ApplicationProtocol.TRACK_UPVOTED + NetworkProtocol.END_OF_LINE +
@@ -649,6 +688,12 @@ public class ServerCore extends AbstractCore implements ICore {
             // Ask the UI to execute the command when it can
             Platform.runLater(() -> Player.getCurrentPlayer().load());
 
+            // Send the PLAY command by multicast so the client knows it has to update
+            // it UI to the PLAY state.
+            sendMulticast(ApplicationProtocol.PLAY + NetworkProtocol.END_OF_LINE +
+                    ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
+                    NetworkProtocol.END_OF_COMMAND);
+
             LOG.info("Next song.");
         } else {
             LOG.info("User's opinion was taken into account.");
@@ -667,7 +712,7 @@ public class ServerCore extends AbstractCore implements ICore {
      *
      * @param args Args of the command.
      *
-     * @return The result of the command.
+     * @return A SUCCESS command.
      */
     public String PREVIOUS_TRACK_REQUEST(ArrayList<Object> args) {
 
@@ -696,8 +741,14 @@ public class ServerCore extends AbstractCore implements ICore {
         return result;
     }
 
-
-    public String SEND_VOLUME_UP_REQUEST(ArrayList<Object> args) {
+    /**
+     * @brief Entry point to send a volume up request from the server side.
+     *
+     * @param args Args of the command.
+     *
+     * @return An empty String.
+     */
+    public String SEND_TURN_VOLUME_UP_REQUEST(ArrayList<Object> args) {
 
         ArrayList<Object> id = new ArrayList<>();
 
@@ -706,7 +757,6 @@ public class ServerCore extends AbstractCore implements ICore {
 
         return "";
     }
-
 
     /**
      * @brief Receive the ask to turn the volume up by a client.
@@ -721,6 +771,8 @@ public class ServerCore extends AbstractCore implements ICore {
 
         Integer userId = Integer.parseInt((String) args.remove(0));
 
+        String result = "";
+
         userSessionManager.turnVolumeUp(userId);
 
         if (userSessionManager.countTurnVolumeUpRequests() > userSessionManager.countActiveSessions() / 2) {
@@ -732,23 +784,32 @@ public class ServerCore extends AbstractCore implements ICore {
             // Ask the UI to execute the command when it can
             Platform.runLater(() -> Player.getCurrentPlayer().riseVolume());
 
-            return ApplicationProtocol.VOLUME_TURNED_UP + NetworkProtocol.END_OF_LINE +
+            result = ApplicationProtocol.VOLUME_TURNED_UP + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
+
+            sendMulticast(result);
 
         } else {
             LOG.info("User's opinion was taken into account.");
         }
 
         // Tells the user its opinion was taken into account
-        String result = ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
+        result = ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.SUCCESS_VOTE + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
         return result;
     }
 
-    public String SEND_VOLUME_DOWN_REQUEST(ArrayList<Object> args) {
+    /**
+     * @brief Entry point to send a volume down request from the server side.
+     *
+     * @param args Args of the command.
+     *
+     * @return An empty String.
+     */
+    public String SEND_TURN_VOLUME_DOWN_REQUEST(ArrayList<Object> args) {
 
         ArrayList<Object> id = new ArrayList<>();
 
@@ -771,6 +832,8 @@ public class ServerCore extends AbstractCore implements ICore {
 
         Integer userId = Integer.parseInt((String) args.remove(0));
 
+        String result = "";
+
         userSessionManager.turnVolumeDown(userId);
 
         if (userSessionManager.countTurnVolumeDownRequests() > userSessionManager.countActiveSessions() / 2) {
@@ -782,19 +845,23 @@ public class ServerCore extends AbstractCore implements ICore {
             // Ask the UI to execute the command when it can
             Platform.runLater(() -> Player.getCurrentPlayer().lowerVolume());
 
-            return ApplicationProtocol.VOLUME_TURNED_DOWN + NetworkProtocol.END_OF_LINE +
+            result = ApplicationProtocol.VOLUME_TURNED_DOWN + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
+
+            sendMulticast(result);
 
         } else {
             LOG.info("User's opinion was taken into account.");
         }
 
-        // Tells the user its opinion has been counted
-        return ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
+        result = ApplicationProtocol.SUCCESS + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                 ApplicationProtocol.SUCCESS_VOTE + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
+
+        // Tells the user its opinion has been counted
+        return result;
     }
 
     @Override

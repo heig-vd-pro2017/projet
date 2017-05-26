@@ -48,6 +48,14 @@ public class Player {
 
     private final DoubleProperty volumeProperty;
 
+    //! Minimum value for the volumeProperty
+    private final double MIN_VOLUME = 0.0;
+
+    //! Maximum value for the volumeProperty
+    private final double MAX_VOLUME = 1.0;
+
+
+
     /**
      * @brief Player single constructor. Avoid the instantiation.
      */
@@ -58,7 +66,7 @@ public class Player {
         currentTrackProperty = new PlaylistTrackProperty();
         previousTrackProperty = new PlaylistTrackProperty();
         isPlayingProperty = new SimpleBooleanProperty(false);
-        volumeProperty = new SimpleDoubleProperty(0.5);
+        volumeProperty = new SimpleDoubleProperty(MAX_VOLUME / 2.0);
 
         previousTrackProperty.addListener((obs, oldValue, newValue) -> {
             if (newValue != null) {
@@ -237,33 +245,13 @@ public class Player {
      * @brief Rise the volume of the player.
      */
     public void riseVolume() {
-        volumeProperty.setValue(volumeProperty.getValue() + volumeStep);
+        volumeProperty.setValue(Math.min(volumeProperty.getValue() + volumeStep, MAX_VOLUME));
     }
 
     /**
      * @brief Lower the volume of the player.
      */
     public void lowerVolume() {
-        volumeProperty.setValue(volumeProperty.getValue() - volumeStep);
+        volumeProperty.setValue(Math.max(volumeProperty.getValue() - volumeStep, MIN_VOLUME));
     }
-
-    /**
-     * @brief Get the current player's volume.
-     *
-     * @return The volume of the current player.
-     */
-    /*public double getVolume() {
-        return player.getVolume();
-    }*/
-
-    /**
-     * @brief Set the current player's volume.
-     *
-     * @param volume The volume to apply on the current player.
-     */
-    /*public void setVolume(double volume) {
-        if (player != null) {
-            player.setVolume(volume);
-        }
-    }*/
 }

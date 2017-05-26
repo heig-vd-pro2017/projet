@@ -78,7 +78,7 @@ public class ClientCore extends AbstractCore implements ICore {
      * @return An empty String.
      */
     public String END_OF_COMMUNICATION(ArrayList<Object> args) {
-        System.out.println("End of communication client side.");
+        LOG.info("End of communication client side.");
         return "";
     }
 
@@ -388,23 +388,28 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Method invoked when the server sends the VOLUME_TURNED_UP command.
+     * @brief Method invoked when the server sends the VOLUME_TURNED_UP command by multicast.
      * It updates the UI to reflect the current volume.
      *
      * @param args Args of the command.
      *
-     * @return END_OF_COMMUNICATION command
+     * @return An empty String.
      */
     public String VOLUME_TURNED_UP(ArrayList<Object> args) {
 
         LOG.info("Volume turns up.");
 
-        Player.getCurrentPlayer().riseVolume();
+        // Retrieve the server id
+        Integer serverId = Integer.valueOf((String) args.remove(0));
 
-        String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
-                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
-                NetworkProtocol.END_OF_COMMAND;
-        return result;
+        // Test if it is our current server sending the information
+        if (Objects.equals(serverId, ApplicationProtocol.serverId)) {
+
+            Player.getCurrentPlayer().riseVolume();
+
+        }
+
+        return "";
     }
 
     /**
@@ -428,24 +433,28 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Method invoked when the server sends the VOLUME_TURNED_DOWN command.
+     * @brief Method invoked when the server sends the VOLUME_TURNED_DOWN command by multicast.
      * It updates the UI to reflect the current volume.
      *
      * @param args Args of the command.
      *
-     * @return END_OF_COMMUNICATION command
+     * @return An empty String.
      */
     public String VOLUME_TURNED_DOWN(ArrayList<Object> args) {
 
         LOG.info("Volume turns down.");
 
-        Player.getCurrentPlayer().lowerVolume();
+        // Retrieve the server id
+        Integer serverId = Integer.valueOf((String) args.remove(0));
 
-        String result = NetworkProtocol.END_OF_COMMUNICATION + NetworkProtocol.END_OF_LINE +
-                ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
-                NetworkProtocol.END_OF_COMMAND;
+        // Test if it is our current server sending the information
+        if (Objects.equals(serverId, ApplicationProtocol.serverId)) {
 
-        return result;
+            Player.getCurrentPlayer().lowerVolume();
+
+        }
+
+        return "";
     }
 
     /**
