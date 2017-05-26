@@ -40,9 +40,7 @@ public class ServerSessionManager implements ISessionManager {
         // Crée un thread qui nettoie les sessions toutes les N secondes
         scheduledExecutorService = Executors.newScheduledThreadPool(1);
 
-        scheduledExecutorService.scheduleAtFixedRate(() -> {
-            deleteObsoleteSessions();
-        }, 0, TIME_BEFORE_SESSION_INACTIVE, TimeUnit.SECONDS);
+        scheduledExecutorService.scheduleAtFixedRate(this::deleteObsoleteSessions, 0, TIME_BEFORE_SESSION_INACTIVE, TimeUnit.SECONDS);
     }
 
     /**
@@ -78,7 +76,7 @@ public class ServerSessionManager implements ISessionManager {
             availableServers.put(serverSession.getId(), serverSession);
         } else {
             ServerSession serverSession = new ServerSession(id, serverIp, serverName);
-            Platform.runLater(() -> availableServers.put(serverSession.getId(), serverSession));
+            availableServers.put(serverSession.getId(), serverSession);
         }
     }
 
@@ -102,7 +100,7 @@ public class ServerSessionManager implements ISessionManager {
 
             ServerSession serverSession = entry.getValue();
 
-            if (serverSession.getLastUpdate().getTime() < now.getTime() - TIME_BEFORE_SESSION_INACTIVE) {
+            if (serverSession.getLastUpdate().getTime() < now.getTime() - TIME_BEFORE_SESSION_INACTIVE * 1000) {
 
                 LOG.info("Removing old server session.");
 

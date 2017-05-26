@@ -59,9 +59,7 @@ public class UserSessionManager implements ISessionManager {
         // Crée un thread qui nettoie les sessions toutes les N secondes
         scheduledExecutorService = Executors.newScheduledThreadPool(1);
 
-        scheduledExecutorService.scheduleAtFixedRate(() -> {
-            deleteObsoleteSessions();
-        }, 0, TIME_BEFORE_SESSION_INACTIVE, TimeUnit.SECONDS);
+        scheduledExecutorService.scheduleAtFixedRate(this::deleteObsoleteSessions, 0, TIME_BEFORE_SESSION_INACTIVE, TimeUnit.SECONDS);
     }
 
     /**
@@ -323,7 +321,7 @@ public class UserSessionManager implements ISessionManager {
 
             UserSession userSession = entry.getValue();
 
-            if (userSession.getLastUpdate().getTime() < now.getTime() - TIME_BEFORE_SESSION_INACTIVE) {
+            if (userSession.getLastUpdate().getTime() < now.getTime() - TIME_BEFORE_SESSION_INACTIVE * 1000) {
 
                 LOG.info("Removing old user session.");
 
