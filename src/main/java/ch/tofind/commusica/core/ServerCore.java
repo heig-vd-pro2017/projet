@@ -494,12 +494,9 @@ public class ServerCore extends AbstractCore implements ICore {
      *
      * @param args Args of the command.
      *
-     * @return The result of the command.
+     * @return An empty String.
      */
     public String SEND_NEXT_TRACK_REQUEST(ArrayList<Object> args) {
-
-        // The server add itself to the users session list to be part of the votes
-        userSessionManager.store(ApplicationProtocol.myId);
 
         ArrayList<Object> id = new ArrayList<>();
 
@@ -514,7 +511,7 @@ public class ServerCore extends AbstractCore implements ICore {
      *
      * @param args Args of the command.
      *
-     * @return The result of the command.
+     * @return An empty String.
      */
     public String SEND_PLAY_PAUSE_REQUEST(ArrayList<Object> args) {
 
@@ -699,6 +696,18 @@ public class ServerCore extends AbstractCore implements ICore {
         return result;
     }
 
+
+    public String SEND_VOLUME_UP_REQUEST(ArrayList<Object> args) {
+
+        ArrayList<Object> id = new ArrayList<>();
+
+        id.add(Integer.toString(ApplicationProtocol.myId));
+        TURN_VOLUME_UP_REQUEST(id);
+
+        return "";
+    }
+
+
     /**
      * @brief Receive the ask to turn the volume up by a client.
      *
@@ -737,6 +746,16 @@ public class ServerCore extends AbstractCore implements ICore {
                 ApplicationProtocol.SUCCESS_VOTE + NetworkProtocol.END_OF_LINE +
                 NetworkProtocol.END_OF_COMMAND;
         return result;
+    }
+
+    public String SEND_VOLUME_DOWN_REQUEST(ArrayList<Object> args) {
+
+        ArrayList<Object> id = new ArrayList<>();
+
+        id.add(Integer.toString(ApplicationProtocol.myId));
+        TURN_VOLUME_DOWN_REQUEST(id);
+
+        return "";
     }
 
     /**
