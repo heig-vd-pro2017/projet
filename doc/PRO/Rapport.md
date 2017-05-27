@@ -481,24 +481,26 @@ Concernant l'interface graphique, nous avons utilisé la librairie JavaFX. Celle
 Dans un premier temps, nous avons développé un fichier FXML grâce à SceneBuilder. Grâce à celui-ci, nous avons pu apprendre les bons usages FXML. Nous avons ensuite créé un fichier Java depuis lequel nous étions capables lancer la fenêtre au démarrage du programme. Cependant, le code se développant et devenant de plus en plus important, nous avons pris la décision de diviser aussi bien les fichiers FXML que les fichiers Java en plusieurs classes permettant d'avoir un regard plus précis sur chaque partie de notre implémentation.
 Ainsi, nous avons aujourd'hui plusieurs classes Java et plusieurs fichiers FXML qui sont reliés à leur classe principale `UIController` respectivement `main.fxml`.
 
-La description des classes se fera selon l'ordre des vues dans l'interface graphique, en partant de la vue en haut à gauche pour finir par la vue en bas au centre. Nous allons tout d'abord commencer par la fenêtre de configuration apparaissant au lancement du programme, pour continuer avec le controleur. Le reste des classes sera ensuite abordé.
+La description des classes se fera selon l'ordre des vues dans l'interface graphique, en partant de la vue en haut à gauche pour finir par la vue en bas au centre. Nous allons tout d'abord commencer par la fenêtre de configuration apparaissant au lancement du programme, pour continuer avec le contrôleur. Le reste des classes sera ensuite abordé.
 
 ### `ClientServerDialog`
-**DG : revoir texte car certaines choses ont changé depuis**
 `ClientServerDialog` est la première fenêtre lancée par le programme. Son lancement se passe alors dans la classe principale `Commusica`. Cette fenêtre permettra tout simplement de choisir entre deux rôles : celui du serveur ou de l'utilisateur lambda.
 Le choix sera communiqué au Core qui prendra connaissance de la décision, configurera le programme et exécutera le lancement de l'interface graphique appropriée.
+
+Si l'utilisateur a choisi le rôle de serveur, une nouvelle fenêtre apparaîtra afin qu'il puisse choisir le nom du serveur. Ce dernier sera aussi utilisé comme nom de la playlist qui sera diffusée.
 Après cela, cette classe lancera l'`UIController`.
 Dans le cas où l'utilisateur ne répond pas à la question posée dans la fenêtre de dialogue et la ferme, le programme s'arrête.
 
 ### `UIController`
 **DG : revoir texte car certaines choses ont changé depuis**
-`UIController` est la classe qui permet de lier le reste des classes entre elles. Elle va, en premier lieu, mettre à jour la partie en haut à gauche contenant les playlists et la liste de lecture sélectionnée sera par défaut celle en cours de construction.
-Mis à part la configuration initiale de la fenêtre, `UIController` permet aussi toutes les actions basiques de l'interface graphique :
+`UIController` est la classe qui permet de lier le reste des classes graphiques entre elles. Elle va, en premier lieu, mettre à jour la partie en haut à gauche contenant les playlists et la liste de lecture sélectionnée sera par défaut celle en cours de construction.
+Mise à part la configuration initiale de la fenêtre, `UIController` permet aussi toutes les actions basiques de l'interface graphique :
 
 +  Afficher des alertes
 +  Obtenir la liste de lecture actuellement visualisée
 +  Mettre à jour et afficher les playlists
 +  Fermer la fenêtre proprement lorsque l'utilisateur décide d'arrêter le programme
+
 `UIController` va tout simplement faire appel aux différentes classes du paquet `ui` afin de s'informer de l'état de chaque partie composant l'UI lors d'une demande depuis l'extérieur.
 
 ### `PlaylistsListView`
@@ -507,6 +509,7 @@ Mis à part la configuration initiale de la fenêtre, `UIController` permet auss
 - **PLAYING** : la liste de lecture en cours de création
 - **FAVORITES** : la liste de lecture des favoris
 - **SAVED** : la liste des playlists sauvegardées d'anciens événements
+
 Comme spécifié au chapitre précédent, la liste sélectionnée par défaut est la liste en cours de création.
 Dans la classe `PlaylistsListView`, nous faisons usage d'une méthode de la classe `FXCollections` permettant d'attacher un observeur à n'importe quel objet du programme. Ainsi, nous pouvons facilement modifier l'affichage des playlists au fur et à mesure des actions faites au niveau du serveur ou du client.
 
@@ -515,13 +518,13 @@ La classe `TracksListView` agit sur le panneau en haut au centre de l'interface 
 Cette classe permet d'afficher une liste de lecture et glisser/déposer un élément audio au sein du panneau, grâce à la méthode `initializeDragAndDrop()`. La liste de lecture est initialisée comme liste observable, ce qui fait que dès qu'un changement subvient, celle-ci se met à jour. Cependant, elle n'est pas encore peuplée par les chansons contenues dans la playlist. Cette question ainsi que celle des upvotes, downvotes et favoris sont traitées dans une autre classe implémentée spécialement pour cet usage : `PlaylistTrackCell`.
 
 La méthode `initializeDragAndDrop()` de la classe `TracksListView` mérite une explication plus détaillée. Nous avons longtemps réfléchi à la meilleure façon d'implémenter le téléchargement d'une chanson. Le "drag and drop" (glisser/déposer) nous a finalement semblé être la technique la plus intuitive d'ajout de chansons.
-Cette méthode relativement complexe nous permet donc de déterminer quand une personne  a déposé un fichier dans le panneau et ce, grâce à la méthode JavaFX `setOnDragDropped()` de la classe `TransferMode`. C'est alors que nous allons faire usage du constructeur de la classe `Track` prenant en paramètre un `AudioFile`.
+Cette méthode relativement complexe nous permet donc de déterminer quand une personne a déposé un fichier dans le panneau et ce, grâce à la méthode JavaFX `setOnDragDropped()` de la classe `TransferMode`. C'est alors que nous allons faire usage du constructeur de la classe `Track` prenant en paramètre un `AudioFile`.
 Si c'est le serveur qui a glissé/déposé une chanson, alors la méthode appellera directement la méthode du `PlaylistManager` permettant d'ajouter une chanson.
-Dans le cas du client, la méthode passera d'abord par la classe `Core` à laquelle il enverra la commande `SEND_TRACK_REQUEST` avec comme argument l'URI de la chanson.
+Dans le cas du client, la méthode passera d'abord par la classe `Core` à laquelle il enverra la commande `SEND_TRACK_REQUEST` avec comme argument la chanson *jsonifiée*.
 Nous remarquons ici, encore une fois, l'intérêt et l'importance de la classe `Core`.
 
 ### `PlaylistTrackCell`
-`PlaylistTrackCell` est une classe utilisée dans chaque cellule de la liste afin de définir les boutons d'upvote, downvote et favoris et leurs actions. Elle va également permettre de définir le titre, l'artiste, l'album et le nombre de votes d'une chanson.
+`PlaylistTrackCell` est une classe utilisée dans chaque cellule de la liste centrale afin de définir les boutons d'upvote, downvote et favoris et leurs actions. Elle va également permettre de définir le titre, l'artiste, l'album et le nombre de votes d'une chanson.
 Concernant les votes, deux fonctions - une pour les votes positifs et l'autre pour les votes négatifs - permettent de communiquer avec le `Core` à travers des commandes. Les commandes - `SEND_DOWNVOTE_TRACK_REQUEST` et `SEND_UPVOTE_TRACK_REQUEST` - sont utilisées dans ces deux cas spécifiques car l'incidence qu'aura un vote sera globale à tous les participants. Ainsi, le `Core` doit être averti du fait que l'événement a eu lieu pour en informer le serveur afin qu'il renvoie l'information à tout le monde. Encore une fois, le `Core` use de son pouvoir de messager à travers le programme.
 Dans le cas des favoris, il n'y a nul besoin de passer par le `Core` car tout ce que l'utilisateur veut, c'est enregistrer l'information dans sa liste personnelle de chansons favorites.
 
@@ -537,7 +540,7 @@ Pour ce panneau, nous n'avons pas repris le même type de cellule que dans le pa
 Dans le panneau du bas, au milieu, nous pouvons apercevoir le résumé de la chanson actuellement en écoute. Les boutons ainsi que les informations sont exactement les mêmes que dans le cas de la dernière chanson grisée affichée dans la liste de lecture du panneau en haut au centre.
 Nous avons choisi cet affichage de façon à pouvoir faciliter l'accès à la chanson actuelle si jamais l'utilisateur avait décidé de faire défiler la liste de lecture et aurait perdu de vue la chanson actuelle.
 Le vrai défi de cette classe a cependant été celui de pouvoir remplir la jauge d'écoute selon l'avancement de la chanson. Cela a évidemment été fait à travers un observeur sur l'instance de `Player` qui possède l'information sur le temps écoulé.
-Sur la gauche du panneau central, nous pouvons également apercevoir des boutons de controle.
+Sur la gauche du panneau central, nous pouvons également apercevoir des boutons de contrôle.
 
 #### `PlayerControlsView`
 `PlayerControlsView` qui se trouve dans le même panneau que `CurrentTrackView`représente les boutons "play/pause", "chanson suivante", "chanson précédente" et "volume". Ces quatre boutons représentent en fait cinq actions distinctes qui transiteront toutes à travers le `Core`. En effet, nous nous trouvons encore une fois face à une classe de l'interface graphique dont le `Core` est indispensable à son bon fonctionnement.
