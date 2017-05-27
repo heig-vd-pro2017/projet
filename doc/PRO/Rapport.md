@@ -228,7 +228,7 @@ Toute les commandes envoyées par Unicast ont comme deux premiers arguments:
 
 De ce fait, les tableaux ci-dessous n'indiquent dans leur colonne `Arguments` que les arguments en plus de ces deux dans l'ordre dans lequel ils sont envoyés.
 
-La seule commande envoyée en Multicast est `PLAYLIST_UPDATE` qui est envoyée depuis le serveur à tous les client.
+La seule commande envoyée en Multicast est `PLAYLIST_UPDATE` qui est envoyée depuis le serveur à tous les client.  
 
 #### Commandes envoyées par le client
 
@@ -259,7 +259,6 @@ La seule commande envoyée en Multicast est `PLAYLIST_UPDATE` qui est envoyée d
 | `END_OF_COMMUNICATION` |aucun| Commande indiquant que la communication doit être stoppée|
 
 
-
 ### `Server`
 Côté serveur, nous avons décidé d'opter pour une architecture avec un thread réceptionniste `Server` qui va attendre une nouvelle connexion de la part des clients. Une fois un nouveau client arrivé, il va lancer un thread `UnicastClient` qui va s'occuper de la communication avec le client. Cette communication se fait via un socket Unicast car il s'agit d'une communication privée entre le serveur et le client. Nous avons choisi cette solution car plusieurs connexions avec des clients peuvent survenir simultanément et ce système réceptionniste avec un thread par client gère plusieurs connexions en même temps contrairement à un système avec un seul thread qui s'occupe d'un client à la fois.
 
@@ -267,7 +266,7 @@ Côté serveur, nous avons décidé d'opter pour une architecture avec un thread
 ### `UnicastClient`
 La classe `UnicastClient` va pouvoir recevoir les commandes venant du réseau et en renvoyer. Elle implémente l'interface `Runnable` ce qui lui permet de s'exécuter en temps que thread. Sa force réside dans le fait qu'elle peut être utilisée aussi bien du côté server que du côté client grâce au fait qu'elle lit les commandes reçues et les envoient au `Core` pour qu'il les exécute.
 
-**DIAGRAMME D'ACTIVITE**
+![Diagramme d'activité de la réception/envoi unicast](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/projet/master/doc/PRO/actvity/UnicastClient.puml)
 
 Ce diagramme montre la lecture d'une commande venant du réseau et son découpage pour en extraire les arguments et la passer au `Core` qui s'occupera de l'exécuter si elle est disponible dans l'instance de son `AbstractCore` (voir chapitre `Core`). Le `Core` renvoie ensuite une commande à envoyer en réponse à celle reçue. La communication se termine lorsque une des extrémités envoie la commande `END_OF_COMMUNICATION` ou qu'elle ferme son socket.
 
@@ -283,7 +282,8 @@ Les `Core` ont chacun un `MulticastClient` pour pouvoir d'un côté envoyer la l
 C'est dans cette classe que sont définie les commandes spécifiques au réseau `END_OF_COMMUNICATION` et `END_OF_COMMAND`. Les ports pour les différents sockets ainsi que l'adresse du groupe Multicast se trouvent aussi dans cette classe. Ces derniers ont été choisis arbitrairement parmi les plages disponibles. Bien que peu probable, il est possible qu'une autre application utilise ces mêmes ports. Dans ce cas le fonctionnement de **Commusica** se retrouverait impossible. Nous n'avons pas voulu laisser ces valeurs dans le fichier de configuration car il est indispensable d'avoir les mêmes ports chez le serveur et chez les clients. Nous avons donc préféré prendre le risque qu'un autre programme utilise les mêmes ports plutôt qu'un utilisateur change ces valeurs.
 
 ### Threads lancés
-![Threads lancés par le serveur et les clients]()
+Voici les différents threads lancé par le client et le serveur.
+![Threads lancés par le serveur et les clients](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/projet/master/doc/PRO/other_diagrams/network_threads.puml)
 
 ## Paquet session
 
@@ -468,13 +468,13 @@ public synchronized String execute(String command, ArrayList<Object> args) {
 Nous recevons une commande et un tableau correspondant aux arguments de la méthode à invoquer. Ensuite, le programme essaie de trouver la méthode ayant un nom correspondant à la commande, si elle est disponible dans l'instance de la classe. Si c'est le cas, cette dernière va l'invoquer et donc exécuter ladite méthode, sinon une exception est levée. C'est grâce à cette méthode que tout prend son sens, car on a maintenant une instance d'`AbstractCore` qui est soit `ClientCore` soit `ServerCore` avec une seule méthode pour en appeler d'autres qui seront, elles, implémentées dans les sous-classes d' `AbstractCore`.
 
 ### `ServerCore` et `ClientCore`
-**Voir où mettre ça: Les serveur doivent pouvoir envoyer une mise à jour de leur liste de lecture actuelle à tous les clients. Ces derniers ne devront traiter que les informations qui viennent du serveur auquel ils sont connectés.
-
-Les clients doivent pouvoir avoir une découverte des serveurs disponibles.**
 
 Ces deux classes héritant de `AbstractCore` et implémentant `ICore` sont les classes les plus importantes du projet. C'est ici que la majorité des actions (transfert de la musique, action à effectuer lors d'un appui sur un bouton, etc.) se fera. Lors de l'envoi des commandes, ces classes fonctionnent avec un système d'états dans lequel ces derniers peuvent être changés en recevant des commandes depuis le réseau ou depuis le code. Elles ont une forte interaction avec les classes s'occupant des échanges réseau puisque c'est ici que toutes les informations reçues depuis le réseau vont passer. Grâce à la réflexivité offerte par l'`AbstractCore`, il est donc extrêmement facile de définir de nouvelles méthodes dans ces classes. Pour cela, il faut déclarer une méthode portant le nom d'une commande - commandes qui seront toutes listées dans la classe `ApplicationProtocol`.
 
 Grâce à ces classes, nous avons réglé le problème de contrôleur central par lequel tout transitera. La réception des commandes à invoquer sera expliquée plus tard dans le chapitre sur le paquet `Network` et lors des explications sur la liaison entre l'interface graphique et le code.
+
+### Envoi d'un fichier audio d'un client vers un serveur
+![Diagramme de séquence de l'envoi d'un fichier audio](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/projet/master/doc/PRO/sequencies/TRACK.puml)
 
 ## Paquet et ressources ui
 Concernant l'interface graphique, nous avons utilisé la librairie JavaFX. Celle-ci nous a permis de faire usage de l'outil SceneBuilder afin de développer, en premier lieu, une maquette qui s'est ensuite développée, à travers plusieurs étapes, en l'interface graphique d'aujourd'hui. Le fonctionnement de JavaFX demande à avoir deux notions qui communiquent entre elles: un ou plusieurs fichiers FXML qui définissent l'arrangement de la fenêtre et une ou plusieurs classes Java qui permettent de lancer la fenêtre et communiquer avec ses composants.
@@ -1216,8 +1216,20 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 \newpage
 
 ### David Truan
+- 27.06.2017
+    - Finition des package Core et Network du rapport (3h).
+    - Création de différents schémas pour le rapport (1h).
+    - Correction du code pour le changement de l'interface (30min).
+    - Tests sur le programme (30min).
+
+- 26.06.2017
+    - Continuation du rapport sur la partie Network et Core (3h).
+    - Codage des réactions de l'UI chez le client et des fonctions de vote manquante du serveur (2h).
+    - Codage d'une fenêtre pour choisir le nom du serveur (45min).
+    - Tests sur le programme (1h).
+
 - 25.05.2017
-    - Début de l'explication des cores dans le rapport.
+    - Début de l'explication des cores dans le rapport (1h30).
 
 - 24.05.2017
     - Correction de bugs liés é la majorités des votes et au lancement des morceaux (1h).
