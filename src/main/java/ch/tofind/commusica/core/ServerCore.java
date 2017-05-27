@@ -631,9 +631,9 @@ public class ServerCore extends AbstractCore implements ICore {
 
                 LOG.info("Player starts playing.");
 
-                result = ApplicationProtocol.PLAY + NetworkProtocol.END_OF_LINE +
+                /*result = ApplicationProtocol.PLAY + NetworkProtocol.END_OF_LINE +
                         ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
-                        NetworkProtocol.END_OF_COMMAND;
+                        NetworkProtocol.END_OF_COMMAND;*/
 
             } else {
 
@@ -641,13 +641,13 @@ public class ServerCore extends AbstractCore implements ICore {
                 Platform.runLater(() -> player.pause());
                 LOG.info("Player stops playing.");
 
-                result = ApplicationProtocol.PAUSE + NetworkProtocol.END_OF_LINE +
+                /*result = ApplicationProtocol.PAUSE + NetworkProtocol.END_OF_LINE +
                         ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
-                        NetworkProtocol.END_OF_COMMAND;
+                        NetworkProtocol.END_OF_COMMAND;*/
 
             }
 
-            sendMulticast(result);
+            //sendMulticast(result);
 
         } else {
             LOG.info("User's opinion was taken into account.");
@@ -690,9 +690,9 @@ public class ServerCore extends AbstractCore implements ICore {
 
             // Send the PLAY command by multicast so the client knows it has to update
             // it UI to the PLAY state.
-            sendMulticast(ApplicationProtocol.PLAY + NetworkProtocol.END_OF_LINE +
+            /*sendMulticast(ApplicationProtocol.PLAY + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
-                    NetworkProtocol.END_OF_COMMAND);
+                    NetworkProtocol.END_OF_COMMAND);*/
 
             LOG.info("Next song.");
         } else {
@@ -784,11 +784,11 @@ public class ServerCore extends AbstractCore implements ICore {
             // Ask the UI to execute the command when it can
             Platform.runLater(() -> Player.getCurrentPlayer().riseVolume());
 
-            result = ApplicationProtocol.VOLUME_TURNED_UP + NetworkProtocol.END_OF_LINE +
+            /*result = ApplicationProtocol.VOLUME_TURNED_UP + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
 
-            sendMulticast(result);
+            sendMulticast(result);*/
 
         } else {
             LOG.info("User's opinion was taken into account.");

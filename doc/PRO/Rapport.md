@@ -160,13 +160,13 @@ Cette entité permet de gérer des notions de sessions afin de connaître les pe
 
 Dans le cas des sessions serveurs, le but est de savoir si un serveur est encore accessible. A chaque mise à jour de la part du/des serveurs, la session associée sera mise à jour. Si un des serveurs venait à être éteint ou déconnecté, le client supprimera le serveur afin qu'il ne tente pas d'y accéder.
 
-Dans le cas des sessions utilisateurs, le but est de pouvoir limiter un utilisateur dans son nombre d'actions sur le serveur (voter pour une chason, voter contre une chanson, faire une demande de changer de musique, etc.) et savoir combien d'utilisateurs sont actifs sur le serveur afin de savoir quand une action définie par une majorité doit avoir lieu.
+Dans le cas des sessions utilisateurs, le but est de pouvoir limiter un utilisateur dans son nombre d'actions sur le serveur (voter pour un morceau, voter contre un morceau, faire une demande de changement de musique, etc.) et savoir combien d'utilisateurs sont actifs sur le serveur afin de savoir quand une action définie par une majorité doit avoir lieu.
 
 ## Entité médias (chansons et listes de lecture)
 Cette entité regroupe tout ce qui concerne les médias de notre application (chansons, listes de lecture, lecteur de musique).
 
 ## Entité controlleur
-Cette entité permet le contrôle de l'application. C'est elle qui va gérer le comportement de l'application et faire la liaison le mieux possible entre toutes les entitées décrites ci-dessus et répondre aux demandes des utilisateurs/serveurs.
+Cette entité permet le contrôle de l'application. C'est elle qui va gérer le comportement de l'application et faire la liaison le mieux possible entre toutes les entités décrites ci-dessus et répondre aux demandes des utilisateurs/serveurs.
 
 ## Entité visuelle
 L'entité visuelle est ce que l'on va montrer à l'utilisateur afin qu'il ait une interface pour intéragir avec le programme. Cette interface sera liée directement au controlleur, qui saura quoi faire en fonction de l'action demandée.
@@ -208,7 +208,12 @@ Côté serveur, nous avons décidé d'opter pour une architecture avec un thread
 **Description du protocole applicatif avec les commandes et les arguments
 Après la réception de la ligne `END_OF_COMMAND`, la lecture du flux d'entrée est arrêtée et la commande est séparée pour en extraire la partie commande et ses différents arguments.**
 
-Les classes `UnicastClient` et `MulticastClient` vont pouvoir recevoir les commandes venant du réseau (à l'aide de threads qui écoutent tout le temps le réseau) et en renvoyer. Sa force réside dans le fait qu'elle peut être utilisée aussi bien du côté serveur que du côté client grâce à un système de lecture de flux d'entrée jusqu'à ce que le client ou le serveur décide de mettre fin à la communication (à l'aide de la commande `END_OF_COMMUNICATION`) ou que la connexion est coupée. Le socket est fermé lorsque la commande `END_OF_COMMUNICATION` est reçue.
+### `UnicastClient`
+La classe `UnicastClient` va pouvoir recevoir les commandes venant du réseau et en renvoyer. Elle implémente l'interface `Runnable` ce qui lui permet de s'exécuter en temps que thread. Sa force réside dans le fait qu'elle peut être utilisée aussi bien du côté serveur que du côté client grâce au fait qu'elle lit les commandes reçues et les envoient au `Core` pour qu'il les exécute.
+
+**DIAGRAMME D'ACTIVITE**
+
+Ce diagramme montre la lecture d'une commande venant du réseau et son découpage pour en extraire les arguments et la passer au `Core` qui s'occupera de l'exécuter si elle est disponible dans l'instance de son `AbstractCore` (voir chapitre `Core`). Le `Core` renvoie ensuite une commande à envoyer en réponse à celle reçue. La communication se termine lorsque une des extrémités envoie la commande `END_OF_COMMUNICATION` ou qu'elle ferme son socket.
 
 ## Paquet session
 Cette entité permet de gérer des notions de sessions afin de connaître les personnes connectées et serveurs accessibles.
@@ -470,16 +475,55 @@ Ce qu'il faut savoir par rapport aux fichiers FXML, c'est que nous avons dû ajo
 ### Notions
 
 #### Singleton et POO
+Comme expliquer précédemment, nous avons implémenter une partie de nos classes comme étant des Singleton. Ce patron de conception fait qu'une classe n'a qu'une seule instance.  
+Voici un exemple avec la classe `FileManager`:
+```
+private static FileManager instance = null;
+
+private FileManager() {}
+
+public static FileManager getInstance() {
+
+    if (instance == null) {
+        synchronized (FileManager.class) {
+            if (instance == null) {
+                instance = new FileManager();
+            }
+        }
+    }
+
+    return instance;
+}
+```  
+Ce patron de conception est simple à mettre en œuvre avec une variable d'instance de la classe, une constructeur privé et une méthode `getInstance()` renvoyant l'instance de la classe. Il est particulièrement adapter à toutes nos classes de type `Manager` car il ne doit y avoir qu'une seule instance de celles-ci par programme.
 
 #### Introspection
 
 #### ThreadPool
+Les `ThreadPool` sont un outil offert par **Java** permettant de définir un objet `ExecutorService` mettant à disposition un nombre de threads définis par le programmeur. Il suffit ensuite de lui soumettre des objets étant une instance de la classe `Thread` pour qu'il les lance automatiquement selon la disponibilité de son *pool*. Cela permet donc de limiter le nombre de threads lancés simultanément.  
+Voici un exemple d'une utilisation pour le lancement d'un nouveau thread lors d'une connexion d'un client sur le socket du seveur:  
+```
+Socket clientSocket = socket.accept();
+
+Thread client = new Thread(new UnicastClient(clientSocket));
+threadPool.submit(client);
+```
 
 #### ScheduledExecutorService
+Sous-classe de `ExecutorService`, cette classe permet l'exécution d'un bloc de code à une fréquence définie par le programmeur. Nous l'avons utilisée pour toute les taches comme l'envoie de la liste de lecture ou la suppression de sessions utilisateurs obsolètes.  
+Exemple de l'envoi de la liste de lecture toutes les `TIME_BEFORE_PLAYLIST_UPDATE` secondes:  
+```
+broadcastPlaylist = Executors.newScheduledThreadPool(1);
+broadcastPlaylist.scheduleAtFixedRate(() -> {
+    execute(ApplicationProtocol.SEND_PLAYLIST_UPDATE, null);
+}, 0, TIME_BEFORE_PLAYLIST_UPDATE, TimeUnit.SECONDS);
+```
+
 
 ### Librairies utilisés
 
 #### Gson
+Librairie développée par **Google** permettant la sérialisation et la désérialisation d'objets en **JSON**. Nous l'avons utilisé principalement pour envoyer la liste de lectures aux clients vu que notre protocole réseau fait transiter des chaines de caractères.
 
 #### Hibernate
 Pour l'implémentation, nous avons choisi le framework Hibernate qui simplifie le développement de l'application Java pour interagir avec la base de données. C'est un outil open source et léger.
