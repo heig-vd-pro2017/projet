@@ -458,16 +458,55 @@ Ce qu'il faut savoir par rapport aux fichiers FXML, c'est que nous avons dû ajo
 ### Notions
 
 #### Singleton et POO
+Comme expliquer précédemment, nous avons implémenter une partie de nos classes comme étant des Singleton. Ce patron de conception fait qu'une classe n'a qu'une seule instance.  
+Voici un exemple avec la classe `FileManager`:
+```
+private static FileManager instance = null;
+
+private FileManager() {}
+
+public static FileManager getInstance() {
+
+    if (instance == null) {
+        synchronized (FileManager.class) {
+            if (instance == null) {
+                instance = new FileManager();
+            }
+        }
+    }
+
+    return instance;
+}
+```  
+Ce patron de conception est simple à mettre en œuvre avec une variable d'instance de la classe, une constructeur privé et une méthode `getInstance()` renvoyant l'instance de la classe. Il est particulièrement adapter à toutes nos classes de type `Manager` car il ne doit y avoir qu'une seule instance de celles-ci par programme.
 
 #### Introspection
 
 #### ThreadPool
+Les `ThreadPool` sont un outil offert par **Java** permettant de définir un objet `ExecutorService` mettant à disposition un nombre de threads définis par le programmeur. Il suffit ensuite de lui soumettre des objets étant une instance de la classe `Thread` pour qu'il les lance automatiquement selon la disponibilité de son *pool*. Cela permet donc de limiter le nombre de threads lancés simultanément.  
+Voici un exemple d'une utilisation pour le lancement d'un nouveau thread lors d'une connexion d'un client sur le socket du seveur:  
+```
+Socket clientSocket = socket.accept();
+
+Thread client = new Thread(new UnicastClient(clientSocket));
+threadPool.submit(client);
+```
 
 #### ScheduledExecutorService
+Sous-classe de `ExecutorService`, cette classe permet l'exécution d'un bloc de code à une fréquence définie par le programmeur. Nous l'avons utilisée pour toute les taches comme l'envoie de la liste de lecture ou la suppression de sessions utilisateurs obsolètes.  
+Exemple de l'envoi de la liste de lecture toutes les `TIME_BEFORE_PLAYLIST_UPDATE` secondes:  
+```
+broadcastPlaylist = Executors.newScheduledThreadPool(1);
+broadcastPlaylist.scheduleAtFixedRate(() -> {
+    execute(ApplicationProtocol.SEND_PLAYLIST_UPDATE, null);
+}, 0, TIME_BEFORE_PLAYLIST_UPDATE, TimeUnit.SECONDS);
+```
+
 
 ### Librairies utilisés
 
 #### Gson
+Librairie développée par **Google** permettant la sérialisation et la désérialisation d'objets en **JSON**. Nous l'avons utilisé principalement pour envoyer la liste de lectures aux clients vu que notre protocole réseau fait transiter des chaines de caractères.
 
 #### Hibernate
 Pour l'implémentation, nous avons choisi le framework Hibernate qui simplifie le développement de l'application Java pour interagir avec la base de données. C'est un outil open source et léger.
