@@ -82,7 +82,14 @@ public class SettingsView extends AnchorPane {
 
         interfacesList.valueProperty().addListener((obs, oldValue, newValue) -> {
             NetworkProtocol.interfaceToUse = newValue.getValue();
-            // TODO: update multicast socket interface
+
+            // Reset the Core to change the interface of MulticastClient
+            Core.stop();
+            if (Core.isServer()) {
+                Core.setupAsServer();
+            } else {
+                Core.setupAsClient();
+            }
         });
     }
 

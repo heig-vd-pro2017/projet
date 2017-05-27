@@ -220,7 +220,8 @@ Connaître le type de fichier nous permettra de traiter uniquement les fichiers 
 
 Pour répondre aux besoin architecturaux vus plus haut nous avons développé plusieurs classes qui s'occupe de gérer les sockets et envois de commande via le réseau. Nous avons que notre protocole enverrait du texte car la lecture de ligne dans un flux d'entrée se fait facilement grâce à la méthode `readline()`. Nous avions aussi besoin d'envoyer des objet sérialisés au format **JSON**.
 
-### Commandes du protocole
+### Protocole et commandes
+La plupart des commandes listées ci-dessous sont disponible dans la classe `ApplicationProtocol` mais comme elles sont envoyées par le réseau nous avons préféré les expliquer ici.
 Toute les commandes envoyées par Unicast ont comme deux premiers arguments:
 - L'id de l'expéditeur qui est le hash de l'adresse MAC de l'interface réseau qu'il utilise.
 - Le socket utilisé pour la communication qui est rajouté à la réception avant d'envoyer la commande au `Core`.
@@ -274,8 +275,15 @@ Ce diagramme montre la lecture d'une commande venant du réseau et son découpag
 ### `MulticastClient`
 Cette classe implémente aussi l'interface `Runnable` pour lancer son exécution dans un thread. Comme pour `UnicastClient` elle peut être utilisée du côté serveur comme du côté client. Sa méthode `run()` rejoint le groupe Multicast à l'adresse définie dans le `NetworkProtocol` va ensuite attendre de recevoir des datagrammes venant de ce groupe jusqu'à son arrêt par sa méthode `stop()`.
 
-Nous nous somme confronté à un problème lors du développement quand nous nous sommes rendu compte qu'un `MulticastSocket` utilisait la première interface réseau disponible sur l'ordinateur plutôt que celle qui était vraiment connectée. Cela nous à pris du temps à résoudre et nous avons donc mis à disposition un choix d'interface réseau dans l'interface utilisateur. Nous devons donc
+Nous nous somme confronté à un problème lors du développement quand nous nous sommes rendu compte qu'un `MulticastSocket` utilisait la première interface réseau disponible sur l'ordinateur plutôt que celle qui était vraiment connectée. Cela nous à pris du temps à résoudre et nous avons donc mis à disposition un choix d'interface réseau dans l'interface utilisateur.
 
+Les `Core` ont chacun un `MulticastClient` pour pouvoir d'un côté envoyer la liste de lecture actuel ainsi que les informations sur l'état du lecteur (en pause, quel volume, etc).
+
+### `NetworkProtocol`
+C'est dans cette classe que sont définie les commandes spécifiques au réseau `END_OF_COMMUNICATION` et `END_OF_COMMAND`. Les ports pour les différents sockets ainsi que l'adresse du groupe Multicast se trouvent aussi dans cette classe. Ces derniers ont été choisis arbitrairement parmi les plages disponibles. Bien que peu probable, il est possible qu'une autre application utilise ces mêmes ports. Dans ce cas le fonctionnement de **Commusica** se retrouverait impossible. Nous n'avons pas voulu laisser ces valeurs dans le fichier de configuration car il est indispensable d'avoir les mêmes ports chez le serveur et chez les clients. Nous avons donc préféré prendre le risque qu'un autre programme utilise les mêmes ports plutôt qu'un utilisateur change ces valeurs.
+
+### Threads lancés
+![Threads lancés par le serveur et les clients]()
 
 ## Paquet session
 
@@ -309,7 +317,7 @@ Elle est constituée d'une `Map` permettant de stocker les différents serveurs 
 Elle est nettoyée à l'aide du `ScheduledExecutorService` afin de supprimer de l'interface graphique les serveurs qui ne sont plus accessibles.
 
 ### `UserSessionManager`
-**A développer, parler des différentes structures, du nettoyage, et à quoi ça sert**
+Cette classe permet de gérer le stockage, le nettoyage ainsi que les votes des différentes sessions utilisateur. Elle permet de garder à jour deux listes qui permettent de stocker les utilisateurs actifs et ceux inactifs. Elle à un système de mise à jour automatique à l'aide d'un `ScheduledExecutorService`. Pour ce qui est des votes, elle permet d'empêcher qu'un utilisateur ne vote plusieurs fois pour la même actions (score, pause, etc...).
 
 ## Paquet media
 
