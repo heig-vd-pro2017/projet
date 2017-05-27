@@ -1,0 +1,39 @@
+@startuml
+
+skinparam monochrome true
+
+package "Utilitaires" <<Rectangle>> {
+}
+
+package "Réseau" <<Rectangle>> {
+}
+
+package "Sessions" <<Rectangle>> {
+}
+
+package "Controlleur" <<Rectangle>> {
+}
+
+package "Système de fichiers" <<Rectangle>> {
+}
+
+package "Base de données" <<Rectangle>> {
+}
+
+
+package "Médias" <<Rectangle>> {
+}
+
+"Réseau" -- "Controlleur"
+
+"Controlleur" -- "Sessions"
+
+"Controlleur" -- "Base de données"
+
+"Controlleur" -- "Utilitaires"
+
+"Controlleur" -- "Système de fichiers"
+
+"Controlleur" -- "Médias"
+
+@enduml
