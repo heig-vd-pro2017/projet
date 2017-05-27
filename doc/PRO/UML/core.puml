@@ -1,72 +1,71 @@
 @startuml
 
+    skinparam monochrome true
+    skinparam classAttributeIconSize 0
 
-class AbstractCore{
-- finale Logger LOG
-+String execute(String command, ArrayList<Object> args)
-~void sendUnicast(InetAddress hostname, String message)
-~void sendMulticast(String message)
-~void stop()
-~boolean isServer()
-}
+    namespace ch.tofind.commusica.core {
 
+        abstract class AbstractCore {
+            [[AbstractCore.html]]
+            {static} -LOG: Logger
+            +execute(String, ArrayList<Object>): String
+            {abstract} ~sendUnicast(InetAddress, String): void
+            {abstract} ~sendMulticast(String): void
+            {abstract} ~stop(): void
+            {abstract} ~isServer(): boolean
+        }
 
-class ClientCore{
--Logger LOG
--MulticastClient multicast
--UnicastClient client
--File fileToSend
--Track trackToSend
-~ServerSessionManager serverSessionManager
-+ClientCore()
-+String END_OF_COMMUNICATION(ArrayList<Object> args)
-+String PLAYLIST_UPDATE(ArrayList<Object> args)
-+String SEND_FIRST_CONNECTION(ArrayList<Object> args)
-+String SEND_TRACK_REQUEST(ArrayList<Object> args)
-+String SEND_PLAY_PAUSE_REQUEST(ArrayList<Object> args)
-...()
-}
+        class ServerCore {
+            [[ServerCore.html]]
+            {static} -LOG: Logger
+            {static} -TIME_BEFORE_PLAYLIST_UPDATE: int
+            {static} -name: String
+            -multicast: MulticastClient
+            -server: Server
+            -userSessionManager: UserSessionManager
+            -broadcastPlaylist: ScheduledExecutorService
+            +END_OF_COMMUNICATION(ArrayList<Object>): String
+            +isServer(): boolean
+        }
 
-class Core{
-- AbstractCore instance
+        class ClientCore {
+            [[ClientCore.html]]
+            {static} -LOG: Logger
+            -multicast: MulticastClient
+            -client: UnicastClient
+            -fileToSend: File
+            -trackToSend: Track
+            -serverSessionManager: ServerSessionManager
+            -threadPool: ExecutorService
+            +END_OF_COMMUNICATION(ArrayList<Object>): String
+            +isServer(): boolean
+        }
 
+        class Core {
+            [[Core.html]]
+            {static} -instance: AbstractCore
+            {static} +execute(String, ArrayList<Object>): String
+            {static} +isServer(): boolean
+            {static} +setupAsServer(): void
+            {static} +setupAsClient(): void
+            {static} +stop(): void
+        }
 
+        interface ICore {
+            [[ICore.html]]
+            {abstract} +sendUnicast(InetAddress, String): void
+            {abstract} +sendMulticast(String): void
+            {abstract} +stop(): void
+        }
 
-+ static String execute(String command, ArrayList<Object> args)
-+static boolean isServer()
-+ static void setupAsServer()
-+ static setupAsClient()
-+ static void stop()
-}
+        AbstractCore <|-- ServerCore
 
-class ServerCore{
--final Logger LOG
--int TIME_BEFORE_PLAYLIST_UPDATE
--final String name
-~MulticastClient multicast
-~Server server
-~UserSessionManager userSessionManager
-~ScheduledExecutorService broadcastPlaylist
-+ ServerCore()
-+ String END_OF_COMMUNICATION(ArrayList<Object> args)
-+ String SEND_PLAYLIST_UPDATE(ArrayList<Object> args)
-+ String NEW_ACTIVE_CLIENT(ArrayList<Object> args)
-+ String TRACK_REQUEST(ArrayList<Object> args)
-+ String SENDING_TRACK(ArrayList<Object> args)
-+ String UPVOTE_TRACK_REQUEST(ArrayList<Object> args)
-+String DOWNVOTE_TRACK_REQUEST(ArrayList<Object> args)
+        ICore <|.. ServerCore
 
-}
+        AbstractCore <|-- ClientCore
 
-class ICore{
-~ void sendUnicast(InetAddress hostname, String message)
-~ void sendMulticast(String message)
-~ void stop()
-}
+        ICore <|.. ClientCore
 
-AbstractCore<--ClientCore
-AbstractCore<--Core
-AbstractCore<--ServerCore
-ICore<..ClientCore
-ICore<..ServerCore
+    }
+
 @enduml

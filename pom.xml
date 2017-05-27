@@ -67,10 +67,31 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.10.4</version>
-                <configuration>
-                    <show>private</show>
-                    <nohelp>true</nohelp>
-                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <doclet>nl.talsmasoftware.umldoclet.UMLDoclet</doclet>
+                            <docletArtifact>
+                                <groupId>nl.talsmasoftware</groupId>
+                                <artifactId>umldoclet</artifactId>
+                                <version>1.0.9</version>
+                            </docletArtifact>
+                            <useStandardDocletOptions>true</useStandardDocletOptions>
+                            <additionalparam>
+                                -umlIncludePrivateFields true
+                                -umlIncludePackagePrivateFields true
+                                -umlIncludePrivateMethods true
+                                -umlIncludePackagePrivateMethods true
+                                -umlIncludePrivateClasses true
+                                -umlIncludePackagePrivateClasses true
+                            </additionalparam>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -131,6 +152,12 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>2.10.4</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/nl.talsmasoftware/umldoclet -->
+        <dependency>
+            <groupId>nl.talsmasoftware</groupId>
+            <artifactId>umldoclet</artifactId>
+            <version>1.0.9</version>
         </dependency>
     </dependencies>
 </project>

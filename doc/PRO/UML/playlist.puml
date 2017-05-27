@@ -1,64 +1,64 @@
 @startuml
 
+    skinparam monochrome true
+    skinparam classAttributeIconSize 0
 
-class PlaylistTrackId{
-- SavedPlaylist playlist
-- Track track
-+ PlaylistTrackId()
-+ PlaylistTrackId(SavedPlaylist playlist, Track track)
-+ void setPlaylist(SavedPlaylist playlist)
-+ SavedPlaylist getPlaylist()
-+ void setTrack(Track track)
-+ Track getTrack()
-+boolean equals(Object object)
-+int hashCode()
+    namespace ch.tofind.commusica.playlist {
 
-}
+        class PlaylistTrack {
+            [[PlaylistTrack.html]]
+            -hasBeenPlayed: ReadOnlyBooleanWrapper
+            -votes: Integer
+            -votesProperty: IntegerProperty
+            +hasBeenPlayed(): ReadOnlyBooleanProperty
+            +upvote(): void
+            +downvote(): void
+            +update(): void
+        }
 
-class PlaylistTrack{
-- PlaylistTrackId id
-- BooleanProperty beenPlayedProperty
-- Integer votes
-- IntegerProperty votesProperty
-+PlaylistTrack(SavedPlaylist playlist, Track track)
-+BooleanProperty getBeenPlayedProperty()
-+SavedPlaylist getPlaylist()
-+Track getTrack()
-+IntegerProperty getVotesProperty()
-+PlaylistTrackId getId()
-+ void upvote()
-+ void downvote()
-....()
+        class PlaylistManager {
+            [[PlaylistManager.html]]
+            {static} -LOG: Logger
+            {static} -instance: PlaylistManager
+            -savedPlaylists: List<SavedPlaylist>
+            -playlist: EphemeralPlaylist
+            -favoritesPlaylist: SavedPlaylist
+            {static} +getInstance(): PlaylistManager
+            +getPlaylist(): EphemeralPlaylist
+            +createPlaylist(String): SavedPlaylist
+            +removePlaylist(SavedPlaylist): void
+            +getSavedPlaylists(): List<SavedPlaylist>
+            +getFavoritesPlaylist(): SavedPlaylist
+            +addTrackToFavorites(Track): void
+            +removeTrackFromFavorites(Track): void
+            -retrieveFavoritesPlaylist(): SavedPlaylist
+            -retrievePlaylists(): List<SavedPlaylist>
+        }
 
+        class VoteComparator {
+            [[VoteComparator.html]]
+            +compare(PlaylistTrack, PlaylistTrack): int
+        }
 
+        class PlaylistTrackId {
+            [[PlaylistTrackId.html]]
+            -playlist: SavedPlaylist
+            -track: Track
+            +PlaylistTrackId(SavedPlaylist, Track)
+        }
 
-}
+        interface java.io.Serializable
+        java.io.Serializable <|.. PlaylistTrack
 
-class VoteComparator{
-+ int compare(PlaylistTrack x, PlaylistTrack y)
+        interface java.util.Comparator<T> {
+            {abstract} +compare(T, T): int
+        }
+        java.util.Comparator <|.. VoteComparator
 
-}
+        java.io.Serializable <|.. PlaylistTrackId
 
-class PlaylistManager{
-- final Logger LOG
--static PlaylistManager instance
--List<SavedPlaylist> savedPlaylists
--EphemeralPlaylist playlist
--SavedPlaylist favoritesPlaylist
--PlaylistManager()
+        PlaylistTrack --> PlaylistTrackId: id
 
-PlaylistManager getInstance()
-EphemeralPlaylist getPlaylist()
-SavedPlaylist createPlaylist(String name)
-void removePlaylist(SavedPlaylist playlist)
-...()
-}
-
-PlaylistTrack <-- PlaylistTrackId
-
-PlaylistTrack <-- VoteComparator
-
-
-
+    }
 
 @enduml
