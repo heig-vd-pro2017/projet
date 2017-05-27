@@ -1,0 +1,88 @@
+@startuml
+
+    skinparam monochrome true
+    skinparam classAttributeIconSize 0
+
+    namespace ch.tofind.commusica.session {
+
+        class ServerSessionManager {
+            [[ServerSessionManager.html]]
+            {static} -LOG: Logger
+            {static} -instance: ServerSessionManager
+            {static} -availableServers: ObservableMap<Integer, ServerSession>
+            -scheduledExecutorService: ScheduledExecutorService
+            {static} +getInstance(): ServerSessionManager
+            +store(Integer, InetAddress, String): void
+            +getAvailableServers(): ObservableMap<Integer, ServerSession>
+            -deleteObsoleteSessions(): void
+            +stop(): void
+        }
+
+        class UserSessionManager {
+            [[UserSessionManager.html]]
+            {static} -LOG: Logger
+            {static} -instance: UserSessionManager
+            -activeSessions: Map<Integer, UserSession>
+            -inactiveSessions: Map<Integer, UserSession>
+            -usersAskedForNextTrack: Set<Integer>
+            -scheduledExecutorService: ScheduledExecutorService
+            {static} +getInstance(): UserSessionManager
+            +store(Integer): void
+            +countActiveSessions(): int
+            +countInactiveSessions(): int
+            +countPlayPauseRequests(): int
+            +countNextTrackRequests(): int
+            +nextTrack(Integer): void
+            +resetNextTrackRequests(): void
+            -deleteObsoleteSessions(): void
+            +stop(): void
+        }
+
+        interface ISession {
+            [[ISession.html]]
+            {abstract} +getId(): Integer
+            {abstract} +update(): void
+            {abstract} +getLastUpdate(): Date
+        }
+
+        class ServerSession {
+            [[ServerSession.html]]
+            -id: Integer
+            -serverIp: InetAddress
+            -serverName: String
+            -updated: Date
+            +ServerSession(Integer, InetAddress, String)
+            +getServerIp(): InetAddress
+            +getServerName(): String
+        }
+
+        interface ISessionManager {
+            [[ISessionManager.html]]
+            {static} +TIME_BEFORE_SESSION_INACTIVE: int
+            {abstract} +stop(): void
+        }
+
+        class UserSession {
+            [[UserSession.html]]
+            -id: Integer
+            -updated: Date
+            -upvotedTracks: Set<String>
+            -downvotedTracks: Set<String>
+            +UserSession(Integer)
+            +getUpvotedTracks(): Set<String>
+            +getDownvotedTracks(): Set<String>
+            +addUpvotedTrack(String): void
+            +addDownvotedTrack(String): void
+        }
+
+        ISessionManager <|.. ServerSessionManager
+
+        ISessionManager <|.. UserSessionManager
+
+        ISession <|.. ServerSession
+
+        ISession <|.. UserSession
+
+    }
+
+@enduml

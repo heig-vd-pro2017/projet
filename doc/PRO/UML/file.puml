@@ -1,0 +1,37 @@
+@startuml
+
+    skinparam monochrome true
+    skinparam classAttributeIconSize 0
+    
+    namespace ch.tofind.commusica.file {
+
+        class FilesFormats {
+            [[FilesFormats.html]]
+            {static} +MP3_HEADER: byte[]
+            {static} +MP3_HEADER_OFFSET: int
+            {static} +MP3_EXTENSION: String
+            {static} +M4A_HEADER: byte[]
+            {static} +M4A_HEADER_OFFSET: int
+            {static} +M4A_EXTENSION: String
+            {static} +WAV_HEADER: byte[]
+            {static} +WAV_HEADER_OFFSET: int
+            {static} +WAV_EXTENSION: String
+        }
+
+        class FileManager {
+            [[FileManager.html]]
+            {static} -LOG: Logger
+            {static} -instance: FileManager
+            {static} +OUTPUT_DIRECTORY: String
+            {static} +getInstance(): FileManager
+            +retrieveFile(InputStream, int): File
+            +getFormatExtension(File): String
+            +getBytes(File, int): byte[]
+            +delete(File): void
+            +rename(File, File): void
+            +getMD5Checksum(File): String
+        }
+
+    }
+
+@enduml

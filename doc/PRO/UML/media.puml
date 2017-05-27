@@ -1,81 +1,96 @@
 @startuml
 
+    skinparam monochrome true
+    skinparam classAttributeIconSize 0
 
-class EphemeralPlaylist{
--final Logger LOG
--ObservableSortedPlaylistTrackList tracksList
--SavedPlaylist delegate
+    namespace ch.tofind.commusica.media {
 
-+EphemeralPlaylist(String playlistName)
-+boolean downvoteTrack(Track track)
-+boolean upvoteTrack(Track track)
-+ObservableSortedPlaylistTrackList getTracksList()
+        interface IPlaylist {
+            [[IPlaylist.html]]
+            {abstract} +addTrack(Track): boolean
+            {abstract} +contains(Track): boolean
+            {abstract} +getPlaylistTrack(Track): PlaylistTrack
+            {abstract} +getTracksList(): List<PlaylistTrack>
+            {abstract} +isSaved(): boolean
+        }
 
-}
+        class SavedPlaylist {
+            [[SavedPlaylist.html]]
+            -id: Integer
+            -name: String
+            -dateAdded: Date
+            -datePlayed: Date
+            -version: Integer
+            +update(): void
+        }
 
-class SavedPlaylist{
--Integer id
--String name
--Date dateAdded
--Date datePlayed
-...
-+SavedPlaylist()
-+SavedPlaylist(String name)
-}
+        class EphemeralPlaylist {
+            [[EphemeralPlaylist.html]]
+            {static} -LOG: Logger
+            -tracksList: ObservableSortedPlaylistTrackList
+            +EphemeralPlaylist(String)
+            +downvoteTrack(Track): boolean
+            +upvoteTrack(Track): boolean
+            +save(): void
+            +saveTrack(Track): void
+            +setName(String): void
+            -retrieveDbTracks(): List<Track>
+        }
 
-class Track{
--String id
--String title
--String artist
--String album
--String urI
-...
+        class Track {
+            [[Track.html]]
+            -id: String
+            -title: String
+            -artist: String
+            -album: String
+            -length: Integer
+            -uri: String
+            -dateAdded: Date
+            -datePlayed: Date
+            -favoritedProperty: BooleanProperty
+            -version: Integer
+            +update(): void
+        }
 
-+Track()
-+Track(String id, String title, String artist, String album, ..)
-+Track(AudioFile audioFile)
-+BooleanProperty getFavoritedProperty()
-+void setFavoritedProperty(boolean favorited)
+        class Player {
+            [[Player.html]]
+            {static} -LOG: Logger
+            {static} -currentPlayer: Player
+            -player: MediaPlayer
+            -currentTimeProperty: IntegerProperty
+            -currentTrackProperty: PlaylistTrackProperty
+            -previousTrackProperty: PlaylistTrackProperty
+            -volumeStep: double
+            -isPlayingProperty: BooleanProperty
+            -volumeProperty: DoubleProperty
+            -MIN_VOLUME: double
+            -MAX_VOLUME: double
+            -Player(double)
+            {static} +getCurrentPlayer(): Player
+            +load(): void
+            +isPlaying(): boolean
+            +play(): void
+            +pause(): void
+            +stop(): void
+            +riseVolume(): void
+            +lowerVolume(): void
+        }
 
+        interface java.io.Serializable
+        java.io.Serializable <|.. SavedPlaylist
 
-}
+        IPlaylist <|.. SavedPlaylist
 
-class iPlaylist{
-~boolean addTrack(Track track)
-~boolean contains(Track track)
-~PlaylistTrack getPlaylistTrack(Track track)
-~ List<PlaylistTrack> getTracksList()
-~boolean isSaved()
-}
+        IPlaylist <|.. EphemeralPlaylist
 
-class Player{
--final Logger LOG
--static Player currentPlayer
--MediaPlayer player
--IntegerProperty currentTimeProperty
--PlaylistTrackProperty currentTrackProperty
-...
+        java.io.Serializable <|.. Track
 
-+BooleanProperty getIsPlayingProperty()
-+boolean isPlaying()
-+void play()
-+void pause()
-+void stop()
-+void lowerVolume()
+        EphemeralPlaylist --> "*" Track: dbTracks
 
-}
+        EphemeralPlaylist --> SavedPlaylist: delegate
 
+        Player --> Track: currentTrack
 
-Track <-- EphemeralPlaylist
-
-SavedPlaylist <-- EphemeralPlaylist
-Track <-- SavedPlaylist
-
-iPlaylist <.. SavedPlaylist
-iPlaylist <.. EphemeralPlaylist
-Track <-- Player
-
-
-
+    }
 
 @enduml
