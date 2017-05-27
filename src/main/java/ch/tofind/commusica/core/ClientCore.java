@@ -278,56 +278,6 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Method invoked when the server sends the PLAY command by multicast.
-     * It updates the UI to reflect the current player status.
-     *
-     * @param args Args of the command.
-     *
-     * @return An empty String.
-     */
-    public String PLAY(ArrayList<Object> args) {
-
-        LOG.info("Player plays.");
-
-        // Retrieve the server id
-        Integer serverId = Integer.valueOf((String) args.remove(0));
-
-        // Test if it is our current server sending the information
-        if (Objects.equals(serverId, ApplicationProtocol.serverId)) {
-
-            Platform.runLater(() -> Player.getCurrentPlayer().getIsPlayingProperty().setValue(true));
-
-        }
-
-        return "";
-    }
-
-    /**
-     * @brief Method invoked when the server sends the PAUSE command by multicast.
-     * It updates the UI to reflect the current player status.
-     *
-     * @param args Args of the command.
-     *
-     * @return An empty String.
-     */
-    public String PAUSE(ArrayList<Object> args) {
-
-        LOG.info("Player stops.");
-
-        // Retrieve the server id
-        Integer serverId = Integer.valueOf((String) args.remove(0));
-
-        // Test if it is our current server sending the information
-        if (Objects.equals(serverId, ApplicationProtocol.serverId)) {
-
-            Platform.runLater(() -> Player.getCurrentPlayer().getIsPlayingProperty().setValue(false));
-
-        }
-
-        return "";
-    }
-
-    /**
      * @brief Entry point to send the NEXT_TRACK_REQUEST command.
      *
      * @param args Args of the command.
@@ -388,31 +338,6 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Method invoked when the server sends the VOLUME_TURNED_UP command by multicast.
-     * It updates the UI to reflect the current volume.
-     *
-     * @param args Args of the command.
-     *
-     * @return An empty String.
-     */
-    public String VOLUME_TURNED_UP(ArrayList<Object> args) {
-
-        LOG.info("Volume turns up.");
-
-        // Retrieve the server id
-        Integer serverId = Integer.valueOf((String) args.remove(0));
-
-        // Test if it is our current server sending the information
-        if (Objects.equals(serverId, ApplicationProtocol.serverId)) {
-
-            Player.getCurrentPlayer().riseVolume();
-
-        }
-
-        return "";
-    }
-
-    /**
      * @brief Entry point to send the TURN_VOLUME_DOWN_REQUEST command.
      *
      * @param args Args of the command.
@@ -428,31 +353,6 @@ public class ClientCore extends AbstractCore implements ICore {
                 NetworkProtocol.END_OF_COMMAND;
 
         sendUnicast(ApplicationProtocol.serverAddress, result);
-
-        return "";
-    }
-
-    /**
-     * @brief Method invoked when the server sends the VOLUME_TURNED_DOWN command by multicast.
-     * It updates the UI to reflect the current volume.
-     *
-     * @param args Args of the command.
-     *
-     * @return An empty String.
-     */
-    public String VOLUME_TURNED_DOWN(ArrayList<Object> args) {
-
-        LOG.info("Volume turns down.");
-
-        // Retrieve the server id
-        Integer serverId = Integer.valueOf((String) args.remove(0));
-
-        // Test if it is our current server sending the information
-        if (Objects.equals(serverId, ApplicationProtocol.serverId)) {
-
-            Player.getCurrentPlayer().lowerVolume();
-
-        }
 
         return "";
     }
