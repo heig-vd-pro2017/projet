@@ -43,7 +43,7 @@ public class ServerCore extends AbstractCore implements ICore {
     private static final int TIME_BEFORE_PLAYLIST_UPDATE = Integer.valueOf(Configuration.getInstance().get("TIME_BETWEEN_PLAYLIST_UPDATES"));
 
     //! Name of the server.
-    private static final String name = ApplicationProtocol.serverName;//Configuration.getInstance().get("SERVER_NAME");
+    private static final String name = ApplicationProtocol.serverName;
 
     //! Client to use for multicast.
     private MulticastClient multicast;

@@ -2,6 +2,7 @@ package ch.tofind.commusica.ui;
 
 import ch.tofind.commusica.core.ApplicationProtocol;
 import ch.tofind.commusica.core.Core;
+import ch.tofind.commusica.network.NetworkProtocol;
 import ch.tofind.commusica.utils.Logger;
 import ch.tofind.commusica.utils.Network;
 import javafx.application.Application;
@@ -33,7 +34,8 @@ public class ClientServerDialog extends Application {
         Optional<ButtonType> result = dialog.showAndWait();
 
         if (result.isPresent()) {
-            Network.configureNetwork();
+            // Set first interface as default.
+            NetworkProtocol.interfaceToUse = Network.getIPv4Interfaces().firstEntry().getValue();
 
             if (result.get() == yesButton) {
                 LOG.info("Launching as server.");

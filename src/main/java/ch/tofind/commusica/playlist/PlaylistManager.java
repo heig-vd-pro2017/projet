@@ -43,7 +43,7 @@ public class PlaylistManager {
      * PlaylistManager single constructor. Avoid the instantiation.
      */
     private PlaylistManager() {
-        String playlistName = ApplicationProtocol.serverName;//Configuration.getInstance().get("PLAYLIST_NAME");
+        String playlistName = ApplicationProtocol.serverName;
         playlist = new EphemeralPlaylist(playlistName);
         savedPlaylists = retrievePlaylists();
         favoritesPlaylist = retrieveFavoritesPlaylist();

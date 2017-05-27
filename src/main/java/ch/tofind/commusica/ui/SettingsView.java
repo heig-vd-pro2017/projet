@@ -2,15 +2,22 @@ package ch.tofind.commusica.ui;
 
 import ch.tofind.commusica.core.ApplicationProtocol;
 import ch.tofind.commusica.core.Core;
-import ch.tofind.commusica.playlist.PlaylistManager;
+import ch.tofind.commusica.network.NetworkProtocol;
 import ch.tofind.commusica.session.ServerSession;
 import ch.tofind.commusica.session.ServerSessionManager;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
-import ch.tofind.commusica.utils.Configuration;
+import ch.tofind.commusica.utils.Network;
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ComboBox;
@@ -27,6 +34,9 @@ public class SettingsView extends AnchorPane {
 
     //! FXML file to use for the view.
     private static final String FXML_FILE = "ui/SettingsView.fxml";
+
+    @FXML
+    private ComboBox<Map.Entry<String, InetAddress>> interfacesList;
 
     @FXML
     private TextField serverNameField;
@@ -54,26 +64,40 @@ public class SettingsView extends AnchorPane {
             e.printStackTrace();
         }
 
-        ServerSessionManager.getInstance().getAvailableServers().addListener((MapChangeListener<Integer, ServerSession>) change -> serversList.setItems(FXCollections.observableArrayList(change.getMap().values())));
-
-        initializeServersList();
         serversListLabel.setVisible(!Core.isServer());
-        initializeServersNameField();
         serverNameLabel.setVisible(Core.isServer());
+        initializeServerNameField();
+        initializeServersList();
+        initializeInterfacesList();
     }
 
-    private void initializeServersNameField() {
-        serverNameField.setVisible(Core.isServer());
+    private void initializeInterfacesList() {
+        interfacesList.setItems(FXCollections.observableArrayList(new ArrayList(Network.getIPv4Interfaces().entrySet())));
 
-        serverNameField.setText(Configuration.getInstance().get("SERVER_NAME"));
+        interfacesList.setCellFactory((ListView<Map.Entry<String, InetAddress>> cell) -> new InterfaceCell());
+        interfacesList.setButtonCell(new InterfaceCell());
 
-        serverNameField.textProperty().addListener((obs, oldValue, newValue) -> {
-            ApplicationProtocol.serverName = newValue;
-            PlaylistManager.getInstance().getPlaylist().setName(newValue);
+        // Set default interface as default value.
+        interfacesList.setValue(Network.getIPv4Interfaces().firstEntry());
+
+        interfacesList.valueProperty().addListener((obs, oldValue, newValue) -> {
+            NetworkProtocol.interfaceToUse = newValue.getValue();
         });
     }
 
+    private void initializeServerNameField() {
+        serverNameField.setVisible(Core.isServer());
+
+        serverNameField.setText(ApplicationProtocol.serverName);
+        serverNameField.setEditable(false);
+        serverNameField.setDisable(true);
+    }
+
     private void initializeServersList() {
+        ServerSessionManager.getInstance().getAvailableServers().addListener((MapChangeListener<Integer, ServerSession>) change -> {
+            serversList.setItems(FXCollections.observableArrayList(change.getMap().values()));
+        });
+
         serversList.setVisible(!Core.isServer());
 
         serversList.setPromptText("Select a server");
@@ -100,6 +124,22 @@ public class SettingsView extends AnchorPane {
             if (session != null) {
                 setText(session.getServerName());
             } else {
+                setText(null);
+            }
+        }
+    }
+
+    private class InterfaceCell extends ListCell<Map.Entry<String, InetAddress>> {
+        public void updateItem(Map.Entry<String, InetAddress> entry, boolean empty) {
+            super.updateItem(entry, empty);
+
+            if (entry != null) {
+                String interfaceName = entry.getKey();
+                String ipAddress = entry.getValue().getHostAddress();
+
+                setText(String.format("%s (%s)", interfaceName, ipAddress));
+            }
+            else {
                 setText(null);
             }
         }

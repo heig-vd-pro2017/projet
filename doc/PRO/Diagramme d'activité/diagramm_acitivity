@@ -9,11 +9,11 @@ if (reception de TRACK_REQUEST) then(oui)
        -Confirmation de l'acceptation de la track \n pas le serveur au client
         - Track est reçu et desérialiser
         -recupère du fichier au niveau réseau\n et calcule du checksum
-         if(chesksum est ok) then(oui)
-             if(extension est ok) then(oui)
+         if(chesksum est ok?) then(oui)
+             if(extension est ok ?) then(oui)
               - enregistrement du fichier au niveau\nfile système et de la BD
             else(nom)
-              - delete file et fin de commande
+              - delete file  et fin de commande
             endif
         else(nom)
           - delete file et fin de commande
