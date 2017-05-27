@@ -548,12 +548,4 @@ public class ClientCore extends AbstractCore implements ICore {
         return false;
     }
 
-    /**
-     * @brief Return the MultcastClient
-     *
-     * @return the MultiCastClient
-     */
-    public MulticastClient getMulticastClient() {
-        return multicast;
-    }
 }
