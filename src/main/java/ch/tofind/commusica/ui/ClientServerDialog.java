@@ -13,6 +13,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 
+import java.net.InetAddress;
+import java.util.Arrays;
 import java.util.Optional;
 
 public class ClientServerDialog extends Application {
@@ -36,6 +38,7 @@ public class ClientServerDialog extends Application {
         if (result.isPresent()) {
             // Set first interface as default.
             NetworkProtocol.interfaceToUse = Network.getIPv4Interfaces().firstEntry().getValue();
+            ApplicationProtocol.myId = Arrays.hashCode(Network.getMacAddress(NetworkProtocol.interfaceToUse));
 
             if (result.get() == yesButton) {
                 LOG.info("Launching as server.");
