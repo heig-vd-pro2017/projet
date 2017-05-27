@@ -162,13 +162,13 @@ Cette entité permet de gérer des notions de sessions afin de connaître les pe
 
 Dans le cas des sessions serveurs, le but est de savoir si un serveur est encore accessible. A chaque mise à jour de la part du/des serveurs, la session associée sera mise à jour. Si un des serveurs venait à être éteint ou déconnecté, le client supprimera le serveur afin qu'il ne tente pas d'y accéder.
 
-Dans le cas des sessions utilisateurs, le but est de pouvoir limiter un utilisateur dans son nombre d'actions sur le serveur (voter pour une chason, voter contre une chanson, faire une demande de changer de musique, etc.) et savoir combien d'utilisateurs sont actifs sur le serveur afin de savoir quand une action définie par une majorité doit avoir lieu.
+Dans le cas des sessions utilisateurs, le but est de pouvoir limiter un utilisateur dans son nombre d'actions sur le serveur (voter pour un morceau, voter contre un morceau, faire une demande de changement de musique, etc.) et savoir combien d'utilisateurs sont actifs sur le serveur afin de savoir quand une action définie par une majorité doit avoir lieu.
 
 ## Entité médias (chansons et listes de lecture)
 Cette entité regroupe tout ce qui concerne les médias de notre application (chansons, listes de lecture, lecteur de musique).
 
 ## Entité controlleur
-Cette entité permet le contrôle de l'application. C'est elle qui va gérer le comportement de l'application et faire la liaison le mieux possible entre toutes les entitées décrites ci-dessus et répondre aux demandes des utilisateurs/serveurs.
+Cette entité permet le contrôle de l'application. C'est elle qui va gérer le comportement de l'application et faire la liaison le mieux possible entre toutes les entités décrites ci-dessus et répondre aux demandes des utilisateurs/serveurs.
 
 ## Entité visuelle
 L'entité visuelle est ce que l'on va montrer à l'utilisateur afin qu'il ait une interface pour intéragir avec le programme. Cette interface sera liée directement au controlleur, qui saura quoi faire en fonction de l'action demandée.
@@ -210,7 +210,12 @@ Côté serveur, nous avons décidé d'opter pour une architecture avec un thread
 **Description du protocole applicatif avec les commandes et les arguments
 Après la réception de la ligne `END_OF_COMMAND`, la lecture du flux d'entrée est arrêtée et la commande est séparée pour en extraire la partie commande et ses différents arguments.**
 
-Les classes `UnicastClient` et `MulticastClient` vont pouvoir recevoir les commandes venant du réseau (à l'aide de threads qui écoutent tout le temps le réseau) et en renvoyer. Sa force réside dans le fait qu'elle peut être utilisée aussi bien du côté serveur que du côté client grâce à un système de lecture de flux d'entrée jusqu'à ce que le client ou le serveur décide de mettre fin à la communication (à l'aide de la commande `END_OF_COMMUNICATION`) ou que la connexion est coupée. Le socket est fermé lorsque la commande `END_OF_COMMUNICATION` est reçue.
+### `UnicastClient`
+La classe `UnicastClient` va pouvoir recevoir les commandes venant du réseau et en renvoyer. Elle implémente l'interface `Runnable` ce qui lui permet de s'exécuter en temps que thread. Sa force réside dans le fait qu'elle peut être utilisée aussi bien du côté serveur que du côté client grâce au fait qu'elle lit les commandes reçues et les envoient au `Core` pour qu'il les exécute.
+
+**DIAGRAMME D'ACTIVITE**
+
+Ce diagramme montre la lecture d'une commande venant du réseau et son découpage pour en extraire les arguments et la passer au `Core` qui s'occupera de l'exécuter si elle est disponible dans l'instance de son `AbstractCore` (voir chapitre `Core`). Le `Core` renvoie ensuite une commande à envoyer en réponse à celle reçue. La communication se termine lorsque une des extrémités envoie la commande `END_OF_COMMUNICATION` ou qu'elle ferme son socket.
 
 ## Paquet session
 Cette entité permet de gérer des notions de sessions afin de connaître les personnes connectées et serveurs accessibles.
@@ -244,7 +249,9 @@ Elle est nettoyée à l'aide du `ScheduledExecutorService` afin de supprimer de 
 **A développer, parler des différentes structures, du nettoyage, et à quoi ça sert**
 
 ## Paquet media
-**Décrire à quoi ça sert**
+**Décrire un peu plus en détails**
+
+Ce package permet de définir tous les éléments nécessaires pour la gestion de la musique au niveau de l'application.
 
 ### `EphermeralPlaylist`
 La classe EphermeralPlaylist représente la liste de lecture en cours de construction, c'est-à-dire la liste de lecture en cours de lecture. Cela permet de mettre à jour l'interface graphique lors d'une action sur un élément de la playlist. La mise à jour se fait grâce au pattern observeur à travers la liste `ObservableSortedPlaylistTrackList`, qui joue en même temps le rôle d'observable et d'observeur. Elle observe des chansons de la liste dans le but de changer l'état de la liste de lecture en cas d'upvote ou downvote, et devient observable dans le cas où elle envoie des notifications lors des mises à jour. Dans cette classe, nous avons aussi le champ `delegate` qui représente la liste de lecture qui sera enregistrée dans la base de données pour le suivi de celle-ci.
@@ -478,16 +485,55 @@ Nous avons dû ajouter aux fichiers FXML un ID à chaque structure dont les acti
 ### Notions
 
 #### Singleton et POO
+Comme expliquer précédemment, nous avons implémenter une partie de nos classes comme étant des Singleton. Ce patron de conception fait qu'une classe n'a qu'une seule instance.  
+Voici un exemple avec la classe `FileManager`:
+```
+private static FileManager instance = null;
+
+private FileManager() {}
+
+public static FileManager getInstance() {
+
+    if (instance == null) {
+        synchronized (FileManager.class) {
+            if (instance == null) {
+                instance = new FileManager();
+            }
+        }
+    }
+
+    return instance;
+}
+```  
+Ce patron de conception est simple à mettre en œuvre avec une variable d'instance de la classe, une constructeur privé et une méthode `getInstance()` renvoyant l'instance de la classe. Il est particulièrement adapter à toutes nos classes de type `Manager` car il ne doit y avoir qu'une seule instance de celles-ci par programme.
 
 #### Introspection
 
 #### ThreadPool
+Les `ThreadPool` sont un outil offert par **Java** permettant de définir un objet `ExecutorService` mettant à disposition un nombre de threads définis par le programmeur. Il suffit ensuite de lui soumettre des objets étant une instance de la classe `Thread` pour qu'il les lance automatiquement selon la disponibilité de son *pool*. Cela permet donc de limiter le nombre de threads lancés simultanément.  
+Voici un exemple d'une utilisation pour le lancement d'un nouveau thread lors d'une connexion d'un client sur le socket du seveur:  
+```
+Socket clientSocket = socket.accept();
+
+Thread client = new Thread(new UnicastClient(clientSocket));
+threadPool.submit(client);
+```
 
 #### ScheduledExecutorService
+Sous-classe de `ExecutorService`, cette classe permet l'exécution d'un bloc de code à une fréquence définie par le programmeur. Nous l'avons utilisée pour toute les taches comme l'envoie de la liste de lecture ou la suppression de sessions utilisateurs obsolètes.  
+Exemple de l'envoi de la liste de lecture toutes les `TIME_BEFORE_PLAYLIST_UPDATE` secondes:  
+```
+broadcastPlaylist = Executors.newScheduledThreadPool(1);
+broadcastPlaylist.scheduleAtFixedRate(() -> {
+    execute(ApplicationProtocol.SEND_PLAYLIST_UPDATE, null);
+}, 0, TIME_BEFORE_PLAYLIST_UPDATE, TimeUnit.SECONDS);
+```
+
 
 ### Librairies utilisés
 
 #### Gson
+Librairie développée par **Google** permettant la sérialisation et la désérialisation d'objets en **JSON**. Nous l'avons utilisé principalement pour envoyer la liste de lectures aux clients vu que notre protocole réseau fait transiter des chaines de caractères.
 
 #### Hibernate
 Pour l'implémentation, nous avons choisi le framework Hibernate qui simplifie le développement de l'application Java pour interagir avec la base de données. C'est un outil open source et léger.
@@ -497,23 +543,30 @@ Un outil ORM (Object Relational Mapping) simplifie la création, la manipulation
 Le framework Hibernate offre la possibilité de créer automatiquement les tables de la base de données. Il n'est donc pas nécessaire de les créer manuellement.
 
 #### JAudiotagger
-**DG : il me semble intéressant de développer un peu plus cet outil**
 JAudiotagger est une API Java pour la lecture et l'écriture des métadonnées des fichiers audio. Il supporte des formats tels que MP3, MP4, WAV, etc.
 
 #### JavaFX
-**DG : développer un peu plus les avantages de JavaFX, peut-être en comparaison avec Swing**
-JavaFX est une bibliothèque Java permettant la création d'applications Desktop. Les applications écrites à l'aide de cette bibliothèque peuvent fonctionner sur plusieurs plateformes. Les applications développées à l'aide de JavaFX peuvent fonctionner sur différents périphériques tels que les ordinateurs, les téléviseurs, les tablettes, etc.
+JavaFX est une bibliothèque Java permettant la création d'applications Desktop. Les applications écrites à l'aide de cette bibliothèque peuvent fonctionner sur plusieurs plateformes. Les applications développées à l'aide de JavaFX peuvent fonctionner sur différents périphériques tels que les ordinateurs, les téléviseurs, les tablettes, etc. Parraport à Swing javaFX nous offre:
+
+ + Les styles CSS
+ + ANnimation/transition: Un moyen simple de faire une animation, comme les composants UI qui clignotent ou se déplacent.
+ + 3D: moyen facile de manipuler le modèle pour créer une vue 3D animée
 
 #### Capsule
-**DG : TODO**
+Capsule est un outil de deployement pour les applications JVM. Une capsule est un JAR exécutables unique qui contient tout ce que votre application doit exécuter sous la forme de fichiers intégrées.Nous avons utilisé sa pour notre application dans le but de forcer l'utilisation sur les MAC de l'adresse IPv4 de l'interface. Quand on lance notre application avec la commande `java -jar commusica-capsule.jar` le réel processus est `capsule -> lance commusica avec des paramètres pour utiliser IPv4 plutôt que IPv6`
 
 ### Programmes utilisés
-- Git/GitHub: Github est un outil gratuit permettant d'héberger du code open source, et propose également des plans payants pour les projets privés.
-Nous avons utilisé Github pour les raisons suivantes:
 
-+ Elle permet une meilleure gestion des branches
-+ Fusion ("merge"): quand un fichier a été modifié par plusieurs personnes en même temps, Git sait s'adapter et choisir un algorithme qui fusionne intellignemment les lignes du fichier qui ont été modifiées.
-+ Le nombre de personnes par repository n'est pas réduit comme dans Bitbucket, par exemple.
+#### GitHub
+Github est un outil gratuit permettant d'héberger du code open source, et propose également des plans payants pour les projets privés.
+GitHub figure parmi les plus conseillées pour les nombreux avantages qu'il offre:
+
+ + les développeurs qui trouveront notre projet intéressant pouront forker pour devenir ensuit le prorpiétaire d'un projesimilaire portant le même nom. Cette technique d'embranchement(Fork) est la base même du fonctionnement du site.
+
++ GitHub est conseillé à tout développeur qui souhaite rendre encore plus professionnel leur métier, il est également recommandé à ceux qui souhaitent trouver des partenaires. En effet, de nombreux développeurs s'inscrivent sur ce sute pour de nombreuses raison et donnent à ce denier les dimensions d'un site de réseau social.
+
++ Ce site n’est autre que le point de rencontre des développeurs de logiciels de tout horizon qui y viennent pour partager leurs projets et découvrir ceux des autres
+
 
 #### IntelliJ IDEA
 Un environnement de développement intégré, autrement dit, un ensemble d'outils destinés au développement logiciel. Les avantages dans l'utilisation d'IntelliJ IDEA sont les suivantes.
@@ -526,13 +579,11 @@ Un environnement de développement intégré, autrement dit, un ensemble d'outil
 Apache Maven est un outil puissant de gestion de projet basé sur POM (modèle d'objet de projet). Il est utilisé pour la construction, la dépendance et la documentation des projets. Les avantages d'utilisation Maven sont les suivants :
 
 + Il facilite la construction d'un projet.
-+ Il fournit un processus de construction uniforme (le projet Maven peut être partagé par tous les projets Maven). **DG : pas très clair**
++ Il fournit un processus de construction uniforme (le projet Maven peut être partagé par tous les projets Maven).
 + Il fournit des informations sur le projet (document, liste de dépendances, rapports de tests, etc.).
 
 #### Scene Builder
-Scene builder est un outil qui permet de créer des fichiers au formats FXML via un éditeur graphique. Les avantages de Scene Builder sont les suivants :
-
-**DG : TODO**
+Scene builder est un outil qui permet de créer des fichiers au formats FXML via un éditeur graphique.
 
 #### Wireshark
 Wireshark est un outil essentiel pour comprendre les mécanismes de fonctionnement des protocoles de commuinication sur les réseaux. Il capture des paquets directement sur les interfaces du système utilisé ou lit des fichiers de captures sauvegardées. Nous l'avons utilisé dans notre projet pour sniffer la communication entre le client et le serveur afin de controler le bon fonctionnement de la communication réseau.

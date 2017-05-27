@@ -116,7 +116,7 @@ Commusica peut être utilisée sur:
 
 
 Pour pouvoir lancer l'application, Le `Java Development Kit (JDK)` doit être installé. Il est téléchargeable gratuitement [ici](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) en choisissant la version qui correspond au système d'exploitation utilisé comme indiqué ci-dessous.
-![alt text]()
+![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/JDK_install.PNG)
 
 L'application est sur le CD du projet ou téléchargeable [ici](https://github.com/heig-vd-pro2017/projet).
 
