@@ -94,6 +94,8 @@ public class SettingsView extends AnchorPane {
     }
 
     private void initializeServersList() {
+        serversList.setItems(FXCollections.observableArrayList(ServerSessionManager.getInstance().getAvailableServers().values()));
+        
         ServerSessionManager.getInstance().getAvailableServers().addListener((MapChangeListener<Integer, ServerSession>) change -> {
             serversList.setItems(FXCollections.observableArrayList(change.getMap().values()));
         });
