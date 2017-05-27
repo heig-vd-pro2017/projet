@@ -29,7 +29,7 @@ header-includes:
     - \fancyhead[RO,RE]{PRO 2017}
 
     # Redefine TOC style.
-    #- \setcounter{tocdepth}{2}
+    - \setcounter{tocdepth}{4}
 
     # 'listings' settings.
     - \lstset{breaklines = true}
@@ -137,9 +137,21 @@ Une fois l'architecture bien définie, nous avons défini des normes de dévelop
 L'intégralité de ce document de normes est fourni en annexes.
 
 # Architecture
-L'architecture finale de notre programme est la suivante:
+## Entité base de données
 
-**Diagrammes et tout le bazar ici**
+## Entité système de fichiers
+
+## Entité réseau
+
+## Entité session
+
+## Entité médias (chasons et listes de lecture)
+
+## Entité controlleur
+
+## Entité visuelle
+
+## Diagrammes d'activités
 
 # Description technique
 La description technique ira dans l'ordre croissant de complexité des différentes entitées de notre programme.
@@ -170,7 +182,7 @@ Pour retrouver l'extension du fichier, nous avons procédé de la manière suiva
 
 Connaître le type de fichier nous permettra de traiter uniquement les fichiers supportés pas notre plateforme et aussi, en termes de sécurité, éviter qu'un utilisateur fasse planter le serveur en envoyant un fichier qui n'est pas supporté par celui-ci.
 
-##  Package network
+## Package network
 Cette entité permet toute la gestion du réseau entre les clients et le serveur. Elle permet de répondre aux attentes suivantes:
 
 - Avoir un protocole réseau qui se base sur des commandes avec arguments.
@@ -216,72 +228,70 @@ Elle est nettoyée à l'aide du `ScheduledExecutorService` afin de supprimer de 
 ### `UserSessionManager`
 **A développer, parler des différentes structures, du nettoyage, et à quoi ça sert**
 
-##  Package media
+## Package media
 ** DG : il me semblerait pas mal d'expliquer dans les grandes lignes à quoi sert ce package**
 
-### Classes du package
-#### EphermeralPlaylist
+### `EphermeralPlaylist`
 La classe EphermeralPlaylist représente la playlist en cours de construction, c'est-à-dire la playlist en cours de lecture. Cela permet de mettre à jour l'interface graphique lors d'une action sur un élément de la playlist. La mise à jour se fait grâce au pattern observeur à travers la liste `ObservableSortedPlaylistTrackList`, qui joue en même temps le rôle d'observable et d'observeur. Elle observe des chansons de la liste dans le but de changer l'état de la playlist en cas d'upvote ou downvote, et devient observable dans le cas où elle envoie des notifications lors des mises à jour. Dans cette classe, nous avons aussi le champ `delegate` qui représente la liste de lecture qui sera enregistrée dans la base de données pour le suivi de celle-ci.
 
-#### Player
+### `Player`
 Comme son nom l'indique, il s'agit d'une classe permettant de réaliser les actions de base sur la musique (play, pause, stop, next, previous). Pour l'implémentation, nous avions le choix entre `Mediaplayer` et `sourceDataLine`, nous avons préféré utiliser `Mediaplayer` pour les raisons suivantes:
 
- + Facile à implémenter
- + Accepte plus de formats que sourceDataLine. Par exemple, mp3 n'est pas supporté par sourceDataLine.
+- Facile à implémenter
+- Accepte plus de formats que sourceDataLine. Par exemple, mp3 n'est pas supporté par sourceDataLine.
 
- Le concept de JavaFX media est basé sur les entités suivantes:
+Le concept de JavaFX media est basé sur les entités suivantes:
 
-  + `Media` media resource, contient des informations sur les médias, telles que leur source, leur résolution et leurs métadonnées
-  + `MediaPlayer` est le composant clé fournissant les contrôles pour la lecture de médias.
-  + `MediaView` permettant de supporter l'animation, la translucidité et les effets.
+- `Media` media resource, contient des informations sur les médias, telles que leur source, leur résolution et leurs métadonnées
+- `MediaPlayer` est le composant clé fournissant les contrôles pour la lecture de médias.
+- `MediaView` permettant de supporter l'animation, la translucidité et les effets.
 
 Nous avons aussi utilisé dans cette classe les propriétés JavaFX dans le but de mettre à jour de manière automatique l'interface utilisateur lorsqu'une modification se produit.
 
-#### SavedPlaylist
-**DG : Est-ce qu'on a vraiment besoin de décrire cette classe en une ligne?**
+### `SavedPlaylist`
+**Décrire beaucoup plus que ça**
 Comme son nom l'indique, elle permet de sauvegarder les playlists.
 
-#### Track
-Cette classe représente une chanson, elle en regroupe toutes les informations nécessaires à une identité unique. Nous remarquons, dans cette classe, que nous avons trois constructeurs :
+### `Track`
+Cette classe représente une chanson, elle en regroupe toutes les informations nécessaires à une identité unique.
+Nous avons implémenté trois constructeurs :
 
-  + Le constructeur vide : toutes les classes persistantes doivent avoir un constructeur par défaut pour que Hibernate puisse les instancier en utilisant le constructeur `Constructor.newInstance()`.
-  + `public Track(String id, String title, String artist, String album, Integer length, String uri)` : constructeur permettant de créer une instance de `Track` lorsque tous les paramètres sont connus.
-  + `public Track(AudioFile audioFile)` : constructeur permettant de créer une instance de `Track` à partir d'un fichier audio. Il est utile lorsque nous souhaitons transférer un fichier et effectuer un contrôle sur une chanson au lieu de vérifier le fichier audio lui-même.
+- Le constructeur vide : toutes les classes persistantes doivent avoir un constructeur par défaut pour que Hibernate puisse les instancier en utilisant le constructeur `Constructor.newInstance()`.
+- `public Track(String id, String title, String artist, String album, Integer length, String uri)` : constructeur permettant de créer une instance de `Track` lorsque tous les paramètres sont connus.
+- `public Track(AudioFile audioFile)` : constructeur permettant de créer une instance de `Track` à partir d'un fichier audio. Il est utile lorsque nous souhaitons transférer un fichier et effectuer un contrôle sur une chanson au lieu de vérifier le fichier audio lui-même.
 
-##  Package playlist
+## Package playlist
 Le package `playlist` met en oeuvre ce qui a trait à la gestion des playlists, dans notre cas :
 
-  +  Le lien entre une certaine chanson et les playlists dans lesquelles elle se trouve.
-  +  La sélection d'une certaine playlist.
-  +  La gestion des upvotes et downvotes concernant les chansons contenues dans une playlist spécifique.
+- Le lien entre une certaine chanson et les playlists dans lesquelles elle se trouve.
+- La sélection d'une certaine playlist.
+- La gestion des upvotes et downvotes concernant les chansons contenues dans une playlist spécifique.
 
-### Classes du package
-
-#### PlaylistManager
+### `PlaylistManager`
 La classe `PlaylistManager` représente un gestionnaire de playlists et a plusieurs utilités :
 
-  +  Récupérer la playlist en cours de création
-  +  Récupérer les playlists sauvegardées
-  +  Récupérer la playlist des favoris
-  +  Ajouter/supprimer des chansons à la playlist des favoris
-  +  Créer/supprimer une playlist
-#### PlaylistTrack
+- Récupérer la playlist en cours de création
+- Récupérer les playlists sauvegardées
+- Récupérer la playlist des favoris
+- Ajouter/supprimer des chansons à la playlist des favoris
+- Créer/supprimer une playlist
+
+### `PlaylistTrack`
 La classe `PlaylistTrack` permet non seulement de représenter le lien entre une chanson et une playlist, mais aussi de connaître le nombre de votes de la chanson, ce qui sera ensuite utile au niveau de la classe `VoteComparator` qui organise les chansons dans la playlist selon le nombre de votes. Cela peut être fait grâce au fait que `PlaylistTrack` met à disposition une variable `votesProperty` à laquelle un observeur a été ajouté afin que l'interface graphique se réorganise correctement.
-#### PlaylistTrackId
+
+### `PlaylistTrackId`
 Cette classe permet de créer le lien entre une certaine playlist et une chanson. Grâce à l'implémentation d'un hashcode, nous pouvons se servir de celui-ci afin de vérifier que la chanson reliée à la playlist n'existe pas déjà.
-#### VoteComparator
+
+### `VoteComparator`
 Le comparateur de vote ne possède qu'une fonction. Celle-ci sert tout simplement à déterminer entre deux chansons, laquelle a le plus grand nombre de votes. Cela a été créé dans le but de réorganiser la playlist en commençant par les chansons les plus votées.
 
-##  Package utils
+## Package utils
 Le package `utils` réunit tous les utilitaires dont nous avons eu besoin au sein de plusieurs classes et dont l'implémentation n'avait aucun sens au sein desdites classes. L'utilité de chaque classe diffère alors énormément.
 
-### Classes du package
+### `Configuration`
+Cette classe permet la récupération des propriétés définies dans un fichier de configuration. Elle fixe le fichier de configuration à utiliser et permet l'accès à ces dernières.
 
-#### Configuration
-Cette classe permet la récupération des configurations de base du programme. Elle fixe le fichier de configuration que nous avons introduit précédemment, au chapitre **Gestionnaire de configuration** et en tire des informations.
-
-## Gestionnaire de configuration
-Nous avons choisi d'implémenter un gestionnaire de configuration utilisant le fichier commusica.properties pour permettre à l'utilisateur de configurer le programme. Il donne accès aux paramètres suivants :    
+Le ficher de configuration utilisé dans le cadre de ce projet est `commusica.properties` pour permettre à l'utilisateur de configurer le programme. Il donne accès aux paramètres suivants :    
 
  +  DEBUG : permets de choisir d'afficher ou non la sortie du programme
  +  DATE_FORMAT : choix du format de la date
@@ -290,35 +300,34 @@ Nous avons choisi d'implémenter un gestionnaire de configuration utilisant le f
  +  TIME_BEFORE_SESSION_INACTIVE : choix du délai d'inactivité d'une session
  +  TIME_BETWEEN_PLAYLIST_UPDATES : choix du délai de mise à jour des playlists et leurs chansons
 
- #### Network
- Cette classe permet de récupérer toutes les informations basiques de la machine concernant le réseau. Elle va en outre permettre de récupérer les interfaces disponibles nécessaires à la connexion à un certain serveur et de configurer le réseau pour le reste de l'application.
- #### ObservableSortedPlaylistTracklist
- Cette classe permet de récupérer les informations nécessaires à l'affichage des chansons dans la playlist en écoute. Cet utilitaire a été créé afin de pouvoir faciliter la récupération d'informations depuis les classes mettant en oeuvre l'interface graphique.
- #### Serialize
- Grâce à la librairie Gson de Google, cette classe est utilisée dans la sérialisation et désérialisation d'objets.
+### `Network`
+Cette classe permet de récupérer toutes les informations basiques de la machine concernant le réseau. Elle va en outre permettre de récupérer les interfaces disponibles nécessaires à la connexion à un certain serveur et de configurer le réseau pour le reste de l'application.
 
-#### EphemeralPlaylistSerializer
+### `ObservableSortedPlaylistTracklist`
+Cette classe permet de récupérer les informations nécessaires à l'affichage des chansons dans la playlist en écoute. Cet utilitaire a été créé afin de pouvoir faciliter la récupération d'informations depuis les classes mettant en oeuvre l'interface graphique.
+
+### `Serialize`
+Grâce à la librairie Gson de Google, cette classe est utilisée dans la sérialisation (Objet Java -> JSON) et désérialisation (JSON -> Objet Java)..
+
+### `EphemeralPlaylistSerializer`
 Cette classe permet de sérialiser et désérialiser une playlist en JSON. L'utilité de cette classe réside alors principalement dans la communication réseau.
 
-#### Logger
+### `Logger`
 Cette classe a été créée uniquement pour assouvir le besoin d'un débogueur indiquant dans quelle classe a lieu une action. Des couleurs ont été attribuées aux différentes notifications.
 
-  +  Bleu pour les informations
-  +  Rouge pour les erreurs
-  +  Vert pour les succès
-  +  Jaune pour les avertissements
+- Bleu pour les informations
+- Rouge pour les erreurs
+- Vert pour les succès
+- Jaune pour les avertissements
 
 L'affichage des logs peut tout à fait être désactivé au niveau du fichier de configuration `commusica.properties` en réglant la valeur de `DEBUG` à 0.
-
 
 ## Package core
 Pour garder un niveau d'abstraction le plus élevé possible, nous avons voulu faire transiter à travers un contrôleur toutes les informations venant du réseau et des utilisateurs, le but étant d'avoir le même point d'entrée que l'on soit client ou serveur. Pour cela, il nous fallait un contrôleur central qui puisse être appelé de la même façon, quel que le choix de l'identité - client ou serveur. C'est alors à celui-ci de vérifier l'existence d'une fonction et de communiquer l'action à exécuter à l'entité concernée. Notre raisonnement nous a mené à nous tourner vers la réflexivité offerte par Java pour résoudre ce problème. Ce mécanisme permet d'instancier des méthodes à l'exécution en utilisant la méthode `invoke(Object obj, Object... args)` ayant comme premier paramètre un String représentant le nom de la méthode à invoquer et comme deuxième paramètre un tableau d'`Object` contentant les différents arguments dont la méthode invoquée a besoin (voir utilisation dans notre programme **FIGURE**).
 
 Il nous fallait maintenant une classe qui puisse jouer le rôle du contrôleur. Nous avons développé les `Core` pour cela qui sont tous dans le paquet `core`.
 
-### Classes du package
-
-#### Core
+### `Core`
 C'est une classe statique qui joue le rôle de point d'entrée. Elle dispose d'un attribut `AbstractCore` qui sera instancié soit en `ClientCore` ou en `ServerCore`. Elle met aussi à disposition des méthodes statiques qui nous permettront de les appeler depuis les autres classes du programme.  
 Parmi ces méthodes, la plus importante est la suivante:  
 
@@ -328,14 +337,10 @@ public static String execute(String command, ArrayList<Object> args)
  Cette méthode se contente d'appeler la méthode du même nom de l'instance de `AbstractCore` de la classe et sera appelée partout où une action du Core est demandée.
 Elle contient aussi des méthodes lui permettant de se paramétrer comme client ou serveur.
 
-**Les serveur doivent pouvoir envoyer une mise à jour de leur liste de lecture actuelle à tous les clients. Ces derniers ne devront traiter que les informations qui viennent du serveur auquel ils sont connectés.
-
-Les clients doivent pouvoir avoir une découverte des serveurs disponibles.**
-
-#### ICore
+### `ICore`
 C'est un interface qui définit ce qui est nécessaire au Core à savoir des méthodes permettant d'envoyer des messages en Unicast ou en Multicast et une méthode pour stopper le Core. Toutes les classes héritant de `AbstractCore` doivent implémenter cette interface.
 
-#### AbstractCore
+### `AbstractCore`
 Cette classe abstraite met à disposition les méthodes permettant à ses sous-classes de s'exécuter correctement. Contrairement à `Core` cette classe va utiliser la réflexivité dans sa méthode execute(), comme ceci:  
 
 ```java
@@ -357,29 +362,31 @@ public synchronized String execute(String command, ArrayList<Object> args) {
 ```
 Nous recevons une commande et un tableau correspondant aux arguments de la méthode à invoquer. Ensuite, le programme essaie de trouver la méthode ayant un nom correspondant à la commande, si elle est disponible dans l'instance de la classe. Si c'est le cas, cette dernière va l'invoquer et donc exécuter ladite méthode, sinon une exception est levée. C'est grâce à cette méthode que tout prend son sens, car on a maintenant une instance d'`AbstractCore` qui est soit `ClientCore` soit `ServerCore` avec une seule méthode pour en appeler d'autres qui seront, elles, implémentées dans les sous-classes d' `AbstractCore`.
 
-#### ServerCore et ClientCore
+### `ServerCore` et `ClientCore`
+**Les serveur doivent pouvoir envoyer une mise à jour de leur liste de lecture actuelle à tous les clients. Ces derniers ne devront traiter que les informations qui viennent du serveur auquel ils sont connectés.
+
+Les clients doivent pouvoir avoir une découverte des serveurs disponibles.**
+
 Ces deux classes héritant de `AbstractCore` et implémentant `ICore` sont les classes les plus importantes du projet. C'est ici que la majorité des actions (transfert de la musique, action à effectuer lors d'un appui sur un bouton, etc.) se fera. Lors de l'envoi des commandes, ces classes fonctionnent avec un système d'états dans lequel ces derniers peuvent être changés en recevant des commandes depuis le réseau ou depuis le code. Elles ont une forte interaction avec les classes s'occupant des échanges réseau puisque c'est ici que toutes les informations reçues depuis le réseau vont passer. Grâce à la réflexivité offerte par l'`AbstractCore`, il est donc extrêmement facile de définir de nouvelles méthodes dans ces classes. Pour cela, il faut déclarer une méthode portant le nom d'une commande - commandes qui seront toutes listées dans la classe `ApplicationProtocol`.
 
-### Synthèse du paquet core
 Grâce à ces classes, nous avons réglé le problème de contrôleur central par lequel tout transitera. La réception des commandes à invoquer sera expliquée plus tard dans le chapitre sur le paquet `Network` et lors des explications sur la liaison entre l'interface graphique et le code.
 
-##  Package et ressources ui
+## Package et ressources ui
 Concernant l'interface graphique, nous avons utilisé la librairie JavaFX. Celle-ci nous a permis de faire usage de l'outil SceneBuilder afin de développer, en premier lieu, une maquette qui s'est ensuite développée, à travers plusieurs étapes, en l'interface graphique que nous connaissons aujourd'hui. Le fonctionnement JavaFX demande à avoir deux notions qui communiquent entre elles: un ou plusieurs fichiers FXML qui définissent l'arrangement de la fenêtre et une ou plusieurs classes Java qui permettent de lancer la fenêtre et communiquer avec ses composants.
 Il est donc intéressant de connaître le cheminement que nous avons parcouru jusqu'au résultat actuel.
 Dans un premier temps, nous avons développé un fichier FXML grâce à SceneBuilder. Grâce à celui-ci, nous avons pu apprendre les bons usages FXML. Nous avons ensuite créé un fichier Java depuis lequel nous étions capables lancer la fenêtre au démarrage du programme. Cependant, le code se développant devenant de plus en plus important, nous avons pris la décision de diviser aussi bien les fichiers FXML que les fichiers Java en plusieurs sections permettant d'avoir un regard plus précis sur chaque partie de notre implémentation.
 Ainsi, nous avons aujourd'hui plusieurs classes Java et plusieurs fichiers FXML qui sont reliés à leur classe principale `UIController.java` respectivement `main.fxml`.
 
-### Classes du package
 La description des classes se fera selon l'ordre des vues dans l'interface graphique, en partant de la vue en haut à gauche pour finir par la vue en bas au centre. Nous allons tout d'abord commencer par la fenêtre de configuration apparaissant au lancement du programme, pour continuer avec le controleur. Le reste des classes sera ensuite abordé.
 
-#### ClientServerDialog
+### `ClientServerDialog`
 ** DG : revoir texte car certaines choses ont changé depuis **
 `ClientServerDialog` est la première fenêtre lancée par le programme. Son lancement se passe alors dans la classe principale `Commusica`. Cette fenêtre permettra tout simplement de choisir entre deux rôles : celui du serveur ou de l'utilisateur lambda.
 Le choix sera communiqué au Core qui prendra connaissance de la décision, configurera le programme et exécutera le lancement de l'interface graphique appropriée.
 Après cela, cette classe lancera l'`UIController`.
 Dans le cas où l'utilisateur ne répond pas à la question posée dans la fenêtre de dialogue et la ferme, le programme s'arrête.
 
-#### UIController
+### `UIController`
 ** DG : revoir texte car certaines choses ont changé depuis **
 `UIController` est la classe qui permet de lier le reste des classes entre elles. Elle va, en premier lieu, mettre à jour la partie en haut à gauche contenant les playlists et la playlist sélectionnée sera par défaut celle en cours de construction.
 Mis à part la configuration initiale de la fenêtre, `UIController` permet aussi toutes les actions basiques de l'interface graphique :
@@ -390,54 +397,54 @@ Mis à part la configuration initiale de la fenêtre, `UIController` permet auss
 +  Fermer la fenêtre proprement lorsque l'utilisateur décide d'arrêter le programme
 `UIController` va tout simplement faire appel aux différentes classes du package `ui` afin de s'informer de l'état de chaque partie composant l'UI lors d'une demande depuis l'extérieur.
 
-#### PlaylistsListView
+### `PlaylistsListView`
 `PlaylistsListView` concerne la vue en haut à gauche affichant les playlists disponibles :
 
-  +  **PLAYING** : la playlist en cours de création
-  +  **FAVORITES** : la playlist des favoris
-  +  **SAVED** : la liste des playlists sauvegardées d'anciens événements
+- **PLAYING** : la playlist en cours de création
+- **FAVORITES** : la playlist des favoris
+- **SAVED** : la liste des playlists sauvegardées d'anciens événements
 Comme spécifié au chapitre précédent, la liste sélectionnée par défaut est la liste en cours de création.
 Dans la classe `PlaylistsListView`, nous faisons usage d'une méthode de la classe `FXCollections` permettant d'attacher un observeur à n'importe quel objet du programme. Ainsi, nous pouvons facilement modifier l'affichage des playlists au fur et à mesure des actions faites au niveau du serveur ou du client.
 
-#### TracksListView
+### `TracksListView`
 La classe `TracksListView` agit sur le panneau en haut au centre de l'interface graphique principale en le dessinant et définissant les usages basiques de celui-ci.
 Cette classe permet d'afficher une playlist et glisser/déposer un élément audio au sein du panneau, grâce à la méthode `initializeDragAndDrop()`. La liste de lecture est initialisée comme liste observable, ce qui fait que dès qu'un changement subvient, celle-ci se met à jour. Cependant, elle n'est pas encore peuplée par les chansons contenues dans la playlist. Cette question ainsi que celle des upvotes, downvotes et favoris sont traitées dans une autre classe implémentée spécialement pour cet usage : `PlaylistTrackCell`.
 
-##### initializeDragAndDrop()
 La méthode `initializeDragAndDrop()` de la classe `TracksListView` mérite une explication plus détaillée. Nous avons longtemps réfléchi à la meilleure façon d'implémenter le téléchargement d'une chanson. Le "drag and drop" (glisser/déposer) nous a finalement semblé être la technique la plus intuitive d'ajout de chansons.
 Cette méthode relativement complexe nous permet donc de déterminer quand une personne  a déposé un fichier dans le panneau et ce, grâce à la méthode JavaFX `setOnDragDropped()` de la classe `TransferMode`. C'est alors que nous allons faire usage du constructeur de la classe `Track` prenant en paramètre un `AudioFile`.
 Si c'est le serveur qui a glissé/déposé une chanson, alors la méthode appellera directement la méthode du `PlaylistManager` permettant d'ajouter une chanson.
 Dans le cas du client, la méthode passera d'abord par la classe `Core` à laquelle il enverra la commande `SEND_TRACK_REQUEST` avec comme argument l'URI de la chanson.
 Nous remarquons ici, encore une fois, l'intérêt et l'importance de la classe `Core`.
 
-##### PlaylistTrackCell
+### `PlaylistTrackCell`
 `PlaylistTrackCell` est une classe utilisée dans chaque cellule de la liste afin de définir les boutons d'upvote, downvote et favoris et leurs actions. Elle va également permettre de définir le titre, l'artiste, l'album et le nombre de votes d'une chanson.
 Concernant les votes, deux fonctions - une pour les votes positifs et l'autre pour les votes négatifs - permettent de communiquer avec le `Core` à travers des commandes. Les commandes - `SEND_DOWNVOTE_TRACK_REQUEST` et `SEND_UPVOTE_TRACK_REQUEST` - sont utilisées dans ces deux cas spécifiques car l'incidence qu'aura un vote sera globale à tous les participants. Ainsi, le `Core` doit être averti du fait que l'événement a eu lieu pour en informer le serveur afin qu'il renvoie l'information à tout le monde. Encore une fois, le `Core` use de son pouvoir de messager à travers le programme.
 Dans le cas des favoris, il n'y a nul besoin de passer par le `Core` car tout ce que l'utilisateur veut, c'est enregistrer l'information dans sa liste personnelle de chansons favorites.
 
-#### SettingsView
+### `SettingsView`
 **DG : TODO**
 *En haut à droite*
 
-#### PreviousTrackView
+### `PreviousTrackView`
 Dans le panneau en bas à gauche, nous pouvons apercevoir un espace réservé à la chanson qui vient de se terminer. Ce panneau nous a semblé utile de par le fait que, souvent, nous nous sommes personnellement retrouvés à vouloir noter le nom d'une chanson que nous venions d'écouter et, le temps de prendre notre téléphone pour identifier ladite chanson, celle-ci avait eu le temps de se terminer. Ainsi, ce panneau offre la possibilité à tout un chacun de retrouver facilement et sauvegarder en un seul "clic" les informations d'une chanson.
 Pour ce panneau, nous n'avons pas repris le même type de cellule que dans le panneau central du haut, car il n'y a pas de sens au fait de pouvoir upvoter ou downvoter une chanson déjà écoutée. C'est pourquoi, nous avons créé un panneau sur mesure contenant uniquement l'étoile des favoris et permettant ainsi uniquement d'ajouter la chanson dans ses favoris.
 
-#### CurrentTrackView
+### `CurrentTrackView`
 Dans le panneau du bas, au milieu, nous pouvons apercevoir le résumé de la chanson actuellement en écoute. Les boutons ainsi que les informations sont exactement les mêmes que dans le cas de la dernière chanson grisée affichée dans la liste de lecture du panneau en haut au centre.
 Nous avons choisi cet affichage de façon à pouvoir faciliter l'accès à la chanson actuelle si jamais l'utilisateur avait décidé de faire défiler la liste de lecture et aurait perdu de vue la chanson actuelle.
 Le vrai défi de cette classe a cependant été celui de pouvoir remplir la jauge d'écoute selon l'avancement de la chanson. Cela a évidemment été fait à travers un observeur sur l'instance de `Player` qui possède l'information sur le temps écoulé.
 Sur la gauche du panneau central, nous pouvons également apercevoir des boutons de controle.
 
-##### PlayerControlsView
+#### `PlayerControlsView`
 `PlayerControlsView` qui se trouve dans le même panneau que `CurrentTrackView`représente les boutons "play/pause", "chanson suivante", "chanson précédente" et "volume". Ces quatre boutons représentent en fait cinq actions distinctes qui transiteront toutes à travers le `Core`. En effet, nous nous trouvons encore une fois face à une classe de l'interface graphique dont le `Core` est indispensable à son bon fonctionnement.
 Le `Core` est en mesure de déterminer vers qui il devra tourner la demande d'action à travers l'une des commandes suivantes :
 
-  +  SEND_TURN_VOLUME_DOWN_REQUEST : pour baisser le volume
-  +  SEND_TURN_VOLUME_UP_REQUEST : pour augmenter le volume
-  +  SEND_NEXT_TRACK_REQUEST : pour écouter la chanson suivante
-  +  SEND_PREVIOUS_TRACK_REQUEST : pour écouter la chanson précédente
-  +  SEND_PLAY_PAUSE_REQUEST : pour arrêter ou démarrer la musique
+- SEND_TURN_VOLUME_DOWN_REQUEST : pour baisser le volume
+- SEND_TURN_VOLUME_UP_REQUEST : pour augmenter le volume
+- SEND_NEXT_TRACK_REQUEST : pour écouter la chanson suivante
+- SEND_PREVIOUS_TRACK_REQUEST : pour écouter la chanson précédente
+- SEND_PLAY_PAUSE_REQUEST : pour arrêter ou démarrer la musique
+
 Dans ces cas précis, c'est la classe `UserSessionManager`qui sera concernée par la commande.
 Finalement, nous voyons dans cette classe encore une trace de ce que nous avions initialement implémenté. En effet, comme dans tous controleurs de musique, les boutons play/pause, chanson suivante et chanson précédente sont toujours présents. Cependant, dans le concept que nous visions à créer, nous n'avons jamais voulu permettre aux utilisateurs de revenir en arrière mais bien de se trouver dans un flux continu de musique.
 
@@ -448,15 +455,40 @@ Ce qu'il faut savoir par rapport aux fichiers FXML, c'est que nous avons dû ajo
 
 # Notions et technologies utilisées
 
-## Hibernate
+### Notions
+
+#### Singleton et POO
+
+#### Introspection
+
+#### ThreadPool
+
+#### ScheduledExecutorService
+
+### Librairies utilisés
+
+#### Gson
+
+#### Hibernate
 Pour l'implémentation, nous avons choisi le framework Hibernate qui simplifie le développement de l'application Java pour interagir avec la base de données. C'est un outil open source et léger.
 Un outil ORM (Object Relational Mapping) simplifie la création, la manipulation et l'accès aux données. C'est une technique de programmation qui mappe l'objet aux données stockées dans la base de données.
 
 La performance du framework Hibernate est rapide, car le cache est utilisé en interne dans le cadre hiberné.
 Le framework Hibernate offre la possibilité de créer automatiquement les tables de la base de données. Il n'est donc pas nécessaire de les créer manuellement.
 
+#### JAudiotagger
+** DG : il me semble intéressant de développer un peu plus cet outil **
+JAudiotagger est une API Java pour la lecture et l'écriture des métadonnées des fichiers audio. Il supporte des formats tels que MP3, MP4, WAV, etc.
 
-## GitHub
+#### JavaFX
+** DG : développer un peu plus les avantages de JavaFX, peut-être en comparaison avec Swing **
+JavaFX est une bibliothèque Java permettant la création d'applications Desktop. Les applications écrites à l'aide de cette bibliothèque peuvent fonctionner sur plusieurs plateformes. Les applications développées à l'aide de JavaFX peuvent fonctionner sur différents périphériques tels que les ordinateurs, les téléviseurs, les tablettes, etc.
+
+#### Capsule
+** DG : TODO **
+
+### Programmes utilisés
+#### GitHub
 ** DG : on confond Git et GitHub dans les énumérations, à revoir **
 Github est un outil gratuit permettant d'héberger du code open source, et propose également des plans payants pour les projets privés.
 Nous avons utilisé Github pour les raisons suivantes:
@@ -465,38 +497,28 @@ Nous avons utilisé Github pour les raisons suivantes:
 + Fusion ("merge"): quand un fichier a été modifié par plusieurs personnes en même temps, Git sait s'adapter et choisir un algorithme qui fusionne intellignemment les lignes du fichier qui ont été modifiées.
 + Le nombre de personnes par repository n'est pas réduit comme dans Bitbucket, par exemple.
 
-## IntelliJ IDEA
+#### IntelliJ IDEA
 Un environnement de développement intégré, autrement dit, un ensemble d'outils destinés au développement logiciel. Les avantages dans l'utilisation d'IntelliJ IDEA sont les suivantes.
 
  + Il nous propose la fonctionnalité de pull-request pour GitHub.
  + Une autocomplétion hors pair.
  + L'analyse et inspection : il analyse en temps réel et en permanence le code, à la recherche de problèmes potentiels.
 
-## Apache Maven
+#### Apache Maven
 Apache Maven est un outil puissant de gestion de projet basé sur POM (modèle d'objet de projet). Il est utilisé pour la construction, la dépendance et la documentation des projets. Les avantages d'utilisation Maven sont les suivants :
 
 + Il facilite la construction d'un projet.
 + Il fournit un processus de construction uniforme (le projet Maven peut être partagé par tous les projets Maven). ** DG : pas très clair **
 + Il fournit des informations sur le projet (document, liste de dépendances, rapports de tests, etc.).
 
-## Scene Builder
+#### Scene Builder
 Scene builder est un outil qui permet de créer des fichiers au formats FXML via un éditeur graphique. Les avantages de Scene Builder sont les suivants :
 
 ** DG : TODO **
 
-## Wireshark
+#### Wireshark
 Wireshark est un outil essentiel pour comprendre les mécanismes de fonctionnement des protocoles de commuinication sur les réseaux. Il capture des paquets directement sur les interfaces du système utilisé ou lit des fichiers de captures sauvegardées. Nous l'avons utilisé dans notre projet pour sniffer la communication entre le client et le serveur afin de controler le bon fonctionnement de la communication réseau.
 
-## JAudiotagger
-** DG : il me semble intéressant de développer un peu plus cet outil **
-JAudiotagger est une API Java pour la lecture et l'écriture des métadonnées des fichiers audio. Il supporte des formats tels que MP3, MP4, WAV, etc.
-
-## JavaFX
-** DG : développer un peu plus les avantages de JavaFX, peut-être en comparaison avec Swing **
-JavaFX est une bibliothèque Java permettant la création d'applications Desktop. Les applications écrites à l'aide de cette bibliothèque peuvent fonctionner sur plusieurs plateformes. Les applications développées à l'aide de JavaFX peuvent fonctionner sur différents périphériques tels que les ordinateurs, les téléviseurs, les tablettes, etc.
-
-## Capsule
-** DG : TODO **
 
 # Tests réalisés
 ** DG : cette liste me semble relativement massive, on pourrait faire des sous-chapitres **
