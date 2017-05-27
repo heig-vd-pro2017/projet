@@ -1,0 +1,23 @@
+@startuml
+
+start
+
+- Récupère le fichier à envoyer
+
+- Vérifie avec le FileManager si le fichier est supporté
+
+if (Le fichier est supporté) then (oui)
+
+    - Crée une Track à partir du fichier
+    - Sérialise la Track
+    - Prépare la commande à envoyer
+    - Envoie la commande au serveur
+
+    - Attente de la réponse du server
+    stop
+endif
+
+    - Coupe la communication avec le serveur
+    stop
+
+@enduml

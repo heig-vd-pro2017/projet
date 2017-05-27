@@ -25,10 +25,12 @@ if (Fichier présent sur le disque ?) then(non)
 
     - La Track est présente dans la base de données mais pas sur le disque
     - L'utilisateur est notifié comme quoi la Track est acceptée
+    stop
 
 else(oui)
 
     - L'utilisateur est notifié comme quoi la Track est refusée
+    stop
 
 endif
 

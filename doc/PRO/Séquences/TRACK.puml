@@ -1,0 +1,77 @@
+@startuml
+
+
+Client -> Client : Récupération du fichier
+
+Client -> Client : Format\nsupporté ?
+
+Client x--> Client : Format non supporté, fin.
+
+Client -> Client : Création de la Track à partir du fichier
+
+Client -> Client : Track -> JSON
+
+Client -> Serveur : Envoi des de la track\n(id, titre, artiste, album, durée)
+
+Serveur -> Serveur : Récupération de l'ID de l'utilisateur
+
+Serveur -> Serveur : Récupération de la Track
+
+Serveur -> Serveur : Sauvegarde une session pour l'utilisateur
+
+Serveur -> Serveur : Récupère la Track dans la base de données par son ID
+
+Serveur -> Serveur : Track pas trouvée par son ID ? Essai avec ses attributs
+
+Serveur -> Serveur : Track pas trouvée par ses attributs ?
+
+Serveur -> Client : <i>Track acceptée</i>
+
+Serveur -> Serveur : Track trouvée dans la base de données, soit par ID soit par attribut ?
+
+Serveur -> Serveur : Track présente sur le disque ?
+
+Serveur -> Client : <i>Track refusée</i>
+
+Serveur -> Client : <i>Track acceptée</i>
+
+Client -> Client : Track refusée ?
+
+Client -> Serveur : Fin de la communication
+
+Client -> Serveur : Envoi des de la track\n(id, titre, artiste, album, durée) avec le fichier associé
+
+Serveur -> Serveur : Récupération du fichier par le réseau
+
+
+Client <--x Serveur : <i>Format non supporté</i>
+
+Serveur -> Serveur : Chanson déjà\nprésente dans la\nbase de données ?
+
+Client <--x Serveur : <i>Chanson déjà présente</i>
+
+Serveur -> Serveur : Combien d'uploads\nactifs?
+
+Client <--x Serveur : <i>Trop d'uploads actifs</i>
+
+Serveur -> Serveur : Espace disque\nsuffisant?
+
+Client <--x Serveur : <i>Espace disque insuffisant</i>
+
+Serveur -> Serveur : Réservation de\nl'espace disque
+
+Client <-- Serveur : <i>OK pour le transfert</i>
+
+Client -> Serveur : Envoi de la chanson
+
+Serveur -> Serveur : Erreur lors du\ntransfert?
+
+Client <--x Serveur : <i>Erreur lors du transfert</i>
+
+Serveur -> Serveur : Ajout à la base\nde données
+
+Client <-- Serveur : Transfert réussi
+
+Serveur -> Serveur : Mise à jour\nde la capactié\nde l'espace disque
+
+@enduml
