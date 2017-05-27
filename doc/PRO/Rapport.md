@@ -26,7 +26,7 @@ header-includes:
     - \pagestyle{fancy}
     - \fancyhead[CO,CE]{}
     - \fancyhead[LO,LE]{Commusica}
-    - \fancyhead[RO,RE]{PRO 2017}
+    - \fancyhead[RO,RE]{HEIG-VD - PRO 2017}
 
     # Redefine TOC style.
     - \setcounter{tocdepth}{4}
@@ -137,35 +137,55 @@ Une fois l'architecture bien définie, nous avons défini des normes de dévelop
 L'intégralité de ce document de normes est fourni en annexes.
 
 # Architecture
+
+**METTRE LE SCHÉMA ICI**
+
 ## Entité base de données
-
-## Entité système de fichiers
-
-## Entité réseau
-
-## Entité session
-
-## Entité médias (chasons et listes de lecture)
-
-## Entité controlleur
-
-## Entité visuelle
-
-## Diagrammes d'activités
-
-# Description technique
-La description technique ira dans l'ordre croissant de complexité des différentes entitées de notre programme.
-Pour chacune de ces entités, nous décrirons brièvement le but des différentes classes.
-
-## Package database
 Cette entité est une abstraction de la base de données. Elle permet de simplifier l'interaction avec cette dernière en mettant à disposition des méthodes pour les opérations de base sur la base de données.
 
 Cette entité permet, par exemple, à un utilisateur de sauvegarder les metadatas des chansons qui lui plaisent dans la base de données.
 
-Ce package est constitué essentiellement de la classe `DatabaseManager` donc le rôle est d'assurer le CRUD (Create, Read, Update, Delete) de la base de données de notre application et d'assurer la fermeture de la connexion à celle-ci.
+## Entité système de fichiers
+Cette entité a pour rôle d'assurer la gestion des fichiers en interagissant avec le système de fichiers. Elle permet de sauvegarder, supprimer, renommer des fichiers sur le disque, recevoir par le réseau un fichier et vérifier que les fichiers ne sont pas corrompus.
 
-## Package file
-Le package `file` a pour rôle d'assurer la gestion des fichiers en interagissant avec le système de fichiers . Il est constitué de deux classes: `FileManager` et `FilesFormats`.
+## Entité réseau
+Cette entité permet toute la gestion du réseau entre les clients et le serveur. Elle permet de répondre aux attentes suivantes:
+
+- Le serveur doit pouvoir gérer plusieurs clients, mais sans devoir garder une connexion constante entre chaque client et le serveur.
+- Un serveur ou un client doit pouvoir communiquer l'un avec l'autre en utilisant une liaison de communication "privée" à l'aide de l'Unicast.
+- Un serveur doit pouvoir diffuser à tous les clients un message afin que tout le monde le réceptionne et le traite à l'aide du Multicast.
+
+## Entité sessions
+Cette entité permet de gérer des notions de sessions afin de connaître les personnes connectées et serveurs accessibles. Il y a notamment deux notions de sessions, les sessions serveurs et les sessions utilisateurs.
+
+Dans le cas des sessions serveurs, le but est de savoir si un serveur est encore accessible. A chaque mise à jour de la part du/des serveurs, la session associée sera mise à jour. Si un des serveurs venait à être éteint ou déconnecté, le client supprimera le serveur afin qu'il ne tente pas d'y accéder.
+
+Dans le cas des sessions utilisateurs, le but est de pouvoir limiter un utilisateur dans son nombre d'actions sur le serveur (voter pour une chason, voter contre une chanson, faire une demande de changer de musique, etc.) et savoir combien d'utilisateurs sont actifs sur le serveur afin de savoir quand une action définie par une majorité doit avoir lieu.
+
+## Entité médias (chansons et listes de lecture)
+Cette entité regroupe tout ce qui concerne les médias de notre application (chansons, listes de lecture, lecteur de musique).
+
+## Entité controlleur
+Cette entité permet le contrôle de l'application. C'est elle qui va gérer le comportement de l'application et faire la liaison le mieux possible entre toutes les entitées décrites ci-dessus et répondre aux demandes des utilisateurs/serveurs.
+
+## Entité visuelle
+L'entité visuelle est ce que l'on va montrer à l'utilisateur afin qu'il ait une interface pour intéragir avec le programme. Cette interface sera liée directement au controlleur, qui saura quoi faire en fonction de l'action demandée.
+
+## Entités utilitaires
+Ces entités sont toutes celles qui ne trouvent pas leur place dans des entités spécifique. Notamment l'entité de configuration qui permet de récupérer des propriétés d'un fichier de configuration fait partie de ces entités utilitaires.
+
+# Description technique
+La description technique ira dans l'ordre croissant de complexité des différentes entitées de notre programme.
+
+Pour chacune de ces entités, nous décrirons brièvement le but des différentes classes.
+
+## Paquet database
+**Parler du système de cache de Hibernate, comment il faut pour savoir ce qui est déjà dans la base de données. Voir l'interface Serializable**
+
+Ce paquet est constitué essentiellement de la classe `DatabaseManager` donc le rôle est d'assurer les méthodes définies par les notions CRUD (Create, Read, Update, Delete) de la base de données de notre application et d'assurer la fermeture de la connexion à celle-ci.
+
+## Paquet file
+Le paquet `file` est constitué de deux classes: `FileManager` et `FilesFormats`.
 
 ### `FilesFormats`
 Actuellement, notre application supporte trois formats de fichiers audio: MP3, M4A et WAV. La classe permet de définir les caractéristiques d'un fichier, c'est-à-dire tous les éléments nous permettent de connaître le type du fichier.
@@ -182,14 +202,7 @@ Pour retrouver l'extension du fichier, nous avons procédé de la manière suiva
 
 Connaître le type de fichier nous permettra de traiter uniquement les fichiers supportés pas notre plateforme et aussi, en termes de sécurité, éviter qu'un utilisateur fasse planter le serveur en envoyant un fichier qui n'est pas supporté par celui-ci.
 
-## Package network
-Cette entité permet toute la gestion du réseau entre les clients et le serveur. Elle permet de répondre aux attentes suivantes:
-
-- Avoir un protocole réseau qui se base sur des commandes avec arguments.
-- Le serveur doit pouvoir gérer plusieurs clients, mais sans devoir garder une connexion constante entre chaque client et le serveur.
-- Un serveur ou un client doit pouvoir communiquer l'un avec l'autre en utilisant une liaison de communication "privée" à l'aide de l'Unicast.
-- Un serveur doit pouvoir diffuser à tous les clients un message afin que tout le monde le réceptionne et le traite à l'aide du Multicast.
-
+## Paquet network
 Côté serveur, nous avons décidé d'opter pour une architecture avec un thread réceptionniste `Server` qui va attendre une nouvelle connexion de la part des clients. Une fois un nouveau client arrivé, il va lancer un thread `UnicastClient` qui va s'occuper de la communication avec le client. Cette communication se fait via un socket Unicast car il s'agit d'une communication privée entre le serveur et le client.
 
 **Description du protocole applicatif avec les commandes et les arguments
@@ -197,7 +210,7 @@ Après la réception de la ligne `END_OF_COMMAND`, la lecture du flux d'entrée 
 
 Les classes `UnicastClient` et `MulticastClient` vont pouvoir recevoir les commandes venant du réseau (à l'aide de threads qui écoutent tout le temps le réseau) et en renvoyer. Sa force réside dans le fait qu'elle peut être utilisée aussi bien du côté serveur que du côté client grâce à un système de lecture de flux d'entrée jusqu'à ce que le client ou le serveur décide de mettre fin à la communication (à l'aide de la commande `END_OF_COMMUNICATION`) ou que la connexion est coupée. Le socket est fermé lorsque la commande `END_OF_COMMUNICATION` est reçue.
 
-## Package session
+## Paquet session
 Cette entité permet de gérer des notions de sessions afin de connaître les personnes connectées et serveurs accessibles.
 
 ### `ISession`
@@ -208,7 +221,7 @@ L'identifiant est toujours un ID unique `Integer` qui est généré à l'aide de
 La méthode `update()` permet de mettre à jour la session afin qu'elle ne soit pas nettoyée par le `ScheduledExecutorService` (voir ci-dessous).
 
 ### `ServerSession`
-Cette classe représente une session serveur. Le but est de pouvoir si un serveur est encore accessible.
+Cette classe représente une session serveur.
 
 En plus de l'identifiant unique, un serveur est représenté par une adresse de destination afin de savoir comment l'attendre et d'un nom.
 
@@ -218,7 +231,7 @@ Cette classe représente une session utilisateur. Le but est de pouvoir identife
 ### `ISessionManager`
 Cette interface demande à chaque SessionManager de mettre à disposition une méthode `stop()`. En effet, chaque SessionManager démarre un `ScheduledExecutorService` dont le but est de nettoyer les sessions inactives du système, soit en les supprimant ou en les désactivant, à intervals réguliers (défini dans le fichier de configuration).
 
-### `ServerSessionManager`
+### `ServerSessionManager`
 Cette classe permet de gérer les différentes sessions des serveurs. Elle permet de stocker et savoir quels sont les serveurs actifs.
 
 Elle est constituée d'une `Map` permettant de stocker les différents serveurs accessibles. Cette liste est mise à jour à chaque fois qu'un serveur envoie une mise à jour de sa liste de lecture à l'aide de la commande `PLAYLIST_UPDATE`.
@@ -228,8 +241,8 @@ Elle est nettoyée à l'aide du `ScheduledExecutorService` afin de supprimer de 
 ### `UserSessionManager`
 **A développer, parler des différentes structures, du nettoyage, et à quoi ça sert**
 
-## Package media
-** DG : il me semblerait pas mal d'expliquer dans les grandes lignes à quoi sert ce package**
+## Paquet media
+Ce paquet permet le regroupement
 
 ### `EphermeralPlaylist`
 La classe EphermeralPlaylist représente la playlist en cours de construction, c'est-à-dire la playlist en cours de lecture. Cela permet de mettre à jour l'interface graphique lors d'une action sur un élément de la playlist. La mise à jour se fait grâce au pattern observeur à travers la liste `ObservableSortedPlaylistTrackList`, qui joue en même temps le rôle d'observable et d'observeur. Elle observe des chansons de la liste dans le but de changer l'état de la playlist en cas d'upvote ou downvote, et devient observable dans le cas où elle envoie des notifications lors des mises à jour. Dans cette classe, nous avons aussi le champ `delegate` qui représente la liste de lecture qui sera enregistrée dans la base de données pour le suivi de celle-ci.
@@ -260,8 +273,8 @@ Nous avons implémenté trois constructeurs :
 - `public Track(String id, String title, String artist, String album, Integer length, String uri)` : constructeur permettant de créer une instance de `Track` lorsque tous les paramètres sont connus.
 - `public Track(AudioFile audioFile)` : constructeur permettant de créer une instance de `Track` à partir d'un fichier audio. Il est utile lorsque nous souhaitons transférer un fichier et effectuer un contrôle sur une chanson au lieu de vérifier le fichier audio lui-même.
 
-## Package playlist
-Le package `playlist` met en oeuvre ce qui a trait à la gestion des playlists, dans notre cas :
+## Paquet playlist
+Le paquet `playlist` met en oeuvre ce qui a trait à la gestion des playlists, dans notre cas :
 
 - Le lien entre une certaine chanson et les playlists dans lesquelles elle se trouve.
 - La sélection d'une certaine playlist.
@@ -285,8 +298,8 @@ Cette classe permet de créer le lien entre une certaine playlist et une chanson
 ### `VoteComparator`
 Le comparateur de vote ne possède qu'une fonction. Celle-ci sert tout simplement à déterminer entre deux chansons, laquelle a le plus grand nombre de votes. Cela a été créé dans le but de réorganiser la playlist en commençant par les chansons les plus votées.
 
-## Package utils
-Le package `utils` réunit tous les utilitaires dont nous avons eu besoin au sein de plusieurs classes et dont l'implémentation n'avait aucun sens au sein desdites classes. L'utilité de chaque classe diffère alors énormément.
+## Paquet utils
+Le paquet `utils` réunit tous les utilitaires dont nous avons eu besoin au sein de plusieurs classes et dont l'implémentation n'avait aucun sens au sein desdites classes. L'utilité de chaque classe diffère alors énormément.
 
 ### `Configuration`
 Cette classe permet la récupération des propriétés définies dans un fichier de configuration. Elle fixe le fichier de configuration à utiliser et permet l'accès à ces dernières.
@@ -322,7 +335,7 @@ Cette classe a été créée uniquement pour assouvir le besoin d'un débogueur 
 
 L'affichage des logs peut tout à fait être désactivé au niveau du fichier de configuration `commusica.properties` en réglant la valeur de `DEBUG` à 0.
 
-## Package core
+## Paquet core
 Pour garder un niveau d'abstraction le plus élevé possible, nous avons voulu faire transiter à travers un contrôleur toutes les informations venant du réseau et des utilisateurs, le but étant d'avoir le même point d'entrée que l'on soit client ou serveur. Pour cela, il nous fallait un contrôleur central qui puisse être appelé de la même façon, quel que le choix de l'identité - client ou serveur. C'est alors à celui-ci de vérifier l'existence d'une fonction et de communiquer l'action à exécuter à l'entité concernée. Notre raisonnement nous a mené à nous tourner vers la réflexivité offerte par Java pour résoudre ce problème. Ce mécanisme permet d'instancier des méthodes à l'exécution en utilisant la méthode `invoke(Object obj, Object... args)` ayant comme premier paramètre un String représentant le nom de la méthode à invoquer et comme deuxième paramètre un tableau d'`Object` contentant les différents arguments dont la méthode invoquée a besoin (voir utilisation dans notre programme **FIGURE**).
 
 Il nous fallait maintenant une classe qui puisse jouer le rôle du contrôleur. Nous avons développé les `Core` pour cela qui sont tous dans le paquet `core`.
@@ -371,7 +384,7 @@ Ces deux classes héritant de `AbstractCore` et implémentant `ICore` sont les c
 
 Grâce à ces classes, nous avons réglé le problème de contrôleur central par lequel tout transitera. La réception des commandes à invoquer sera expliquée plus tard dans le chapitre sur le paquet `Network` et lors des explications sur la liaison entre l'interface graphique et le code.
 
-## Package et ressources ui
+## Paquet et ressources ui
 Concernant l'interface graphique, nous avons utilisé la librairie JavaFX. Celle-ci nous a permis de faire usage de l'outil SceneBuilder afin de développer, en premier lieu, une maquette qui s'est ensuite développée, à travers plusieurs étapes, en l'interface graphique que nous connaissons aujourd'hui. Le fonctionnement JavaFX demande à avoir deux notions qui communiquent entre elles: un ou plusieurs fichiers FXML qui définissent l'arrangement de la fenêtre et une ou plusieurs classes Java qui permettent de lancer la fenêtre et communiquer avec ses composants.
 Il est donc intéressant de connaître le cheminement que nous avons parcouru jusqu'au résultat actuel.
 Dans un premier temps, nous avons développé un fichier FXML grâce à SceneBuilder. Grâce à celui-ci, nous avons pu apprendre les bons usages FXML. Nous avons ensuite créé un fichier Java depuis lequel nous étions capables lancer la fenêtre au démarrage du programme. Cependant, le code se développant devenant de plus en plus important, nous avons pris la décision de diviser aussi bien les fichiers FXML que les fichiers Java en plusieurs sections permettant d'avoir un regard plus précis sur chaque partie de notre implémentation.
@@ -395,7 +408,7 @@ Mis à part la configuration initiale de la fenêtre, `UIController` permet auss
 +  Obtenir la playlist actuellement visualisée
 +  Mettre à jour et afficher les playlists
 +  Fermer la fenêtre proprement lorsque l'utilisateur décide d'arrêter le programme
-`UIController` va tout simplement faire appel aux différentes classes du package `ui` afin de s'informer de l'état de chaque partie composant l'UI lors d'une demande depuis l'extérieur.
+`UIController` va tout simplement faire appel aux différentes classes du paquet `ui` afin de s'informer de l'état de chaque partie composant l'UI lors d'une demande depuis l'extérieur.
 
 ### `PlaylistsListView`
 `PlaylistsListView` concerne la vue en haut à gauche affichant les playlists disponibles :
@@ -527,9 +540,7 @@ JavaFX est une bibliothèque Java permettant la création d'applications Desktop
 ** DG : TODO **
 
 ### Programmes utilisés
-#### GitHub
-** DG : on confond Git et GitHub dans les énumérations, à revoir **
-Github est un outil gratuit permettant d'héberger du code open source, et propose également des plans payants pour les projets privés.
+- Git/GitHub: Github est un outil gratuit permettant d'héberger du code open source, et propose également des plans payants pour les projets privés.
 Nous avons utilisé Github pour les raisons suivantes:
 
 + Elle permet une meilleure gestion des branches
@@ -558,7 +569,6 @@ Scene builder est un outil qui permet de créer des fichiers au formats FXML via
 #### Wireshark
 Wireshark est un outil essentiel pour comprendre les mécanismes de fonctionnement des protocoles de commuinication sur les réseaux. Il capture des paquets directement sur les interfaces du système utilisé ou lit des fichiers de captures sauvegardées. Nous l'avons utilisé dans notre projet pour sniffer la communication entre le client et le serveur afin de controler le bon fonctionnement de la communication réseau.
 
-
 # Tests réalisés
 ** DG : cette liste me semble relativement massive, on pourrait faire des sous-chapitres **
 ** DG : attention, certains de ces points, à cause de la tournure de phrase, sont des observations et non des tests **
@@ -583,14 +593,14 @@ Wireshark est un outil essentiel pour comprendre les mécanismes de fonctionneme
 + A la fermeture du programme côté serveur, les tracks enregistrées sont bien effacées
 + Côté serveur, les tracks sont bien ajoutées à la base de données.
 
-# Problèmes subsistants
+## Problèmes subsistants
 + Côté client, une chanson qui n'a pas été jouée se met au dessus des chansons qui ont déjà été jouées si elle a plus de vote que les chansons déjà jouées
 + La barre du temps est manquante au niveau du client
 + Le bouton *favoris* situé dans l'interface de contrôle ne marche pas côté client et serveur
 + Le fait de favoriser une chanson ne l'enregistre pas côté serveur (ne s'affiche pas dans la playlist "Favoris")
 + Les playlists tracks associées ne sont par contre pas effacées (il doit manquer le CASCADE au niveau de la db pour que ça efface aussi)
 
-# Améliorations potentielles
+# Améliorations envisagéesf
 
 # Planification / organisation
 
