@@ -23,7 +23,7 @@ header-includes:
     - \definecolor{pred}{rgb}{0.9, 0.0, 0.0}
 
     - \renewcommand{\ttdefault}{pcr}
-
+ 
     # 'fancyhdr' settings.
     - \pagestyle{fancy}
     - \fancyhead[CO,CE]{}
@@ -220,14 +220,15 @@ Connaître le type de fichier nous permettra de traiter uniquement les fichiers 
 
 Pour répondre aux besoin architecturaux vus plus haut nous avons développé plusieurs classes qui s'occupe de gérer les sockets et envois de commande via le réseau. Nous avons que notre protocole enverrait du texte car la lecture de ligne dans un flux d'entrée se fait facilement grâce à la méthode `readline()`. Nous avions aussi besoin d'envoyer des objet sérialisés au format **JSON**.
 
-### Commandes du protocole
+### Protocole et commandes
+La plupart des commandes listées ci-dessous sont disponible dans la classe `ApplicationProtocol` mais comme elles sont envoyées par le réseau nous avons préféré les expliquer ici.
 Toute les commandes envoyées par Unicast ont comme deux premiers arguments:
 - L'id de l'expéditeur qui est le hash de l'adresse MAC de l'interface réseau qu'il utilise.
 - Le socket utilisé pour la communication qui est rajouté à la réception avant d'envoyer la commande au `Core`.
 
 De ce fait, les tableaux ci-dessous n'indiquent dans leur colonne `Arguments` que les arguments en plus de ces deux dans l'ordre dans lequel ils sont envoyés.
 
-La seule commande envoyée en Multicast est `PLAYLIST_UPDATE` qui est envoyée depuis le serveur à tous les client.
+La seule commande envoyée en Multicast est `PLAYLIST_UPDATE` qui est envoyée depuis le serveur à tous les client.  
 
 #### Commandes envoyées par le client
 
@@ -258,7 +259,6 @@ La seule commande envoyée en Multicast est `PLAYLIST_UPDATE` qui est envoyée d
 | `END_OF_COMMUNICATION` |aucun| Commande indiquant que la communication doit être stoppée|
 
 
-
 ### `Server`
 Côté serveur, nous avons décidé d'opter pour une architecture avec un thread réceptionniste `Server` qui va attendre une nouvelle connexion de la part des clients. Une fois un nouveau client arrivé, il va lancer un thread `UnicastClient` qui va s'occuper de la communication avec le client. Cette communication se fait via un socket Unicast car il s'agit d'une communication privée entre le serveur et le client. Nous avons choisi cette solution car plusieurs connexions avec des clients peuvent survenir simultanément et ce système réceptionniste avec un thread par client gère plusieurs connexions en même temps contrairement à un système avec un seul thread qui s'occupe d'un client à la fois.
 
@@ -266,7 +266,7 @@ Côté serveur, nous avons décidé d'opter pour une architecture avec un thread
 ### `UnicastClient`
 La classe `UnicastClient` va pouvoir recevoir les commandes venant du réseau et en renvoyer. Elle implémente l'interface `Runnable` ce qui lui permet de s'exécuter en temps que thread. Sa force réside dans le fait qu'elle peut être utilisée aussi bien du côté server que du côté client grâce au fait qu'elle lit les commandes reçues et les envoient au `Core` pour qu'il les exécute.
 
-**DIAGRAMME D'ACTIVITE**
+![Diagramme d'activité de la réception/envoi unicast](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/projet/master/doc/PRO/actvity/UnicastClient.puml)
 
 Ce diagramme montre la lecture d'une commande venant du réseau et son découpage pour en extraire les arguments et la passer au `Core` qui s'occupera de l'exécuter si elle est disponible dans l'instance de son `AbstractCore` (voir chapitre `Core`). Le `Core` renvoie ensuite une commande à envoyer en réponse à celle reçue. La communication se termine lorsque une des extrémités envoie la commande `END_OF_COMMUNICATION` ou qu'elle ferme son socket.
 
@@ -274,8 +274,16 @@ Ce diagramme montre la lecture d'une commande venant du réseau et son découpag
 ### `MulticastClient`
 Cette classe implémente aussi l'interface `Runnable` pour lancer son exécution dans un thread. Comme pour `UnicastClient` elle peut être utilisée du côté serveur comme du côté client. Sa méthode `run()` rejoint le groupe Multicast à l'adresse définie dans le `NetworkProtocol` va ensuite attendre de recevoir des datagrammes venant de ce groupe jusqu'à son arrêt par sa méthode `stop()`.
 
-Nous nous somme confronté à un problème lors du développement quand nous nous sommes rendu compte qu'un `MulticastSocket` utilisait la première interface réseau disponible sur l'ordinateur plutôt que celle qui était vraiment connectée. Cela nous à pris du temps à résoudre et nous avons donc mis à disposition un choix d'interface réseau dans l'interface utilisateur. Nous devons donc
+Nous nous somme confronté à un problème lors du développement quand nous nous sommes rendu compte qu'un `MulticastSocket` utilisait la première interface réseau disponible sur l'ordinateur plutôt que celle qui était vraiment connectée. Cela nous à pris du temps à résoudre et nous avons donc mis à disposition un choix d'interface réseau dans l'interface utilisateur.
 
+Les `Core` ont chacun un `MulticastClient` pour pouvoir d'un côté envoyer la liste de lecture actuel ainsi que les informations sur l'état du lecteur (en pause, quel volume, etc).
+
+### `NetworkProtocol`
+C'est dans cette classe que sont définie les commandes spécifiques au réseau `END_OF_COMMUNICATION` et `END_OF_COMMAND`. Les ports pour les différents sockets ainsi que l'adresse du groupe Multicast se trouvent aussi dans cette classe. Ces derniers ont été choisis arbitrairement parmi les plages disponibles. Bien que peu probable, il est possible qu'une autre application utilise ces mêmes ports. Dans ce cas le fonctionnement de **Commusica** se retrouverait impossible. Nous n'avons pas voulu laisser ces valeurs dans le fichier de configuration car il est indispensable d'avoir les mêmes ports chez le serveur et chez les clients. Nous avons donc préféré prendre le risque qu'un autre programme utilise les mêmes ports plutôt qu'un utilisateur change ces valeurs.
+
+### Threads lancés
+Voici les différents threads lancé par le client et le serveur.
+![Threads lancés par le serveur et les clients](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/projet/master/doc/PRO/other_diagrams/network_threads.puml)
 
 ## Paquet session
 
@@ -309,7 +317,7 @@ Elle est constituée d'une `Map` permettant de stocker les différents serveurs 
 Elle est nettoyée à l'aide du `ScheduledExecutorService` afin de supprimer de l'interface graphique les serveurs qui ne sont plus accessibles.
 
 ### `UserSessionManager`
-**A développer, parler des différentes structures, du nettoyage, et à quoi ça sert**
+Cette classe permet de gérer le stockage, le nettoyage ainsi que les votes des différentes sessions utilisateur. Elle permet de garder à jour deux listes qui permettent de stocker les utilisateurs actifs et ceux inactifs. Elle à un système de mise à jour automatique à l'aide d'un `ScheduledExecutorService`. Pour ce qui est des votes, elle permet d'empêcher qu'un utilisateur ne vote plusieurs fois pour la même actions (score, pause, etc...).
 
 ## Paquet media
 
@@ -460,37 +468,39 @@ public synchronized String execute(String command, ArrayList<Object> args) {
 Nous recevons une commande et un tableau correspondant aux arguments de la méthode à invoquer. Ensuite, le programme essaie de trouver la méthode ayant un nom correspondant à la commande, si elle est disponible dans l'instance de la classe. Si c'est le cas, cette dernière va l'invoquer et donc exécuter ladite méthode, sinon une exception est levée. C'est grâce à cette méthode que tout prend son sens, car on a maintenant une instance d'`AbstractCore` qui est soit `ClientCore` soit `ServerCore` avec une seule méthode pour en appeler d'autres qui seront, elles, implémentées dans les sous-classes d' `AbstractCore`.
 
 ### `ServerCore` et `ClientCore`
-**Voir où mettre ça: Les serveur doivent pouvoir envoyer une mise à jour de leur liste de lecture actuelle à tous les clients. Ces derniers ne devront traiter que les informations qui viennent du serveur auquel ils sont connectés.
-
-Les clients doivent pouvoir avoir une découverte des serveurs disponibles.**
 
 Ces deux classes héritant de `AbstractCore` et implémentant `ICore` sont les classes les plus importantes du projet. C'est ici que la majorité des actions (transfert de la musique, action à effectuer lors d'un appui sur un bouton, etc.) se fera. Lors de l'envoi des commandes, ces classes fonctionnent avec un système d'états dans lequel ces derniers peuvent être changés en recevant des commandes depuis le réseau ou depuis le code. Elles ont une forte interaction avec les classes s'occupant des échanges réseau puisque c'est ici que toutes les informations reçues depuis le réseau vont passer. Grâce à la réflexivité offerte par l'`AbstractCore`, il est donc extrêmement facile de définir de nouvelles méthodes dans ces classes. Pour cela, il faut déclarer une méthode portant le nom d'une commande - commandes qui seront toutes listées dans la classe `ApplicationProtocol`.
 
 Grâce à ces classes, nous avons réglé le problème de contrôleur central par lequel tout transitera. La réception des commandes à invoquer sera expliquée plus tard dans le chapitre sur le paquet `Network` et lors des explications sur la liaison entre l'interface graphique et le code.
+
+### Envoi d'un fichier audio d'un client vers un serveur
+![Diagramme de séquence de l'envoi d'un fichier audio](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/projet/master/doc/PRO/sequencies/TRACK.puml)
 
 ## Paquet et ressources ui
 Concernant l'interface graphique, nous avons utilisé la librairie JavaFX. Celle-ci nous a permis de faire usage de l'outil SceneBuilder afin de développer, en premier lieu, une maquette qui s'est ensuite développée, à travers plusieurs étapes, en l'interface graphique d'aujourd'hui. Le fonctionnement de JavaFX demande à avoir deux notions qui communiquent entre elles: un ou plusieurs fichiers FXML qui définissent l'arrangement de la fenêtre et une ou plusieurs classes Java qui permettent de lancer la fenêtre et communiquer avec ses composants.
 Dans un premier temps, nous avons développé un fichier FXML grâce à SceneBuilder. Grâce à celui-ci, nous avons pu apprendre les bons usages FXML. Nous avons ensuite créé un fichier Java depuis lequel nous étions capables lancer la fenêtre au démarrage du programme. Cependant, le code se développant et devenant de plus en plus important, nous avons pris la décision de diviser aussi bien les fichiers FXML que les fichiers Java en plusieurs classes permettant d'avoir un regard plus précis sur chaque partie de notre implémentation.
 Ainsi, nous avons aujourd'hui plusieurs classes Java et plusieurs fichiers FXML qui sont reliés à leur classe principale `UIController` respectivement `main.fxml`.
 
-La description des classes se fera selon l'ordre des vues dans l'interface graphique, en partant de la vue en haut à gauche pour finir par la vue en bas au centre. Nous allons tout d'abord commencer par la fenêtre de configuration apparaissant au lancement du programme, pour continuer avec le controleur. Le reste des classes sera ensuite abordé.
+La description des classes se fera selon l'ordre des vues dans l'interface graphique, en partant de la vue en haut à gauche pour finir par la vue en bas au centre. Nous allons tout d'abord commencer par la fenêtre de configuration apparaissant au lancement du programme, pour continuer avec le contrôleur. Le reste des classes sera ensuite abordé.
 
 ### `ClientServerDialog`
-**DG : revoir texte car certaines choses ont changé depuis**
 `ClientServerDialog` est la première fenêtre lancée par le programme. Son lancement se passe alors dans la classe principale `Commusica`. Cette fenêtre permettra tout simplement de choisir entre deux rôles : celui du serveur ou de l'utilisateur lambda.
 Le choix sera communiqué au Core qui prendra connaissance de la décision, configurera le programme et exécutera le lancement de l'interface graphique appropriée.
+
+Si l'utilisateur a choisi le rôle de serveur, une nouvelle fenêtre apparaîtra afin qu'il puisse choisir le nom du serveur. Ce dernier sera aussi utilisé comme nom de la playlist qui sera diffusée.
 Après cela, cette classe lancera l'`UIController`.
 Dans le cas où l'utilisateur ne répond pas à la question posée dans la fenêtre de dialogue et la ferme, le programme s'arrête.
 
 ### `UIController`
 **DG : revoir texte car certaines choses ont changé depuis**
-`UIController` est la classe qui permet de lier le reste des classes entre elles. Elle va, en premier lieu, mettre à jour la partie en haut à gauche contenant les playlists et la liste de lecture sélectionnée sera par défaut celle en cours de construction.
-Mis à part la configuration initiale de la fenêtre, `UIController` permet aussi toutes les actions basiques de l'interface graphique :
+`UIController` est la classe qui permet de lier le reste des classes graphiques entre elles. Elle va, en premier lieu, mettre à jour la partie en haut à gauche contenant les playlists et la liste de lecture sélectionnée sera par défaut celle en cours de construction.
+Mise à part la configuration initiale de la fenêtre, `UIController` permet aussi toutes les actions basiques de l'interface graphique :
 
 +  Afficher des alertes
 +  Obtenir la liste de lecture actuellement visualisée
 +  Mettre à jour et afficher les playlists
 +  Fermer la fenêtre proprement lorsque l'utilisateur décide d'arrêter le programme
+
 `UIController` va tout simplement faire appel aux différentes classes du paquet `ui` afin de s'informer de l'état de chaque partie composant l'UI lors d'une demande depuis l'extérieur.
 
 ### `PlaylistsListView`
@@ -499,6 +509,7 @@ Mis à part la configuration initiale de la fenêtre, `UIController` permet auss
 - **PLAYING** : la liste de lecture en cours de création
 - **FAVORITES** : la liste de lecture des favoris
 - **SAVED** : la liste des playlists sauvegardées d'anciens événements
+
 Comme spécifié au chapitre précédent, la liste sélectionnée par défaut est la liste en cours de création.
 Dans la classe `PlaylistsListView`, nous faisons usage d'une méthode de la classe `FXCollections` permettant d'attacher un observeur à n'importe quel objet du programme. Ainsi, nous pouvons facilement modifier l'affichage des playlists au fur et à mesure des actions faites au niveau du serveur ou du client.
 
@@ -507,13 +518,13 @@ La classe `TracksListView` agit sur le panneau en haut au centre de l'interface 
 Cette classe permet d'afficher une liste de lecture et glisser/déposer un élément audio au sein du panneau, grâce à la méthode `initializeDragAndDrop()`. La liste de lecture est initialisée comme liste observable, ce qui fait que dès qu'un changement subvient, celle-ci se met à jour. Cependant, elle n'est pas encore peuplée par les chansons contenues dans la playlist. Cette question ainsi que celle des upvotes, downvotes et favoris sont traitées dans une autre classe implémentée spécialement pour cet usage : `PlaylistTrackCell`.
 
 La méthode `initializeDragAndDrop()` de la classe `TracksListView` mérite une explication plus détaillée. Nous avons longtemps réfléchi à la meilleure façon d'implémenter le téléchargement d'une chanson. Le "drag and drop" (glisser/déposer) nous a finalement semblé être la technique la plus intuitive d'ajout de chansons.
-Cette méthode relativement complexe nous permet donc de déterminer quand une personne  a déposé un fichier dans le panneau et ce, grâce à la méthode JavaFX `setOnDragDropped()` de la classe `TransferMode`. C'est alors que nous allons faire usage du constructeur de la classe `Track` prenant en paramètre un `AudioFile`.
+Cette méthode relativement complexe nous permet donc de déterminer quand une personne a déposé un fichier dans le panneau et ce, grâce à la méthode JavaFX `setOnDragDropped()` de la classe `TransferMode`. C'est alors que nous allons faire usage du constructeur de la classe `Track` prenant en paramètre un `AudioFile`.
 Si c'est le serveur qui a glissé/déposé une chanson, alors la méthode appellera directement la méthode du `PlaylistManager` permettant d'ajouter une chanson.
-Dans le cas du client, la méthode passera d'abord par la classe `Core` à laquelle il enverra la commande `SEND_TRACK_REQUEST` avec comme argument l'URI de la chanson.
+Dans le cas du client, la méthode passera d'abord par la classe `Core` à laquelle il enverra la commande `SEND_TRACK_REQUEST` avec comme argument la chanson *jsonifiée*.
 Nous remarquons ici, encore une fois, l'intérêt et l'importance de la classe `Core`.
 
 ### `PlaylistTrackCell`
-`PlaylistTrackCell` est une classe utilisée dans chaque cellule de la liste afin de définir les boutons d'upvote, downvote et favoris et leurs actions. Elle va également permettre de définir le titre, l'artiste, l'album et le nombre de votes d'une chanson.
+`PlaylistTrackCell` est une classe utilisée dans chaque cellule de la liste centrale afin de définir les boutons d'upvote, downvote et favoris et leurs actions. Elle va également permettre de définir le titre, l'artiste, l'album et le nombre de votes d'une chanson.
 Concernant les votes, deux fonctions - une pour les votes positifs et l'autre pour les votes négatifs - permettent de communiquer avec le `Core` à travers des commandes. Les commandes - `SEND_DOWNVOTE_TRACK_REQUEST` et `SEND_UPVOTE_TRACK_REQUEST` - sont utilisées dans ces deux cas spécifiques car l'incidence qu'aura un vote sera globale à tous les participants. Ainsi, le `Core` doit être averti du fait que l'événement a eu lieu pour en informer le serveur afin qu'il renvoie l'information à tout le monde. Encore une fois, le `Core` use de son pouvoir de messager à travers le programme.
 Dans le cas des favoris, il n'y a nul besoin de passer par le `Core` car tout ce que l'utilisateur veut, c'est enregistrer l'information dans sa liste personnelle de chansons favorites.
 
@@ -529,7 +540,7 @@ Pour ce panneau, nous n'avons pas repris le même type de cellule que dans le pa
 Dans le panneau du bas, au milieu, nous pouvons apercevoir le résumé de la chanson actuellement en écoute. Les boutons ainsi que les informations sont exactement les mêmes que dans le cas de la dernière chanson grisée affichée dans la liste de lecture du panneau en haut au centre.
 Nous avons choisi cet affichage de façon à pouvoir faciliter l'accès à la chanson actuelle si jamais l'utilisateur avait décidé de faire défiler la liste de lecture et aurait perdu de vue la chanson actuelle.
 Le vrai défi de cette classe a cependant été celui de pouvoir remplir la jauge d'écoute selon l'avancement de la chanson. Cela a évidemment été fait à travers un observeur sur l'instance de `Player` qui possède l'information sur le temps écoulé.
-Sur la gauche du panneau central, nous pouvons également apercevoir des boutons de controle.
+Sur la gauche du panneau central, nous pouvons également apercevoir des boutons de contrôle.
 
 #### `PlayerControlsView`
 `PlayerControlsView` qui se trouve dans le même panneau que `CurrentTrackView`représente les boutons "play/pause", "chanson suivante", "chanson précédente" et "volume". Ces quatre boutons représentent en fait cinq actions distinctes qui transiteront toutes à travers le `Core`. En effet, nous nous trouvons encore une fois face à une classe de l'interface graphique dont le `Core` est indispensable à son bon fonctionnement.
@@ -1208,8 +1219,20 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 \newpage
 
 ### David Truan
+- 27.06.2017
+    - Finition des package Core et Network du rapport (3h).
+    - Création de différents schémas pour le rapport (1h).
+    - Correction du code pour le changement de l'interface (30min).
+    - Tests sur le programme (30min).
+
+- 26.06.2017
+    - Continuation du rapport sur la partie Network et Core (3h).
+    - Codage des réactions de l'UI chez le client et des fonctions de vote manquante du serveur (2h).
+    - Codage d'une fenêtre pour choisir le nom du serveur (45min).
+    - Tests sur le programme (1h).
+
 - 25.05.2017
-    - Début de l'explication des cores dans le rapport.
+    - Début de l'explication des cores dans le rapport (1h30).
 
 - 24.05.2017
     - Correction de bugs liés é la majorités des votes et au lancement des morceaux (1h).
@@ -1319,9 +1342,27 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 \newpage
 
 ### Thibaut Togue Kamga
+- 27.05.2017
+  - Correction du rapport après les suggestions se Denise(01h)
+- 26.05.2017
+  - Description des technologies utilisé (30 min)
+  - Description package Session(01h)
+  - Définir diagramme d’activité de l'échange de fichier entre le client et le serveur repris après par Ludovic Delafontaine (01h30)- 25.05.2017
+  - Description package Database et File (01h)
+  - Réalisation du diagramme UML de chaque package avec Plantuml repris après par Ludovic Delafontaine (02h)
+  - Réalisation du diagramme UML de tous le projet, repris après par Ludovic Delafontaine (01h)- 24.05.2017
+	- Rédaction du rapport(description package media)(01h) 
+
+-  23.05.2017
+	- Test de l'application et discutions par rapport au rapport(01h30)	   -  18.05.2017
+	- Début de rapport (définir la structure du rapport, introduction, objectif, description package Configuration du rapport) (02h)
+	-  11.05.2017
+	- Lecture du code contrôleur pour la documentation.(02h)
+- 26.04.2017
+	- Test du player avec le playlistManager(2h)
 - 17.04.2017
 
-    - Finalisation du player et filemanage valider par ludovic.(1h30)
+    - Finalisation du player et filemanager valider par ludovic.(1h30)
 
 - 10.04.2017
     - Implémentation du player sans playlistManager et test  (3h)

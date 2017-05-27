@@ -1,0 +1,62 @@
+@startuml
+
+
+Client -> Client : Récupération du fichier
+
+Client -> Client : Format\nsupporté ?
+
+Client x--> Client : Format non supporté, fin.
+
+Client -> Client : Création de la Track à partir du fichier
+
+Client -> Client : Track -> JSON
+
+Client -> Serveur : Envoi de la command TRACK_REQUEST \net des informations de la track\n(id, titre, artiste, album, durée)
+
+Serveur -> Serveur : Récupération de l'ID de l'utilisateur
+
+Serveur -> Serveur : Récupération de la Track
+
+Serveur -> Serveur : Sauvegarde une session pour l'utilisateur
+
+Serveur -> Serveur : Récupère la Track dans la base de données par son ID
+
+Serveur -> Serveur : Track pas trouvée par son ID ? Essai avec ses attributs
+
+Serveur -> Serveur : Track pas trouvée par ses attributs ?
+
+Serveur -> Client : <i>Envoi de la command TRACK_ACCEPTED</i>
+
+Serveur -> Serveur : Track trouvée dans la base de données, soit par ID soit par attribut ?
+
+Serveur -> Serveur : Track présente sur le disque ?
+
+Serveur -> Client : <i>Envoi de la command TRACK_REFUSED</i>
+
+Serveur -> Client : <i>Envoi de la command TRACK_ACCEPTED</i>
+
+Client -> Client : Track refusée ?
+
+Client -> Serveur : Fin de la communication
+
+Client -> Serveur : Envoi de la commande SENDING_TRACK\n et des informations de la track\n(id, titre, artiste, album, durée) avec le fichier associé
+
+Serveur -> Serveur : Récupération du fichier par le réseau
+
+Serveur -> Serveur : Transfert prend plus de 15s?
+
+Serveur -> Client : Envoi de la commande ERROR avec un\nmessage d'erreur durant le transfert
+
+Serveur -> Serveur : MD5 checksum du fichier reçu différent de  celui envoyé?
+
+Serveur -> Client : Envoi de la commande ERROR avec un\nmessage d'erreur durant le transfert
+
+Serveur -> Serveur : Format non supporté?
+
+Serveur -> Client : Envoi de la commande ERROR avec un\nmessage d'erreur fichier non supporté
+
+Serveur -> Serveur : Sauvegarde la Track dans la base de donnée et met à jour la liste de lecture
+
+Serveur -> Client : <i>Envoi de la commande TRACK_SAVED</i>
+
+@enduml
