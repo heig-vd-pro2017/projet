@@ -23,7 +23,7 @@ header-includes:
     - \definecolor{pred}{rgb}{0.9, 0.0, 0.0}
 
     - \renewcommand{\ttdefault}{pcr}
-
+ 
     # 'fancyhdr' settings.
     - \pagestyle{fancy}
     - \fancyhead[CO,CE]{}
@@ -1319,9 +1319,27 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 \newpage
 
 ### Thibaut Togue Kamga
+- 27.05.2017
+  - Correction du rapport après les suggestions se Denise(01h)
+- 26.05.2017
+  - Description des technologies utilisé (30 min)
+  - Description package Session(01h)
+  - Définir diagramme d’activité de l'échange de fichier entre le client et le serveur repris après par Ludovic Delafontaine (01h30)- 25.05.2017
+  - Description package Database et File (01h)
+  - Réalisation du diagramme UML de chaque package avec Plantuml repris après par Ludovic Delafontaine (02h)
+  - Réalisation du diagramme UML de tous le projet, repris après par Ludovic Delafontaine (01h)- 24.05.2017
+	- Rédaction du rapport(description package media)(01h) 
+
+-  23.05.2017
+	- Test de l'application et discutions par rapport au rapport(01h30)	   -  18.05.2017
+	- Début de rapport (définir la structure du rapport, introduction, objectif, description package Configuration du rapport) (02h)
+	-  11.05.2017
+	- Lecture du code contrôleur pour la documentation.(02h)
+- 26.04.2017
+	- Test du player avec le playlistManager(2h)
 - 17.04.2017
 
-    - Finalisation du player et filemanage valider par ludovic.(1h30)
+    - Finalisation du player et filemanager valider par ludovic.(1h30)
 
 - 10.04.2017
     - Implémentation du player sans playlistManager et test  (3h)
