@@ -203,17 +203,64 @@ Pour retrouver l'extension du fichier, nous avons procédé de la manière suiva
 Connaître le type de fichier nous permettra de traiter uniquement les fichiers supportés pas notre plateforme et aussi, en termes de sécurité, éviter qu'un utilisateur fasse planter le serveur en envoyant un fichier qui n'est pas supporté par celui-ci.
 
 ## Paquet network
-Côté serveur, nous avons décidé d'opter pour une architecture avec un thread réceptionniste `Server` qui va attendre une nouvelle connexion de la part des clients. Une fois un nouveau client arrivé, il va lancer un thread `UnicastClient` qui va s'occuper de la communication avec le client. Cette communication se fait via un socket Unicast car il s'agit d'une communication privée entre le serveur et le client.
+Pour répondre aux besoin architecturaux vus plus haut nous avons développé plusieurs classes qui s'occupe de gérer les sockets et envois de commande via le réseau. Nous avons que notre protocole enverrait du texte car la lecture de ligne dans un flux d'entrée se fait facilement grâce à la méthode `readline()`. Nous avions aussi besoin d'envoyer des objet sérialisés au format **JSON**.
 
-**Description du protocole applicatif avec les commandes et les arguments
-Après la réception de la ligne `END_OF_COMMAND`, la lecture du flux d'entrée est arrêtée et la commande est séparée pour en extraire la partie commande et ses différents arguments.**
+### Commandes du protocole
+Toute les commandes envoyées par Unicast ont comme deux premiers arguments:
+- L'id de l'expéditeur qui est le hash de l'adresse MAC de l'interface réseau qu'il utilise.
+- Le socket utilisé pour la communication qui est rajouté à la réception avant d'envoyer la commande au `Core`.
+
+De ce fait, les tableaux ci-dessous n'indiquent dans leur colonne `Arguments` que les arguments en plus de ces deux dans l'ordre dans lequel ils sont envoyés.
+
+La seule commande envoyée en Multicast est `PLAYLIST_UPDATE` qui est envoyée depuis le serveur à tous les client.
+
+#### Commandes envoyées par le client
+
+| Nom de la commande       | Arguments                                               | Explication                                                                                 |
+|--------------------------|---------------------------------------------------------|---------------------------------------------------------------------------------------------|
+| `SEND_FIRST_CONNECTION`    | aucun                                                   | Commande envoyée par un client lors de sa première connexion à un serveur                   |
+| `TRACK_REQUEST`            | JSON de la Track à envoyer                              | Envoie au serveur les informations de la Track que le client veut envoyer                   |
+| `SENDING_TRACK`            | taille du fichier à envoyer, JSON de la Track à envoyer | Indique au serveur que le client va commencer l'envoi du fichier en réponse à `TRACK_ACCEPTED`                           |
+| `PLAY_PAUSE_REQUEST`       | aucun                                                   | Envoie au serveur l'information d'un souhait de mettre le morceau actuel en lecture/pause   |
+| `NEXT_TRACK_REQUEST`       | aucun                                                   | Envoie au serveur l'information d'un souhait de passer au morceau suivant                   |
+| `TURN_VOLUME_UP_REQUEST`   | aucun                                                   | Envoie au serveur l'information d'un souhait d'augmenter le volume                          |
+| `TURN_VOLUME_DOWN_REQUEST` | aucun                                                   | Envoie au serveur l'information d'un souhait de baisser le volume                           |
+| `UPVOTE_TRACK_REQUEST`     | id de la Track à upvote                                 | Envoie au serveur l'information d'un souhait d'upvoter un morceau de la liste de lecture    |
+| `DOWNVOTE_TRACK_REQUEST`   | id de la Track à downvote                               | Envoie au serveur l'information d'un souhait de downvoter un morceau de la liste de lecture |
+| `END_OF_COMMUNICATION` |aucun| Commande indiquant que la communication doit être stoppée|
+
+#### Commandes envoyées par le serveur
+| Nom de la commande | Arguments                                                                              | Explication                                                                                                             |
+|--------------------|----------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|
+| `PLAYLIST_UPDATE`    | JSON de l'InetAddress du serveur, nom du serveur, JSON de la liste de lecture actuelle | Envoi la liste de lecture actuelle avec les informations du serveur à tous les client en Multicast                      |
+| `TRACK_ACCEPTED`     | aucun                                                                                  | Commande envoyée au client en réponse à la commande `TRACK_REQUEST` lorsque la le morceau demandé est accepté             |
+| `TRACK_REFUSED`      | aucun                                                                                  | Commande envoyée au client en réponse à la commande `TRACK_REQUEST` lorsque la le morceau demandé est refusé              |
+| `TRACK_SAVED`        | aucun                                                                                  | Indique au client que le morceau qu'il a envoyé a bien été sauvé sur le serveur. Réponse à `SENDING_TRACK`                |
+| `TRACK_UPVOTED`      | aucun                                                                                  | Commande envoyée au client en réponse à la commande `UPVOTE_TRACK_REQUEST` lorsque le morceau demandé a bien été upvoté   |
+| `TRACK_DOWNVOTED`    | aucun                                                                                  | Commande envoyée au client en réponse à la commande `UPVOTE_TRACK_REQUEST` lorsque le morceau demandé a bien été downvoté |
+| `SUCCESS`            | message de succès                                                                      | Envoi un message de succès au client lors d'un succès d'une commande                                                    |
+| `ERROR`              | message d'erreur                                                                       | Envoie un message d'erreur au client lors d'une erreur d'une commande                                                   |
+| `END_OF_COMMUNICATION` |aucun| Commande indiquant que la communication doit être stoppée|
+
+
+
+### `Server`
+Côté serveur, nous avons décidé d'opter pour une architecture avec un thread réceptionniste `Server` qui va attendre une nouvelle connexion de la part des clients. Une fois un nouveau client arrivé, il va lancer un thread `UnicastClient` qui va s'occuper de la communication avec le client. Cette communication se fait via un socket Unicast car il s'agit d'une communication privée entre le serveur et le client. Nous avons choisi cette solution car plusieurs connexions avec des clients peuvent survenir simultanément et ce système réceptionniste avec un thread par client gère plusieurs connexions en même temps contrairement à un système avec un seul thread qui s'occupe d'un client à la fois.
+
 
 ### `UnicastClient`
-La classe `UnicastClient` va pouvoir recevoir les commandes venant du réseau et en renvoyer. Elle implémente l'interface `Runnable` ce qui lui permet de s'exécuter en temps que thread. Sa force réside dans le fait qu'elle peut être utilisée aussi bien du côté serveur que du côté client grâce au fait qu'elle lit les commandes reçues et les envoient au `Core` pour qu'il les exécute.
+La classe `UnicastClient` va pouvoir recevoir les commandes venant du réseau et en renvoyer. Elle implémente l'interface `Runnable` ce qui lui permet de s'exécuter en temps que thread. Sa force réside dans le fait qu'elle peut être utilisée aussi bien du côté server que du côté client grâce au fait qu'elle lit les commandes reçues et les envoient au `Core` pour qu'il les exécute.
 
 **DIAGRAMME D'ACTIVITE**
 
 Ce diagramme montre la lecture d'une commande venant du réseau et son découpage pour en extraire les arguments et la passer au `Core` qui s'occupera de l'exécuter si elle est disponible dans l'instance de son `AbstractCore` (voir chapitre `Core`). Le `Core` renvoie ensuite une commande à envoyer en réponse à celle reçue. La communication se termine lorsque une des extrémités envoie la commande `END_OF_COMMUNICATION` ou qu'elle ferme son socket.
+
+
+### `MulticastClient`
+Cette classe implémente aussi l'interface `Runnable` pour lancer son exécution dans un thread. Comme pour `UnicastClient` elle peut être utilisée du côté serveur comme du côté client. Sa méthode `run()` rejoint le groupe Multicast à l'adresse définie dans le `NetworkProtocol` va ensuite attendre de recevoir des datagrammes venant de ce groupe jusqu'à son arrêt par sa méthode `stop()`.
+
+Nous nous somme confronté à un problème lors du développement quand nous nous sommes rendu compte qu'un `MulticastSocket` utilisait la première interface réseau disponible sur l'ordinateur plutôt que celle qui était vraiment connectée. Cela nous à pris du temps à résoudre et nous avons donc mis à disposition un choix d'interface réseau dans l'interface utilisateur. Nous devons donc 
+
 
 ## Paquet session
 Cette entité permet de gérer des notions de sessions afin de connaître les personnes connectées et serveurs accessibles.

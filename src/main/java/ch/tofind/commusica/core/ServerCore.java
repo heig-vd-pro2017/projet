@@ -896,4 +896,13 @@ public class ServerCore extends AbstractCore implements ICore {
     public boolean isServer() {
         return true;
     }
+
+    /**
+     * @brief Return the MultcastClient
+     *
+     * @return the MultiCastClient
+     */
+    public MulticastClient getMulticastClient() {
+        return multicast;
+    }
 }

@@ -1,5 +1,6 @@
 package ch.tofind.commusica.core;
 
+import ch.tofind.commusica.network.MulticastClient;
 import ch.tofind.commusica.utils.Logger;
 
 import java.lang.reflect.InvocationTargetException;
@@ -60,4 +61,5 @@ abstract class AbstractCore {
     abstract void stop();
 
     abstract boolean isServer();
+
 }
