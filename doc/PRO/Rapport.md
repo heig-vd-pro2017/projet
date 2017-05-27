@@ -29,7 +29,7 @@ header-includes:
     - \fancyhead[RO,RE]{PRO 2017}
 
     # Redefine TOC style.
-    - \setcounter{tocdepth}{2}
+    #- \setcounter{tocdepth}{2}
 
     # 'listings' settings.
     - \lstset{breaklines = true}
@@ -124,7 +124,7 @@ Cela peut autant concerner les lieux publics tels que les bars ou encore les év
 Notre application se voudra donc simple à utiliser afin qu'un néophyte dans le domaine de l'informatique puisse l'utiliser.
 
 # Conception et normes
-Avant de se lancer dans le développement, nous avons pris le temps de réfléchir à l'architecture de notre programme. Nous avons souhaité séparer au mieux les différentes entités de notre application afin de simplifier le développement et la compréhension du programme.
+Avant de se lancer dans le développement, nous avons pris le temps de réfléchir à l'architecture de notre programme. Nous avons souhaité séparer au mieux les différentes entités de notre application afin de simplifier le développement, la compréhension du programme et rester très abstrait.
 
 Nous avons donc pris trois semaines avant de commencer le développement afin de définir l'architecture du programme décrite ci-dessous.
 
@@ -143,89 +143,82 @@ L'architecture finale de notre programme est la suivante:
 
 # Description technique
 La description technique ira dans l'ordre croissant de complexité des différentes entitées de notre programme.
-
+Pour chacune de ces entités, nous décrirons brièvement le but des différentes classes.
 
 ## Package database
-La sauvegarde et le chargement font partie des points importants de notre application, car elle a été conçue pour permettre, par exemple, à un utilisateur de sauvegarder les metadatas des chansons qui lui plaisent dans la base de données. Ce package est constitué essentiellement de la classe `DatabaseManager` donc le rôle est d'assurer le CRUD (Create, Read, Update, Delete) de la base de données de notre application et d'assurer la fermeture de la connexion à celle-ci.
+Cette entité est une abstraction de la base de données. Elle permet de simplifier l'interaction avec cette dernière en mettant à disposition des méthodes pour les opérations de base sur la base de données.
 
-Pour l'implémentation, nous avons choisi le framework Hibernate qui simplifie le développement de l'application Java pour interagir avec la base de données. C'est un outil open source et léger.
-Un outil ORM (Object Relational Mapping) simplifie la création, la manipulation et l'accès aux données. C'est une technique de programmation qui mappe l'objet aux données stockées dans la base de données.
+Cette entité permet, par exemple, à un utilisateur de sauvegarder les metadatas des chansons qui lui plaisent dans la base de données.
 
-
-
-
+Ce package est constitué essentiellement de la classe `DatabaseManager` donc le rôle est d'assurer le CRUD (Create, Read, Update, Delete) de la base de données de notre application et d'assurer la fermeture de la connexion à celle-ci.
 
 ## Package file
 Le package `file` a pour rôle d'assurer la gestion des fichiers en interagissant avec le système de fichiers . Il est constitué de deux classes: `FileManager` et `FilesFormats`.
 
-La performance du framework Hibernate est rapide, car le cache est utilisé en interne dans le cadre hiberné.
-Le framework Hibernate offre la possibilité de créer automatiquement les tables de la base de données. Il n'est donc pas nécessaire de les créer manuellement.
+### `FilesFormats`
+Actuellement, notre application supporte trois formats de fichiers audio: MP3, M4A et WAV. La classe permet de définir les caractéristiques d'un fichier, c'est-à-dire tous les éléments nous permettent de connaître le type du fichier.
 
- + `FilesFormats`: vu que notre application supporte trois formats mp3, m4a et wav, la classe permet de définir les caractéristiques d'un fichier, c'est-à-dire tous les éléments nous permettant de connaître le type du fichier.
- + `FileManager`: cette classe permet de supprimer, stocker et déterminer le type de fichier.
- Pour retrouver l'extension du fichier, nous avons procédé de la manière suivante :
+### `FileManager`
+Cette classe permet de supprimer, stocker et déterminer le type de fichier.
+Pour retrouver l'extension du fichier, nous avons procédé de la manière suivante :
 
-	+ Pour les fichiers mp3, nous regardons les trois premiers bytes depuis le début du fichier.
-	+ Pour les m4a, on regarde les premiers octets, mais en partant du quatrième octet depuis le début du fichier
-	+  Pour les wav, à partir du huitième octet depuis le début du fichier.
+- Pour les fichiers MP3, nous regardons les trois premiers bytes depuis le début du fichier.
+- Pour les M4A, on regarde les premiers octets, mais en partant du quatrième octet depuis le début du fichier
+- Pour les WAV, à partir du huitième octet depuis le début du fichier.
+
+**Ajouter des images d'un éditeur hexadicimal des trois fichiers pour expliquer les constantes**
 
 Connaître le type de fichier nous permettra de traiter uniquement les fichiers supportés pas notre plateforme et aussi, en termes de sécurité, éviter qu'un utilisateur fasse planter le serveur en envoyant un fichier qui n'est pas supporté par celui-ci.
 
-
-
-
-
 ##  Package network
-Une autre partie importante de notre programme était la gestion du réseau entre les client et le serveur. Nous nous sommes longuement penchés sur la question de qui devait avoir quelles responsabilités. Notre application demande plusieurs points au niveau du réseau:
+Cette entité permet toute la gestion du réseau entre les clients et le serveur. Elle permet de répondre aux attentes suivantes:
 
-+ Avoir un protocole réseau qui se base sur des commandes avec arguments.
-+ Le serveur doit pouvoir gérer plusieurs clients, mais sans devoir garder une connexion constante entre chaque client et le serveur.
-+ Les clients doivent pouvoir avoir une découverte des serveurs disponibles.
-+ Les serveur doivent pouvoir envoyer une mise à jour de leur liste de lecture actuelle à tous les clients. Ces derniers ne devront traiter que les informations qui viennent du serveur auquel ils sont connectés.
-+ Un client ne doit pas pouvoir upvoter/downvoter plusieurs fois le même morceau.
+- Avoir un protocole réseau qui se base sur des commandes avec arguments.
+- Le serveur doit pouvoir gérer plusieurs clients, mais sans devoir garder une connexion constante entre chaque client et le serveur.
+- Un serveur ou un client doit pouvoir communiquer l'un avec l'autre en utilisant une liaison de communication "privée" à l'aide de l'Unicast.
+- Un serveur doit pouvoir diffuser à tous les clients un message afin que tout le monde le réceptionne et le traite à l'aide du Multicast.
 
-Nous avons décidé d'opter pour une architecture avec un thread réceptionniste `Server` au niveau du serveur qui va attendre une nouvelle connexion de client sur son socket et lancer un thread `UnicastClient` qui va s'occuper de la communication avec le client. Cette communication se fait via un socket unicast puisque toutes les informations, mis à part la mise à jour de la playlist, vont transiter du client au serveur.  
-La classe `UnicastClient` va recevoir les commandes venant du réseau et en renvoyer. Sa force réside dans le fait qu'elle peut être utilisée aussi bien du côté serveur que du côté client grâce à un système de lecture de flux d'entrée, tant que la fin d'une commande n'est pas détectée ou que l'autre partie n'a pas fermé son socket. Le socket est fermé lorsque la commande `END_OF_COMMUNICATION` est reçue.  
-Après la réception de la ligne `END_OF_COMMAND`, la lecture du flux d'entrée est arrêtée et la commande est séparée pour en extraire la partie commande et ses différents arguments.
+Côté serveur, nous avons décidé d'opter pour une architecture avec un thread réceptionniste `Server` qui va attendre une nouvelle connexion de la part des clients. Une fois un nouveau client arrivé, il va lancer un thread `UnicastClient` qui va s'occuper de la communication avec le client. Cette communication se fait via un socket Unicast car il s'agit d'une communication privée entre le serveur et le client.
 
+**Description du protocole applicatif avec les commandes et les arguments
+Après la réception de la ligne `END_OF_COMMAND`, la lecture du flux d'entrée est arrêtée et la commande est séparée pour en extraire la partie commande et ses différents arguments.**
 
+Les classes `UnicastClient` et `MulticastClient` vont pouvoir recevoir les commandes venant du réseau (à l'aide de threads qui écoutent tout le temps le réseau) et en renvoyer. Sa force réside dans le fait qu'elle peut être utilisée aussi bien du côté serveur que du côté client grâce à un système de lecture de flux d'entrée jusqu'à ce que le client ou le serveur décide de mettre fin à la communication (à l'aide de la commande `END_OF_COMMUNICATION`) ou que la connexion est coupée. Le socket est fermé lorsque la commande `END_OF_COMMUNICATION` est reçue.
 
+## Package session
+Cette entité permet de gérer des notions de sessions afin de connaître les personnes connectées et serveurs accessibles.
 
+### `ISession`
+Une session est caractérisée par un identifiant et une d'une date de dernière mise à jour. C'est la raison pour laquelle une session doit implémenter l'interface `ISession` afin qu'elle respecte quelques méthodes.
 
+L'identifiant est toujours un ID unique `Integer` qui est généré à l'aide de l'adresse MAC d'une des interfaces réseau du serveur/client.
 
+La méthode `update()` permet de mettre à jour la session afin qu'elle ne soit pas nettoyée par le `ScheduledExecutorService` (voir ci-dessous).
 
+### `ServerSession`
+Cette classe représente une session serveur. Le but est de pouvoir si un serveur est encore accessible.
 
+En plus de l'identifiant unique, un serveur est représenté par une adresse de destination afin de savoir comment l'attendre et d'un nom.
 
-#### Network
-Cette classe permet de récupérer toutes les informations basiques de la machine concernant le réseau. Elle va en outre permettre de récupérer les interfaces disponibles nécessaires à la connexion à un certain serveur et de configurer le réseau pour le reste de l'application.
-#### ObservableSortedPlaylistTracklist
-Cette classe permet de récupérer les informations nécessaires à l'affichage des chansons dans la playlist en écoute. Cet utilitaire a été créé afin de pouvoir faciliter la récupération d'informations depuis les classes mettant en oeuvre l'interface graphique.
-#### Serialize
-Grâce à la librairie Gson de Google, cette classe est utilisée dans la sérialisation et désérialisation d'objets.
+### `UserSession`
+Cette classe représente une session utilisateur. Le but est de pouvoir identifer un utilisateur unique afin d'éviter qu'il puisse faire plusieurs actions consécutives sans limite et savoir, par exemple, à partir de quand un changement de musique doit être effectué si la majorité le souhaite.
 
+### `ISessionManager`
+Cette interface demande à chaque SessionManager de mettre à disposition une méthode `stop()`. En effet, chaque SessionManager démarre un `ScheduledExecutorService` dont le but est de nettoyer les sessions inactives du système, soit en les supprimant ou en les désactivant, à intervals réguliers (défini dans le fichier de configuration).
 
-#### Session
-Ce package permet de gérer les sessions des utilisateurs. Avant tout, nous allons expliquer l'importance de la session pour une communication client-serveur : la session permet aux serveurs de mémoriser des informations relatives au client, d'une requête à l'autre. Le contenu d'une session est conservé jusqu'à ce que l'utilisateur ferme sa connexion ou reste inactif trop longtemps.
- 
-##### ServerSession
-Cette classe permet de gérer la session d'un serveur. Le champs privé `update` permet de définir le temps où la session reste valable.
+### `ServerSessionManager`
+Cette classe permet de gérer les différentes sessions des serveurs. Elle permet de stocker et savoir quels sont les serveurs actifs.
 
-#####  ServerSessionManager
-Cette classe, comme son nom l'indique, permet de gérer les différentes sessions des serveurs. Elle est constituée de :
+Elle est constituée d'une `Map` permettant de stocker les différents serveurs accessibles. Cette liste est mise à jour à chaque fois qu'un serveur envoie une mise à jour de sa liste de lecture à l'aide de la commande `PLAYLIST_UPDATE`.
 
- + Une `Map` permettant de stocker les sessions des différents serveurs.
+Elle est nettoyée à l'aide du `ScheduledExecutorService` afin de supprimer de l'interface graphique les serveurs qui ne sont plus accessibles.
 
-+ `ScheduledExecutorService` permettant de nettoyer les sessions dont le délai a expiré. C'est un service qui peut également planifier des tâches à exécuter après un délai ou à plusieurs reprises avec un intervalle de temps fixe entre chaque exécution et ce, de manière asynchrone. C'est un nouveau thread qui s'occuepera de gérer cela, et non par le thread passant la tâche à `ScheduledExecutorService`.
-  
-##### UserSession
-Cette classe permet de gérer la session d'un utilisateur. Le champs privé `update` permet de définir le temps où la session reste valable.
-
-##### UserSessionManager
-** DG : Est-ce qu'il ne faudrait pas développer cette classe un peu plus? elle me semble relativement importante. **
-Cette classe, comme son nom l'indique, permet de gérer les différentes sessions des utilisateurs. 
+### `UserSessionManager`
+**A développer, parler des différentes structures, du nettoyage, et à quoi ça sert**
 
 ##  Package media
 ** DG : il me semblerait pas mal d'expliquer dans les grandes lignes à quoi sert ce package**
+
 ### Classes du package
 #### EphermeralPlaylist
 La classe EphermeralPlaylist représente la playlist en cours de construction, c'est-à-dire la playlist en cours de lecture. Cela permet de mettre à jour l'interface graphique lors d'une action sur un élément de la playlist. La mise à jour se fait grâce au pattern observeur à travers la liste `ObservableSortedPlaylistTrackList`, qui joue en même temps le rôle d'observable et d'observeur. Elle observe des chansons de la liste dans le but de changer l'état de la playlist en cas d'upvote ou downvote, et devient observable dans le cas où elle envoie des notifications lors des mises à jour. Dans cette classe, nous avons aussi le champ `delegate` qui représente la liste de lecture qui sera enregistrée dans la base de données pour le suivi de celle-ci.
@@ -249,15 +242,11 @@ Nous avons aussi utilisé dans cette classe les propriétés JavaFX dans le but 
 Comme son nom l'indique, elle permet de sauvegarder les playlists.
 
 #### Track
-
-Cette classe représenté une chanson, elle en regroupe toutes les informations nécessaires à une identité unique. Nous remarquons, dans cette classe, que nous avons trois constructeurs :
+Cette classe représente une chanson, elle en regroupe toutes les informations nécessaires à une identité unique. Nous remarquons, dans cette classe, que nous avons trois constructeurs :
 
   + Le constructeur vide : toutes les classes persistantes doivent avoir un constructeur par défaut pour que Hibernate puisse les instancier en utilisant le constructeur `Constructor.newInstance()`.
   + `public Track(String id, String title, String artist, String album, Integer length, String uri)` : constructeur permettant de créer une instance de `Track` lorsque tous les paramètres sont connus.
   + `public Track(AudioFile audioFile)` : constructeur permettant de créer une instance de `Track` à partir d'un fichier audio. Il est utile lorsque nous souhaitons transférer un fichier et effectuer un contrôle sur une chanson au lieu de vérifier le fichier audio lui-même.
-
-
-
 
 ##  Package playlist
 Le package `playlist` met en oeuvre ce qui a trait à la gestion des playlists, dans notre cas :
@@ -267,6 +256,7 @@ Le package `playlist` met en oeuvre ce qui a trait à la gestion des playlists, 
   +  La gestion des upvotes et downvotes concernant les chansons contenues dans une playlist spécifique.
 
 ### Classes du package
+
 #### PlaylistManager
 La classe `PlaylistManager` représente un gestionnaire de playlists et a plusieurs utilités :
 
@@ -282,10 +272,11 @@ Cette classe permet de créer le lien entre une certaine playlist et une chanson
 #### VoteComparator
 Le comparateur de vote ne possède qu'une fonction. Celle-ci sert tout simplement à déterminer entre deux chansons, laquelle a le plus grand nombre de votes. Cela a été créé dans le but de réorganiser la playlist en commençant par les chansons les plus votées.
 
-
 ##  Package utils
 Le package `utils` réunit tous les utilitaires dont nous avons eu besoin au sein de plusieurs classes et dont l'implémentation n'avait aucun sens au sein desdites classes. L'utilité de chaque classe diffère alors énormément.
+
 ### Classes du package
+
 #### Configuration
 Cette classe permet la récupération des configurations de base du programme. Elle fixe le fichier de configuration que nous avons introduit précédemment, au chapitre **Gestionnaire de configuration** et en tire des informations.
 
@@ -299,9 +290,16 @@ Nous avons choisi d'implémenter un gestionnaire de configuration utilisant le f
  +  TIME_BEFORE_SESSION_INACTIVE : choix du délai d'inactivité d'une session
  +  TIME_BETWEEN_PLAYLIST_UPDATES : choix du délai de mise à jour des playlists et leurs chansons
 
+ #### Network
+ Cette classe permet de récupérer toutes les informations basiques de la machine concernant le réseau. Elle va en outre permettre de récupérer les interfaces disponibles nécessaires à la connexion à un certain serveur et de configurer le réseau pour le reste de l'application.
+ #### ObservableSortedPlaylistTracklist
+ Cette classe permet de récupérer les informations nécessaires à l'affichage des chansons dans la playlist en écoute. Cet utilitaire a été créé afin de pouvoir faciliter la récupération d'informations depuis les classes mettant en oeuvre l'interface graphique.
+ #### Serialize
+ Grâce à la librairie Gson de Google, cette classe est utilisée dans la sérialisation et désérialisation d'objets.
 
 #### EphemeralPlaylistSerializer
 Cette classe permet de sérialiser et désérialiser une playlist en JSON. L'utilité de cette classe réside alors principalement dans la communication réseau.
+
 #### Logger
 Cette classe a été créée uniquement pour assouvir le besoin d'un débogueur indiquant dans quelle classe a lieu une action. Des couleurs ont été attribuées aux différentes notifications.
 
@@ -309,19 +307,17 @@ Cette classe a été créée uniquement pour assouvir le besoin d'un débogueur 
   +  Rouge pour les erreurs
   +  Vert pour les succès
   +  Jaune pour les avertissements
+
 L'affichage des logs peut tout à fait être désactivé au niveau du fichier de configuration `commusica.properties` en réglant la valeur de `DEBUG` à 0.
-
-
-
 
 
 ## Package core
 Pour garder un niveau d'abstraction le plus élevé possible, nous avons voulu faire transiter à travers un contrôleur toutes les informations venant du réseau et des utilisateurs, le but étant d'avoir le même point d'entrée que l'on soit client ou serveur. Pour cela, il nous fallait un contrôleur central qui puisse être appelé de la même façon, quel que le choix de l'identité - client ou serveur. C'est alors à celui-ci de vérifier l'existence d'une fonction et de communiquer l'action à exécuter à l'entité concernée. Notre raisonnement nous a mené à nous tourner vers la réflexivité offerte par Java pour résoudre ce problème. Ce mécanisme permet d'instancier des méthodes à l'exécution en utilisant la méthode `invoke(Object obj, Object... args)` ayant comme premier paramètre un String représentant le nom de la méthode à invoquer et comme deuxième paramètre un tableau d'`Object` contentant les différents arguments dont la méthode invoquée a besoin (voir utilisation dans notre programme **FIGURE**).
 
-
 Il nous fallait maintenant une classe qui puisse jouer le rôle du contrôleur. Nous avons développé les `Core` pour cela qui sont tous dans le paquet `core`.
 
 ### Classes du package
+
 #### Core
 C'est une classe statique qui joue le rôle de point d'entrée. Elle dispose d'un attribut `AbstractCore` qui sera instancié soit en `ClientCore` ou en `ServerCore`. Elle met aussi à disposition des méthodes statiques qui nous permettront de les appeler depuis les autres classes du programme.  
 Parmi ces méthodes, la plus importante est la suivante:  
@@ -331,6 +327,10 @@ public static String execute(String command, ArrayList<Object> args)
 ```
  Cette méthode se contente d'appeler la méthode du même nom de l'instance de `AbstractCore` de la classe et sera appelée partout où une action du Core est demandée.
 Elle contient aussi des méthodes lui permettant de se paramétrer comme client ou serveur.
+
+**Les serveur doivent pouvoir envoyer une mise à jour de leur liste de lecture actuelle à tous les clients. Ces derniers ne devront traiter que les informations qui viennent du serveur auquel ils sont connectés.
+
+Les clients doivent pouvoir avoir une découverte des serveurs disponibles.**
 
 #### ICore
 C'est un interface qui définit ce qui est nécessaire au Core à savoir des méthodes permettant d'envoyer des messages en Unicast ou en Multicast et une méthode pour stopper le Core. Toutes les classes héritant de `AbstractCore` doivent implémenter cette interface.
@@ -362,13 +362,6 @@ Ces deux classes héritant de `AbstractCore` et implémentant `ICore` sont les c
 
 ### Synthèse du paquet core
 Grâce à ces classes, nous avons réglé le problème de contrôleur central par lequel tout transitera. La réception des commandes à invoquer sera expliquée plus tard dans le chapitre sur le paquet `Network` et lors des explications sur la liaison entre l'interface graphique et le code.
-
-
-
-
-
-
-
 
 ##  Package et ressources ui
 Concernant l'interface graphique, nous avons utilisé la librairie JavaFX. Celle-ci nous a permis de faire usage de l'outil SceneBuilder afin de développer, en premier lieu, une maquette qui s'est ensuite développée, à travers plusieurs étapes, en l'interface graphique que nous connaissons aujourd'hui. Le fonctionnement JavaFX demande à avoir deux notions qui communiquent entre elles: un ou plusieurs fichiers FXML qui définissent l'arrangement de la fenêtre et une ou plusieurs classes Java qui permettent de lancer la fenêtre et communiquer avec ses composants.
@@ -453,12 +446,15 @@ Le fichier FXML de base, tout comme le fichier Java de base, a été découpé e
 Comme dans les fichiers Java, nous avons un fichier principal, sans surprise `main.fxml` qui permet de découper l'interface principale en plusieurs panneaux. Ensuite, pour chacun des panneaux, nous avons des fichiers portant le même nom que leurs classes Java.
 Ce qu'il faut savoir par rapport aux fichiers FXML, c'est que nous avons dû ajouter un ID à chaque structure dont les actions nous intéressaient, et, pour certaines, nous avons également dû lier une action à une certaine méthode. Ainsi, dès l'instant que, dans le code Java, nous rencontrons un `@FXML`, cela veut dire que nous avons un lien direct avec les structures des fichiers FXML.
 
-
-
-
-
-
 # Notions et technologies utilisées
+
+## Hibernate
+Pour l'implémentation, nous avons choisi le framework Hibernate qui simplifie le développement de l'application Java pour interagir avec la base de données. C'est un outil open source et léger.
+Un outil ORM (Object Relational Mapping) simplifie la création, la manipulation et l'accès aux données. C'est une technique de programmation qui mappe l'objet aux données stockées dans la base de données.
+
+La performance du framework Hibernate est rapide, car le cache est utilisé en interne dans le cadre hiberné.
+Le framework Hibernate offre la possibilité de créer automatiquement les tables de la base de données. Il n'est donc pas nécessaire de les créer manuellement.
+
 
 ## GitHub
 ** DG : on confond Git et GitHub dans les énumérations, à revoir **
@@ -484,7 +480,6 @@ Apache Maven est un outil puissant de gestion de projet basé sur POM (modèle d
 + Il fournit des informations sur le projet (document, liste de dépendances, rapports de tests, etc.).
 
 ## Scene Builder
-
 Scene builder est un outil qui permet de créer des fichiers au formats FXML via un éditeur graphique. Les avantages de Scene Builder sont les suivants :
 
 ** DG : TODO **
@@ -503,9 +498,7 @@ JavaFX est une bibliothèque Java permettant la création d'applications Desktop
 ## Capsule
 ** DG : TODO **
 
-
 # Tests réalisés
-
 ** DG : cette liste me semble relativement massive, on pourrait faire des sous-chapitres **
 ** DG : attention, certains de ces points, à cause de la tournure de phrase, sont des observations et non des tests **
 ** DG : j'ai déplacé certaines observations de points qui ne marchent pas dans "Problèmes subsistants" **
@@ -547,11 +540,16 @@ JavaFX est une bibliothèque Java permettant la création d'applications Desktop
 ## Bilan du groupe
 
 ## Ludovic
+
 ## Lucas
-## David
-## Thibaut
-## Yosra
+
 ## Denise
+
+## David
+
+## Thibaut
+
+## Yosra
 
 # Glossaire
 
@@ -560,6 +558,7 @@ https://blog.axopen.com/2013/11/les-cles-primaires-composees-avec-hibernate-4/
 https://vladmihalcea.com/2016/08/01/the-best-way-to-map-a-composite-primary-key-with-jpa-and-hibernate/
 
 # Annexes
-## Cahier des charges
-## Journal de travail
-## Panification initiale et son évolution
+
+- Cahier des charges
+- Journal de travail
+- Panification initiale et son évolution
