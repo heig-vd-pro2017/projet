@@ -313,8 +313,76 @@ Cette classe permet de récupérer les informations nécessaires à l'affichage 
 #### Serialize
 Grâce à la librairie Gson de Google, cette classe est utilisée dans la sérialisation et désérialisation d'objets.
 #### Session Ce package permet de gérer les sessions des utilisateurs. Avant tous nous allons monter l'importance de la session pour une communication client-serveur. La session permet aux serveurs de mémorise des informations relatives au client, d'une requête à l'autre. Le contenu d'une session est conservé jusqu'à ce que l'utilisateur ferme sa connexion, reste inactif trop longtemps. ##### ServerSessionCette classe permet de gérer la session d'un serveur. Le champs privé update permet de définir le temps que la session reste toujours valable.#####  ServerSessionManager Cette classe comme son nom l'indique permet de gérer les différentes sessions des serveurs. Il constitué : + D’une MAP permettant de stocké les sessions des différents serveurs.+ ScheduledExecutorService permettant de nettoyer les anciennes sessions des différentes anciennes sessions. Il faut noter ici que ScheduledExecutorService est un service qui peut planifier des tâches à exécuter après un délai ou à éxecuté à plusieurs reprises avec un intervalle de temps fixe entre chaque exécution de manière asynchrone par un thread de travail, et non par le thread passant la tâche à ScheduledExecutorService. Nous utilisons dans notre cas pour supprimer tous les sessions donc le délai a expiré.  ##### UserSessionCette classe permet de gérer la session d'un utilisateur. Le champs privé update permet de définir le temps que la session reste toujours valable.##### UserSessionManager  Cette classe comme son nom l'indique permet de gérer les différentes sessions des utilisateurs. 
+## Technologies utilisées 
+ 
+### GitHub
+Github est un outil gratuit pour héberger du code open source, et propose également des plans payants pour les projets de codes privés.
+Nous avons utilisé Github Pour les raisons suivantes:
++ Elle permet une meilleur gestion des branche 
++ Fusion(merge): Quand fichier a été modifié par plusieurs personnes en même temps, Git sait s'adapter et choisir un algorithme qui fusionne intellignemment les lignes du fichier qui ont été modifiées.
++ Le nombre de personnes  pas repos n'est pas reduire comme dans BicBucket.
+### IntelliJ IDEA
+   Un environnement de Développement Intégré, autrement dit un ensemble d'outils destinés au développement logiciel. Les avantage d'utilise IntelliJ IDEA sont les suivantes.
+   
+   + Il nous propose la fonctionnalité de pull-request pour gitHub.
+   + L'autocomplétion qui est une fonctionnalité absolument indispensable à tout bon outil de développement. 
+   + L'analyse et inspection: il analyse en temps réel et en permanence votre code, à la recherche de problèmes potentiels.
+   
+### Apache Maven
+Apache Maven est un outil puissant de gestion de projet basé sur POM(modèle d'objet de projet). Il est utilisé pour la construction, la dépendance et le documentation des projets.Les avantages d'utilisation maven:
+
++ Il facilite la construction d'un projet.
++ Il fourni un processus de construction uniforme (le projet maven peut être partagé par tous les projets maven).
++ Il fournit des informations sur le projet (document, liste de dépendance, rapports de tests, etc)
+
+### Scene Builder
+
+Scene builder est un outil qui permet de créer des fichiers au formats FXML via un éditeur graphique.Les avantages d'utilise scene builder:
+
+### Wireshark
+Wireshark est un outil pédagogique essentiel pour comprendre les mécanismes de fonctionnement des protocoles de commuinication sur les réseaux. Il captures des paquets directement sur les interfaces du système utilisé ou lire des fichiers de captures sauvegardées. Nous l'utilisons dans notre projet  pour snife la communication entre le client et le serveur enfin de contôlé le bon fonctionnement de la communication réseau.
+### JAudiotagger
+   JAudiotagger est une API Java pour la lecture et l'écriture des étadonnées des fichiers audio il supporte les formats suivant:
+   
+   + Mp3
+   + Mp4
+   + Wav
+   + ...
+ 
+
+
+### JavaFX
+JavaFx est une bibliothéque java facilitant la création des applications Desktop en java.Les applications écrites à l'aide de cette bibliothèque peuvent fonctionner regulièrement sur plusieurs plates-formes. Les applications développées à l'aide de JavaFX peuvent fonctionner sur différents périphériques telsque les ordinateurs, les téléviseurs, les tablettes, etc.
+
+
+### Capsule
+
 
 ## Tests réalisés
+
+- Lancement des deux programmes
+- Choix entre serveur et client fonctionnel
+- La playlist est bien émise de la part du serveur
+- La liste des serveurs disponibles se met bien à jour côté client
+- Le client peut sélectionner et se connecter au serveur
+- Le client reçoit et met à jour sa playlist en fonction de celle du serveur auquel il est connecté (IL FAUDRA TESTER AVEC PLUSIEURS SERVEURS)
+- Le client peut envoyer une musique au serveur qui l'accepte ou la refuse (A TESTER PLUS EN DÉTAILS)
+- Le serveur reçoit la musique et met à jour sa playlist (PAS SÛR QUE ÇA SOIT MIS À JOUR DANS LA DB)
+- Le client reçoit la mise à jour de la playlist
+- Le client peut up/down voter une musique et cette dernière se met à jour. Ne marche pas côté serveur.
+- Le client peut augmenter/diminuer le volume. Ne marche pas côté serveur.
+- Côté client, une musique qui n'a pas été jouée se met au dessus des musiques qui ont déjà été jouées si elle a plus de vote que les musiques déjà jouées.
+- Coté client, la base de données se met bien à jour lors de l'ajout de musique, mais la date à laquelle elle a été jouée manque dans l'EphemeralPlaylist et donc ne se met pas à jour dans la base de données du client.
+- Le bouton play/pause marche et change d'état côté client et le bouton marche côté serveur, mais dans ce dernier cas, le bouton côté client ne change pas d'état.
+- La barre du temps est manquante au niveau du client
+- La PlaylistTrack se met bien à jour dans la base de données lorsqu'une musique a été jouée côté client.
+- Le bouton favoris situé dans l'interface de contrôle ne marche pas côté client et serveur
+- Le fait de favoriser une musique ne l'enregistre pas côté serveur (ne s'affiche pas dans la playlist "Favoris")
+- Favoriser une musique côté client l'enregistre bien dans la db
+- A la fermeture du programme côté client, toutes les tracks qui n'ont pas été jouées sont bien effacées de la base de données
+- Les playlists tracks associées ne sont par contre pas effacées (il doit manquer le CASCADE au niveau de la db pour que ça efface aussi)
+- A la fermeture du programme côté serveur, les tracks enregistrées sont bien effacées
+- Côté serveur, les tracks sont bien ajoutées à la db
 
 ## Problèmes subsistants
 
