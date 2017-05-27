@@ -130,7 +130,7 @@ l'application sera lancée directement après avoir taper la ligne ci-dessus.
 # Utilisation
 ## Première fenêtre
 Une fois l'application est lancée, la fenêtre ci-dessous apparaît.
-![alt text]()
+![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/premiere_fenetre.PNG)
 
 Vous avez deux choix :
 - être Serveur
@@ -139,16 +139,17 @@ Vous avez deux choix :
 1. Serveur:
 - Si vous choisissez d'être un serveur, vous cliquez sur `Yes`. 
 - Vous pouvez ensuite donner un nom à votre serveur puis cliquer sur `OK`.
+![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/nomServeur.PNG)
 
 2. Client:
 - Si vous choisissez d'être un client, vous cliquez sur `No`. 
 
 ## Serveur
-![alt text]()
+![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/figure_server.png)
 (1) Settings : Vous pouvez effectuer les différents paramétrages ici.  
 (1.1) Network interface: Vous pouvez choisir l'interface de communication parmi les interfaces existantes. Une interface par défaut           est mise à disposition.
     
-(2) Playlists : contient la playlist en cours de lecture `PLAYING`(1.1), la playlist des chansons préférées `FAVORITES` (1.2) et la liste des palylists sauvegardées des utilisations précédentes (1.3).
+(2) Playlists : contient la playlist en cours de lecture `PLAYING`(2.1), la playlist des chansons préférées `FAVORITES` (2.2) et la liste des palylists sauvegardées des utilisations précédentes (2.3).
 
 (3) Les chansons en cours de lecture.  
 (3.1) Le nombre total des votes pour chaque chanson
@@ -158,12 +159,12 @@ Vous avez deux choix :
 (5) Les informations concernant la chanson précédent la chanson en cours de lecture.
 
 ## Client
-![alt text]()
+![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/figure_client.png)
 (1) Settings : Vous pouvez effectuer les différents paramétrages ici.
     (1.1) Servers list: Vous pouvez choisir la connexion à un server parmi les serveurs existants.
     (1.2) Network interface: Vous pouvez choisir l'interface de communication parmi les interfaces existantes. Une interface par défaut           est mise à disposition.  
 
-(2) Playlists : contient la playlist en cours de lecture `PLAYING`(1.1), la playlist des chansons préférées `FAVORITES` (1.2) et la liste des palylists sauvegardées des utilisations précédentes (1.3).
+(2) Playlists : contient la playlist en cours de lecture `PLAYING`(2.1), la playlist des chansons préférées `FAVORITES` (2.2) et la liste des palylists sauvegardées des utilisations précédentes (2.3).
 
 (3) Les chansons en cours de lecture.  
 (3.1) Le nombre total des votes pour chaque chanson, vous pouvez voter pour ou contre une chanson. Plus le nombre total de votes est           grand, plus la chanson est aura plus de chance d'être joué après la chanson en cours de lecture.  
@@ -171,7 +172,7 @@ Vous avez deux choix :
   
 (4) La chanson en cours de lecture.  
 (4.1) Si vous voulez passer à la chanson suivante, vous pouvez cliquer sur ce bouton. La chanson suivante sera jouée si la mojorité           des présents le demande.  
-(4.2) Si vous voulez augmenter ou diminuer le volu,e, vous pouvez cliquer sur ce bouton. Le volume sera modifié si la mojorité                 des présents le demande.
+(4.2) Si vous voulez augmenter ou diminuer le volume, vous pouvez cliquer sur ce bouton. Le volume sera modifié si la mojorité                 des présents le demande.
 
 (5) Les informations concernant la chanson précédent la chanson en cours de lecture.
 
