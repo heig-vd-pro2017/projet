@@ -153,4 +153,12 @@ public class MulticastClient implements Runnable {
             }
         }
     }
+
+    public void changeSocketInterface(InetAddress addressOfInterface) {
+        try {
+            socket.setInterface(addressOfInterface);
+        } catch (SocketException e) {
+            LOG.error(e);
+        }
+    }
 }
