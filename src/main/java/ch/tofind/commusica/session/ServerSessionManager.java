@@ -1,17 +1,17 @@
 package ch.tofind.commusica.session;
 
 import ch.tofind.commusica.core.ApplicationProtocol;
-import ch.tofind.commusica.network.Server;
 import ch.tofind.commusica.utils.Logger;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 
 import java.net.InetAddress;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
 
 /**
  * Manage the servers sessions.
@@ -25,10 +25,7 @@ public class ServerSessionManager implements ISessionManager {
     private static ServerSessionManager instance = null;
 
     //! Store the active sessions.
-    //private static Map<Integer, ServerSession> availableServers;
     private static ObservableMap<Integer, ServerSession> availableServers;
-
-    //private static ObservableList<ServerSession> observableServersList;
 
     //! Clean the old sessions on schedule.
     private ScheduledExecutorService scheduledExecutorService;
@@ -38,15 +35,12 @@ public class ServerSessionManager implements ISessionManager {
      */
     private ServerSessionManager() {
 
-        //availableServers = new HashMap<>(0);
         availableServers = FXCollections.observableHashMap();
 
         // Crée un thread qui nettoie les sessions toutes les N secondes
         scheduledExecutorService = Executors.newScheduledThreadPool(1);
 
-        scheduledExecutorService.scheduleAtFixedRate(() -> {
-            deleteObsoleteSessions();
-        }, 0, TIME_BEFORE_SESSION_INACTIVE, TimeUnit.SECONDS);
+        scheduledExecutorService.scheduleAtFixedRate(this::deleteObsoleteSessions, 0, TIME_BEFORE_SESSION_INACTIVE, TimeUnit.SECONDS);
     }
 
     /**
@@ -79,10 +73,10 @@ public class ServerSessionManager implements ISessionManager {
         if (availableServers.containsKey(id)) {
             ServerSession serverSession = availableServers.get(id);
             serverSession.update();
+            availableServers.put(serverSession.getId(), serverSession);
         } else {
             ServerSession serverSession = new ServerSession(id, serverIp, serverName);
             availableServers.put(serverSession.getId(), serverSession);
-            //observableServersList.add(serverSession);
         }
     }
 
@@ -93,47 +87,6 @@ public class ServerSessionManager implements ISessionManager {
      */
     public ObservableMap<Integer, ServerSession> getAvailableServers() {
         return availableServers;
-    }
-
-    /*public ObservableList<ServerSession> getObservableServersList() {
-        return observableServersList;
-    }*/
-
-    /**
-     * @brief Choose a server in the available servers.
-     * @param serverList The available servers.
-     */
-    public void serverChooser(Map<Integer, ServerSession> serverList) {
-        if (!serverList.isEmpty()) {
-
-            ArrayList<ServerSession> servers = new ArrayList<>();
-
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("To which server do you want to connect?");
-            int i = 1;
-
-            for (Map.Entry<Integer, ServerSession> entry : serverList.entrySet()) {
-                System.out.println("[" + i++ + "]" + "    " + entry.getValue());
-                servers.add(entry.getValue());
-            }
-
-            int serverChoice = -1;
-            while (serverChoice < 0) {
-                serverChoice = scanner.nextInt();
-
-                if (serverChoice > serverList.size()) {
-                    System.out.println("Not valid!");
-                    serverChoice = -1;
-                }
-            }
-            serverChoice--;
-
-            ServerSession chosenServer = servers.get(serverChoice);
-
-            ApplicationProtocol.serverId = chosenServer.getId();
-            ApplicationProtocol.serverAddress = chosenServer.getServerIp();
-            ApplicationProtocol.serverName = chosenServer.getServerName();
-        }
     }
 
     /**
@@ -147,12 +100,17 @@ public class ServerSessionManager implements ISessionManager {
 
             ServerSession serverSession = entry.getValue();
 
-            if (serverSession.getLastUpdate().getTime() > now.getTime() - TIME_BEFORE_SESSION_INACTIVE) {
+            if (serverSession.getLastUpdate().getTime() < now.getTime() - TIME_BEFORE_SESSION_INACTIVE * 1000) {
 
                 LOG.info("Removing old server session.");
 
-                availableServers.remove(serverSession.getId());
-                //observableServersList.remove(serverSession);
+                Platform.runLater(() -> availableServers.remove(serverSession.getId()));
+
+                if (serverSession.getId() == ApplicationProtocol.serverId) {
+                    ApplicationProtocol.serverId = null;
+                    ApplicationProtocol.serverAddress = null;
+                    ApplicationProtocol.serverName = null;
+                }
             }
         }
     }

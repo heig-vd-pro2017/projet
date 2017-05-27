@@ -3,9 +3,9 @@ package ch.tofind.commusica.utils;
 import ch.tofind.commusica.media.EphemeralPlaylist;
 import ch.tofind.commusica.media.Player;
 import ch.tofind.commusica.media.Track;
-
 import ch.tofind.commusica.playlist.PlaylistManager;
 import ch.tofind.commusica.playlist.PlaylistTrack;
+
 import com.google.gson.*;
 
 import java.lang.reflect.Type;

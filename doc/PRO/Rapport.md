@@ -107,8 +107,6 @@ Ne pas mettre toutes les classes !
 ## Gestionnaire de configuration
 Nous avons choisi d'implémenter un gestionnaire de configuration utilisant le fichier commusica.properties pour permettre à l'utilisateur de configurer le programme. Il donne accès aux paramètres suivants :    
 
- +  SERVER_NAME : choix du nom du serveur auquel les participants pourront se connecter
- +  PLAYLIST_NAME : choix du nom de la liste de lecture pour la soirée
  +  DEBUG : permets de choisir d'afficher ou non la sortie du programme
  +  DATE_FORMAT : choix du format de la date
  +  VOLUME_STEP : choix du pas d'augmentation et abaissement de la musique
@@ -237,7 +235,7 @@ Une autre partie importante de notre programme était la gestion du réseau entr
 
 Nous avons décidé d'opter pour une architecture avec un thread réceptionniste `Server` au niveau du serveur qui va attendre une nouvelle connexion de client sur son socket et lancer un thread `UnicastClient` qui va s'occuper de la communication avec le client. Cette communication se fait via un socket unicast puisque toutes les informations, mis à part la mise à jour de la playlist, vont transiter du client au serveur.  
 La classe `UnicastClient` va recevoir les commandes venant du réseau et en renvoyer. Sa force réside dans le fait qu'elle peut être utilisée aussi bien du côté serveur que du côté client grâce à un système de lecture de flux d'entrée, tant que la fin d'une commande n'est pas détectée ou que l'autre partie n'a pas fermé son socket. Le socket est fermé lorsque la commande `END_OF_COMMUNICATION` est reçue.  
-Après la réception de la ligne `END_OF_COMMAND`, la lecture du flux d'entrée est arrêtée et la commande est séparée pour en extraire la partie commande et ses différents arguments. **PAS FINI**
+Après la réception de la ligne `END_OF_COMMAND`, la lecture du flux d'entrée est arrêtée et la commande est séparée pour en extraire la partie commande et ses différents arguments.
 
 
 ##  Package playlist
@@ -264,31 +262,87 @@ Cette classe permet de créer le lien entre une certaine playlist et une chanson
 Le comparateur de vote ne possède qu'une fonction. Celle-ci sert tout simplement à déterminer entre deux chansons, laquelle a le plus grand nombre de votes. Cela a été créé dans le but de réorganiser la playlist en commençant par les chansons les plus votées.
 
 ##  Package et ressources ui
-Concernant l'interface graphique, nous avons utilisé la librairie JavaFX. Celle-ci nous a permis de faire usage de l'outil SceneBuilder afin de développer en premier lieu une maquette qui s'est ensuite développée, à travers plusieurs étapes en l'interface graphique que nous avons aujourd'hui. Le fonctionnement JavaFX demande à avoir deux notions qui communiquent entre elles: un ou plusieurs fichiers FXML qui définissent l'arrangement de la fenêtre et une ou plusieurs classes Java qui permettent de lancer la fenêtre et communiquer avec ses composants.
+Concernant l'interface graphique, nous avons utilisé la librairie JavaFX. Celle-ci nous a permis de faire usage de l'outil SceneBuilder afin de développer, en premier lieu, une maquette qui s'est ensuite développée, à travers plusieurs étapes, en l'interface graphique que nous connaissons aujourd'hui. Le fonctionnement JavaFX demande à avoir deux notions qui communiquent entre elles: un ou plusieurs fichiers FXML qui définissent l'arrangement de la fenêtre et une ou plusieurs classes Java qui permettent de lancer la fenêtre et communiquer avec ses composants.
 Il est donc intéressant de connaître le cheminement que nous avons parcouru jusqu'au résultat actuel.
 Dans un premier temps, nous avons développé un fichier FXML grâce à SceneBuilder. Grâce à celui-ci, nous avons pu apprendre les bons usages FXML. Nous avons ensuite créé un fichier Java depuis lequel nous étions capables lancer la fenêtre au démarrage du programme. Cependant, le code se développant devenant de plus en plus important, nous avons pris la décision de diviser aussi bien les fichiers FXML que les fichiers Java en plusieurs sections permettant d'avoir un regard plus précis sur chaque partie de notre implémentation.
 Ainsi, nous avons aujourd'hui plusieurs classes Java et plusieurs fichiers FXML qui sont reliés à leur classe principale `UIController.java` respectivement `main.fxml`.
-### Classes du package
-La description des classes se fera selon l'ordre des vues dans l'interface graphique, en partant de la vue en haut à gauche pour finir par la vue en bas au centre. Nous allons tout d'abord commencer par la classe principale.
-#### UIController
-`UIController` est la classe qui permet de lier le reste des classes entre elles. Lorsque le programme est lancé, c'est cette classe qui est lancée. Elle va en premier lieu faire apparaître une fenêtre demandant à l'utilisateur si celui-ci veut être le serveur. Son lancement a lieu dans la fonction `initialize()`. Au moment du choix de l'utilisateur, l'interface annonce au Core quelle configuration a été choisie et la fenêtre principale du programme peut être lancée.
-La classe `UIController` permet également de fermer la fenêtre proprement lorsque l'utilisateur décidera d'arrêter le programme.
-#### PlaylistsListView
-*En haut à gauche*
-#### TrackListView
-*En haut au centre*
-##### PlaylistTrackCell
-*Dans TrackListView*
-#### SettingsView
-*En haut à droite*
-#### PreviousTrackView
-*En bas à gauche*
-#### PlayerControlsView
-*En bas au milieu*
-#### CurrentTrackView
-*En bas au milieu*
-### Fichiers FXML
 
+### Classes du package
+La description des classes se fera selon l'ordre des vues dans l'interface graphique, en partant de la vue en haut à gauche pour finir par la vue en bas au centre. Nous allons tout d'abord commencer par la fenêtre de configuration apparaissant au lancement du programme, pour continuer avec le controleur. Le reste des classes sera ensuite abordé.
+
+#### ClientServerDialog
+`ClientServerDialog` est la première fenêtre lancée par le programme. Son lancement se passe alors dans la classe principale `Commusica`. Cette fenêtre permettra tout simplement de choisir entre deux rôles : celui du serveur ou de l'utilisateur lambda.
+Le choix sera communiqué au Core qui prendra connaissance de la décision, configurera le programme et exécutera le lancement de l'interface graphique appropriée.
+Après cela, cette classe lancera l'`UIController`.
+Dans le cas où l'utilisateur ne répond pas à la question posée dans la fenêtre de dialogue et la ferme, le programme s'arrête.
+**REVENIR DESSUS QUAND IMPLEM TERMINEE**
+
+#### UIController
+`UIController` est la classe qui permet de lier le reste des classes entre elles. Elle va, en premier lieu, mettre à jour la partie en haut à gauche contenant les playlists et la playlist sélectionnée sera par défaut celle en cours de construction.
+Mis à part la configuration initiale de la fenêtre, `UIController` permet aussi toutes les actions basiques de l'interface graphique : 
+
++  Afficher des alertes
++  Obtenir la playlist actuellement visualisée
++  Mettre à jour et afficher les playlists
++  Fermer la fenêtre proprement lorsque l'utilisateur décide d'arrêter le programme
+`UIController` va tout simplement faire appel aux différentes classes du package `ui` afin de s'informer de l'état de chaque partie composant l'UI lors d'une demande depuis l'extérieur.
+**REVENIR DESSUS QUAND IMPLEM TERMINEE**
+
+#### PlaylistsListView
+`PlaylistsListView` concerne la vue en haut à gauche affichant les playlists disponibles :
+
+  +  **PLAYING** : la playlist en cours de création
+  +  **FAVORITES** : la playlist des favoris
+  +  **SAVED** : la liste des playlists sauvegardées d'anciens événements
+Comme spécifié au chapitre précédent, la liste sélectionnée par défaut est la liste en cours de création.
+Dans la classe `PlaylistsListView`, nous faisons usage d'une méthode de la classe `FXCollections` permettant d'attacher un observeur à n'importe quel objet du programme. Ainsi, nous pouvons facilement modifier l'affichage des playlists au fur et à mesure des actions faites au niveau du serveur ou du client.
+
+#### TracksListView
+La classe `TracksListView` agit sur le panneau en haut au centre de l'interface graphique principale en le dessinant et définissant les usages basiques de celui-ci.
+Cette classe permet d'afficher une playlist et glisser/déposer un élément audio au sein du panneau, grâce à la méthode `initializeDragAndDrop()`. La liste de lecture est initialisée comme liste observable, ce qui fait que dès qu'un changement subvient, celle-ci se met à jour. Cependant, elle n'est pas encore peuplée par les chansons contenues dans la playlist. Cette question ainsi que celle des upvotes, downvotes et favoris sont traitées dans une autre classe implémentée spécialement pour cet usage : `PlaylistTrackCell`.
+
+##### initializeDragAndDrop()
+La méthode `initializeDragAndDrop()` de la classe `TracksListView` mérite une explication plus détaillée. Nous avons longtemps réfléchi à la meilleure façon d'implémenter le téléchargement d'une chanson. Le "drag and drop" (glisser/déposer) nous a finalement semblé être la technique la plus intuitive d'ajout de chansons.
+Cette méthode relativement complexe nous permet donc de déterminer quand une personne  a déposé un fichier dans le panneau et ce, grâce à la méthode JavaFX `setOnDragDropped()` de la classe `TransferMode`. C'est alors que nous allons faire usage du constructeur de la classe `Track` prenant en paramètre un `AudioFile`. 
+Si c'est le serveur qui a glissé/déposé une chanson, alors la méthode appellera directement la méthode du `PlaylistManager` permettant d'ajouter une chanson.
+Dans le cas du client, la méthode passera d'abord par la classe `Core` à laquelle il enverra la commande `SEND_TRACK_REQUEST` avec comme argument l'URI de la chanson.
+Nous remarquons ici, encore une fois, l'intérêt et l'importance de la classe `Core`.
+
+##### PlaylistTrackCell
+`PlaylistTrackCell` est une classe utilisée dans chaque cellule de la liste afin de définir les boutons d'upvote, downvote et favoris et leurs actions. Elle va également permettre de définir le titre, l'artiste, l'album et le nombre de votes d'une chanson.
+Concernant les votes, deux fonctions - une pour les votes positifs et l'autre pour les votes négatifs - permettent de communiquer avec le `Core` à travers des commandes. Les commandes - `SEND_DOWNVOTE_TRACK_REQUEST` et `SEND_UPVOTE_TRACK_REQUEST` - sont utilisées dans ces deux cas spécifiques car l'incidence qu'aura un vote sera globale à tous les participants. Ainsi, le `Core` doit être averti du fait que l'événement a eu lieu pour en informer le serveur afin qu'il renvoie l'information à tout le monde. Encore une fois, le `Core` use de son pouvoir de messager à travers le programme.
+Dans le cas des favoris, il n'y a nul besoin de passer par le `Core` car tout ce que l'utilisateur veut, c'est enregistrer l'information dans sa liste personnelle de chansons favorites.
+
+#### SettingsView
+**TODO**
+*En haut à droite*
+
+#### PreviousTrackView
+Dans le panneau en bas à gauche, nous pouvons apercevoir un espace réservé à la chanson qui vient de se terminer. Ce panneau nous a semblé utile de par le fait que, souvent, nous nous sommes personnellement retrouvés à vouloir noter le nom d'une chanson que nous venions d'écouter et, le temps de prendre notre téléphone pour identifier ladite chanson, celle-ci avait eu le temps de se terminer. Ainsi, ce panneau offre la possibilité à tout un chacun de retrouver facilement et sauvegarder en un seul "clic" les informations d'une chanson.
+Pour ce panneau, nous n'avons pas repris le même type de cellule que dans le panneau central du haut, car il n'y a pas de sens au fait de pouvoir upvoter ou downvoter une chanson déjà écoutée. C'est pourquoi, nous avons créé un panneau sur mesure contenant uniquement l'étoile des favoris et permettant ainsi uniquement d'ajouter la chanson dans ses favoris.
+
+#### CurrentTrackView
+Dans le panneau du bas, au milieu, nous pouvons apercevoir le résumé de la chanson actuellement en écoute. Les boutons ainsi que les informations sont exactement les mêmes que dans le cas de la dernière chanson grisée affichée dans la liste de lecture du panneau en haut au centre.
+Nous avons choisi cet affichage de façon à pouvoir faciliter l'accès à la chanson actuelle si jamais l'utilisateur avait décidé de faire défiler la liste de lecture et aurait perdu de vue la chanson actuelle.
+Le vrai défi de cette classe a cependant été celui de pouvoir remplir la jauge d'écoute selon l'avancement de la chanson. Cela a évidemment été fait à travers un observeur sur l'instance de `Player` qui possède l'information sur le temps écoulé.
+Sur la gauche du panneau central, nous pouvons également apercevoir des boutons de controle.
+
+##### PlayerControlsView
+`PlayerControlsView` qui se trouve dans le même panneau que `CurrentTrackView`représente les boutons "play/pause", "chanson suivante", "chanson précédente" et "volume". Ces quatre boutons représentent en fait cinq actions distinctes qui transiteront toutes à travers le `Core`. En effet, nous nous trouvons encore une fois face à une classe de l'interface graphique dont le `Core` est indispensable à son bon fonctionnement.
+Le `Core` est en mesure de déterminer vers qui il devra tourner la demande d'action à travers l'une des commandes suivantes :
+
+  +  SEND_TURN_VOLUME_DOWN_REQUEST : pour baisser le volume
+  +  SEND_TURN_VOLUME_UP_REQUEST : pour augmenter le volume
+  +  SEND_NEXT_TRACK_REQUEST : pour écouter la chanson suivante
+  +  SEND_PREVIOUS_TRACK_REQUEST : pour écouter la chanson précédente
+  +  SEND_PLAY_PAUSE_REQUEST : pour arrêter ou démarrer la musique
+Dans ces cas précis, c'est la classe `UserSessionManager`qui sera concernée par la commande. 
+Finalement, nous voyons dans cette classe encore une trace de ce que nous avions initialement implémenté. En effet, comme dans tous controleurs de musique, les boutons play/pause, chanson suivante et chanson précédente sont toujours présents. Cependant, dans le concept que nous visions à créer, nous n'avons jamais voulu permettre aux utilisateurs de revenir en arrière mais bien de se trouver dans un flux continu de musique.
+
+### Fichiers FXML
+Le fichier FXML de base, tout comme le fichier Java de base, a été découpé en plusieurs parties histoire de pouvoir plus facilement comprendre l'implémentation et la modifier.
+Comme dans les fichiers Java, nous avons un fichier principal, sans surprise `main.fxml` qui permet de découper l'interface principale en plusieurs panneaux. Ensuite, pour chacun des panneaux, nous avons des fichiers portant le même nom que leurs classes Java.
+Ce qu'il faut savoir par rapport aux fichiers FXML, c'est que nous avons dû ajouter un ID à chaque structure dont les actions nous intéressaient, et, pour certaines, nous avons également dû lier une action à une certaine méthode. Ainsi, dès l'instant que, dans le code Java, nous rencontrons un `@FXML`, cela veut dire que nous avons un lien direct avec les structures des fichiers FXML.
 
 ##  Package utils
 Le package `utils` réunit tous les utilitaires dont nous avons eu besoin au sein de plusieurs classes et dont l'implémentation n'avait aucun sens au sein desdites classes. L'utilité de chaque classe diffère alors énormément.
@@ -311,6 +365,7 @@ Cette classe permet de récupérer toutes les informations basiques de la machin
 #### ObservableSortedPlaylistTracklist
 Cette classe permet de récupérer les informations nécessaires à l'affichage des chansons dans la playlist en écoute. Cet utilitaire a été créé afin de pouvoir faciliter la récupération d'informations depuis les classes mettant en oeuvre l'interface graphique.
 #### Serialize
+
 Grâce à la librairie Gson de Google, cette classe est utilisée dans la sérialisation et désérialisation d'objets.
 #### Session Ce package permet de gérer les sessions des utilisateurs. Avant tous nous allons monter l'importance de la session pour une communication client-serveur. La session permet aux serveurs de mémorise des informations relatives au client, d'une requête à l'autre. Le contenu d'une session est conservé jusqu'à ce que l'utilisateur ferme sa connexion, reste inactif trop longtemps. ##### ServerSessionCette classe permet de gérer la session d'un serveur. Le champs privé update permet de définir le temps que la session reste toujours valable.#####  ServerSessionManager Cette classe comme son nom l'indique permet de gérer les différentes sessions des serveurs. Il constitué : + D’une MAP permettant de stocké les sessions des différents serveurs.+ ScheduledExecutorService permettant de nettoyer les anciennes sessions des différentes anciennes sessions. Il faut noter ici que ScheduledExecutorService est un service qui peut planifier des tâches à exécuter après un délai ou à éxecuté à plusieurs reprises avec un intervalle de temps fixe entre chaque exécution de manière asynchrone par un thread de travail, et non par le thread passant la tâche à ScheduledExecutorService. Nous utilisons dans notre cas pour supprimer tous les sessions donc le délai a expiré.  ##### UserSessionCette classe permet de gérer la session d'un utilisateur. Le champs privé update permet de définir le temps que la session reste toujours valable.##### UserSessionManager  Cette classe comme son nom l'indique permet de gérer les différentes sessions des utilisateurs. 
 ## Technologies utilisées 
@@ -360,30 +415,31 @@ JavaFx est une bibliothéque java facilitant la création des applications Deskt
 
 ## Tests réalisés
 
-- Lancement des deux programmes
-- Choix entre serveur et client fonctionnel
-- La playlist est bien émise de la part du serveur
-- La liste des serveurs disponibles se met bien à jour côté client
-- Le client peut sélectionner et se connecter au serveur
-- Le client reçoit et met à jour sa playlist en fonction de celle du serveur auquel il est connecté (IL FAUDRA TESTER AVEC PLUSIEURS SERVEURS)
-- Le client peut envoyer une musique au serveur qui l'accepte ou la refuse (A TESTER PLUS EN DÉTAILS)
-- Le serveur reçoit la musique et met à jour sa playlist (PAS SÛR QUE ÇA SOIT MIS À JOUR DANS LA DB)
-- Le client reçoit la mise à jour de la playlist
-- Le client peut up/down voter une musique et cette dernière se met à jour. Ne marche pas côté serveur.
-- Le client peut augmenter/diminuer le volume. Ne marche pas côté serveur.
-- Côté client, une musique qui n'a pas été jouée se met au dessus des musiques qui ont déjà été jouées si elle a plus de vote que les musiques déjà jouées.
-- Coté client, la base de données se met bien à jour lors de l'ajout de musique, mais la date à laquelle elle a été jouée manque dans l'EphemeralPlaylist et donc ne se met pas à jour dans la base de données du client.
-- Le bouton play/pause marche et change d'état côté client et le bouton marche côté serveur, mais dans ce dernier cas, le bouton côté client ne change pas d'état.
-- La barre du temps est manquante au niveau du client
-- La PlaylistTrack se met bien à jour dans la base de données lorsqu'une musique a été jouée côté client.
-- Le bouton favoris situé dans l'interface de contrôle ne marche pas côté client et serveur
-- Le fait de favoriser une musique ne l'enregistre pas côté serveur (ne s'affiche pas dans la playlist "Favoris")
-- Favoriser une musique côté client l'enregistre bien dans la db
-- A la fermeture du programme côté client, toutes les tracks qui n'ont pas été jouées sont bien effacées de la base de données
-- Les playlists tracks associées ne sont par contre pas effacées (il doit manquer le CASCADE au niveau de la db pour que ça efface aussi)
-- A la fermeture du programme côté serveur, les tracks enregistrées sont bien effacées
-- Côté serveur, les tracks sont bien ajoutées à la db
++ Lancement des deux programmes
++ Choix entre serveur et client fonctionnel
++ La playlist est bien émise de la part du serveur
++ La liste des serveurs disponibles se met bien à jour côté client
++ Le client peut sélectionner et se connecter au serveur
++ Le client reçoit et met à jour sa playlist en fonction de celle du serveur auquel il est connecté (IL FAUDRA TESTER AVEC PLUSIEURS SERVEURS)
++ Le client peut envoyer une musique au serveur qui l'accepte ou la refuse (A TESTER PLUS EN DÉTAILS)
++ Le serveur reçoit la musique et met à jour sa playlist (PAS SÛR QUE ÇA SOIT MIS À JOUR DANS LA DB)
++ Le client reçoit la mise à jour de la playlist
++ Le client peut up/down voter une musique et cette dernière se met à jour. Ne marche pas côté serveur.
++ Le client peut augmenter/diminuer le volume. Ne marche pas côté serveur.
++ Côté client, une musique qui n'a pas été jouée se met au dessus des musiques qui ont déjà été jouées si elle a plus de vote que les musiques déjà jouées.
++ Coté client, la base de données se met bien à jour lors de l'ajout de musique, mais la date à laquelle elle a été jouée manque dans l'EphemeralPlaylist et donc ne se met pas à jour dans la base de données du client.
++ Le bouton play/pause marche et change d'état côté client et le bouton marche côté serveur, mais dans ce dernier cas, le bouton côté client ne change pas d'état.
++ La barre du temps est manquante au niveau du client
++ La PlaylistTrack se met bien à jour dans la base de données lorsqu'une musique a été jouée côté client.
++ Le bouton favoris situé dans l'interface de contrôle ne marche pas côté client et serveur
++ Le fait de favoriser une musique ne l'enregistre pas côté serveur (ne s'affiche pas dans la playlist "Favoris")
++ Favoriser une musique côté client l'enregistre bien dans la db
++ A la fermeture du programme côté client, toutes les tracks qui n'ont pas été jouées sont bien effacées de la base de données
++ Les playlists tracks associées ne sont par contre pas effacées (il doit manquer le CASCADE au niveau de la db pour que ça efface aussi)
++ A la fermeture du programme côté serveur, les tracks enregistrées sont bien effacées
++ Côté serveur, les tracks sont bien ajoutées à la db
 
+## Tests réalisés
 ## Problèmes subsistants
 
 ## Améliorations potentielles
