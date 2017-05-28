@@ -15,6 +15,10 @@ header-includes:
     - \usepackage{graphicx}
     - \usepackage{tikz}
     - \usepackage{hyperref}
+    - \usepackage{floatrow}
+
+    # Make figures not floating.
+    - \floatplacement{figure}{!ht}
 
     # Some beautiful colors.
     - \definecolor{pblue}{rgb}{0.13, 0.13, 1.0}
@@ -23,7 +27,7 @@ header-includes:
     - \definecolor{pred}{rgb}{0.9, 0.0, 0.0}
 
     - \renewcommand{\ttdefault}{pcr}
- 
+
     # 'fancyhdr' settings.
     - \pagestyle{fancy}
     - \fancyhead[CO,CE]{}
@@ -59,8 +63,8 @@ header-includes:
 
     # Set links colors
     - \hypersetup{colorlinks,citecolor=black,filecolor=black,linkcolor=black,urlcolor=black}
-
 ---
+
 \makeatletter
 \renewcommand{\@maketitle}{%
 \newpage
@@ -135,7 +139,7 @@ Nous avons donc pris trois semaines, avant de commencer le développement, afin 
 
 Une fois l'architecture bien définie, nous avons déterminé des normes de développement afin d'utiliser toutes et tous la même façon de coder. Parmi les points discutés, nous avons abouti aux conventions suivantes :
 
-- Langue de documentation : la langue véhiculaire de l'informatique étant l'anglais, il était évident que le développement allait se faire dans cette langue. C'est la raison pour laquelle notre code, ainsi que la JavaDoc, sont écrits en anglais. 
+- Langue de documentation : la langue véhiculaire de l'informatique étant l'anglais, il était évident que le développement allait se faire dans cette langue. C'est la raison pour laquelle notre code, ainsi que la JavaDoc, sont écrits en anglais.
 - Utilisation de la JavaDoc pour la génération future d'une documentation technique.
 - Définition de la syntaxe à utiliser pour les variables, constantes et autres structures syntaxiques.
 
@@ -232,18 +236,18 @@ La seule commande envoyée en Multicast est `PLAYLIST_UPDATE`, qui est envoyée 
 
 #### Commandes envoyées par le client
 
-| Nom de la commande       | Arguments                                               | Explications                                                                                 |
-|--------------------------|---------------------------------------------------------|---------------------------------------------------------------------------------------------|
-| `SEND_FIRST_CONNECTION`    | Aucun                                                   | Commande envoyée par un client lors de sa première connexion à un serveur.                   |
-| `TRACK_REQUEST`            | JSON de la Track à envoyer                              | Envoie au serveur les informations de la Track que le client veut envoyer.                   |
-| `SENDING_TRACK`            | Taille du fichier à envoyer, JSON de la Track à envoyer | Indique au serveur que le client va commencer l'envoi du fichier en réponse à `TRACK_ACCEPTED`.                           |
-| `PLAY_PAUSE_REQUEST`       | Aucun                                                   | Envoie au serveur l'information d'un souhait de mettre le morceau actuel en lecture/pause.   |
-| `NEXT_TRACK_REQUEST`       | Aucun                                                   | Envoie au serveur l'information d'un souhait de passer au morceau suivant.                   |
-| `TURN_VOLUME_UP_REQUEST`   | Aucun                                                   | Envoie au serveur l'information d'un souhait d'augmenter le volume.                          |
-| `TURN_VOLUME_DOWN_REQUEST` | Aucun                                                   | Envoie au serveur l'information d'un souhait de baisser le volume.                           |
-| `UPVOTE_TRACK_REQUEST`     | ID de la Track à upvoter                                | Envoie au serveur l'information d'un souhait d'upvoter un morceau de la liste de lecture.    |
-| `DOWNVOTE_TRACK_REQUEST`   | ID de la Track à downvoter                              | Envoie au serveur l'information d'un souhait de downvoter un morceau de la liste de lecture. |
-| `END_OF_COMMUNICATION` |Aucun| Commande indiquant que la communication doit être stoppée.|
+| Nom de la commande         | Arguments                                               | Explications                                                                                    |
+|----------------------------|---------------------------------------------------------|-------------------------------------------------------------------------------------------------|
+| `SEND_FIRST_CONNECTION`    | Aucun                                                   | Commande envoyée par un client lors de sa première connexion à un serveur.                      |
+| `TRACK_REQUEST`            | JSON de la Track à envoyer                              | Envoie au serveur les informations de la Track que le client veut envoyer.                      |
+| `SENDING_TRACK`            | Taille du fichier à envoyer, JSON de la Track à envoyer | Indique au serveur que le client va commencer l'envoi du fichier en réponse à `TRACK_ACCEPTED`. |
+| `PLAY_PAUSE_REQUEST`       | Aucun                                                   | Envoie au serveur l'information d'un souhait de mettre le morceau actuel en lecture/pause.      |
+| `NEXT_TRACK_REQUEST`       | Aucun                                                   | Envoie au serveur l'information d'un souhait de passer au morceau suivant.                      |
+| `TURN_VOLUME_UP_REQUEST`   | Aucun                                                   | Envoie au serveur l'information d'un souhait d'augmenter le volume.                             |
+| `TURN_VOLUME_DOWN_REQUEST` | Aucun                                                   | Envoie au serveur l'information d'un souhait de baisser le volume.                              |
+| `UPVOTE_TRACK_REQUEST`     | ID de la Track à upvoter                                | Envoie au serveur l'information d'un souhait d'upvoter un morceau de la liste de lecture.       |
+| `DOWNVOTE_TRACK_REQUEST`   | ID de la Track à downvoter                              | Envoie au serveur l'information d'un souhait de downvoter un morceau de la liste de lecture.    |
+| `END_OF_COMMUNICATION`     |Aucun                                                    | Commande indiquant que la communication doit être stoppée.                                      |
 
 #### Commandes envoyées par le serveur
 | Nom de la commande | Arguments                                                                              | Explications                                                                                                             |
@@ -664,7 +668,7 @@ Apache Maven est un outil puissant de gestion de projet basé sur POM (modèle d
 Scene builder est un outil qui permet de créer des fichiers au formats FXML via un éditeur graphique.
 
 ### Wireshark
-Wireshark est un outil essentiel pour comprendre les mécanismes de fonctionnement des protocoles de communication sur les réseaux. Il capture des paquets directement sur les interfaces du système utilisé ou lit des fichiers de captures sauvegardées. 
+Wireshark est un outil essentiel pour comprendre les mécanismes de fonctionnement des protocoles de communication sur les réseaux. Il capture des paquets directement sur les interfaces du système utilisé ou lit des fichiers de captures sauvegardées.
 Nous l'avons utilisé dans notre projet pour sniffer la communication entre le client et le serveur afin de contrôler le bon fonctionnement de la communication réseau.
 
 ### PlantUML
@@ -1365,11 +1369,11 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
   	- Réalisation du diagramme UML de tout le projet, ensuite repris par Ludovic Delafontaine (1h00)
 
 - 24.05.2017
-	- Rapport: description du paquet media (1h00) 
+	- Rapport: description du paquet media (1h00)
 
 -  23.05.2017
 	- Test de l'application et discussions concernant le rapport (1h30)
-	   
+
 -  18.05.2017
 	- Début de rapport (définir la structure du rapport, introduction, objectif, description package Configuration du rapport) (2h00)
 
