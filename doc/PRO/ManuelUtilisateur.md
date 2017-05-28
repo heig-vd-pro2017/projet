@@ -115,7 +115,7 @@ Commusica peut être utilisée sur:
 - MAC OS 10.11.6
 
 
-Pour pouvoir lancer l'application, Le `Java Development Kit (JDK)` doit être installé. Il est téléchargeable gratuitement [ici](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) en choisissant la version qui correspond au système d'exploitation utilisé comme indiqué ci-dessous.
+Pour pouvoir lancer l'application, Le `Java Development Kit (JDK)` doit être installé. Il est téléchargeable gratuitement [ici](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) en choisissant la version qui correspond au système d'exploitation utilisé comme indiqué ci-dessous.  
 ![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/JDK_install.PNG)
 
 L'application est sur le CD du projet ou téléchargeable [ici](https://github.com/heig-vd-pro2017/projet).
@@ -129,7 +129,7 @@ l'application sera lancée directement après avoir taper la ligne ci-dessus.
 
 # Utilisation
 ## Première fenêtre
-Une fois l'application est lancée, la fenêtre ci-dessous apparaît.
+Une fois l'application est lancée, la fenêtre ci-dessous apparaît.  
 ![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/premiere_fenetre.PNG)
 
 Vous avez deux choix :
@@ -138,42 +138,68 @@ Vous avez deux choix :
 
 1. Serveur:
 - Si vous choisissez d'être un serveur, vous cliquez sur `Yes`. 
-- Vous pouvez ensuite donner un nom à votre serveur puis cliquer sur `OK`.
+- Vous pouvez ensuite donner un nom à votre serveur puis cliquer sur `OK`.  
 ![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/nomServeur.PNG)
 
 2. Client:
 - Si vous choisissez d'être un client, vous cliquez sur `No`. 
 
 ## Serveur
-![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/figure_server.png)
-(1) Settings : Vous pouvez effectuer les différents paramétrages ici.  
-(1.1) Network interface: Vous pouvez choisir l'interface de communication parmi les interfaces existantes. Une interface par défaut           est mise à disposition.
+Si vous choisissez d'utiliser l'application en tant que serveur, l'interface sera comme la montre la figure suivante.  
+
+![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/Server.PNG)  
+
+1.  Settings : Vous pouvez effectuer les différents paramétrages comme suit :   
+![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/server_Playlist_settings.PNG)  
+    (1) Vous pouvez voir le nom du serveur que vous avez choisi lors de sa création.  
+    (2)  Vous pouvez choisir l'interface de communication parmi les interfaces existantes. Une interface par défaut est mise à                    disposition.
     
-(2) Playlists : contient la playlist en cours de lecture `PLAYING`(2.1), la playlist des chansons préférées `FAVORITES` (2.2) et la liste des palylists sauvegardées des utilisations précédentes (2.3).
+2.  Playlists :  
+![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_Playlists.jpg)  
 
-(3) Les chansons en cours de lecture.  
-(3.1) Le nombre total des votes pour chaque chanson
+    (1) La playlist en cours de lecture  
+    (2) La liste des palylists sauvegardées des utilisations précédentes
+
+3. Les chansons présentes actuellement dans la playlist en cours de lecture.  
+![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_Playlist_playing.PNG)  
+
+4. Le nombre total des votes pour chaque chanson  
+![alt text]()
   
-(4) La chanson en cours de lecture.
+5. La chanson en cours de lecture.  
+![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/server_track_playing.PNG)  
 
-(5) Les informations concernant la chanson précédent la chanson en cours de lecture.
+6. Les informations concernant la chanson précédent la chanson en cours de lecture.  
+![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/server_previous_track.PNG)  
 
 ## Client
-![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/figure_client.png)
-(1) Settings : Vous pouvez effectuer les différents paramétrages ici.
-    (1.1) Servers list: Vous pouvez choisir la connexion à un server parmi les serveurs existants.
-    (1.2) Network interface: Vous pouvez choisir l'interface de communication parmi les interfaces existantes. Une interface par défaut           est mise à disposition.  
+Si vous choisissez d'utiliser l'application en tant que client, l'interface sera comme la montre la figure suivante.  
+![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client.PNG)
 
-(2) Playlists : contient la playlist en cours de lecture `PLAYING`(2.1), la playlist des chansons préférées `FAVORITES` (2.2) et la liste des palylists sauvegardées des utilisations précédentes (2.3).
+1. Settings : Vous pouvez effectuer les différents paramétrages comme suit:  
+![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_settings.jpg)
+    (1) Vous pouvez choisir la connexion à un server parmi les serveurs existants.
+    (1) Vous pouvez choisir l'interface de communication parmi les interfaces existantes. Une interface par défaut est mise à                   disposition.  
 
-(3) Les chansons en cours de lecture.  
+2.  Playlists :  
+![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_Playlists.jpg)    
+
+    (1) La playlist en cours de lecture  
+    (2) La liste des palylists sauvegardées des utilisations précédentes
+
+3. Les chansons présentes actuellement dans la playlist en cours de lecture.  
+![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_Playlist_playing.PNG)   
 (3.1) Le nombre total des votes pour chaque chanson, vous pouvez voter pour ou contre une chanson. Plus le nombre total de votes est           grand, plus la chanson est aura plus de chance d'être joué après la chanson en cours de lecture.  
 (3.2) Vous pouvez favoriser une chanson en cliquant sur cette étoile.
   
-(4) La chanson en cours de lecture.  
-(4.1) Si vous voulez passer à la chanson suivante, vous pouvez cliquer sur ce bouton. La chanson suivante sera jouée si la mojorité           des présents le demande.  
-(4.2) Si vous voulez augmenter ou diminuer le volume, vous pouvez cliquer sur ce bouton. Le volume sera modifié si la mojorité                 des présents le demande.
+4. La chanson en cours de lecture.  
+![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_track_playing.PNG)  
 
-(5) Les informations concernant la chanson précédent la chanson en cours de lecture.
+![alt text]()
+(1) Si vous voulez passer à la chanson suivante, vous pouvez cliquer sur ce bouton. La chanson suivante sera jouée si la mojorité           des présents le demande.  
+(2) Si vous voulez augmenter ou diminuer le volume, vous pouvez cliquer sur ce bouton. Le volume sera modifié si la mojorité                 des présents le demande.
+
+5. Les informations concernant la chanson précédent la chanson en cours de lecture.
+![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_track_playing.PNG)  
 
 # Références/plus d'infos/ aide (points de contact)
