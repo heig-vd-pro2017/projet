@@ -182,7 +182,7 @@ Une fois l'application lancée, la fenêtre ci-dessous apparaît.
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/premiere_fenetre.PNG}
+  \includegraphics[width=\linewidth]{https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/premiere_fenetre.PNG}
   \captionof{figure}{Choix de lancement du programme}
 \end{minipage}
 
@@ -201,7 +201,7 @@ Si tout marche, il n'est pas nécessaire de changer d'interface.
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/settings.PNG}
+  \includegraphics[width=\linewidth]{https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/settings.PNG}
   \captionof{figure}{Choix de l'interface réseau}
 \end{minipage}
 
@@ -227,32 +227,28 @@ Les morceaux présents actuellement dans la playlist en cours de lecture.
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/client_Playlist_playing.PNG}
+  \includegraphics[width=\linewidth]{https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_Playlist_playing.PNG}
   \captionof{figure}{Liste de lecture en cours}
 \end{minipage}
 
 Les morceaux lus sont grisés et le dernier morceau est celui en cours de lecture.
 
-<<<<<<< HEAD
 #### Gestion d'une chanson  
 Vous avez maintenant une vue sur la liste de lecture du serveur. Vous pouvez, ainsi, voter pour ou contre une ou plusieurs chansons à l'aide des flèches haut et bas. Ceci aura pour conséquence de la réorganiser.
-=======
+
 #### Réorganiser la liste de lecture   
 Vous avez maintenant une vue sur la liste de lecture du serveur. Vous pouvez, ainsi, voter pour ou contre une ou plusieurs morceaux à l'aide des flèches haut et bas. Ceci aura pour conséquence de la réorganiser.
->>>>>>> 60548f5f36ec026907ead0ba79c11068d98fb0af
 
 Vous ne pouvez pas voter qu'une seule fois pour ou qu'une seule fois contre un morceau.
 Rien ne vous empêche d'annuler votre vote, mais vous ne pouvez pas voter indéfiniment. De plus, le morceau en cours de lecture ne peut pas être voté pour ou contre, cela n'aura pas d'effet.
 
 Plus le nombre total de votes est grand, plus le morceau aura plus de chance d'être joué après la morceau en cours de lecture.
 
-<<<<<<< HEAD
+
 Vous pouvez favoriser une chanson en cliquant sur cette étoile.
-=======
+
 #### Ajouter le morceau au favoris
 Vous pouvez favoriser un morceau en cliquant sur cette étoile.
->>>>>>> 60548f5f36ec026907ead0ba79c11068d98fb0af
-
 
 ### Contrôle de la musique
 
@@ -262,7 +258,6 @@ Vous pouvez favoriser un morceau en cliquant sur cette étoile.
   \captionof{figure}{Contrôle de la musique}
 \end{minipage}
 
-<<<<<<< HEAD
 1. Arrêter/jouer la musique si la mojorité des présents le demande
 2. Passer à la musique suivante si la mojorité des présents le demande
 3. Augmenter le volume si la mojorité des présents le demande
@@ -271,10 +266,9 @@ Vous pouvez favoriser un morceau en cliquant sur cette étoile.
 6. Temps écoulé pour la chanson
 7. Mettre en favori/retirer des favoris la chanson
 8. Nombre de votes reçu pour cette chanson
-=======
+
 Si vous voulez passer au morceau suivant, vous pouvez cliquer sur ce bouton. Le morceau suivant sera joué si la mojorité des présents le demande.  
 Si vous voulez augmenter ou diminuer le volume, vous pouvez cliquer sur ce bouton. Le volume sera modifié si la mojorité des présents le demande.  
->>>>>>> 60548f5f36ec026907ead0ba79c11068d98fb0af
 
 ### Musique précédente  
 Les informations concernant le morceau précédent le morceau en cours de lecture.
