@@ -757,6 +757,41 @@ Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui
 ## Problèmes potentiels non testés
 - Risque de bloquer toute l'application en cas de charge élevée car la méthode `execute` des Cores est en exclusion mutuelle et donc peut potentiellement bloquer l'interaction avec le serveur s'il y a beaucoup de clients connectés et interagissant avec le serveur.
 
+# Retour sur le cahier des charges
+Avec les tests réalisés ci-dessus et selon notre cahier des charges, voici le récapitulatif des fonctionnalités implémentées dans notre projet.
+
+Fonction                                                        Fonctionnalité importante ?     Réalisé         Remarques
+Démarrage et arrêt corrects du programme                        Oui                             Oui             -
+Droits client-serveur                                           Oui                             Oui             -
+Notification des actions                                        Oui                             Partiellement   Les actions sont bien transmises au client mais ne sont visibles que dans les logs. Il faut encore lier à l'interface graphique.
+Paramétrages basiques du serveur                                Oui                             Oui             -
+Effectuer une annonce de connexion                              Oui                             Oui             L'état du serveur est envoyé à intervals réguliers.
+Réception de la musique                                         Oui                             Oui             -
+Lecture des fichiers MP3 et M4A                                 Oui                             Oui             -
+Ajout de la musique à la base de données/système de stockage    Oui                             Oui             -
+Actions de base sur la musique côté serveur et client           Oui                             Oui             Le bouton pour revenir en arrière n'est pas implémenté car inutile dans notre cas. Il n'est présent que par soucis d'estétisme.
+Interface utilisateur                                           Oui                             Oui             -
+Contrôle du volume de la musique côté serveur et client         Oui                             Oui             -
+Accepter ou refuser l'ajout de nouvelles chansons               Oui                             Oui             -
+Système de vote côté serveur et client                          Oui                             Oui             -
+Système de favoris/playlist                                     Oui                             Oui             -
+Nettoyage de la base de données côté serveur et client          Oui                             Oui             -
+Voir la liste des serveurs accessibles côté client              Oui                             Oui             -
+Accéder au serveur                                              Oui                             Oui             -
+Ajouter de la musique au serveur                                Oui                             Oui             -
+Un client ne peut pas enregistrer deux fois la même chanson durant le même événement    Oui         Oui         -
+Un client doit pouvoir supprimer une chanson de ses favoris ou ses playlists            Oui         Partiellement         Le code gère cela, mais aucune liaison avec l'interface graphique.
+Un client doit pouvoir supprimer une playlist avec toutes les chansons contenues dans ladite playlist            Oui         Partiellement         Le code gère cela, mais aucune liaison avec l'interface graphique.
+Support d'autres formats de musique                             Non                             Oui             Ajout du support du WAV.
+Taille de fenêtre non-fixe                                      Non                             Oui             -
+Fusionner le code de l'application serveur et client            Non                             Oui             Choix au démarrage
+Filtres de recherche                                            Non                             Non             -
+Intégration de services externes                                Non                             Non             -
+Système de transition dynamique entre chansons                  Non                             Non             -
+Ajout d'une dimension communautaire                             Non                             Non             -
+Définir des utilisateurs du système comme administrateurs       Non                             Non             -
+Configuration avancée du serveur                                Non                             Non             -
+
 # Améliorations envisagées
 - Revoir l'architecture du projet pour séparer encore mieux les entités, avec le patron Observable-Observeur par exemple, ce qui permettrait de notifier, à qui veulent entendre, des informations.
 - Rendre tous les messages et commandes asynchrones afin de minimiser les ressources et ne pas bloquer toute l'application lorsqu'il y a beaucoup de charge.
@@ -775,7 +810,6 @@ En conclusion, nous avons essayé de réaliser un programme qui regroupe les qua
 Nous pensons avoir atteint ces objectifs. Il y a encore des points à améliorer mais nous avons réussi à produire un programme fonctionnel qui répond à la quasi totalité des points du cahier des charges.
 
 # Bilan
-
 ## Ludovic
 J'ai la fierté de pouvoir me dire que ce projet de semestre s'est très bien passé. J'ai l'impression que l'on a su toujours communiquer dans le respect et en tenant compte des points de vue de chacun à la construction du projet. Cela a permis de pouvoir créer une réelle cohésion de groupe afin de réaliser quelque chose, qui n'était à la base qu'une idée sur papier, de fonctionnel et qui correspond quasiment à la version à laquelle on a réfléchit en tout début de projet.
 
@@ -1545,6 +1579,63 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 \newpage
 
 ### Lucas Elisei
+- 28.05.2017
+    - Rédaction du rapport (3h00).
+
+- 27.05.2017
+    - Correction d'un bogue qui ne mettait pas correctement à jour la liste des serveurs côté client (0h15).
+    - Rédaction du rapport (1h00).
+
+- 26.05.2017
+    - La barre d'avancement de la chanson en cours de lecture se met maintenant correctement à jour côté client (1h30).
+    - Les chansons déjà jouées se mettent maintenant correctement à jour côté client (1h30).
+    - Correction de bogues liés au rafraîchissement de l'interface graphique côté client (3h00).
+    - Correction d'un bogue qui changeait l'ordre des chansons déjà jouées côté client (1h30).
+    - Ajout du panneau des réglages à l'interface graphique (4h00).
+    - Correction d'un bogue qui affichait mal le nom du serveur auquel le client est connecté (0h30).
+
+- 25.05.2017
+    - Correction d'un bogue qui empêchait les votes des chansons de se mettre à jour côté client (1h30).
+    - Correction d'un bogue qui empêchait le serveur d'upvote des chansons (0h30).
+    - Les chansons s'enregistrent correctement dans la base de données (0h30).
+    - Correction d'exceptions levées par la base de données (1h00).
+    - Changement de la logique de la playlist éphémère (2h00).
+    - La vue de la chanson en cours de lecture se met maintenant à jour côté client et serveur (2h00).
+    - Correction d'un bogue qui empêchait des communications parallèles avec la base de données (0h30).
+    - La vue de la chanson précédente se met maintenant correctement à jour côté client (1h00).
+    - La barre de volume se met maintenant correctement à jour côté client (1h00).
+    - Le bouton play/pause se met maintenant correctement à jour côté client (0h30).
+
+- 24.05.2017
+    - Correction de plusieurs bugs d'affichage liés à l'interface graphique (2h00).
+
+- 23.05.2017
+    - Modification de la sérialisation de la playlist éphémère (1h00).
+    - Meilleure gestion de la sélection d'une playlist au niveau de l'interface graphique (1h00).
+
+- 22.05.2017
+    - Ajout d'une fenêtre au démarrage pour choisir si l'on veut être client ou serveur (0h30).
+    - Ajout de la possibilité de se connecter à un serveur depuis l'interface graphique (1h00).
+    - Ajout de la possibilité de transférer une musique depuis l'interface graphique (1h00).
+    - Modification de la sérialisation d'une musique et de la playlist éphémère (1h30).
+
+- 16.05.2017
+    - Correction d'un bogue qui ne terminait pas correctement le player (0h30).
+    - Correction d'un bogue qui ne laissait pas favoriser les chansons de la playlist éphémère (1h15).
+    - Correction d'un bogue qui laissait la possibilité de voter pour les chansons d'une playlist sauvegardée (0h15).
+
+- 15.05.2017
+    - Revue complète de la logique du PlaylistManager (3h30).
+    - Intégration des actions de favoris à l'interface graphique (1h00).
+
+- 10.05.2017
+    - Création automatique de la playlist "Favoris" dans la base de données si celle-ci n'existait pas (2h00).
+    - Fin de l'embellissement du panneau des playlists (1h00).
+
+- 09.05.2017
+    - Modification du player afin que la prochaine chanson soit jouée automatiquement (0h30).
+    - Début de l'embellissement du panneau des playlists (1h00).
+
 - 06.05.2017
     - Finalisation de la fusion du panneau "chanson précédente" (0h30).
     - Correction de quelques bogues liés aux précédentes itérations (1h30).
