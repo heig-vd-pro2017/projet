@@ -268,18 +268,15 @@ La seule commande envoyée en Multicast est `PLAYLIST_UPDATE`, qui est envoyée 
 
 Les objets décrits ci-dessous sont évidemment sérialisés avant d'être transférés sur le réseau.
 
-
-  \includegraphics{images/commandes_client_serveur.png}
+\includegraphics{images/commandes_client_serveur.png}
   \begin{figure}
   \caption{Commandes envoyées par le client au serveur}
 \end{figure}
-
 
 \begin{figure}
   \includegraphics{images/commande_serveur_client.png}
   \caption{Commandes envoyées par le serveur au client}
 \end{figure}
-
 
 ### `Server`
 Côté serveur, nous avons décidé d'opter pour une architecture avec un thread réceptionniste `Server` qui va attendre une nouvelle connexion de la part des clients. Une fois un nouveau client arrivé, il va lancer un thread `UnicastClient` qui va s'occuper de la communication avec le client. Cette communication se fait via un socket Unicast car il s'agit d'une communication privée entre le serveur et le client. Nous avons choisi cette solution car plusieurs connexions avec des clients peuvent survenir simultanément et ce système réceptionniste, avec un thread par client, gère plusieurs connexions en même temps, contrairement à un système avec un seul thread qui s'occupe d'un client à la fois.
@@ -297,6 +294,8 @@ Cette classe implémente aussi l'interface `Runnable` dans le but de lancer son 
 Nous avons été confrontés à un problème lors du développement, lorsque nous nous sommes rendu compte qu'un `MulticastSocket` utilisait la première interface réseau disponible sur l'ordinateur plutôt que celle qui était réellement connectée. Cela prenait énormément de temps à être résolu et nous avons donc mis à disposition un choix d'interfaces réseau dans l'interface utilisateur.
 
 Les `Core` ont chacun un `MulticastClient` pour pouvoir envoyer la liste de lecture actuelle ainsi que les informations sur l'état du lecteur - en pause ou en lecture, état du volume, etc.).
+
+Pour utiliser le Multicast, il est nécessaire de spécifier quelle est l'interface réseau à utiliser pour l'émission et la réception des données. C'est la raison pour laquelle, dans le cas où la machine a plusieurs interfaces, de sélectionner la bonne dans la liste de l'interface graphique.
 
 ### `NetworkProtocol`
 C'est dans cette classe que sont définies les commandes spécifiques au réseau `END_OF_COMMUNICATION` et `END_OF_COMMAND`. Les ports pour les différents sockets ainsi que l'adresse du groupe Multicast se trouvent également dans cette classe. Ces derniers ont été choisis arbitrairement parmi les plages disponibles. Bien que peu probable, il est possible qu'une autre application utilise ces mêmes ports. Dans ce cas, le bon fonctionnement de **Commusica** se retrouverait corrompu. Nous n'avons pas voulu laisser ces valeurs dans le fichier de configuration car il est indispensable d'avoir les mêmes ports chez le serveur et chez les clients. Nous avons donc préféré prendre le risque qu'un autre programme utilise les mêmes ports plutôt qu'un utilisateur change ces valeurs.
@@ -799,6 +798,15 @@ Configuration avancée du serveur                                Non            
 - Se passer des Singleton afin de rendre notre code plus indépendant.
 - Mieux gérer la concurrence.
 - Réaliser toutes les fonctionnalités optionnelles envisagées dans le cahier des charges.
+
+# Difficultés et problèmes rencontrés
+Les points suivants ne sont pas forcément des difficultés mais surtout des points sur lesquels nous avons passé beaucoup plus de temps que prévu.
+
+- Base de données: La gestion de la base de données à l'aide de Hibernate nous a pris du temps à certains moments car il a fallu bien comprendre le fonctionnement de ce dernier et comment il évalue les objets afin de savoir s'ils doivent être sauvegarés ou non dans la base de données.
+
+- Interfaces réseaux: Le multicast demandant d'utiliser une interface réseau précise, nous avons été confronté à un problème sur certaines machines car il y avait plus d'une interface réseau de disponible. Avec de la chance, la première sélectionnée par Java était la bonne, mais pour certaines machines, avec des interfaces réseaux virtuelles, cela à poser des problèmes car le Multicast était émis/reçu sur la mauvaise interface.
+
+- Interface graphique: L'interace graphique n'a pas posé de problèmes en soit mais a pris beaucoup plus de temps que prévu. afin de rendre un programme ergonomique et beau.
 
 # Conclusion
 En conclusion, nous avons essayé de réaliser un programme qui regroupe les qualités suivantes:
