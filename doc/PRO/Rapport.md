@@ -81,7 +81,18 @@ header-includes:
 {\Huge\@title}\vskip1.5em
 \includegraphics[width=10cm, height=10cm]{images/logo.png}\vskip1.5em
 {\LARGE Rapport final}\vskip1.5em
-{\large\@author}\vskip1.5em
+{
+    \large
+    \begin{tabular}{ll}
+        \underline{Chef de projet} & Ludovic Delafontaine \\
+        \underline{Chef remplaçant} & Lucas Elisei \\
+        \underline{Membres} & David Truan \\
+        & Denise Gemesio \\
+        & Thibault Togue \\
+        & Yosra Harbaoui \\
+        \\
+        \underline{Professeur} & René Rentsch \\
+    \end{tabular}}\vskip1.5em
 {\large\@date}
 \end{center}
 \endgroup
@@ -92,11 +103,6 @@ header-includes:
 \title{%
   Commusica \vskip0.4em
   \large Le lecteur de musique communautaire et égalitaire}
-
-\author{Chef de projet: Ludovic Delafontaine\\
-   Chef remplaçant: Lucas Elisei\\
-   Membres: David Truan, Denise Gemesio, Thibaut Togue, Yosra Harbaoui\\
-   Responsable du cours: René Rentsch}
 
 \date{HEIG-VD - Semestre d'été 2017}
 
@@ -813,7 +819,7 @@ Avec les tests réalisés ci-dessus et selon notre cahier des charges, voici le 
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[height=0.9\textheight]{images/suivi_CdC.png}
+  \includegraphics[width=\linewidth]{images/suivi_CdC.png}
   \captionof{figure}{Fonctionnalités implémentées}
 \end{minipage}
 
@@ -1425,19 +1431,19 @@ Les fonctionnalités listées ci-dessous ne sont pas nécessaires au bon fonctio
 \begin{minipage}{\linewidth}
   \centering
   \includegraphics{figures/overview.png}
-  \captionof{figure}{Schéma préliminaire du fonctionnement général}
+  \captionof{figure}[]{Schéma préliminaire du fonctionnement général}
 \end{minipage}
 
 \begin{minipage}{\linewidth}
   \centering
   \includegraphics{figures/database_orig.png}
-  \captionof{figure}{Schéma préliminaire de la base de données}
+  \captionof{figure}[]{Schéma préliminaire de la base de données}
 \end{minipage}
 
 \begin{minipage}{\linewidth}
   \centering
   \includegraphics[width=\linewidth]{figures/activity.png}
-  \captionof{figure}{Schéma préliminaire du schéma d'activité}
+  \captionof{figure}[]{Schéma préliminaire du schéma d'activité}
 \end{minipage}
 
 \pagebreak
