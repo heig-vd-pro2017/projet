@@ -87,7 +87,7 @@ header-includes:
 \begingroup
 \let\footnote\thanks
 \begin{center}
-{\LARGE\@title}\vskip1.5em
+{\Huge\@title}\vskip1.5em
 \includegraphics[width=10cm, height=10cm]{images/logo.png}\vskip1.5em
 {\LARGE Manuel utilisateur}\vskip1.5em
 {\large\@author}\vskip1.5em
@@ -198,57 +198,60 @@ Vous avez le choix de lancer l'application en tant que Serveur ou Client.
 Les explications suivantes sont communes aux deux façons de lancer l'application, soit en tant que serveur, soit en tant que client
 
 ### Choix de l'interface réseau
-Le panneau `Settings` vous offre la possibilité de choisir l'interface réseau à utiliser parmi les interfaces que votre ordinateur met à disposition. Une interface par défaut est mise à paramètrée mais il se peut que les clients ne puisse pas vous detecter dans le cas ou celle par défaut n'est pas connectée au réseau. Dans ce cas choisissez la bonne interface (sur **Windows** elle se nommera la plupart du temps *wlan...*).  
-    **Si la connexion fonctionne ne touchez pas cette option.**
-    
-![interface réseau](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/settings.PNG)    
+Le panneau `Settings` vous offre la possibilité de choisir l'interface réseau à utiliser parmi les interfaces que votre ordinateur met à disposition. Une interface par défaut est sélectionnée, mais si les clients ne vous voit pas ou si vous ne voyez pas le serveur auquel vous souhaitez vous connecter, il est peut-être nécessaire de changer l'interface réseau dans la liste déroulante.
 
+Si tout marche, il n'est pas nécessaire de changer d'interface.
+
+![Choix de l'interface réseau](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/settings.PNG)    
 
 ### Choix des listes de lecture et favoris
-Ce panneau vous permet de naviguer entre la playlist actuelle, vos morceaux enregistrés en temps que favoris et les différentes playlists que vous avez hébergé sur votre ordinateur.  
-![choix des listes de lecture](figures_manuel_utilisateur/client_Playlists.jpg)  
+Ce panneau vous permet de naviguer entre la liste de lecture actuelle, vos morceaux enregistrés en temps que favoris et les différentes listes de lecture qui ont été sauvegardées sur votre ordinateur lors d'utilisation précédentes de **Commusica**.
+
+![Listes de lectures](figures_manuel_utilisateur/client_Playlists.jpg)  
 
 1. Le panneau `Playlists` contient toutes les listes de lectures.
 2. La playlist en cours de lecture  
-3. La liste des palylists sauvegardées des utilisations précédentes
+3. La liste des palylists sauvegardées  des utilisations précédentes
 4. Les playlsits préférées des utilisations précédentes.
 
-### Ajouter de la musique a la liste de lecture en cours
+### Ajouter de la musique à la liste de lecture en cours
+Afin d'ajouter de la musique à la liste de lecture en cours, il suffit de "Glisser-Déposer" la/les chanson(s) souhaitée(s) dans le centre de l'interface et celles-ci seront ajoutées au système. Si votre chanson n'apparait pas dans l'interface, il est peut-être nécessaire de recommencer. Cela est dû à d'éventuels problèmes réseaux et le programme n'autorise pas un transfert de fichiers prenant plus de 15 secondes.
 
 ### Liste de lecture du serveur
-Les chansons présentes actuellement dans la playlist en cours de lecture.  
-![liste de lecture](figures_manuel_utilisateur/client_Playlist_playing.PNG)  
+Les chansons présentes actuellement dans la playlist en cours de lecture.
+
+![Liste de lecture en cours](figures_manuel_utilisateur/client_Playlist_playing.PNG)
+
+Les chansons lues sont grisées et la dernière chanson est celle en cours de lecture.
 
 #### Réorganiser la liste de lecture   
-Vous avez maintenant une vue sur la liste de lecture du serveur. Vous pouvez, ainsi, voter pour ou contre une ou plusieurs chansons sauf la chanson en cours de lecture. Plus le nombre total de votes est grand, plus la chanson aura plus de chance d'être joué après la chanson en cours de lecture.
+Vous avez maintenant une vue sur la liste de lecture du serveur. Vous pouvez, ainsi, voter pour ou contre une ou plusieurs chansons à l'aide des flèches haut et bas. Ceci aura pour conséquence de la réorganiser.
+
+Vous ne pouvez pas voter qu'une seule fois pour ou qu'une seule fois contre une chanson.
+Rien ne vous empêche d'annuler votre vote, mais vous ne pouvez pas voter indéfiniment. De plus, la chanson en cours de lecture ne peut pas être votée pour ou contre, cela n'aura pas d'effet.
+
+Plus le nombre total de votes est grand, plus la chanson aura plus de chance d'être joué après la chanson en cours de lecture.
+
 **Les chansons, dans la liste de lecture, sont organisées par ordre décroissant: les chansons ayant le plus grand nombre de votes sont placées en haut de la liste. **
 
-Vous pouvez favoriser une chanson en cliquant sur cette étoile. ![létoile avant de favoriser](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/before_favorite.PNG).  
-Cette étoile sera remplie tout en noir comme ![létoile après de favoriser](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/after_favorite.PNG)
+ Vous pouvez favoriser une chanson en cliquant sur cette étoile.
 
 #### Ajouter la chanson au favoris
 
 ### Contrôle de la musique
-
-Si vous n'aimez pas la chanson en cours de lecture, voulez passer à la chanson suivante. Vous pouvez cliquer sur ce bouton ![chanson suivante](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/next.PNG)  
-La chanson suivante sera jouée si la mojorité des présents le demande.  
-
-Si vous voulez mettre la playlist en pause, vous pouvez cliquer sur ce bouton ![mettre la chanson en pause](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/pause.PNG)  
-La playlist ne jouera plus si la mojorité des présents le demande.  
-
-Si vous voulez augmenter ou diminuer le volume, vous pouvez modifier le volume en utilisant ![controle de volume](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/volume.PNG)  
-Le volume sera modifié si la mojorité des présents le demande.  
+![controle de la musique](figures_manuel_utilisateur/client_pause_next_volume.jpg)  
+Si vous voulez passer à la chanson suivante, vous pouvez cliquer sur ce bouton. La chanson suivante sera jouée si la mojorité des présents le demande.  
+Si vous voulez augmenter ou diminuer le volume, vous pouvez cliquer sur ce bouton. Le volume sera modifié si la mojorité des présents le demande.  
 
 ### Musique précédente  
-Les informations concernant la chanson précédent la chanson en cours de lecture.  
-![musique précédente](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_track_playing.PNG)  
-Vous pouvez favoriser la chanson précédente en cliquant sur l'étoile comme expliqué ci-dessous dans le paragraphe `Réorganiser la liste de lecture`. Cependant, vous n'aurez plus le droit de voter pour ou contre cette chansons. 
+Les informations concernant la chanson précédent la chanson en cours de lecture.
+![musique précédente](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_track_playing.PNG)
 
 ## Serveur
 Les explications suivantes concernent le lancement de l'application en tant que serveur.
 
 ### Configuration du serveur
-Quand vous choisissez de lancer l'application en tant que serveur, une fênetre apparaîtera pour vous demander de nommer votre serveur.  
+Quand vous choisissez de lancer l'application en tant que serveur, une fênetre apparaîtera pour vous demander de nommer votre serveur.
 ![donner un nom au serveur](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/nomServeur.PNG).
 
 Vous pouvez ensuite choisir votre interface réseau comme expliqué ci-dessous dans le paragraphe `Choix de l'interface réseau`.
@@ -259,10 +262,8 @@ Les explications suivantes concernent le lancement de l'application en tant que 
 ### Choix du serveur
 
 Quand vous choisissez de lancer l'application en tant que client, vous aurez le choix de vous connecter à un des serveurs. Vous pourriez choisir parmi une liste de serveurs disonibles.
-![choix du serveur](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/server_list.PNG)  
-Une fois vous êtes connecté, vous pouvez voir la playlist en cours de lecture et toutes les informations liées aux chansons de cette playlist.
+![choix du serveur]()
 
-<<<<<<< HEAD
 # Limitations
 La version actuelle de Commusica ne supporte que les fichiers au format MP3, M4A et WAV.
 
@@ -329,5 +330,3 @@ Si vous choisissez d'utiliser l'application en tant que client, l'interface sera
 
 5. Les informations concernant la chanson précédent la chanson en cours de lecture.
 ![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_track_playing.PNG)  
-=======
->>>>>>> 70c43dd0631b8fe66d66e1d85bf750949dcc7187
