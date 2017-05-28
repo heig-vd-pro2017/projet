@@ -907,8 +907,6 @@ J'ai particulièrement apprécier l'engagement de L. Delafontaine en temps que c
 
 ## Yosra
 
-## Bilan du groupe
-
 # Sources
 - Capsule ([capsule.io](capsule.io)) - Site officiel de la librairie Capsule
 - Gson ([github.com/google/gson](github.com/google/gson)) - Site officiel de la librairie Gson

@@ -220,10 +220,10 @@ Ce panneau vous permet de naviguer entre la liste de lecture actuelle, vos morce
 4. Les playlsits préférées des utilisations précédentes.
 
 ### Ajouter de la musique à la liste de lecture en cours
-Afin d'ajouter de la musique à la liste de lecture en cours, il suffit de "Glisser-Déposer" la/les chanson(s) souhaitée(s) dans le centre de l'interface et celles-ci seront ajoutées au système. Si votre chanson n'apparait pas dans l'interface, il est peut-être nécessaire de recommencer. Cela est dû à d'éventuels problèmes réseaux et le programme n'autorise pas un transfert de fichiers prenant plus de 15 secondes.
+Afin d'ajouter de la musique à la liste de lecture en cours, il suffit de "Glisser-Déposer" le(s) morceau(x) souhaitée(s) dans le centre de l'interface et celles-ci seront ajoutées au système. Si votre morceau n'apparait pas dans l'interface, il est peut-être nécessaire de recommencer. Cela est dû à d'éventuels problèmes réseaux et le programme n'autorise pas un transfert de fichiers prenant plus de 15 secondes.
 
 ### Liste de lecture du serveur
-Les chansons présentes actuellement dans la playlist en cours de lecture.
+Les morceaux présents actuellement dans la playlist en cours de lecture.
 
 \begin{minipage}{\linewidth}
   \centering
@@ -231,18 +231,18 @@ Les chansons présentes actuellement dans la playlist en cours de lecture.
   \captionof{figure}{Liste de lecture en cours}
 \end{minipage}
 
-Les chansons lues sont grisées et la dernière chanson est celle en cours de lecture.
+Les morceaux lus sont grisés et le dernier morceau est celui en cours de lecture.
 
 #### Réorganiser la liste de lecture   
-Vous avez maintenant une vue sur la liste de lecture du serveur. Vous pouvez, ainsi, voter pour ou contre une ou plusieurs chansons à l'aide des flèches haut et bas. Ceci aura pour conséquence de la réorganiser.
+Vous avez maintenant une vue sur la liste de lecture du serveur. Vous pouvez, ainsi, voter pour ou contre une ou plusieurs morceaux à l'aide des flèches haut et bas. Ceci aura pour conséquence de la réorganiser.
 
-Vous ne pouvez pas voter qu'une seule fois pour ou qu'une seule fois contre une chanson.
-Rien ne vous empêche d'annuler votre vote, mais vous ne pouvez pas voter indéfiniment. De plus, la chanson en cours de lecture ne peut pas être votée pour ou contre, cela n'aura pas d'effet.
+Vous ne pouvez pas voter qu'une seule fois pour ou qu'une seule fois contre un morceau.
+Rien ne vous empêche d'annuler votre vote, mais vous ne pouvez pas voter indéfiniment. De plus, le morceau en cours de lecture ne peut pas être voté pour ou contre, cela n'aura pas d'effet.
 
-Plus le nombre total de votes est grand, plus la chanson aura plus de chance d'être joué après la chanson en cours de lecture.
+Plus le nombre total de votes est grand, plus le morceau aura plus de chance d'être joué après la morceau en cours de lecture.
 
-#### Ajouter la chanson au favoris
-Vous pouvez favoriser une chanson en cliquant sur cette étoile.
+#### Ajouter le morceau au favoris
+Vous pouvez favoriser un morceau en cliquant sur cette étoile.
 
 
 ### Contrôle de la musique
@@ -253,12 +253,11 @@ Vous pouvez favoriser une chanson en cliquant sur cette étoile.
   \captionof{figure}{Contrôle de la musique}
 \end{minipage}
 
-
-Si vous voulez passer à la chanson suivante, vous pouvez cliquer sur ce bouton. La chanson suivante sera jouée si la mojorité des présents le demande.  
+Si vous voulez passer au morceau suivant, vous pouvez cliquer sur ce bouton. Le morceau suivant sera joué si la mojorité des présents le demande.  
 Si vous voulez augmenter ou diminuer le volume, vous pouvez cliquer sur ce bouton. Le volume sera modifié si la mojorité des présents le demande.  
 
 ### Musique précédente  
-Les informations concernant la chanson précédent la chanson en cours de lecture.
+Les informations concernant le morceau précédent le morceau en cours de lecture.
 
 \begin{minipage}{\linewidth}
   \centering
@@ -290,4 +289,4 @@ Quand vous choisissez de lancer l'application en tant que client, vous aurez le 
   \captionof{figure}{Choix du serveur}
 \end{minipage}
 
-Une fois vous êtes connecté, vous pouvez voir la playlist en cours de lecture et toutes les informations liées aux chansons de cette playlist.
+Une fois vous êtes connecté, vous pouvez voir la playlist en cours de lecture et toutes les informations liées aux morceaux de cette playlist.
