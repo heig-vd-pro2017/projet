@@ -198,26 +198,32 @@ Les explications suivantes sont communes aux deux façons de lancer l'applicatio
 Le panneau `Settings` vous offre la possibilité de choisir l'interface réseau à utiliser parmi les interfaces que votre ordinateur met à disposition. Une interface par défaut est mise à paramètrée mais il se peut que les clients ne puisse pas vous detecter dans le cas ou celle par défaut n'est pas connectée au réseau. Dans ce cas choisissez la bonne interface (sur **Windows** elle se nommera la plupart du temps *wlan...*).  
     **Si la connexion fonctionne ne touchez pas cette option.**
     
-![interface réseau](figures_manuel_utilisateur/server_Playlist_settings.PNG)    
+![interface réseau](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/settings.PNG)    
 
 
 ### Choix des listes de lecture et favoris
 Ce panneau vous permet de naviguer entre la playlist actuelle, vos morceaux enregistrés en temps que favoris et les différentes playlists que vous avez hébergé sur votre ordinateur.
 ![choix des listes de lecture](figures_manuel_utilisateur/client_Playlists.jpg)  
 
-1. La playlist en cours de lecture  
-2. La liste des palylists sauvegardées des utilisations précédentes
+1. Le panneau `Playlists` contient toutes les listes de lectures.
+2. La playlist en cours de lecture  
+3. La liste des palylists sauvegardées des utilisations précédentes
+4. Les playlsits préférées des utilisations précédentes.
 
 ### Liste de lecture du serveur
 Les chansons présentes actuellement dans la playlist en cours de lecture.  
 ![liste de lecture](figures_manuel_utilisateur/client_Playlist_playing.PNG)  
 
-#### Réorganiser la liste de lecture
+#### Réorganiser la liste de lecture   
+Vous avez maintenant une vue sur la liste de lecture du serveur. Vous pouvez, ainsi, voter pour ou contre une ou plusieurs chansons sauf la chanson en cours de lecture. Plus le nombre total de votes est grand, plus la chanson aura plus de chance d'être joué après la chanson en cours de lecture.
+**Les chansons, dans la liste de lecture, sont organisées par ordre décroissant: les chansons ayant le plus grand nombre de votes sont placées en haut de la liste. **
+
+ Vous pouvez favoriser une chanson en cliquant sur cette étoile.
 
 ### Contrôle de la musique
 ![controle de la musique](figures_manuel_utilisateur/client_pause_next_volume.jpg)  
-(1) Si vous voulez passer à la chanson suivante, vous pouvez cliquer sur ce bouton. La chanson suivante sera jouée si la mojorité des présents le demande.  
-(2) Si vous voulez augmenter ou diminuer le volume, vous pouvez cliquer sur ce bouton. Le volume sera modifié si la mojorité des présents le demande.  
+Si vous voulez passer à la chanson suivante, vous pouvez cliquer sur ce bouton. La chanson suivante sera jouée si la mojorité des présents le demande.  
+Si vous voulez augmenter ou diminuer le volume, vous pouvez cliquer sur ce bouton. Le volume sera modifié si la mojorité des présents le demande.  
 
 ### Musique précédente  
 Les informations concernant la chanson précédent la chanson en cours de lecture.
@@ -240,51 +246,3 @@ Les explications suivantes concernent le lancement de l'application en tant que 
 Quand vous choisissez de lancer l'application en tant que client, vous aurez le choix de vous connecter à un des serveurs. Vous pourriez choisir parmi une liste de serveurs disonibles.
 ![choix du serveur]()
 
-
-
-
-
-**ANCIENNE VERSION**
-## Panneaux
-
-### Settings
-
-
-### Playlists
-
-
-3. 
-
-4. Le nombre total des votes pour chaque chanson  
-![alt text](figures_manuel_utilisateur/server_vote.PNG)  
-
-5. La chanson en cours de lecture.  
-![alt text](figures_manuel_utilisateur/server_track_playing.PNG)  
-
-
-## Client
-Si vous choisissez d'utiliser l'application en tant que client, l'interface sera comme la montre la figure suivante.  
-![alt text](figures_manuel_utilisateur/client.PNG)
-
-1. Settings : Vous pouvez effectuer les différents paramétrages comme suit:  
-![alt text](figures_manuel_utilisateur/client_settings.jpg)
-    (1) Vous pouvez choisir la connexion à un server parmi les serveurs existants.
-    (1) Vous pouvez choisir l'interface de communication parmi les interfaces existantes. Une interface par défaut est mise à                   disposition.  
-
-2.  Playlists :  
-![alt text](figures_manuel_utilisateur/client_Playlists.jpg)    
-
-    (1) La playlist en cours de lecture  
-    (2) La liste des palylists sauvegardées des utilisations précédentes
-
-3. Les chansons présentes actuellement dans la playlist en cours de lecture.  
-![alt text](figures_manuel_utilisateur/client_Playlist_playing.PNG)   
-(3.1) Le nombre total des votes pour chaque chanson, vous pouvez voter pour ou contre une chanson. Plus le nombre total de votes est grand, plus la chanson est aura plus de chance d'être joué après la chanson en cours de lecture.  
-(3.2) Vous pouvez favoriser une chanson en cliquant sur cette étoile.
-
-4. La chanson en cours de lecture.  
-![alt text](figures_manuel_utilisateur/client_track_playing.PNG)  
-
-
-
-  
