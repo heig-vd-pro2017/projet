@@ -1,0 +1,37 @@
+@startuml
+start
+
+- Récupère l'ID de l'utilisateur
+- Récupère la Track en la déserialisant
+- Enregistre l'utilisateur dans une session
+- Interroge la base de données pour voir si la Track est présente par son ID
+
+if(La Track est trouvée dans la base de données ?) then(non)
+
+    - Interroge la base de données pour voir si la Track est présente par ses attributs
+
+    if(La Track est trouvée\ndans la base de données ?) then(non)
+
+        - L'utilisateur est notifié comme quoi la Track est acceptée
+        stop
+
+    endif
+
+endif
+
+- Verifie si le fichier est présent sur le disque
+
+if (Fichier présent sur le disque ?) then(non)
+
+    - La Track est présente dans la base de données mais pas sur le disque
+    - L'utilisateur est notifié comme quoi la Track est acceptée
+    stop
+
+else(oui)
+
+    - L'utilisateur est notifié comme quoi la Track est refusée
+    stop
+
+endif
+
+@enduml

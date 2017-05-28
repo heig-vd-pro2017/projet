@@ -174,18 +174,10 @@ public class ServerCore extends AbstractCore implements ICore {
         Track trackInDatabase;
         try {
             trackInDatabase = (Track) trackById.getSingleResult();
-        } catch (NoResultException e) {
+        } catch (NoResultException e1) {
 
-            LOG.info("The track was not found by ID.");
+            LOG.info("The track was not found by ID - Try by attributes.");
 
-            return ApplicationProtocol.TRACK_ACCEPTED + NetworkProtocol.END_OF_LINE +
-                    ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
-                    NetworkProtocol.END_OF_COMMAND;
-
-        }
-
-        // If track was not found, try another query by attributes
-        if (trackInDatabase == null) {
 
             String getTrackByAttributes = "FROM Track WHERE title = :title AND " +
                     "artist = :artist AND " +
@@ -203,20 +195,21 @@ public class ServerCore extends AbstractCore implements ICore {
 
             try {
                 trackInDatabase = (Track) trackByAttributes.getSingleResult();
-            } catch (NoResultException e) {
+            } catch (NoResultException e2) {
 
-                LOG.info("The track was not found by attributes.");
+                LOG.info("The track was not found by ID nor attributes - Track accepted.");
 
                 return ApplicationProtocol.TRACK_ACCEPTED + NetworkProtocol.END_OF_LINE +
                         ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                         NetworkProtocol.END_OF_COMMAND;
 
             }
+
         }
 
         if (Objects.isNull(trackInDatabase.getUri())) {
 
-            LOG.info("The track was found in database but is not stored on filesystem.");
+            LOG.info("The track was found in database but is not stored on filesystem - Track accepted.");
 
             return ApplicationProtocol.TRACK_ACCEPTED + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
@@ -224,13 +217,15 @@ public class ServerCore extends AbstractCore implements ICore {
 
         } else {
 
-            LOG.info("The track was found in the system, no need to send it back.");
+            LOG.info("The track was found in the system, no need to send it back - Track refused.");
 
             return ApplicationProtocol.TRACK_REFUSED + NetworkProtocol.END_OF_LINE +
                     ApplicationProtocol.myId + NetworkProtocol.END_OF_LINE +
                     NetworkProtocol.END_OF_COMMAND;
 
         }
+
+
     }
 
     /**
@@ -897,12 +892,4 @@ public class ServerCore extends AbstractCore implements ICore {
         return true;
     }
 
-    /**
-     * @brief Return the MultcastClient
-     *
-     * @return the MultiCastClient
-     */
-    public MulticastClient getMulticastClient() {
-        return multicast;
-    }
 }
