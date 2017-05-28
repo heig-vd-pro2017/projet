@@ -813,37 +813,11 @@ Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui
 # Retour sur le cahier des charges
 Avec les tests réalisés ci-dessus et selon notre cahier des charges, voici le récapitulatif des fonctionnalités implémentées dans notre projet.
 
-Fonction                                                        Fonctionnalité importante ?     Réalisé         Remarques
-Démarrage et arrêt corrects du programme                        Oui                             Oui             -
-Droits client-serveur                                           Oui                             Oui             -
-Notification des actions                                        Oui                             Partiellement   Les actions sont bien transmises au client mais ne sont visibles que dans les logs. Il faut encore lier à l'interface graphique.
-Paramétrages basiques du serveur                                Oui                             Oui             -
-Effectuer une annonce de connexion                              Oui                             Oui             L'état du serveur est envoyé à intervals réguliers.
-Réception de la musique                                         Oui                             Oui             -
-Lecture des fichiers MP3 et M4A                                 Oui                             Oui             -
-Ajout de la musique à la base de données/système de stockage    Oui                             Oui             -
-Actions de base sur la musique côté serveur et client           Oui                             Oui             Le bouton pour revenir en arrière n'est pas implémenté car inutile dans notre cas. Il n'est présent que par soucis d'estétisme.
-Interface utilisateur                                           Oui                             Oui             -
-Contrôle du volume de la musique côté serveur et client         Oui                             Oui             -
-Accepter ou refuser l'ajout de nouvelles chansons               Oui                             Oui             -
-Système de vote côté serveur et client                          Oui                             Oui             -
-Système de favoris/playlist                                     Oui                             Oui             -
-Nettoyage de la base de données côté serveur et client          Oui                             Oui             -
-Voir la liste des serveurs accessibles côté client              Oui                             Oui             -
-Accéder au serveur                                              Oui                             Oui             -
-Ajouter de la musique au serveur                                Oui                             Oui             -
-Un client ne peut pas enregistrer deux fois la même chanson durant le même événement    Oui         Oui         -
-Un client doit pouvoir supprimer une chanson de ses favoris ou ses playlists            Oui         Partiellement         Le code gère cela, mais aucune liaison avec l'interface graphique.
-Un client doit pouvoir supprimer une playlist avec toutes les chansons contenues dans ladite playlist            Oui         Partiellement         Le code gère cela, mais aucune liaison avec l'interface graphique.
-Support d'autres formats de musique                             Non                             Oui             Ajout du support du WAV.
-Taille de fenêtre non-fixe                                      Non                             Oui             -
-Fusionner le code de l'application serveur et client            Non                             Oui             Choix au démarrage
-Filtres de recherche                                            Non                             Non             -
-Intégration de services externes                                Non                             Non             -
-Système de transition dynamique entre chansons                  Non                             Non             -
-Ajout d'une dimension communautaire                             Non                             Non             -
-Définir des utilisateurs du système comme administrateurs       Non                             Non             -
-Configuration avancée du serveur                                Non                             Non             -
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[height=0.9\textheight]{images/suivi_CdC.png}
+  \captionof{figure}{Fonctionnalités implémentées}
+\end{minipage}
 
 # Améliorations envisagées
 - Revoir l'architecture du projet pour séparer encore mieux les entités, avec le patron Observable-Observeur par exemple, ce qui permettrait de notifier, à qui veulent entendre, des informations.
