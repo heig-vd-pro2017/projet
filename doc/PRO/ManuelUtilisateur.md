@@ -236,18 +236,13 @@ Les morceaux lus sont grisés et le dernier morceau est celui en cours de lectur
 #### Gestion d'une chanson  
 Vous avez maintenant une vue sur la liste de lecture du serveur. Vous pouvez, ainsi, voter pour ou contre une ou plusieurs chansons à l'aide des flèches haut et bas. Ceci aura pour conséquence de la réorganiser.
 
-#### Réorganiser la liste de lecture   
-Vous avez maintenant une vue sur la liste de lecture du serveur. Vous pouvez, ainsi, voter pour ou contre une ou plusieurs morceaux à l'aide des flèches haut et bas. Ceci aura pour conséquence de la réorganiser.
-
 Vous ne pouvez pas voter qu'une seule fois pour ou qu'une seule fois contre un morceau.
 Rien ne vous empêche d'annuler votre vote, mais vous ne pouvez pas voter indéfiniment. De plus, le morceau en cours de lecture ne peut pas être voté pour ou contre, cela n'aura pas d'effet.
 
 Plus le nombre total de votes est grand, plus le morceau aura plus de chance d'être joué après la morceau en cours de lecture.
 
-
 Vous pouvez favoriser une chanson en cliquant sur cette étoile.
 
-#### Ajouter le morceau au favoris
 Vous pouvez favoriser un morceau en cliquant sur cette étoile.
 
 ### Contrôle de la musique
