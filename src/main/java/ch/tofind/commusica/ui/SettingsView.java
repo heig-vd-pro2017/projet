@@ -28,7 +28,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 /**
- * @brief This class represents the settings view.
+ * This class represents the settings view.
  */
 public class SettingsView extends AnchorPane {
 
@@ -51,7 +51,7 @@ public class SettingsView extends AnchorPane {
     private Label serversListLabel;
 
     /**
-     * @brief View constructor.
+     * View constructor.
      */
     public SettingsView() {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource(FXML_FILE));
@@ -71,6 +71,9 @@ public class SettingsView extends AnchorPane {
         initializeInterfacesList();
     }
 
+    /**
+     * Initialize the list of available network interfaces.
+     */
     private void initializeInterfacesList() {
         interfacesList.setItems(FXCollections.observableArrayList(new ArrayList(Network.getIPv4Interfaces().entrySet())));
 
@@ -93,6 +96,9 @@ public class SettingsView extends AnchorPane {
         });
     }
 
+    /**
+     * Iniatialize the server name's field.
+     */
     private void initializeServerNameField() {
         serverNameField.setVisible(Core.isServer());
 
@@ -101,6 +107,9 @@ public class SettingsView extends AnchorPane {
         serverNameField.setDisable(true);
     }
 
+    /**
+     * Initialize the available servers list.
+     */
     private void initializeServersList() {
         serversList.setItems(FXCollections.observableArrayList(ServerSessionManager.getInstance().getAvailableServers().values()));
         
@@ -125,7 +134,7 @@ public class SettingsView extends AnchorPane {
     }
 
     /**
-     * @brief Inner class that defines an item of the select list.
+     * Inner class that defines an item of the select list.
      */
     private class ServerSessionCell extends ListCell<ServerSession> {
         public void updateItem(ServerSession session, boolean empty) {
@@ -139,6 +148,9 @@ public class SettingsView extends AnchorPane {
         }
     }
 
+    /**
+     * Inner class that defines an item of the select list.
+     */
     private class InterfaceCell extends ListCell<Map.Entry<String, InetAddress>> {
         public void updateItem(Map.Entry<String, InetAddress> entry, boolean empty) {
             super.updateItem(entry, empty);

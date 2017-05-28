@@ -16,7 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 /**
- * @brief This class represents the current track view.
+ * This class represents the current track view.
  */
 public class CurrentTrackView extends GridPane {
 
@@ -63,7 +63,7 @@ public class CurrentTrackView extends GridPane {
     private Label votesLabel;
 
     /**
-     * @brief View constructor.
+     * View constructor.
      */
     public CurrentTrackView() {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource(FXML_FILE));

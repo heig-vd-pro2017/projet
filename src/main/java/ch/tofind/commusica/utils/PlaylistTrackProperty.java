@@ -6,7 +6,7 @@ import ch.tofind.commusica.playlist.PlaylistTrack;
 import javafx.beans.property.ObjectPropertyBase;
 
 /**
- * @brief This class can get properties from a PlaylistTrack.
+ * This class can get properties from a PlaylistTrack.
  */
 public class PlaylistTrackProperty extends ObjectPropertyBase<PlaylistTrack> {
 

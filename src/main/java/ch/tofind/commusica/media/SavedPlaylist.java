@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @brief This class represents a playlist that is stored in the database.
+ * This class represents a playlist that is stored in the database.
  */
 public class SavedPlaylist implements Serializable, IPlaylist {
 
@@ -33,14 +33,14 @@ public class SavedPlaylist implements Serializable, IPlaylist {
     private Integer version;
 
     /**
-     * @brief Empty constructor for Hibernate.
+     * Empty constructor for Hibernate.
      */
     private SavedPlaylist() {
 
     }
 
     /**
-     * @brief Create a playlist.
+     * Create a playlist.
      * @param name Name of the playlist.
      */
     public SavedPlaylist(String name) {
@@ -49,7 +49,7 @@ public class SavedPlaylist implements Serializable, IPlaylist {
     }
 
     /**
-     * @brief Get the playlist's ID.
+     * Get the playlist's ID.
      * @return The playlist's ID.
      */
     public Integer getId() {
@@ -57,7 +57,7 @@ public class SavedPlaylist implements Serializable, IPlaylist {
     }
 
     /**
-     * @brief Get the playlist's name.
+     * Get the playlist's name.
      * @return The playlist's name.
      */
     public String getName() {
@@ -65,7 +65,7 @@ public class SavedPlaylist implements Serializable, IPlaylist {
     }
 
     /**
-     * @brief Set the playlist's name.
+     * Set the playlist's name.
      * @param name The playlist's name.
      */
     public void setName(String name) {
@@ -73,7 +73,7 @@ public class SavedPlaylist implements Serializable, IPlaylist {
     }
 
     /**
-     * @brief Get the date when the playlist was added.
+     * Get the date when the playlist was added.
      * @return The added date.
      */
     public Date getDateAdded() {
@@ -81,7 +81,7 @@ public class SavedPlaylist implements Serializable, IPlaylist {
     }
 
     /**
-     * @brief Get the date when the playlist was played.
+     * Get the date when the playlist was played.
      * @return The played date.
      */
     public Date getDatePlayed() {
@@ -89,7 +89,7 @@ public class SavedPlaylist implements Serializable, IPlaylist {
     }
 
     /**
-     * @brief Update the object.
+     * Update the object.
      */
     public void update() {
         this.datePlayed = new Date();

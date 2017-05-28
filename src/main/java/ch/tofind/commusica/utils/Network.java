@@ -10,12 +10,12 @@ import java.net.SocketException;
 import java.util.*;
 
 /**
- * @brief This class can get properties about the network interfaces of the current machine.
+ * This class can get properties about the network interfaces of the current machine.
  */
 public class Network {
 
     /**
-     * @brief Configure the network for the rest of the application.
+     * Configure the network for the rest of the application.
      */
     public static void configureNetwork() {
 
@@ -45,7 +45,7 @@ public class Network {
     }
 
     /**
-     * @brief Get the MAC address from a network interface.
+     * Get the MAC address from a network interface.
      *
      * @param networkInterface The network interface to get the MAC address.
      *
@@ -66,7 +66,7 @@ public class Network {
     }
 
     /**
-     * @brief Get all the network interfaces on the current machine.
+     * Get all the network interfaces on the current machine.
      *
      * @return The array containing all the network interfaces.
      */
@@ -96,7 +96,7 @@ public class Network {
     }
 
     /**
-     * @brief Get only the IPv4 interfaces on the current machine.
+     * Get only the IPv4 interfaces on the current machine.
      *
      * @return A map with the interfaces' name and the associated network interface.
      */
@@ -124,7 +124,7 @@ public class Network {
     }
 
     /**
-     * @brief Get all the addresses of a given network interface.
+     * Get all the addresses of a given network interface.
      *
      * @param networkInterface The network interface where to get all the addresses.
      *

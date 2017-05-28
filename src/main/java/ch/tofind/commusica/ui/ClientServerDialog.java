@@ -17,7 +17,12 @@ import java.net.InetAddress;
 import java.util.Arrays;
 import java.util.Optional;
 
+/**
+ * The class represents the program launcher dialog.
+ */
 public class ClientServerDialog extends Application {
+
+    //! Logger for debugging.
     private static final Logger LOG = new Logger(ClientServerDialog.class.getSimpleName());
 
     @Override
@@ -72,6 +77,9 @@ public class ClientServerDialog extends Application {
         controller.start(stage);
     }
 
+    /**
+     * Set the server name.
+     */
     private class ServerNameChooser {
 
         public String askForServername() {

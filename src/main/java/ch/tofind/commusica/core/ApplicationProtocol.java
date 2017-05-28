@@ -5,7 +5,7 @@ import ch.tofind.commusica.utils.Configuration;
 import java.net.InetAddress;
 
 /**
- * @brief This class represents the application protocol for communication.
+ * This class represents the application protocol for communication.
  */
 public final class ApplicationProtocol {
 

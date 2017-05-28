@@ -26,7 +26,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 /**
- * @brief UI controller.
+ * UI controller.
  *
  * Controller meant to interact with the interface.
  */
@@ -52,7 +52,7 @@ public class UIController implements Initializable {
     private TracksListView tracksListView;
 
     /**
-     * @brief Returns the controller for the current interface.
+     * Returns the controller for the current interface.
      *
      * @return The controller for the current interface.
      */
@@ -61,7 +61,7 @@ public class UIController implements Initializable {
     }
 
     /**
-     * @brief Display the playlist.
+     * Display the playlist.
      *
      * @param playlist The playlist to display.
      */
@@ -71,7 +71,7 @@ public class UIController implements Initializable {
     }
 
     /**
-     * @brief Refresh the current playlist.
+     * Refresh the current playlist.
      */
     public void refreshPlaylist() {
         if (currentPlaylist != null) {
@@ -80,14 +80,14 @@ public class UIController implements Initializable {
     }
 
     /**
-     * @brief Refresh the playlists' list.
+     * Refresh the playlists' list.
      */
     public void refreshPlaylistsList() {
         playlistsListView.refresh();
     }
 
     /**
-     * @brief Get the current playlist.
+     * Get the current playlist.
      *
      * @return The current playlist.
      */
@@ -96,7 +96,7 @@ public class UIController implements Initializable {
     }
 
     /**
-     * @brief Displays a popup on the main window with the given message.
+     * Displays a popup on the main window with the given message.
      *
      * @param message The message of the popup.
      */

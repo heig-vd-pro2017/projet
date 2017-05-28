@@ -15,7 +15,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 /**
- * @brief Class that represents a track linked to a playlist with additional properties.
+ * Class that represents a track linked to a playlist with additional properties.
  */
 public class PlaylistTrack implements Serializable {
 
@@ -35,14 +35,14 @@ public class PlaylistTrack implements Serializable {
     private IntegerProperty votesProperty;
 
     /**
-     * @brief Empty constructor for Hibernate.
+     * Empty constructor for Hibernate.
      */
     private PlaylistTrack() {
         hasBeenPlayed = new ReadOnlyBooleanWrapper(false);
     }
 
     /**
-     * @brief Create a PlaylistTrack with it's properties.
+     * Create a PlaylistTrack with it's properties.
      *
      * @param playlist The playlist.
      * @param track The track.
@@ -60,7 +60,7 @@ public class PlaylistTrack implements Serializable {
     }
 
     /**
-     * @brief Know if a PlaylistTrack has already been played or not.
+     * Know if a PlaylistTrack has already been played or not.
      *
      * @return A BooleanProperty telling if the PlaylistTrack has been played or not.
      */
@@ -69,7 +69,7 @@ public class PlaylistTrack implements Serializable {
     }
 
     /**
-     * @brief Get the playlist of the PlaylistTrack.
+     * Get the playlist of the PlaylistTrack.
      *
      * @return The playlist of the PlaylistTrack.
      */
@@ -78,7 +78,7 @@ public class PlaylistTrack implements Serializable {
     }
 
     /**
-     * @brief Get the track of the PlaylistTrack.
+     * Get the track of the PlaylistTrack.
      *
      * @return The track of the PlaylistTrack.
      */
@@ -87,7 +87,7 @@ public class PlaylistTrack implements Serializable {
     }
 
     /**
-     * @brief Get the number of votes of the PlaylistTrack.
+     * Get the number of votes of the PlaylistTrack.
      *
      * @return The number of votes of the PlaylistTrack.
      */
@@ -96,7 +96,7 @@ public class PlaylistTrack implements Serializable {
     }
 
     /**
-     * @brief Get the ID of the PlaylistTrack.
+     * Get the ID of the PlaylistTrack.
      *
      * @return The ID of the PlaylistTrack.
      */
@@ -105,7 +105,7 @@ public class PlaylistTrack implements Serializable {
     }
 
     /**
-     * @brief Upvote the current PlaylistTrack.
+     * Upvote the current PlaylistTrack.
      */
     public void upvote() {
         if (!hasBeenPlayed.getValue()) {
@@ -114,7 +114,7 @@ public class PlaylistTrack implements Serializable {
     }
 
     /**
-     * @brief Downvote the current PlaylistTrack.
+     * Downvote the current PlaylistTrack.
      */
     public void downvote() {
         if (!hasBeenPlayed.getValue()) {
@@ -123,7 +123,7 @@ public class PlaylistTrack implements Serializable {
     }
 
     /**
-     * @brief Update the PlaylistTrack.
+     * Update the PlaylistTrack.
      */
     public void update() {
         // Sanity check.

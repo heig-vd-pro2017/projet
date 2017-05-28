@@ -19,7 +19,7 @@ import org.jaudiotagger.tag.Tag;
 
 
 /**
- * @brief This class represents an audio track.
+ * This class represents an audio track.
  */
 public class Track implements Serializable {
 
@@ -54,14 +54,14 @@ public class Track implements Serializable {
     private Integer version;
 
     /**
-     * @brief Empty constructor for Hibernate.
+     * Empty constructor for Hibernate.
      */
     protected Track() {
 
     }
 
     /**
-     * @brief Create a track.
+     * Create a track.
      *
      * @param title Title of the track.
      * @param artist Artist of the track.
@@ -90,7 +90,7 @@ public class Track implements Serializable {
     }
 
     /**
-     * @brief Create a Track from an AudioFile. It is useful when you want to transfer a file and
+     * Create a Track from an AudioFile. It is useful when you want to transfer a file and
      * want to do some check on a Track instead of checking the AudioFile itself
      *
      * @param audioFile an AudioFile object that represents your track
@@ -142,7 +142,7 @@ public class Track implements Serializable {
     }
 
     /**
-     * @brief Get the track's ID.
+     * Get the track's ID.
      *
      * @return The track's ID.
      */
@@ -151,7 +151,7 @@ public class Track implements Serializable {
     }
 
     /**
-     * @brief Get the track's title.
+     * Get the track's title.
      *
      * @return The track's title.
      */
@@ -160,7 +160,7 @@ public class Track implements Serializable {
     }
 
     /**
-     * @brief Get the track's artist.
+     * Get the track's artist.
      *
      * @return The track's artist.
      */
@@ -169,7 +169,7 @@ public class Track implements Serializable {
     }
 
     /**
-     * @brief Get the track's album.
+     * Get the track's album.
      *
      * @return The track's album.
      */
@@ -178,7 +178,7 @@ public class Track implements Serializable {
     }
 
     /**
-     * @brief Get the track's length.
+     * Get the track's length.
      *
      * @return The track's length.
      */
@@ -187,7 +187,7 @@ public class Track implements Serializable {
     }
 
     /**
-     * @brief Get the track's URI.
+     * Get the track's URI.
      *
      * @return The track's URI.
      */
@@ -196,7 +196,7 @@ public class Track implements Serializable {
     }
 
     /**
-     * @brief Set the uri of the track.
+     * Set the uri of the track.
      *
      * @param uri The URI of the track.
      */
@@ -205,7 +205,7 @@ public class Track implements Serializable {
     }
 
     /**
-     * @brief Get the date when the track was added.
+     * Get the date when the track was added.
      *
      * @return The added date.
      */
@@ -214,7 +214,7 @@ public class Track implements Serializable {
     }
 
     /**
-     * @brief Get the date when the track was played.
+     * Get the date when the track was played.
      *
      * @return The played date.
      */
@@ -223,7 +223,7 @@ public class Track implements Serializable {
     }
 
     /**
-     * @brief Returns the property about if the track is a favorite or not.
+     * Returns the property about if the track is a favorite or not.
      *
      * @return The property about if the track is a favorite or not.
      */
@@ -232,7 +232,7 @@ public class Track implements Serializable {
     }
 
     /**
-     * @brief Set the property about if the track is a favorite or not.
+     * Set the property about if the track is a favorite or not.
      *
      * @param favorited The property about if the track is a favorite or not.
      */
@@ -241,7 +241,7 @@ public class Track implements Serializable {
     }
 
     /**
-     * @brief Update the object.
+     * Update the object.
      */
     public void update() {
         this.datePlayed = new Date();

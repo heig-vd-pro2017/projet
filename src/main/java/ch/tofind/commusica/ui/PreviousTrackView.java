@@ -14,7 +14,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 /**
- * @brief This class represents the previous track view.
+ * This class represents the previous track view.
  */
 public class PreviousTrackView extends GridPane {
 
@@ -52,7 +52,7 @@ public class PreviousTrackView extends GridPane {
     private Label titleLabel;
 
     /**
-     * @brief View constructor.
+     * View constructor.
      */
     public PreviousTrackView() {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource(FXML_FILE));

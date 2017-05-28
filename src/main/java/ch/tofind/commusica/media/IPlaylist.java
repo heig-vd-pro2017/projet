@@ -5,12 +5,12 @@ import ch.tofind.commusica.playlist.PlaylistTrack;
 import java.util.List;
 
 /**
- * @brief This class must be used by any kind of playlist.
+ * This class must be used by any kind of playlist.
  */
 public interface IPlaylist {
 
     /**
-     * @brief Add a track to the playlist. It also create a PlaylistTrack to link the
+     * Add a track to the playlist. It also create a PlaylistTrack to link the
      * Track and the playlist (for DB purpose).
      *
      * @param track The track to add to the playlist.
@@ -20,7 +20,7 @@ public interface IPlaylist {
     boolean addTrack(Track track);
 
     /**
-     * @brief Check if a track is already contained in the playlist or not.
+     * Check if a track is already contained in the playlist or not.
      *
      * @param track The track to check in the playlist.
      * 
@@ -29,7 +29,7 @@ public interface IPlaylist {
     boolean contains(Track track);
 
     /**
-     * @brief Get the PlaylistTrack object where the Track is the one passed by parameter.
+     * Get the PlaylistTrack object where the Track is the one passed by parameter.
      *
      * @param track The Track which we will search in the PlaylistTrack list.
      *
@@ -38,14 +38,14 @@ public interface IPlaylist {
     PlaylistTrack getPlaylistTrack(Track track);
 
     /**
-     * @brief Get the tracks of the playlist.
+     * Get the tracks of the playlist.
      *
      * @return The track of the playlist.
      */
     List<PlaylistTrack> getTracksList();
 
     /**
-     * @brief Check if the playlist is saved or not.
+     * Check if the playlist is saved or not.
      *
      * @return true if the playlist was saved false otherwise.
      */

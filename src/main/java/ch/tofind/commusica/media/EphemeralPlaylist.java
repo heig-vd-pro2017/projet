@@ -11,7 +11,7 @@ import org.hibernate.query.Query;
 import java.util.List;
 
 /**
- * @brief This class represents a playlist that is currently constructed.
+ * This class represents a playlist that is currently constructed.
  * This is the "Playing" playlist in the UI.
  */
 public class EphemeralPlaylist implements IPlaylist {
@@ -28,7 +28,7 @@ public class EphemeralPlaylist implements IPlaylist {
     private SavedPlaylist delegate;
 
     /**
-     * @brief Create the Playing playlist.
+     * Create the Playing playlist.
      *
      * @param playlistName The name of the playlist.
      */
@@ -42,7 +42,7 @@ public class EphemeralPlaylist implements IPlaylist {
     }
 
     /**
-     * @brief Downvote a track in the playlist.
+     * Downvote a track in the playlist.
      *
      * @param track The Track form the PlaylistTrack to downvote.
      *
@@ -61,7 +61,7 @@ public class EphemeralPlaylist implements IPlaylist {
     }
 
     /**
-     * @brief Upvote a track in the playlist.
+     * Upvote a track in the playlist.
      *
      * @param track The Track form the PlaylistTrack to upvote.
      *
@@ -80,7 +80,7 @@ public class EphemeralPlaylist implements IPlaylist {
     }
 
     /**
-     * @brief Get the playing playlist's name.
+     * Get the playing playlist's name.
      *
      * @return The name of the playlist.
      */

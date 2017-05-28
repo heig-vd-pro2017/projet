@@ -131,7 +131,6 @@ Ce document est le manuel d'utilisation de l'application **Commusica** développ
 Son intêret et de proposer une expérience communautaire en permettant à tous les utilisateurs de changer l'ordre de la liste de lecture en cours en votant pour ou contre les morceaux s'y trouvant. Ces derniers vont alors changer d'ordre. Le contrôle du volume, de l'arrêt/mise en marche du morceau en cours et du passage au morceau suivant, fonctionnent sur un principe de vote et sont effectuer lorsqu'une majorités des utilisateurs actifs d'un serveur ont voté pour réaliser l'action.
 
 Version de Commusica: 1.0
-
 Version du manuel utilisateur: 1.0
 
 # Prérequis
@@ -169,6 +168,8 @@ Si cela ne marche pas,
 - Appuyer sur `Enter`
 - Le programme devrait se lancer
 
+Si un message d'avertissement de la part du Parefeu venait à s'afficher, il est nécessaire d'autoriser **Commusica** à communiquer sur les réseaux privés.
+
 ## Mac OS
 - Ouvrir le Terminal
 - Se déplacer à l'endroit où est sauvegardé le fichier `commusia-1.0.jar`
@@ -178,6 +179,8 @@ Si cela ne marche pas,
 
 # Utilisation
 Les étapes suivants vous explique comment utiliser l'application.
+
+Rappel: Certaines actions nécessite que la majorité des personnes utilisant le système aient le même souhait. C'est la raison pour laquelle votre action peut avoir été pris en compte mais qu'elle n'a pas d'effet pour le moment.
 
 ## Choix du lancement de l'application
 Une fois l'application lancée, la fenêtre ci-dessous apparaît.
@@ -198,9 +201,13 @@ Les explications suivantes sont communes aux deux façons de lancer l'applicatio
 
 ### Choix des listes de lecture et favoris
 
+### Ajouter de la musique a la liste de lecture en cours
+
 ### Liste de lecture du serveur
 
 #### Réorganiser la liste de lecture
+
+#### Ajouter la chanson au favoris
 
 ### Contrôle de la musique
 
@@ -218,7 +225,10 @@ Les explications suivantes concernent le lancement de l'application en tant que 
 ### Choix du serveur
 
 
+# Limitations
+La version actuelle de Commusica ne supporte que les fichiers au format MP3, M4A et WAV.
 
+Tout autre fichier sera refusé et ne pourra donc pas être lu.
 
 
 
