@@ -137,7 +137,7 @@ Nous souhaitons répondre à l'éternel problème qu'est le fait de devoir se pa
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[width=\linewidth]{images/fonctionnement_general.png}
+  \includegraphics[height=0.3\textheight]{images/fonctionnement_general.png}
   \captionof{figure}{Fonctionnement général du programme}
 \end{minipage}
 
@@ -199,13 +199,11 @@ Les différentes tables sont générées automatiquement par Hibernate (voir `Te
 ## Entité *Médias*
 Cette entité regroupe tout ce qui concerne les médias de notre application : chansons, listes de lecture, lecteur de musique.
 
-## Entité visuelle
+## Entité *Interface graphique*
 L'entité visuelle est ce que l'on va montrer à l'utilisateur afin qu'il ait une interface pour intéragir avec le programme. Cette interface sera liée directement au contrôleur, qui saura quoi faire en fonction de l'action demandée.
 
-## Entités utilitaires
+## Entités *Utilitaires*
 Ces entités sont celles qui ne trouvent pas leur place dans des entités spécifique. L'entité de configuration qui permet de récupérer des propriétés d'un fichier de configuration fait notamment partie de ces entités utilitaires.
-
-\pagebreak
 
 # Description technique
 La description technique se développera dans l'ordre croissant de complexité des différentes entités de notre programme.
@@ -264,6 +262,8 @@ Pour retrouver l'extension du fichier, nous avons procédé de la manière suiva
 \end{minipage}
 
 Connaître le type de fichier nous permettra de traiter uniquement les fichiers supportés pas notre plateforme et, aussi, en termes de sécurité, éviter qu'un utilisateur ne fasse planter le serveur en envoyant un fichier qui n'est pas supporté par celui-ci.
+
+\pagebreak
 
 ## Paquet `network`
 
@@ -2042,4 +2042,4 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 
 \newpage
 
-## Panification initiale et son évolution
+## Planification initiale et son évolution
