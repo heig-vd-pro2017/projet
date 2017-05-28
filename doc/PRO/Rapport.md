@@ -10,7 +10,7 @@
   2. Afin qu'une image soit correctement placée dans le document, la commande Markdown utilisée jusqu'à maintenant n'est plus d'actualité.
       Il faut maintenant utiliser la syntaxe suivante:
 
-      \befin{figure}
+      \begin{figure}
         \includegraphics{<url local de l'image>}
         \caption{<Légende>}
       \end{figure}
@@ -268,37 +268,18 @@ La seule commande envoyée en Multicast est `PLAYLIST_UPDATE`, qui est envoyée 
 
 Les objets décrits ci-dessous sont évidemment sérialisés avant d'être transférés sur le réseau.
 
-Commande                                                                    Arguments    But
---------------------------    -------------------------------------------------------    ----------------------------------------------------------------------------
-`SEND_FIRST_CONNECTION`       Aucun                                                      Envoyée lors de sa première connexion à un serveur.
-`TRACK_REQUEST`               Track à envoyer                                            Permet de savoir s'il faut envoyer le fichier ou si le système l'a déjà.
-`SENDING_TRACK`               Taille du fichier à envoyer,                               Envoi du fichier en réponse à `TRACK_ACCEPTED` si accepté.
-                              Track à envoyer
-`PLAY_PAUSE_REQUEST`          Aucun                                                      Souhait de mettre le morceau actuel en lecture/pause.
-`NEXT_TRACK_REQUEST`          Aucun                                                      Souhait de passer au morceau suivant.
-`TURN_VOLUME_UP_REQUEST`      Aucun                                                      Souhait d'augmenter le volume.
-`TURN_VOLUME_DOWN_REQUEST`    Aucun                                                      Souhait de baisser le volume.
-`UPVOTE_TRACK_REQUEST`        ID de la Track à upvoter                                   Souhait d'upvoter un morceau de la liste de lecture.
-`DOWNVOTE_TRACK_REQUEST`      ID de la Track à downvoter                                 Souhait de downvoter un morceau de la liste de lecture.
-`END_OF_COMMUNICATION`        Aucun                                                      La communication doit être stoppée.
---------------------------    -------------------------------------------------------    ----------------------------------------------------------------------------
-Table: Commandes envoyées par le client au serveur
 
-Commande                                                                    Arguments    But
---------------------------    -------------------------------------------------------    ----------------------------------------------------------------------------
-`PLAYLIST_UPDATE`             L'adresse du serveur,                                      Notifier tous les clients en Multicast de l'état du système.
-                              le nom du serveur,
-                              la liste de lecture en cours
-`TRACK_ACCEPTED`              Aucun                                                      Réponse à la commande `TRACK_REQUEST` lorsque le morceau est accepté.
-`TRACK_REFUSED`               Aucun                                                      Réponse à la commande `TRACK_REQUEST` lorsque le morceau est refusé.
-`TRACK_SAVED`                 Aucun                                                      Réponse à `SENDING_TRACK` si le morceau a été enregistré avec succès.
-`TRACK_UPVOTED`               Aucun                                                      Réponse à la commande `UPVOTE_TRACK_REQUEST` si le morceau a été upvoté.
-`TRACK_DOWNVOTED`             Aucun                                                      Réponse à la commande `UPVOTE_TRACK_REQUEST` si le morceau a été downvoté.
-`SUCCESS`                     Message de succès                                          Envoie un message de succès au client lors du succès d'une commande
-`ERROR`                       Message d'erreur                                           Envoie un message d'erreur au client lors de l'erreur d'une commande
-`END_OF_COMMUNICATION`        Aucun                                                      Commande indiquant que la communication doit être stoppée.
---------------------------    -------------------------------------------------------    ----------------------------------------------------------------------------
-Table: Commandes envoyées par le serveur au client
+  \includegraphics{images/commandes_client_serveur.png}
+  \begin{figure}
+  \caption{Commandes envoyées par le client au serveur}
+\end{figure}
+
+
+\begin{figure}
+  \includegraphics{images/commande_serveur_client.png}
+  \caption{Commandes envoyées par le serveur au client}
+\end{figure}
+
 
 ### `Server`
 Côté serveur, nous avons décidé d'opter pour une architecture avec un thread réceptionniste `Server` qui va attendre une nouvelle connexion de la part des clients. Une fois un nouveau client arrivé, il va lancer un thread `UnicastClient` qui va s'occuper de la communication avec le client. Cette communication se fait via un socket Unicast car il s'agit d'une communication privée entre le serveur et le client. Nous avons choisi cette solution car plusieurs connexions avec des clients peuvent survenir simultanément et ce système réceptionniste, avec un thread par client, gère plusieurs connexions en même temps, contrairement à un système avec un seul thread qui s'occupe d'un client à la fois.
@@ -485,7 +466,7 @@ En plus des méthodes lui permettant de se paramétrer comme client ou serveur, 
 public static String execute(String command, ArrayList<Object> args)
 ```
 
-Cette méthode statique qui peut être appelée n'importe où dans le programme appelera la méthode du même nom de la classe `AbstractCore`, qui est décrite plus loin.
+Cette méthode statique qui peut être appelée n'importe où dans le programme appellera la méthode du même nom de la classe `AbstractCore`, qui est décrite plus loin.
 Cela permet de pouvoir exécuter des commandes quelque soit le type de Core configuré: soit serveur, soit client.
 
 ### `ICore`
@@ -576,8 +557,13 @@ Concernant les votes, deux fonctions - une pour les votes positifs et l'autre po
 Dans le cas des favoris, il n'y a nul besoin de passer par le `Core` car tout ce que l'utilisateur veut, c'est enregistrer l'information dans sa liste personnelle de chansons favorites.
 
 ### `SettingsView`
-**DG : TODO**
-*En haut à droite*
+Le panneau en haut à droite de l'interface graphique propose quelques réglages simples mais importants quant au bon fonctionnement du programme. Ce panneau n'a pas le même comportement selon si l'utilisateur est un client ou un serveur.
+
+Si l'utilisateur a choisi d'être le serveur, alors le nom qu'il aura choisi lors du lancement de l'application sera affiché afin qu'il lui soit simple de retrouver cette information à tout moment. Ce champ est final et ne peut pas être modifié tant que le programme est en cours d'exécution.
+
+Si l'utilisateur a choisi d'être un client, une liste des serveurs disponibles sur le réseau local s'affichera. Lorsqu'un serveur est sélectionné dans la liste, le programme se charge de connecter le client au serveur précédemment choisi.
+
+Enfin, un deuxième paramètre est commun aux deux types d'utilisateurs: le choix de l'interface réseau à utiliser. Celle-ci se choisit à l'aide d'un menu déroulant qui nous fournit la liste des interfaces réseau disponibles ainsi que leur adresse *IPv4* associée.
 
 ### `PreviousTrackView`
 Dans le panneau en bas à gauche, nous pouvons apercevoir un espace réservé à la chanson qui vient de se terminer. Ce panneau nous a semblé utile de par le fait que, souvent, nous nous sommes personnellement retrouvés à vouloir noter le nom d'une chanson que nous venions d'écouter et, le temps de prendre notre téléphone pour identifier ladite chanson, celle-ci avait eu le temps de se terminer. Ainsi, ce panneau offre la possibilité à tous les utilisateurs de retrouver facilement et sauvegarder en un seul "clic" les informations d'une chanson.
@@ -1381,11 +1367,14 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 - 02.05.2017
     - Mise au point de l'avancement dans le projet (1h30)
 
+- 28.04.2017
+	- Discussion autour de l'avancement de chacun (1h00)
+
 - 25.04.2017
     - Mise au point des modifications faites durant les vacances (1h30)
 
 - 11.04.2017
-    - Présentation intermédiaire du projet (0h30)
+    - Présentation intermédiaire du projet + discussions diverses (1h30)
 
 - 10.04.2017
     - Réalisation de la présentation (2h00)
@@ -1393,14 +1382,20 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 - 04.04.2017
     - Discussion générale: organisation de l'interface graphique, revue des problèmes liés aux classes Track, Playlist et PlaylistManager, discussion autour de l'utilité de Player, discussion autour de NetworkManager, discussion autour de la présentation, création et rédaction de celle-ci (1h30)
 
+- 31.03.2017
+	- Discussion autour de la base de données et de l'avancement de chacun (2h00)
+
 - 28.03.2017
     - Discussion autour de l'interface graphique et du FileManager (1h30)
+
+- 24.03.2017
+	- Discussion permettant de savoir où chacun en est et questions sur des doutes divers concernant des choix d'implémentation et architecture (3h00)
 
 - 21.03.2017
     - Mise en place de Apache Maven et discussion sur le projet (1h30)
 
 - 17.03.2017
-    - Discussion autour de l'architecture et définition de celle-ci (1h30)
+	- Distribution des rôles, discussion autour de l'architecture et définition de celle-ci (2h00)
 
 \newpage
 
@@ -1502,8 +1497,8 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
     - Tests de récupération des metadatas des fichiers (0h20)
 
 - 21.03.2017
-    - Avancement dans la base de données
-    - Corrections et améliorations
+    - Avancement dans la base de données (1h00)
+    - Corrections et améliorations (0h30)
 
 - 18.03.2017
     - Création du schéma de la base de données (0h30)
@@ -1640,6 +1635,10 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 \newpage
 
 ### Denise Gemesio
+- 28.05.2017
+	- Planification finale, création (0h30)
+	- Planification finale, modification (1h00)
+
 - 27.05.2017
 	- Relecture complète du rapport et corrections orthographiques et grammaticales (3h00)
 	- Rédaction du rapport (UI) (2h00)
@@ -1707,13 +1706,13 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 - 24.05.2017
 	- Rapport: description du paquet media (1h00)
 
--  23.05.2017
+- 23.05.2017
 	- Test de l'application et discussions concernant le rapport (1h30)
 
--  18.05.2017
+- 18.05.2017
 	- Début de rapport (définir la structure du rapport, introduction, objectif, description package Configuration du rapport) (2h00)
 
--  11.05.2017
+- 11.05.2017
 	- Lecture du code contrôleur pour la documentation (2h00)
 
 - 26.04.2017
