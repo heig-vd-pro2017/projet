@@ -182,7 +182,7 @@ Une fois l'application lancée, la fenêtre ci-dessous apparaît.
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[width=\linewidth]{https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/premiere_fenetre.PNG}
+  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/premiere_fenetre.PNG}
   \captionof{figure}{Choix de lancement du programme}
 \end{minipage}
 
@@ -201,7 +201,7 @@ Si tout marche, il n'est pas nécessaire de changer d'interface.
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[width=\linewidth]{https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/settings.PNG}
+  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/settings.PNG}
   \captionof{figure}{Choix de l'interface réseau}
 \end{minipage}
 
@@ -210,7 +210,7 @@ Ce panneau vous permet de naviguer entre la liste de lecture actuelle, vos morce
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[width=\linewidth]{https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_Playlists.jpg}
+  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/client_Playlists.jpg}
   \captionof{figure}{Listes de lectures}
 \end{minipage}
 
@@ -227,7 +227,7 @@ Les morceaux présents actuellement dans la playlist en cours de lecture.
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[width=\linewidth]{https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_Playlist_playing.PNG}
+  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/client_Playlist_playing.PNG}
   \captionof{figure}{Liste de lecture en cours}
 \end{minipage}
 
@@ -254,7 +254,7 @@ Vous pouvez favoriser un morceau en cliquant sur cette étoile.
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[width=\linewidth]{https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/track_playing.png}
+  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/track_playing.png}
   \captionof{figure}{Contrôle de la musique}
 \end{minipage}
 
@@ -275,7 +275,7 @@ Les informations concernant le morceau précédent le morceau en cours de lectur
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[width=\linewidth]{https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_previous_track.PNG}
+  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/client_previous_track.PNG}
   \captionof{figure}{Musique précédente}
 \end{minipage}
 
@@ -285,7 +285,7 @@ Les explications suivantes concernent le lancement de l'application en tant que 
 Quand l'application est lancée, la fenêtre suivante sera affichée à l'écran.
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[width=\linewidth]{https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/Server.PNG}
+  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/Server.PNG}
   \captionof{figure}{Interface de l'application lancée en tant que serveur}
 \end{minipage}
 
@@ -304,7 +304,7 @@ Les explications suivantes concernent le lancement de l'application en tant que 
 Quand l'application est lancée, la fenêtre suivante sera affichée à l'écran.
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[width=\linewidth]{https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client.PNG}
+  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/client.PNG}
   \captionof{figure}{Interface de l'application lancée en tant que client}
 \end{minipage}
 
