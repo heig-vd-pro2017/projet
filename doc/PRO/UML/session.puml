@@ -5,7 +5,6 @@
     namespace ch.tofind.commusica.session {
 
         class ServerSessionManager {
-            [[ServerSessionManager.html]]
             {static} -LOG: Logger
             {static} -instance: ServerSessionManager
             {static} -availableServers: ObservableMap<Integer, ServerSession>
@@ -18,7 +17,6 @@
         }
 
         class UserSessionManager {
-            [[UserSessionManager.html]]
             {static} -LOG: Logger
             {static} -instance: UserSessionManager
             -activeSessions: Map<Integer, UserSession>
@@ -38,14 +36,12 @@
         }
 
         interface ISession {
-            [[ISession.html]]
             {abstract} +getId(): Integer
             {abstract} +update(): void
             {abstract} +getLastUpdate(): Date
         }
 
         class ServerSession {
-            [[ServerSession.html]]
             -id: Integer
             -serverIp: InetAddress
             -serverName: String
@@ -56,13 +52,11 @@
         }
 
         interface ISessionManager {
-            [[ISessionManager.html]]
             {static} +TIME_BEFORE_SESSION_INACTIVE: int
             {abstract} +stop(): void
         }
 
         class UserSession {
-            [[UserSession.html]]
             -id: Integer
             -updated: Date
             -upvotedTracks: Set<String>

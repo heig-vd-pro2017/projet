@@ -3,7 +3,6 @@
     namespace ch.tofind.commusica.utils {
 
         class Network {
-            [[Network.html]]
             {static} +configureNetwork(): void
             {static} +getMacAddress(InetAddress): byte[]
             {static} +getNetworkInterfaces(): ArrayList<NetworkInterface>
@@ -12,7 +11,6 @@
         }
 
         class Serialize {
-            [[Serialize.html]]
             {static} -builder: GsonBuilder
             {static} -gson: Gson
             {static} +serialize(Object): String
@@ -20,7 +18,6 @@
         }
 
         class Logger {
-            [[Logger.html]]
             {static} -DEBUG: boolean
             -className: String
             +Logger(String)
@@ -33,7 +30,6 @@
         }
 
         enum ch.tofind.commusica.utils.Logger.Level {
-            [[Logger.Level.html]]
             {static} +INFO
             {static} +SEVERE
             {static} +SUCCESS
@@ -44,14 +40,12 @@
         }
 
         class EphemeralPlaylistSerializer {
-            [[EphemeralPlaylistSerializer.html]]
             {static} -LOG: Logger
             +deserialize(JsonElement, Type, JsonDeserializationContext): EphemeralPlaylist
             +serialize(EphemeralPlaylist, Type, JsonSerializationContext): JsonElement
         }
 
         class Configuration {
-            [[Configuration.html]]
             {static} -LOG: Logger
             {static} -CONFIG_FILE: String
             {static} -instance: Configuration
@@ -61,7 +55,6 @@
         }
 
         class ObservableSortedPlaylistTrackList {
-            [[ObservableSortedPlaylistTrackList.html]]
             -delegate: List<PlaylistTrack>
             -comparator: VoteComparator
             -count: int
@@ -76,7 +69,6 @@
         }
 
         class PlaylistTrackProperty {
-            [[PlaylistTrackProperty.html]]
             +getTrack(): Track
             +getBean(): Object
             +getName(): String
