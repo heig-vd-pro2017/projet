@@ -629,7 +629,7 @@ broadcastPlaylist.scheduleAtFixedRate(() -> {
 ```
 
 ## Gson
-Gson est une librairie développée par Google permettant la sérialisation et la désérialisation d'objets en JSON. Nous l'avons utilisé principalement pour envoyer les différents objets à travers le réseau.
+Gson est une librairie développée par Google permettant la sérialisation et la désérialisation d'objets en JSON. Nous l'avons utilisé principalement pour envoyer les différents objets à travers le réseau. Nous avons choisi cet libraire car nous l'avions déjà utilisée en cours et qu'elle permet en peu de lignes d'avoir une sérialisation/désérialisation rapide.
 
 ## Hibernate
 Hibernate est un outil ORM (Object Relational Mapping) qui simplifie la création et l'interaction avec la base de données. Il offre la possibilité de créer automatiquement les tables de la base de données en se basant sur les objets Java. Il n'est donc pas nécessaire de les créer manuellement et il gère la sauvegarde, l'intégrité de la base de données par lui-même.
@@ -708,8 +708,17 @@ Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui
 + Le client peut envoyer une chanson au serveur qui l'accepte ou la refuse (A TESTER PLUS EN DÉTAILS)
 + Le serveur reçoit la chanson et met à jour sa liste de lecture (PAS SÛR QUE ÇA SOIT MIS À JOUR DANS LA DB)
 + Le client reçoit la mise à jour de la playlist
-+ Le client peut upvoter et downvoter une chanson et cette dernière se met à jour. **DG: ce qui suit fait plutôt partie du chapitre "Problèmes subsistants"** Ne marche pas côté serveur.
-+ Le client peut augmenter et diminuer le volume. Ne marche pas côté serveur. **DG : "Problèmes subsistants**
++ Le client peut upvoter et downvoter une chanson et cette dernière se met à jour.  
++ Plusieurs client peuvent envoyer en même temps des fichiers  
++ Le changement de l'interface réseau fonctionne.  
++ Le changement de l'interface réseau ne fait pas tout planter durant un transfert de fichier
++ Le fait d'avoir 2 serveurs fonctionne
++ le fait d'avoir 2 serveurs ayant le même nom fonctionne
++ Un client ne peut rajouter/enlever qu'un seul point par morceau même si il se déconnecte.
++ Les contrôles fonctionnent chez le serveur et chez les client.
++ Un client doit pouvoir se deconnecter facilement.
+
+**DG: ce qui suit fait plutôt partie du chapitre "Problèmes subsistants"** Ne marche pas côté serveur.
 + Coté client, la base de données se met bien à jour lors de l'ajout de chansons, mais la date à laquelle elle a été jouée manque dans l'EphemeralPlaylist et donc ne se met pas à jour dans la base de données du client. **DG : "Problèmes subsistants**
 + Le bouton play/pause marche et change d'état côté client et le bouton marche côté serveur, mais dans ce dernier cas, le bouton côté client ne change pas d'état. **DG : "Problèmes subsistants**
 + La PlaylistTrack se met bien à jour dans la base de données lorsqu'une chanson a été jouée côté client.
@@ -742,6 +751,12 @@ Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui
 ## Denise
 
 ## David
+Ce projet fut une expérience enrichissante sur plusieurs point:
+- Le fait de devoir trouver une idée d'application et de devoir en rédiger le cahier de charges, de la développer de A à Z et de devoir en produire la documentation complète.
+- Exercer le travail en équipe et ce que cela implique.
+- Fixer un planning et se rendre compte que certaines parties avaient été mal estimées.
+Je pense que notre équipe a bien fonctionné et que les taches ont été reparties correctement, les personnes qui ont moins codé ayant fais plus de documentation.
+J'ai particulièrement apprécier l'engagement de L. Delafontaine en temps que chef de projet qui a su synthétiser les problèmes pour nous les communiquer lorsque cela était nécessaire. L'équipe avait une bonne cohésion et les échanges réguliers ont permis de bien faire évoluer le projet en même temps que de mettre à jour tout e monde sur ce qui avait été fait par les différents membres.
 
 ## Thibaut
 
