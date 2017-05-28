@@ -93,7 +93,8 @@ header-includes:
   Commusica \vskip0.4em
   \large Le lecteur de musique communautaire et égalitaire}
 
-\author{Chef de projet: Ludovic Delafontaine\\
+\author{Groupe 4B\\\\
+   Chef de projet: Ludovic Delafontaine\\
    Chef remplaçant: Lucas Elisei\\
    Membres: David Truan, Denise Gemesio, Thibaut Togue, Yosra Harbaoui\\
    Responsable du cours: René Rentsch}
@@ -1574,7 +1575,8 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
     - Rédaction du rapport
     - Améliorations du template
     - Ajout d'images
-    - Total du travail (pour le moment): 4h00
+    - Réalisation du manuel d'utilisateur avec Yosra
+    - Total du travail: 11h00
 
 - 27.05.2017
     - Créations de divers schémas pour le rapport
