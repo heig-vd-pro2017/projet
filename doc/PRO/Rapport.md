@@ -88,7 +88,7 @@ header-includes:
 \let\footnote\thanks
 \begin{center}
 {\LARGE\@title}\vskip1.5em
-\includegraphics[width=10cm, height=10cm]{logo.png}\vskip1.5em
+\includegraphics[width=10cm, height=10cm]{images/logo.png}\vskip1.5em
 {\LARGE Rapport final}\vskip1.5em
 {\large\@author}\vskip1.5em
 {\large\@date}
@@ -111,7 +111,7 @@ header-includes:
 
 \begin{tikzpicture}[remember picture,overlay]
    \node[anchor=north east,inner sep=0.25cm] at (current page.north east)
-              {\includegraphics[scale=1]{heig-vd.png}};
+              {\includegraphics[scale=1]{images/heig-vd.png}};
 \end{tikzpicture}
 
 \newpage
@@ -159,16 +159,16 @@ Une fois l'architecture bien définie, nous avons déterminé des normes de dév
 - Utilisation de la JavaDoc pour la génération future d'une documentation technique.
 - Définition de la syntaxe à utiliser pour les variables, constantes et autres structures syntaxiques.
 
-L'intégralité de ce document de normes est fourni en annexe.
-
 # Architecture
 
-![Architecture du programme](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/projet/master/doc/PRO/UML/Architecture.puml){ height=200px }
+![Architecture du programme](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/projet/master/doc/PRO/UML/Architecture.puml){height=200px}
 
 ## Entité base de données
 Cette entité est une abstraction de la base de données. Elle permet de simplifier l'interaction avec cette dernière en mettant à disposition des méthodes pour les opérations de base sur la base de données.
 
 Cette entité permet, par exemple, à un utilisateur de sauvegarder les métadonnées des chansons qui lui plaisent dans la base de données.
+
+Les différentes tables sont générées automatiquement par Hibernate (voir `Technlogies utilisées` et la corrélation entre les classes Java et la base de données est définie dans les fichiers `.hbm.xml` dans le dossier `ressources/models`), ce qui permet de séparer les deux notions: programmation orientées objet et base de données.
 
 ## Entité système de fichiers
 Cette entité a pour rôle d'assurer la gestion des fichiers en interagissant avec le système de fichiers. Elle permet de sauvegarder, supprimer, renommer des fichiers sur le disque, recevoir des fichiers par le réseau et vérifier qu'ils ne soient pas corrompus.
@@ -241,7 +241,7 @@ Connaître le type de fichier nous permettra de traiter uniquement les fichiers 
 
 ![Paquet network](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/projet/master/doc/PRO/UML/network.puml)
 
-Pour répondre aux besoin architecturaux vus plus haut, nous avons développé plusieurs classes qui s'occupent de gérer les sockets et envois de commande via le réseau. Nous savions que notre protocole enverrait du texte car la lecture de ligne dans un flux d'entrée se fait facilement grâce à la méthode `readline()`. Nous avions aussi besoin d'envoyer des objet sérialisés au format **JSON**.
+Pour répondre aux besoin architecturaux vus plus haut, nous avons développé plusieurs classes qui s'occupent de gérer les sockets et envois de commande via le réseau. Nous savions que notre protocole enverrait du texte car la lecture de ligne dans un flux d'entrée se fait facilement grâce à la méthode `readline()`. Nous avions aussi besoin d'envoyer des objet sérialisés au format JSON.
 
 ### Protocole et commandes
 La plupart des commandes listées ci-dessous sont disponibles dans la classe `ApplicationProtocol`, mais, comme elles sont envoyées par le réseau, nous avons préféré les expliquer ici.
@@ -464,15 +464,16 @@ Pour garder un niveau d'abstraction le plus élevé possible, nous avons voulu f
 Il nous fallait maintenant une classe qui puisse jouer le rôle du contrôleur. Pour cela, nous avons développé les `Core`, qui se trouvent tous dans le paquet `core`.
 
 ### `Core`
-C'est une classe statique qui joue le rôle de point d'entrée. Elle dispose d'un attribut `AbstractCore` qui sera instancié soit en `ClientCore`, soit en `ServerCore`. Elle met aussi à disposition des méthodes statiques qui seront atteignables depuis les autres classes du programme.  
-Parmi ces méthodes, la plus importante est la suivante:  
+C'est une classe statique qui joue le rôle de point d'entrée. Elle dispose d'un attribut `AbstractCore` qui sera instancié soit en `ClientCore`, soit en `ServerCore`. Elle met aussi à disposition des méthodes statiques qui seront atteignables depuis les autres classes du programme.
+
+En plus des méthodes lui permettant de se paramétrer comme client ou serveur, la plus importante est la suivante:  
 
 ```java
 public static String execute(String command, ArrayList<Object> args)
 ```
-** DG : la phrase qui suit n'est vraiment pas du tout claire! ^^ *la méthode appelle la méthode du même nom de l'instance de la classe*, ça fait un peu *le père de la fille de mon voisin dont la copine est la soeur du médecin* ;) à revoir! **
- Cette méthode se contente d'appeler la méthode du même nom de l'instance d'`AbstractCore` de la classe et sera appelée partout où une action du Core est demandée.
-Elle contient aussi des méthodes lui permettant de se paramétrer comme client ou serveur.
+
+Cette méthode statique qui peut être appelée n'importe où dans le programme appelera la méthode du même nom de la classe `AbstractCore`, qui est décrite plus loin.
+Cela permet de pouvoir exécuter des commandes quelque soit le type de Core configuré: soit serveur, soit client.
 
 ### `ICore`
 C'est une interface qui définit ce qui est nécessaire au Core, à savoir des méthodes permettant d'envoyer des messages en Unicast ou en Multicast et une méthode pour arrêter le Core. Toutes les classes héritant d'`AbstractCore` doivent implémenter cette interface.
@@ -507,6 +508,7 @@ Ces deux classes héritant d'`AbstractCore` et implémentant `ICore` sont les cl
 Grâce à ces classes, nous avons réglé le problème de contrôleur central par lequel tout transitera.
 
 ### Envoi d'un fichier audio d'un client vers un serveur
+
 ![Diagramme de séquence de l'envoi d'un fichier audio](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/projet/master/doc/PRO/sequencies/TRACK.puml)
 
 ## Paquet et ressources ui
@@ -592,13 +594,12 @@ Le fichier FXML de base, tout comme le fichier Java de base, a été découpé e
 Comme dans les fichiers Java, nous avons un fichier principal, `main.fxml`, qui permet de découper l'interface principale en plusieurs panneaux. Ensuite, pour chacun des panneaux, nous avons des fichiers portant le même nom que leurs classes Java.
 Nous avons dû ajouter aux fichiers FXML un ID à chaque structure dont les actions nous intéressaient, et, pour certaines, nous avons également dû lier une action à une certaine méthode. Ainsi, dès l'instant que, dans le code Java, nous rencontrons un `@FXML`, cela veut dire que nous avons un lien direct avec les structures des fichiers FXML.
 
-# Notions et technologies utilisées
+# Technologies utilisées
 
-## Notions
-
-### Singleton et POO
+## Singleton
 Comme expliqué précédemment, nous avons implémenté une partie de nos classes comme étant des Singleton. Ce patron de conception fait qu'une classe n'a qu'une seule instance.  
 Voici un exemple avec la classe `FileManager`:
+
 ```
 private static FileManager instance = null;
 
@@ -616,14 +617,17 @@ public static FileManager getInstance() {
 
     return instance;
 }
-```  
+```
+
 Ce patron de conception est simple à mettre en œuvre avec une variable d'instance de la classe, une constructeur privé et une méthode `getInstance()` renvoyant l'instance de la classe. Il est particulièrement adapté à toutes nos classes de type `Manager` car il ne doit y avoir qu'une seule instance de celle-ci par programme.
 
-### Introspection
+## Réflexion
+La réflexion offerte par Java a été utilisée dans le cadre des Core afin de pouvoir déterminer, lors de l'exécution, si une méthode était implémentée et pouvait être appelée. Cela a permis d'éviter la redondance de code entre un Core côté serveur et un Core côté client et n'implémenter que les méthodes qui devaient être gérées par l'une ou l'autre de ces entités.
 
-### ThreadPool
-`ThreadPool` est un outil offert par **Java** permettant de définir un objet `ExecutorService` mettant à disposition un nombre de threads défini par le programmeur. Il suffit ensuite de lui soumettre des objets instance de la classe `Thread` pour qu'il les lance automatiquement selon la disponibilité de son *pool*. Cela permet donc de limiter le nombre de threads lancés simultanément.  
+## ThreadPool
+`ThreadPool` est un outil offert par Java permettant de définir un objet `ExecutorService` mettant à disposition un nombre de threads défini par le programmeur. Il suffit ensuite de lui soumettre des objets instance de la classe `Thread` pour qu'il les lance automatiquement selon la disponibilité de son *pool*. Cela permet donc de limiter le nombre de threads lancés simultanément.  
 Voici un exemple d'une utilisation pour le lancement d'un nouveau thread lors d'une connexion d'un client sur le socket du serveur:  
+
 ```
 Socket clientSocket = socket.accept();
 
@@ -631,9 +635,11 @@ Thread client = new Thread(new UnicastClient(clientSocket));
 threadPool.submit(client);
 ```
 
-### ScheduledExecutorService
+## ScheduledExecutorService
 Sous-classe de `ExecutorService`, cette classe permet l'exécution d'un bloc de code à une fréquence définie par le programmeur. Nous l'avons utilisée pour toutes les tâches, comme l'envoi de la liste de lecture ou la suppression de sessions utilisateurs obsolètes.  
+
 Exemple de l'envoi de la liste de lecture toutes les `TIME_BEFORE_PLAYLIST_UPDATE` secondes:  
+
 ```
 broadcastPlaylist = Executors.newScheduledThreadPool(1);
 broadcastPlaylist.scheduleAtFixedRate(() -> {
@@ -641,69 +647,69 @@ broadcastPlaylist.scheduleAtFixedRate(() -> {
 }, 0, TIME_BEFORE_PLAYLIST_UPDATE, TimeUnit.SECONDS);
 ```
 
+## Gson
+Gson est une librairie développée par Google permettant la sérialisation et la désérialisation d'objets en JSON. Nous l'avons utilisé principalement pour envoyer les différents objets à travers le réseau.
 
-## Librairies utilisés
+## Hibernate
+Hibernate est un outil ORM (Object Relational Mapping) qui simplifie la création et l'interaction avec la base de données. Il offre la possibilité de créer automatiquement les tables de la base de données en se basant sur les objets Java. Il n'est donc pas nécessaire de les créer manuellement et il gère la sauvegarde, l'intégrité de la base de données par lui-même.
 
-### Gson
-Librairie développée par **Google** permettant la sérialisation et la désérialisation d'objets en **JSON**. Nous l'avons utilisé principalement pour envoyer la liste de lecture aux clients, vu que notre protocole réseau fait transiter des chaines de caractères.
+Nous l'avons utilisé afin de pouvoir nous concentrer sur le code et lui déléguer la gestion de la base de données.
 
-### Hibernate
-Pour l'implémentation, nous avons choisi le framework Hibernate qui simplifie le développement de l'application Java pour interagir avec la base de données. C'est un outil open source et léger.
-Un outil ORM (Object Relational Mapping) simplifie la création, la manipulation et l'accès aux données. C'est une technique de programmation qui mappe l'objet aux données stockées dans la base de données.
+## JavaFX
+JavaFX est une bibliothèque Java permettant la création d'applications de bureau. Les applications écrites à l'aide de cette bibliothèque peuvent fonctionner sur plusieurs plateformes. Par rapport à Swing, JavaFX nous offre:
 
-**Pas sûr de l'utilité de cette phrase: La performance du framework Hibernate est rapide, car le cache est utilisé en interne dans le cadre hiberné.**
-Le framework Hibernate offre la possibilité de créer automatiquement les tables de la base de données. Il n'est donc pas nécessaire de les créer manuellement.
+- Les styles CSS, qui nous ont permis de styliser notre application
+- La séparation de l'interface et du code
 
-### JAudiotagger
+Le point majeur qui nous a fait choisir JavaFX est la séparation facile entre le code et l'interface graphique à l'aide de fichiers (F)XML permettant de définir la structure de notre interface et ne pas polluer le code avec des concepts qui n'ont pas de sens dans celui-ci.
+
+## JAudiotagger
 JAudiotagger est une API Java pour la lecture et l'écriture des métadonnées des fichiers audio. Il supporte des formats tels que MP3, MP4, WAV, etc.
 
-### JavaFX
-JavaFX est une bibliothèque Java permettant la création d'applications Desktop. Les applications écrites à l'aide de cette bibliothèque peuvent fonctionner sur plusieurs plateformes. Les applications développées à l'aide de JavaFX peuvent fonctionner sur différents périphériques tels que les ordinateurs, les téléviseurs, les tablettes, etc. Par raport à Swing, javaFX nous offre:
+Nous l'avons utilisé dans notre projet car JavaFX ne propose pas un moyen de récupérer les métadonnées des chansons et parce que c'est la librairie à ce sujet la plus connue et adaptée à nos besoins.
 
- + Les styles CSS
- + Annimations et transitions : un moyen simple de faire une animation, comme les composants UI qui clignotent ou se déplacent.
- + 3D : moyen facile de manipuler le modèle pour créer une vue 3D animée
+## Capsule
+Capsule est un outil de déploiement pour les applications Java. Une capsule est un fichier JAR exécutable unique qui contient tout ce que l'application doit avoir pour pouvoir s'exécuter.
 
-### Capsule
-Capsule est un outil de déploiement pour les applications JVM. Une capsule est un fichier JAR exécutable unique qui contient tout ce que l'application doit exécuter sous la forme de fichiers intégrées. Nous avons utilisé cela pour notre application dans le but de forcer l'utilisation sur les adresses MAC de l'adresse IPv4 de l'interface. Quand on lance notre application avec la commande `java -jar commusica-capsule.jar`, le réel processus se présente sous la forme de : `capsule` -> `lance Commusica avec des paramètres pour utiliser IPv4 plutôt que IPv6`
+Nous l'avons utilisé dans le but de forcer l'utilisation de l'IPv4 pour les interfaces réseaux sur les ordinateurs Macintosh qui, par défaut, préfèrent l'IPv6 et ne pouvaient donc pas communiquer avec les autres systèmes qui, eux, préfèrent l'IPv4.
 
-## Programmes utilisés
+Lors du lancement de notre programme, la réelle exécution de celui-ci est la suivante:
 
-### GitHub
-** DG : est-ce qu'on parle de pourquoi on a choisi un outil plutôt qu'un autre ou est-ce qu'on fait de la pub à l'outil? (question rhétorique) **
-Github est un outil gratuit permettant d'héberger du code open source, et propose également des plans payants pour les projets privés.
-GitHub figure parmi les programmes les plus conseillés pour les nombreux avantages qu'il offre:
+`Exécution du programme Commusica -> Lancement de Capsule -> Définition des paramètres à utiliser pour la JVM -> Lancement de Commusica avec les paramètres JVM souhaités -> Démarrage de Commusica`
 
- + Les développeurs qui trouveront notre projet intéressant pouront forker pour devenir ensuite prorpiétaires d'un projet similaire portant le même nom. Cette technique de branchement (fork) est la base même du fonctionnement du site.
+## Git / GitHub
+Git est un outil de gestions de versions qui permet de simplifier le développement d'une application en gérant automatiquement la fusion de code de deux auteurs différents et pouvoir avoir un historique des actions effectuées tout au long du projet.
 
-+ GitHub est conseillé à tout développeur qui souhaite rendre plus professionnelle son activité. Il est également recommandé à ceux qui souhaitent trouver des partenaires. En effet, de nombreux développeurs s'inscrivent sur ce site pour de nombreuses raisons et donnent à ce dernier les caractéristiques d'un site de réseau social.
+Nous l'avons utilisé afin de permettre à chacun de développer séparemment et qu'il puisse gérer la fusion automatiquement. Nous pouvions, au besoin, effectuer des tests sans mettre en péril le reste du projet à l'aide de branches. Nous avons utilisé GitHub afin de centralisé ça sur Internet.
 
-+ Ce site n’est autre que le point de rencontre des développeurs logiciel de tout horizon qui viennent pour partager leurs projets et découvrir ceux des autres.
+## IntelliJ IDEA
+IntelliJ IDEA est un environnement de développement intégré, autrement dit, un ensemble d'outils destinés au développement logiciel.
 
-### IntelliJ IDEA
-IntelliJ IDEA est un environnement de développement intégré, autrement dit, un ensemble d'outils destinés au développement logiciel. Les avantages dans l'utilisation d'IntelliJ IDEA sont les suivants :
+Nous l'avons choisi pour les raisons suivantes:
+- Intégration avec les outils de gestions de versions tel que Git.
+- Une autocomplétion hors pair.
+- L'analyse et inspection : il analyse en temps réel et en permanence le code, à la recherche de problèmes potentiels.
+- Un déboguer simple et efficace à utiliser.
 
- + Une fonctionnalité de pull-request pour GitHub.
- + Une autocomplétion hors pair.
- + L'analyse et inspection : il analyse en temps réel et en permanence le code, à la recherche de problèmes potentiels.
+## Apache Maven
+Apache Maven est un outil de gestion de projet basé sur POM (modèle d'objet de projet).
 
-### Apache Maven
-Apache Maven est un outil puissant de gestion de projet basé sur POM (modèle d'objet de projet). Il est utilisé pour la construction, la dépendance et la documentation des projets. Les avantages d'utilisation Maven sont les suivants :
+Nous l'avons utilisé dans le cadre de notre projet afin de pouvoir gérer les dépendances et la compiliation de façon unifiée au travers de tous les développeurs. Il nous a permis de définir une librairie et sa version à utiliser et ainsi, le code de tous les développeurs se basent sur les mêmes versions et utilisent la même façon de compiler pour s'assurer du bon fonctionnement du programme.
 
-+ Il facilite la construction d'un projet.
-+ Il fournit un processus de construction uniforme (le projet Maven peut être partagé par tous les projets Maven).
-+ Il fournit des informations sur le projet (document, liste de dépendances, rapports de tests, etc.).
-
-### Scene Builder
+## Scene Builder
 Scene builder est un outil qui permet de créer des fichiers au formats FXML via un éditeur graphique.
 
-### Wireshark
-Wireshark est un outil essentiel pour comprendre les mécanismes de fonctionnement des protocoles de communication sur les réseaux. Il capture des paquets directement sur les interfaces du système utilisé ou lit des fichiers de captures sauvegardées.
-Nous l'avons utilisé dans notre projet pour sniffer la communication entre le client et le serveur afin de contrôler le bon fonctionnement de la communication réseau.
+Nous l'avons utilisé afin de découvrir les principes de réalisation d'interfaces graphiques à l'aide de JavaFX.
 
-### PlantUML
-**A faire**
+## Wireshark
+Wireshark est un outil essentiel pour comprendre les mécanismes de fonctionnement des protocoles de communication sur les réseaux. Il capture des paquets directement sur les interfaces réseaux du système utilisé.
 
+Nous l'avons utilisé dans notre projet afin de vérifier que la communication réseau entre le client et le serveur et s'assurer que tout marchait comme souhaité.
+
+## PlantUML
+PlantUML est un outil gratuit et open-source qui permet la génération de schémas UML de toutes sortes (diaragrammes de classe, diagrammes de séquences, diagrammes d'activités, etc.) et ce, à l'aide de fichiers textes.
+
+Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui pouvaient être améliorés par plusieurs personnes en même temps à l'aide de Git grâce au fait que c'est simplement des fichiers textes.
 
 # Tests réalisés
 **On doit en faire des tableaux et retester toute l'application**
@@ -760,13 +766,244 @@ Nous l'avons utilisé dans notre projet pour sniffer la communication entre le c
 
 ## Yosra
 
-# Glossaire
-
 # Sources
-https://blog.axopen.com/2013/11/les-cles-primaires-composees-avec-hibernate-4/
-https://vladmihalcea.com/2016/08/01/the-best-way-to-map-a-composite-primary-key-with-jpa-and-hibernate/
+- Capsule ([capsule.io](capsule.io)) - Site officiel de la librairie Capsule
+- Gson ([github.com/google/gson](github.com/google/gson)) - Site officiel de la librairie Gson
+- Hibernate ([hibernate.org](hibernate.org)) - Site officiel de la librairie Hibernate
+- JaudioTagger ([jthink.net/jaudiotagger](jthink.net/jaudiotagger)) - Site officiel de la librairie JaudioTagger
+- Java 8 API Specification ([docs.oracle.com/javase/8/docs/api](docs.oracle.com/javase/8/docs/api)) - Site officiel de la documentation pour Java 8
+- Stack Overflow ([stackoverflow.com](stackoverflow.com)) - Site d'entre-aide pour la programmation
+
+\newpage
 
 # Annexes
+## Défintition des normes de programmation
+### Documentation
+- La documentation des méthodes et du code sera en anglais
+- La tabulation est de quatre espaces
+- La longeur maximale des lignes de code est sur 120 caractères
+- La notation doxygen ([doxygen.org](doxygen.org)) sera utilisée pour documenter le code, avec le caractère `@` et non `\`
+- Une entête de fichier (doxygen) sera utilisée pour chaque fichier
+- Utilisation de la notation camel case pour les variables et méthodes
+- Les variables de types statiques sont en majuscules
+- Ne pas utiliser de caractères spéciaux dans les variables et fonctions
+
+### Entêtes
+Les entêtes de fonctions et fichiers devront respecter la forme suivante:
+
+```
+/**
+ * This is a correct comment
+ */
+```
+
+```
+/**
+ * This is also
+ * a correct comment
+ */
+```
+
+```
+/**
+ * As well as this one in case that the documentation is very long and have "multiple parts".
+ *
+ * So we leave a bit of space for a better reading experience.
+ */
+```
+
+Ne pas écrire d'entêtes commme ceci:
+```
+/** This comment starts at the very top...
+ * ...but should has started here.
+ */
+```
+
+```
+/**
+ *
+ * Why do we leave empty spaces before and after ? Isn't it useless ?
+ *
+ */
+```
+
+### Fonctions
+L'entête des fonctions devra respecter la forme suivante:
+```
+/**
+ * Description about the method
+ *
+ * @param x Short description
+ * @param y Short description
+ *
+ * @return int The multiplication of x and y
+ */
+public int myMethod(int x, int y) {
+    return x * y;
+}
+```
+
+Au sein de fonction, ne pas utiliser la forme de commentaires multi-lines:
+```
+/**
+ * This is a comment
+ * inside a function
+ */
+```
+car si l'on souhaite commenter une partie de la fonction, les caractères `*/` couperont la commentation de la fonction.
+
+Utiliser la forme suivante:
+```
+//! This is a multi-line comment
+//! inside a function
+```
+
+Les parenthèses aux fonctions restent collées au nom de la fonction, comme en mathématiques:
+```
+public int iAmACoolFunctionWithoutAnySpaces(int iHateSpaces) {
+    ...
+}
+```
+
+```
+...
+
+int a = iAmACoolFunctionWithoutAnySpaces(4);
+
+...
+```
+
+### Variables
+Pour commenter des variables, on utilise la forme:
+```
+//! The current volume of the application
+private unsigned int volume;
+
+//! The playlist containing all the songs
+private ArrayList<Music> playlist;
+```
+
+### Entête des fichiers
+L'entête des fichiers devra respecter la forme suivante:
+```java
+/**
+ * This class is an example.
+ *
+ * Its description continues on multiple lines without any problem. However, if a comment is too long (max. 120
+ * characters), feel free to break the comment in two lines.
+ */
+```
+
+### Les instructions de branchement
+Les instructions de branchement sont écrites de la façon suivante, le `_` illustrant un espace:
+
+```java
+if_(condition1_&&_condition2)_{
+    ...
+}_else_{
+    ...
+}
+```
+
+```java
+while_(condition1_&&_condition2)_{
+    ...
+}
+```
+
+```java
+switch_(condition1_&&_condition2)_{
+
+    case_1:
+        ...
+        break;
+    case_2:
+        ...
+        break;
+    default:
+        ...
+        break;
+}
+```
+
+```java
+for_(int_i_=_0;_i_<_10;_++i)_{
+    ...
+}
+```
+
+### Classes
+
+```java
+class MaClasse {
+    attributs
+        - static
+        - public
+        - protected
+        - private
+    méthodes
+        - static
+        - public
+        - protected
+        - private
+}
+```
+
+### Exemple complet
+```java
+/**
+ * This class is an example.
+ *
+ * Its description continues on multiple lines without any problem. However, if a comment seems too long (max. 120
+ * characters), feel free to break the comment in two lines.
+ */
+ class MaClasse {
+
+    //! Comment before the member
+    private final static int I_AM_A_STATIC_VARIABLE = 10;
+
+    //! Comment before the member
+    public String iAmAString;
+
+    //! Comment before the member
+    protected char iAmACharacter;
+
+    //! Comment before the member
+    private booleand amIABoolean;
+
+    /**
+     *  Description about the method
+     *
+     * @param x Short description
+     * @param y Short description
+     *
+     * @return int The multiplication of x and y
+     */
+    public int myMethod(int x, int y) {
+
+        //! This part is so important that it needs
+        //! multiple lines to describe it
+        return x * y;
+    }
+
+    /**
+     *  Description about the method
+     *
+     * @param c Change the message
+     *
+     * @return void
+     */
+    public void myMethod2(boolean c) {
+
+        //! Change the message
+        if (c) {
+            System.out.println("Hi");
+        } else {
+            System.out.println("Good bye");
+        }
+    }
+ }
+```
 
 \newpage
 
@@ -1026,7 +1263,6 @@ Les fonctionnalités listées ci-dessous ne sont pas nécessaires au bon fonctio
         - Chemin de stockage de la musique: où est enregistrée la musique
         - Une musique ne peut être relue que après un certain nombre de minutes après sa première lecture
     - Contraintes: Refuser les actions effectuées par les clients si elles ne respectent pas la configuration du serveur
-
 
 ### Résumé et schémas de fonctionnement du programme
 1. Un serveur est lancé et est configuré selon les préférences de la personne qui gère le serveur.
