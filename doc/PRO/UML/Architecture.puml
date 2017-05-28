@@ -11,7 +11,7 @@ package "Réseau" <<Rectangle>> {
 package "Sessions" <<Rectangle>> {
 }
 
-package "Controlleur" <<Rectangle>> {
+package "Contrôleur" <<Rectangle>> {
 }
 
 package "Système de fichiers" <<Rectangle>> {
@@ -20,20 +20,24 @@ package "Système de fichiers" <<Rectangle>> {
 package "Base de données" <<Rectangle>> {
 }
 
+package "Interface graphique" <<Rectangle>> {
+}
 
 package "Médias" <<Rectangle>> {
 }
 
-"Réseau" -- "Controlleur"
+"Réseau" -- "Contrôleur"
 
-"Controlleur" -- "Sessions"
+"Contrôleur" -- "Sessions"
 
-"Controlleur" -- "Base de données"
+"Contrôleur" -- "Base de données"
 
-"Controlleur" -- "Utilitaires"
+"Contrôleur" -- "Utilitaires"
 
-"Controlleur" -- "Système de fichiers"
+"Contrôleur" -- "Système de fichiers"
 
-"Controlleur" -- "Médias"
+"Contrôleur" -- "Interface graphique"
+
+"Contrôleur" -- "Médias"
 
 @enduml
