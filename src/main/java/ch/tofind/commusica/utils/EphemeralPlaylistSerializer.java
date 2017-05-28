@@ -12,7 +12,7 @@ import java.lang.reflect.Type;
 import java.util.Iterator;
 
 /**
- * @brief This class is used to tell the step to un/serialize an ephemeral playlist from/to JSON.
+ * This class is used to tell the step to un/serialize an ephemeral playlist from/to JSON.
  */
 public class EphemeralPlaylistSerializer implements JsonSerializer<EphemeralPlaylist>, JsonDeserializer<EphemeralPlaylist> {
 

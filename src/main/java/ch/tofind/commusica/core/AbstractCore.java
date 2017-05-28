@@ -9,7 +9,7 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 
 /**
- * @brief This class represents an abstract core to execute code asked from the network.
+ * This class represents an abstract core to execute code asked from the network.
  */
 abstract class AbstractCore {
 
@@ -17,7 +17,7 @@ abstract class AbstractCore {
     private static final Logger LOG = new Logger(AbstractCore.class.getSimpleName());
 
     /**
-     * @brief Execute a command on the available core.
+     * Execute a command on the available core.
      *
      * @param command Command to execute.
      * @param args Args of the command.
@@ -41,7 +41,7 @@ abstract class AbstractCore {
     }
 
     /**
-     * @brief Send a request by unicast to the hostname.
+     * Send a request by unicast to the hostname.
      *
      * @param hostname IP address of the hostname.
      * @param message Message to send to the hostname.
@@ -49,14 +49,14 @@ abstract class AbstractCore {
     abstract void sendUnicast(InetAddress hostname, String message);
 
     /**
-     * @brief Send a request by multicast.
+     * Send a request by multicast.
      *
      * @param message Message to send.
      */
     abstract void sendMulticast(String message);
 
     /**
-     * @brief Stop the core.
+     * Stop the core.
      */
     abstract void stop();
 

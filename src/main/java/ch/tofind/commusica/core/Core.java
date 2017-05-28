@@ -3,7 +3,7 @@ package ch.tofind.commusica.core;
 import java.util.ArrayList;
 
 /**
- * @brief This class represents a server or a client core for the current instance.
+ * This class represents a server or a client core for the current instance.
  */
 public class Core {
 
@@ -11,7 +11,7 @@ public class Core {
     private static AbstractCore instance = null;
 
     /**
-     * @brief Execute a command on the available core.
+     * Execute a command on the available core.
      *
      * @param command Command to execute.
      * @param args Args of the command.
@@ -23,7 +23,7 @@ public class Core {
     }
 
     /**
-     * @brief Tells if the current Core is the server or not.
+     * Tells if the current Core is the server or not.
      * @return True if the current Core is the server, otherwise false.
      */
     public static boolean isServer() {
@@ -31,7 +31,7 @@ public class Core {
     }
 
     /**
-     * @brief Setup the core as a server.
+     * Setup the core as a server.
      */
     public static void setupAsServer() {
 
@@ -43,7 +43,7 @@ public class Core {
     }
 
     /**
-     * @brief Setup the core as a client.
+     * Setup the core as a client.
      */
     public static void setupAsClient() {
 
@@ -55,7 +55,7 @@ public class Core {
     }
 
     /**
-     * @brief Stop the core.
+     * Stop the core.
      */
     public static void stop() {
 

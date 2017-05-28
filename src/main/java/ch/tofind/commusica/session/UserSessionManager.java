@@ -63,7 +63,7 @@ public class UserSessionManager implements ISessionManager {
     }
 
     /**
-     * @brief Get the object instance.
+     * Get the object instance.
      *
      * @return The instance of the object.
      */
@@ -81,7 +81,7 @@ public class UserSessionManager implements ISessionManager {
     }
 
     /**
-     * @brief Store a new session.
+     * Store a new session.
      *
      * @param id ID of the new session.
      */
@@ -101,7 +101,7 @@ public class UserSessionManager implements ISessionManager {
     }
 
     /**
-     * @brief Count the active sessions.
+     * Count the active sessions.
      *
      * @return The number of active sessions.
      */
@@ -110,7 +110,7 @@ public class UserSessionManager implements ISessionManager {
     }
 
     /**
-     * @brief Count the inactive sessions.
+     * Count the inactive sessions.
      *
      * @return The number of inactive sessions.
      */
@@ -119,7 +119,7 @@ public class UserSessionManager implements ISessionManager {
     }
 
     /**
-     * @brief Count the requests to play/pause the current track.
+     * Count the requests to play/pause the current track.
      *
      * @return The number of request to play/pause the current track.
      */
@@ -128,7 +128,7 @@ public class UserSessionManager implements ISessionManager {
     }
 
     /**
-     * @brief Count the requests for the next track.
+     * Count the requests for the next track.
      *
      * @return The number of request for the next track.
      */
@@ -137,7 +137,7 @@ public class UserSessionManager implements ISessionManager {
     }
 
     /**
-     * @brief Count the requests for the previous track.
+     * Count the requests for the previous track.
      *
      * @return The number of request for the previous track.
      */
@@ -146,7 +146,7 @@ public class UserSessionManager implements ISessionManager {
     }
 
     /**
-     * @brief Count the requests to turn the volume up.
+     * Count the requests to turn the volume up.
      *
      * @return The number of request to turn the volume up.
      */
@@ -155,7 +155,7 @@ public class UserSessionManager implements ISessionManager {
     }
 
     /**
-     * @brief Count the requests to turn the volume down.
+     * Count the requests to turn the volume down.
      *
      * @return The number of request to turn the volume down.
      */
@@ -164,7 +164,7 @@ public class UserSessionManager implements ISessionManager {
     }
 
     /**
-     * @brief Store the fact that a user would like to play/pause the current track.
+     * Store the fact that a user would like to play/pause the current track.
      *
      * @param userId The user which ask to play/pause the current track.
      */
@@ -176,7 +176,7 @@ public class UserSessionManager implements ISessionManager {
     }
 
     /**
-     * @brief Store the fact that a user would like the next track.
+     * Store the fact that a user would like the next track.
      *
      * @param userId The user which ask for the next track.
      */
@@ -188,7 +188,7 @@ public class UserSessionManager implements ISessionManager {
     }
 
     /**
-     * @brief Store the fact that a user would like the previous track.
+     * Store the fact that a user would like the previous track.
      *
      * @param userId The user which ask for the previous track.
      */
@@ -200,7 +200,7 @@ public class UserSessionManager implements ISessionManager {
     }
 
     /**
-     * @brief Avoid that a track can be upvoted twice by the same user.
+     * Avoid that a track can be upvoted twice by the same user.
      *
      * @param userId The user which ask for a vote.
      * @param trackId The track to vote.
@@ -226,7 +226,7 @@ public class UserSessionManager implements ISessionManager {
     }
 
     /**
-     * @brief Avoid that a track can be downvoted twice by the same user.
+     * Avoid that a track can be downvoted twice by the same user.
      *
      * @param userId The user which ask for a vote.
      * @param trackId The track to vote.
@@ -252,7 +252,7 @@ public class UserSessionManager implements ISessionManager {
     }
 
     /**
-     * @brief Store the fact that a user would like to turn the volume up.
+     * Store the fact that a user would like to turn the volume up.
      *
      * @param userId The user which ask for to turn the volume up.
      */
@@ -264,7 +264,7 @@ public class UserSessionManager implements ISessionManager {
     }
 
     /**
-     * @brief Store the fact that a user would like to turn the volume down.
+     * Store the fact that a user would like to turn the volume down.
      *
      * @param userId The user which ask for to turn the volume down.
      */
@@ -276,42 +276,42 @@ public class UserSessionManager implements ISessionManager {
     }
 
     /**
-     * @brief Reset all requests for the next track.
+     * Reset all requests for the next track.
      */
     public void resetNextTrackRequests() {
         usersAskedForNextTrack.clear();
     }
 
     /**
-     * @brief Reset all requests for the previous track.
+     * Reset all requests for the previous track.
      */
     public void resetPreviousTrackRequests() {
         usersAskedForPreviousTrack.clear();
     }
 
     /**
-     * @brief Reset all requests to turn the volume up.
+     * Reset all requests to turn the volume up.
      */
     public void resetTurnVolumeUpRequests() {
         usersAskedToTurnVolumeUp.clear();
     }
 
     /**
-     * @brief Reset all requests to turn the volume down.
+     * Reset all requests to turn the volume down.
      */
     public void resetTurnVolumeDownRequests() {
         usersAskedToTurnVolumeDown.clear();
     }
 
     /**
-     * @brief Reset all requests to turn the volume down.
+     * Reset all requests to turn the volume down.
      */
     public void resetPlayPauseRequests() {
         usersAskedForPlayPause.clear();
     }
 
     /**
-     * @brief Delete the sessions that are not active anymore.
+     * Delete the sessions that are not active anymore.
      */
     private void deleteObsoleteSessions() {
 

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- * @brief This class a multicast client.
+ * This class a multicast client.
  */
 public class MulticastClient implements Runnable {
 
@@ -31,7 +31,7 @@ public class MulticastClient implements Runnable {
     private boolean running;
 
     /**
-     * @brief MulticastClient constructor.
+     * MulticastClient constructor.
      *
      * @param multicastAddress Multicast address to use.
      * @param port Port to use for the communication.
@@ -68,7 +68,7 @@ public class MulticastClient implements Runnable {
     }
 
     /**
-     * @brief Stop the multicast client.
+     * Stop the multicast client.
      */
     public void stop() {
         running = false;
@@ -76,7 +76,7 @@ public class MulticastClient implements Runnable {
     }
 
     /**
-     * @brief Send a message by multicast.
+     * Send a message by multicast.
      *
      * @param message The message to send.
      */

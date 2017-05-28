@@ -20,7 +20,7 @@ import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
 /**
- * @brief Class used to manages playlist.
+ * Class used to manages playlist.
  */
 public class PlaylistManager {
 
@@ -50,7 +50,7 @@ public class PlaylistManager {
     }
 
     /**
-     * @brief Get the object instance.
+     * Get the object instance.
      *
      * @return The instance of the object.
      */
@@ -67,7 +67,7 @@ public class PlaylistManager {
     }
 
     /**
-     * @brief Returns the ephemeral playlist currently playing.
+     * Returns the ephemeral playlist currently playing.
      *
      * @return The ephemeral playlist currently playing.
      */
@@ -76,7 +76,7 @@ public class PlaylistManager {
     }
 
     /**
-     * @brief Creates a playlist with the given name as parameter.
+     * Creates a playlist with the given name as parameter.
      *
      * The playlist is automatically saved into the database and added
      * to manager list.
@@ -95,7 +95,7 @@ public class PlaylistManager {
     }
 
     /**
-     * @brief Removes an existing playlist.
+     * Removes an existing playlist.
      *
      * The playlist is automatically removed from the database and from
      * the manager list.
@@ -109,7 +109,7 @@ public class PlaylistManager {
     }
 
     /**
-     * @brief Returns the list of the saved playlists.
+     * Returns the list of the saved playlists.
      *
      * Every time it is invoked, this method will ask the database
      * the list of saved playlists.
@@ -123,7 +123,7 @@ public class PlaylistManager {
     }
 
     /**
-     * @brief Returns the Favorites playlist.
+     * Returns the Favorites playlist.
      *
      * @return The Favorites playlist.
      */
@@ -132,7 +132,7 @@ public class PlaylistManager {
     }
 
     /**
-     * @brief Adds the given track in the Favorites playlist.
+     * Adds the given track in the Favorites playlist.
      *
      * This method will automatically save the track passed as parameter
      * if it is not already in the database.
@@ -149,7 +149,7 @@ public class PlaylistManager {
     }
 
     /**
-     * @brief Removes the given track form the Favorites playlist.
+     * Removes the given track form the Favorites playlist.
      *
      * This method will automatically delete the association between the
      * track and the Favorites playlist from the database.
@@ -172,7 +172,7 @@ public class PlaylistManager {
     }
 
     /**
-     * @brief Returns the Favorites playlist.
+     * Returns the Favorites playlist.
      *
      * @return The Favorites playlist.
      */
@@ -214,7 +214,7 @@ public class PlaylistManager {
     }
 
     /**
-     * @brief Returns the list of saved playlists.
+     * Returns the list of saved playlists.
      *
      * @return The list of saved playlists.
      */

@@ -5,15 +5,6 @@
       La commande pour compiler le document est la suivate:
 
       pandoc --latex-engine=xelatex --listings Rapport.md -o Rapport.pdf
-
-
-  2. Afin qu'une image soit correctement placée dans le document, la commande Markdown utilisée jusqu'à maintenant n'est plus d'actualité.
-      Il faut maintenant utiliser la syntaxe suivante:
-
-      \begin{figure}
-        \includegraphics{<url local de l'image>}
-        \caption{<Légende>}
-      \end{figure}
 -->
 
 ---
@@ -33,7 +24,7 @@ header-includes:
     - \usepackage{graphicx}
     - \usepackage{tikz}
     - \usepackage{hyperref}
-    - \usepackage{floatrow}
+    - \usepackage{caption}
 
     # Some beautiful colors.
     - \definecolor{pblue}{rgb}{0.13, 0.13, 1.0}
@@ -87,7 +78,7 @@ header-includes:
 \begingroup
 \let\footnote\thanks
 \begin{center}
-{\LARGE\@title}\vskip1.5em
+{\huge\@title}\vskip1.5em
 \includegraphics[width=10cm, height=10cm]{images/logo.png}\vskip1.5em
 {\LARGE Rapport final}\vskip1.5em
 {\large\@author}\vskip1.5em
@@ -127,33 +118,33 @@ header-includes:
 # Introduction
 Durant le quatrième semestre de la section TIC de l'HEIG-VD, nous devons effectuer un projet par groupes de cinq ou six personnes. Le but est de mettre en oeuvre les connaissances que nous avons acquises au long des semestres précédents à travers un projet conséquent. Nous devrons prendre conscience des difficultés liées au travail de groupe, ainsi qu'apprendre à planifier un travail sur plusieurs mois. Au terme du semestre, nous devons rendre un programme complet et fonctionnel, avec une documentation adéquate et être capables de le présenter et le défendre.
 
-Le projet dure 16 semaines et vaut trois crédits. Un crédit valant 30 heures de travail, le temps de travail est de 540 heures pour toute l'équipe, soit cinq heures et demi par membres du projet par semaine.
+Le projet dure seize semaines et vaut trois crédits. Un crédit valant 30 heures de travail, le temps de travail est de 540 heures pour toute l'équipe, soit cinq heures et demi par membres du projet, par semaine.
 
 Dans le cadre du projet, l'équipe de programmation est composée du chef de projet Ludovic Delafontaine, de son remplaçant Lucas Elisei et des membres David Truan, Thibaut Togue, Yosra Harbaoui et Denise Gemesio.
 
 Dans ce rapport, nous allons expliquer notre démarche de travail et les principaux choix d'architecture et de design de code. Il sera structuré selon les principaux paquets de notre application.
 
-Ce rapport, étant à rendre deux semaines avant la fin du temps total aloué pour le projet, s'arrête donc en semaine quatorze et il restera la défense orale qui ne sera pas expliquée dans ce document.
+Ce rapport, étant à rendre deux semaines avant la fin du temps total alloué pour le projet, s'arrête donc en semaine quatorze. Les deux dernières semaines seront consacrées à la défense orale, étape qui ne sera pas expliquée dans ce document.
 
 # Objectif
 Le but de notre programme est de proposer une application client-serveur qui permettra aux clients d'envoyer des fichiers musicaux au serveur pour que celui-ci les joue. Il se démarque d'une simple application de lecture en continu (streaming) dans le fait que la liste de lecture ne peut être changée que par les clients, par le biais d'un système de votes positifs ou négatifs. Ceux-ci permettent à un morceau d'être placé plus en avant ou en arrière dans la liste de lecture. Cela permet donc à chacun de donner son avis, tout en centralisant la lecture de la musique sur un seul ordinateur. De plus, l'application met à disposition les fonctionnalités suivantes pour une expérience encore plus communautaire:
 
-- Passer au morceau suivant si la majorité le souhaite. Cela aura pour effet de récupérer la musique suivante la plus demandée et de la lire.
-- Augmenter et diminuer le volume si la majorité le souhaite.
-- Système de favoris pour permettre aux utilisateurs de sauvegarder les informations d'une chanson pour pouvoir la retrouver par la suite.
+- Passer au morceau suivant, si la majorité le souhaite. Cela aura pour effet de récupérer la chanson suivante la plus demandée et de la lire.
+- Augmenter et diminuer le volume, si la majorité le souhaite.
+- Système de favoris afin de permettre aux utilisateurs de sauvegarder les informations d'une chanson pour pouvoir la retrouver par la suite.
 
 On souhaite répondre à l'éternel problème de devoir se partager une prise jack ou de devoir se battre pour pouvoir passer un morceau que l'on souhaite écouter.
 
 # Public cible
 Cette application visera un public dont la gestion de la musique lors d'un événement est critique.
-Cela peut autant concerner les lieux publics tels que les bars ou encore les événements privés, tels que les soirées entre amis.
+Cela peut autant concerner les lieux publics, tels que les bars, ou encore, les événements privés, tels que les soirées entre amis.
 
 Notre application se voudra donc simple à utiliser, afin qu'un néophyte dans le domaine de l'informatique puisse l'utiliser.
 
 # Conception et normes
-Avant de se lancer dans le développement, nous avons pris le temps de réfléchir à l'architecture de notre programme. Nous avons souhaité séparer au mieux les différentes entités de notre application, afin de simplifier le développement, la compréhension du programme et rester très abstraits.
+Avant de nous lancer dans le développement, nous avons pris le temps de réfléchir à l'architecture de notre programme. Nous avons souhaité séparer au mieux les différentes entités de notre application, afin de simplifier le développement, la compréhension du programme et rester très abstraits.
 
-Nous avons donc pris trois semaines, avant de commencer le développement, afin de définir l'architecture du programme décrite ci-dessous.
+Avant de commencer le développement, nous avons donc passé trois semaines à définir l'architecture du programme décrite au chapitre suivant.
 
 Une fois l'architecture bien définie, nous avons déterminé des normes de développement afin d'utiliser toutes et tous la même façon de coder. Parmi les points discutés, nous avons abouti aux conventions suivantes :
 
@@ -163,37 +154,44 @@ Une fois l'architecture bien définie, nous avons déterminé des normes de dév
 
 # Architecture
 
-![Architecture du programme](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/projet/master/doc/PRO/UML/Architecture.puml){height=200px}
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{figures/Architecture.png}
+  \captionof{figure}{Architecture du programme}
+\end{minipage}
 
-## Entité base de données
-Cette entité est une abstraction de la base de données. Elle permet de simplifier l'interaction avec cette dernière en mettant à disposition des méthodes pour les opérations de base sur la base de données.
-
-Cette entité permet, par exemple, à un utilisateur de sauvegarder les métadonnées des chansons qui lui plaisent dans la base de données.
-
-Les différentes tables sont générées automatiquement par Hibernate (voir `Technlogies utilisées` et la corrélation entre les classes Java et la base de données est définie dans les fichiers `.hbm.xml` dans le dossier `ressources/models`), ce qui permet de séparer les deux notions: programmation orientées objet et base de données.
-
-## Entité système de fichiers
-Cette entité a pour rôle d'assurer la gestion des fichiers en interagissant avec le système de fichiers. Elle permet de sauvegarder, supprimer, renommer des fichiers sur le disque, recevoir des fichiers par le réseau et vérifier qu'ils ne soient pas corrompus.
-
-## Entité réseau
+## Entité *Réseau*
 Cette entité permet toute la gestion du réseau entre les clients et le serveur. Elle permet de répondre aux attentes suivantes :
 
 - Le serveur doit pouvoir gérer plusieurs clients, mais sans devoir garder une connexion constante entre chaque client et le serveur.
 - Un serveur ou un client doivent pouvoir communiquer l'un avec l'autre en utilisant une liaison de communication "privée" à l'aide de l'Unicast.
 - Un serveur doit pouvoir diffuser à tous les clients un message afin que tout le monde le réceptionne et le traite à l'aide du Multicast.
 
-## Entité sessions
+## Entité *Contrôleur*
+Cette entité permet le contrôle de l'application. C'est elle qui va gérer le comportement de l'application et faire la liaison, le mieux possible, entre toutes les entités décrites ci-dessus ainsi que répondre aux demandes des utilisateurs et des serveurs.
+
+## Entités *Utilitaires*
+Ces entités sont celles qui ne trouvent pas leur place dans des entités spécifique. L'entité de configuration qui permet de récupérer des propriétés d'un fichier de configuration fait notamment partie de ces entités utilitaires.
+
+## Entité *Sessions*
 Cette entité permet de gérer des notions de sessions afin de connaître les personnes connectées et les serveurs accessibles. Il y a notamment deux notions de session : les sessions serveur et les sessions utilisateur.
+
+## Entité *Système de fichiers*
+Cette entité a pour rôle d'assurer la gestion des fichiers en interagissant avec le système de fichiers. Elle permet de sauvegarder, supprimer, renommer des fichiers sur le disque, recevoir des fichiers par le réseau et vérifier qu'ils ne soient pas corrompus.
 
 Dans le cas des sessions serveur, le but est de savoir si un serveur est encore accessible. A chaque mise à jour de la part du (des) serveur(s), la session associée sera mise à jour. Si un des serveurs venait à être éteint ou déconnecté, le client supprimerait le serveur afin qu'il ne tente pas d'y accéder.
 
 Dans le cas des sessions utilisateur, le but est de pouvoir limiter un utilisateur dans son nombre d'actions sur le serveur - voter pour un morceau, voter contre un morceau, faire une demande de changement de musique, etc. - et savoir combien d'utilisateurs sont actifs sur le serveur afin de savoir quand une action définie par une majorité doit avoir lieu.
 
-## Entité médias
-Cette entité regroupe tout ce qui concerne les médias de notre application : chansons, listes de lecture, lecteur de musique.
+## Entité *Base de données*
+Cette entité est une abstraction de la base de données. Elle permet de simplifier l'interaction avec cette dernière en mettant à disposition des méthodes pour les opérations de base sur la base de données.
 
-## Entité contrôleur
-Cette entité permet le contrôle de l'application. C'est elle qui va gérer le comportement de l'application et faire la liaison, le mieux possible, entre toutes les entités décrites ci-dessus ainsi que répondre aux demandes des utilisateurs et des serveurs.
+Cette entité permet, par exemple, à un utilisateur de sauvegarder les métadonnées des chansons qui lui plaisent dans la base de données.
+
+Les différentes tables sont générées automatiquement par Hibernate (voir `Technlogies utilisées` et la corrélation entre les classes Java et la base de données est définie dans les fichiers `.hbm.xml` dans le dossier `ressources/models`), ce qui permet de séparer les deux notions: programmation orientées objet et base de données.
+
+## Entité *Médias*
+Cette entité regroupe tout ce qui concerne les médias de notre application : chansons, listes de lecture, lecteur de musique.
 
 ## Entité visuelle
 L'entité visuelle est ce que l'on va montrer à l'utilisateur afin qu'il ait une interface pour intéragir avec le programme. Cette interface sera liée directement au contrôleur, qui saura quoi faire en fonction de l'action demandée.
@@ -201,22 +199,32 @@ L'entité visuelle est ce que l'on va montrer à l'utilisateur afin qu'il ait un
 ## Entités utilitaires
 Ces entités sont celles qui ne trouvent pas leur place dans des entités spécifique. L'entité de configuration qui permet de récupérer des propriétés d'un fichier de configuration fait notamment partie de ces entités utilitaires.
 
+\pagebreak
+
 # Description technique
 La description technique se développera dans l'ordre croissant de complexité des différentes entités de notre programme.
 
 Pour chacune des paquets, dérivés des entitées décrites ci-dessus, nous décrirons brièvement le but des différentes classes.
 
-## Paquet database
+## Paquet `database`
 
-![Paquet database](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/projet/master/doc/PRO/UML/database.puml){ height=200px }
+\begin{minipage}[c]{\linewidth}
+  \centering
+  \includegraphics[height=160pt]{figures/database.png}
+  \captionof{figure}{Paquet \lstinline{database}}
+\end{minipage}
 
 Ce paquet est constitué essentiellement de la classe `DatabaseManager` dont le rôle est d'assurer les méthodes définies par les notions CRUD (Create, Read, Update, Delete) de la base de données de notre application et d'assurer la fermeture de la connexion à celle-ci.
 
 Hibernate est la librairie utilisée dans notre projet afin de pouvoir communiquer avec la base de données. Elle utilise un système de Session afin de garder en cache les différentes informations de la base de données. Avant d'enregistrer sur la base de données, Hibernate va interroger son cache afin de savoir si l'information est disponible et s'il est nécessaire de faire une quelconque action sur la base de données réelles.
 
-## Paquet file
+## Paquet `file`
 
-![Paquet file](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/projet/master/doc/PRO/UML/file.puml){ height=200px }
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[height=160pt]{figures/file.png}
+  \captionof{figure}{Paquet \lstinline{file}}
+\end{minipage}
 
 Le paquet `file` est constitué de deux classes: `FileManager` et `FilesFormats`.
 
@@ -231,26 +239,33 @@ Pour retrouver l'extension du fichier, nous avons procédé de la manière suiva
 - Pour les M4A, nous regardons les premiers octets en partant du quatrième octet depuis le début du fichier.
 - Pour les WAV, à partir du huitième octet depuis le début du fichier.
 
-\begin{figure}
-  \includegraphics{images/mp3-file-hexeditor.png}
-  \caption{Aperçu hexadécimal d'un fichier MP3}
-\end{figure}
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{images/mp3-file-hexeditor.png}
+  \captionof{figure}{Aperçu hexadécimal d'un fichier MP3}
+\end{minipage}
 
-\begin{figure}
-  \includegraphics{images/m4a-file-hexeditor.png}
-  \caption{Aperçu hexadécimal d'un fichier M4A}
-\end{figure}
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{images/m4a-file-hexeditor.png}
+  \captionof{figure}{Aperçu hexadécimal d'un fichier M4A}
+\end{minipage}
 
-\begin{figure}
-  \includegraphics{images/wav-file-hexeditor.png}
-  \caption{Aperçu hexadécimal d'un fichier WAV}
-\end{figure}
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{images/wav-file-hexeditor.png}
+  \captionof{figure}{Aperçu hexadécimal d'un fichier WAV}
+\end{minipage}
 
 Connaître le type de fichier nous permettra de traiter uniquement les fichiers supportés pas notre plateforme et, aussi, en termes de sécurité, éviter qu'un utilisateur ne fasse planter le serveur en envoyant un fichier qui n'est pas supporté par celui-ci.
 
-## Paquet network
+## Paquet `network`
 
-![Paquet network](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/projet/master/doc/PRO/UML/network.puml)
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[height=160pt]{figures/network.png}
+  \captionof{figure}{Paquet \lstinline{network}}
+\end{minipage}
 
 Pour répondre aux besoin architecturaux vus plus haut, nous avons développé plusieurs classes qui s'occupent de gérer les sockets et envois de commande via le réseau. Nous savions que notre protocole enverrait du texte car la lecture de ligne dans un flux d'entrée se fait facilement grâce à la méthode `readline()`. Nous avions aussi besoin d'envoyer des objet sérialisés au format JSON.
 
@@ -266,15 +281,17 @@ La seule commande envoyée en Multicast est `PLAYLIST_UPDATE`, qui est envoyée 
 
 Les objets décrits ci-dessous sont évidemment sérialisés avant d'être transférés sur le réseau.
 
-\includegraphics{images/commandes_client_serveur.png}
-  \begin{figure}
-  \caption{Commandes envoyées par le client au serveur}
-\end{figure}
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{images/commandes_client_serveur.png}
+  \captionof{figure}{Commandes envoyées par le client au serveur}
+\end{minipage}
 
-\begin{figure}
-  \includegraphics{images/commande_serveur_client.png}
-  \caption{Commandes envoyées par le serveur au client}
-\end{figure}
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{images/commande_serveur_client.png}
+  \captionof{figure}{Commandes envoyées par le serveur au client}
+\end{minipage}
 
 ### `Server`
 Côté serveur, nous avons décidé d'opter pour une architecture avec un thread réceptionniste `Server` qui va attendre une nouvelle connexion de la part des clients. Une fois un nouveau client arrivé, il va lancer un thread `UnicastClient` qui va s'occuper de la communication avec le client. Cette communication se fait via un socket Unicast car il s'agit d'une communication privée entre le serveur et le client. Nous avons choisi cette solution car plusieurs connexions avec des clients peuvent survenir simultanément et ce système réceptionniste, avec un thread par client, gère plusieurs connexions en même temps, contrairement à un système avec un seul thread qui s'occupe d'un client à la fois.
@@ -282,7 +299,11 @@ Côté serveur, nous avons décidé d'opter pour une architecture avec un thread
 ### `UnicastClient`
 La classe `UnicastClient` va pouvoir recevoir les commandes venant du réseau et en renvoyer. Elle implémente l'interface `Runnable`, ce qui lui permet de s'exécuter en tant que thread. Sa force réside dans le fait qu'elle peut être utilisée aussi bien du côté server que du côté client, grâce au fait qu'elle lit les commandes reçues et les envoie au `Core` pour qu'il les exécute.
 
-![Diagramme d'activité de la réception/envoi unicast](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/projet/master/doc/PRO/actvity/UnicastClient.puml)
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[height=0.6\textheight]{figures/unicast_client.png}
+  \captionof{figure}{Diagramme d'activité de la réception et de l'envoi unicast}
+\end{minipage}
 
 Ce diagramme montre la lecture d'une commande venant du réseau et son découpage pour en extraire les arguments et la passer au `Core`. Celui-ci s'occupera d'exécuter la commande si elle est disponible dans l'instance de son `AbstractCore` (voir chapitre `Core`). Le `Core` renvoie ensuite une commande à envoyer en réponse à celle reçue. La communication se termine lorsque l'une des extrémités envoie la commande `END_OF_COMMUNICATION` ou qu'elle ferme son socket.
 
@@ -301,11 +322,19 @@ C'est dans cette classe que sont définies les commandes spécifiques au réseau
 ### Threads lancés pour gérer la communication client-serveur
 Voici les différents threads lancés par le client et le serveur.
 
-![Threads lancés par le serveur et les clients](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/projet/master/doc/PRO/other_diagrams/network_threads.puml)
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{figures/network_threads.png}
+  \captionof{figure}{Threads lancés les clients et le serveur}
+\end{minipage}
 
-## Paquet session
+## Paquet `session`
 
-![Paquet session](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/projet/master/doc/PRO/UML/session.puml)
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{figures/session.png}
+  \captionof{figure}{Paquet \lstinline{session}}
+\end{minipage}
 
 Cette entité permet de gérer la notion de session afin de connaître les personnes connectées et les serveurs accessibles.
 
@@ -337,14 +366,20 @@ Elle est nettoyée à l'aide du `ScheduledExecutorService` afin de supprimer de 
 ### `UserSessionManager`
 Cette classe permet de gérer le stockage, le nettoyage ainsi que les votes des différentes sessions utilisateur. Elle permet de garder à jour deux listes qui permettent de stocker les utilisateurs actifs et inactifs. Elle a un système de mise à jour automatique à l'aide d'un `ScheduledExecutorService`. Pour ce qui est des votes, elle permet d'empêcher qu'un utilisateur ne vote plusieurs fois pour la même actions (score, pause, etc.).
 
-## Paquet media
+\pagebreak
 
-![Paquet media](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/projet/master/doc/PRO/UML/media.puml)
+## Paquet `media`
+
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{figures/media.png}
+  \captionof{figure}{paquet \lstinline{media}}
+\end{minipage}
 
 Ce package permet de définir tous les éléments nécessaires à la gestion de la musique au niveau de l'application.
 
-### `EphermeralPlaylist`
-La classe EphermeralPlaylist représente la liste de lecture en cours de construction, c'est-à-dire, la liste de lecture en cours de lecture. Cela permet de mettre à jour l'interface graphique lors d'une action sur un élément de la playlist. La mise à jour se fait grâce au pattern observeur, à travers la liste `ObservableSortedPlaylistTrackList`, qui joue, en même temps, le rôle d'observable et d'observeur. Elle observe des chansons de la liste dans le but de changer l'état de la liste de lecture en cas de vote positif ou négatif, et devient observable dans le cas où elle envoie des notifications lors des mises à jour. Dans cette classe, nous avons aussi le champ `delegate` qui représente la liste de lecture qui sera enregistrée dans la base de données pour le suivi de celle-ci.
+### `EphemeralPlaylist`
+La classe EphemeralPlaylist représente la liste de lecture en cours de construction, c'est-à-dire, la liste de lecture en cours de lecture. Cela permet de mettre à jour l'interface graphique lors d'une action sur un élément de la playlist. La mise à jour se fait grâce au pattern observeur, à travers la liste `ObservableSortedPlaylistTrackList`, qui joue, en même temps, le rôle d'observable et d'observeur. Elle observe des chansons de la liste dans le but de changer l'état de la liste de lecture en cas de vote positif ou négatif, et devient observable dans le cas où elle envoie des notifications lors des mises à jour. Dans cette classe, nous avons aussi le champ `delegate` qui représente la liste de lecture qui sera enregistrée dans la base de données pour le suivi de celle-ci.
 
 ### `Player`
 Cette classe permet de réaliser les actions de base sur la musique telles que la lecture, la mise sur pause, passer à la musique suivante, etc.
@@ -382,7 +417,9 @@ Nous avons implémenté trois constructeurs :
 - `public Track(String id, String title, String artist, String album, Integer length, String uri)` : constructeur permettant de créer une instance de `Track` lorsque tous les paramètres sont connus.
 - `public Track(AudioFile audioFile)` : constructeur permettant de créer une instance de `Track` à partir d'un fichier audio. Il est utile lorsque nous souhaitons transférer un fichier et effectuer un contrôle sur une chanson, au lieu de vérifier le fichier audio lui-même.
 
-## Paquet playlist
+ \pagebreak
+
+## Paquet `playlist`
 Le paquet `playlist` met en oeuvre ce qui a trait à la gestion des playlists, dans notre cas :
 
 - Le lien entre une certaine chanson et les playlists dans lesquelles elle se trouve.
@@ -407,7 +444,7 @@ Cette classe permet de créer le lien entre une certaine liste de lecture et une
 ### `VoteComparator`
 Le comparateur de vote ne possède qu'une fonction. Celle-ci sert tout simplement à déterminer, entre deux chansons, laquelle a le plus grand nombre de votes. Il a été créé dans le but de réorganiser la liste de lecture en commençant par les chansons les plus votées.
 
-## Paquet utils
+## Paquet `utils`
 Le paquet `utils` réunit tous les utilitaires dont nous avons eu besoin au sein de plusieurs classes et dont l'implémentation n'avait aucun sens au sein desdites classes. L'utilité de chaque classe diffère alors énormément.
 
 ### `Configuration`
@@ -446,11 +483,17 @@ Cette classe a été créée uniquement pour aider à déboguer le programme, po
 
 L'affichage des logs peut être désactivé au niveau du fichier de configuration `commusica.properties` en réglant la valeur de `DEBUG` à 0.
 
-## Paquet core
+\pagebreak
 
-![Paquet core](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/projet/master/doc/PRO/UML/core.puml)
+## Paquet `core`
 
-Pour garder un niveau d'abstraction le plus élevé possible, nous avons voulu faire transiter, à travers un contrôleur, toutes les informations venant du réseau et des utilisateurs, le but étant d'avoir le même point d'entrée que l'on soit client ou serveur. Pour cela, il nous fallait un contrôleur central qui puisse être appelé de la même façon, quel que soit le choix de l'identité. C'est alors à celui-ci de vérifier l'existence d'une fonction et de communiquer l'action à exécuter à l'entité concernée. Pour résoudre ce problème, notre raisonnement nous a mené à nous tourner vers la réflexivité offerte par Java. Ce mécanisme permet d'instancier des méthodes à l'exécution en utilisant la méthode `invoke(Object obj, Object... args)` ayant comme premier paramètre un String représentant le nom de la méthode à invoquer et comme deuxième paramètre un tableau d'`Object` contentant les différents arguments dont la méthode invoquée a besoin (voir utilisation dans notre programme**FIGURE**).
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{figures/core.png}
+  \captionof{figure}{Paquet \lstinline{core}}
+\end{minipage}
+
+Pour garder un niveau d'abstraction le plus élevé possible, nous avons voulu faire transiter, à travers un contrôleur, toutes les informations venant du réseau et des utilisateurs, le but étant d'avoir le même point d'entrée que l'on soit client ou serveur. Pour cela, il nous fallait un contrôleur central qui puisse être appelé de la même façon, quel que soit le choix de l'identité. C'est alors à celui-ci de vérifier l'existence d'une fonction et de communiquer l'action à exécuter à l'entité concernée. Pour résoudre ce problème, notre raisonnement nous a mené à nous tourner vers la réflexivité offerte par Java. Ce mécanisme permet d'instancier des méthodes à l'exécution en utilisant la méthode `invoke(Object obj, Object... args)` ayant comme premier paramètre un String représentant le nom de la méthode à invoquer et comme deuxième paramètre un tableau d'`Object` contentant les différents arguments dont la méthode invoquée a besoin.
 
 Il nous fallait maintenant une classe qui puisse jouer le rôle du contrôleur. Pour cela, nous avons développé les `Core`, qui se trouvent tous dans le paquet `core`.
 
@@ -500,9 +543,13 @@ Grâce à ces classes, nous avons réglé le problème de contrôleur central pa
 
 ### Envoi d'un fichier audio d'un client vers un serveur
 
-![Diagramme de séquence de l'envoi d'un fichier audio](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/projet/master/doc/PRO/sequencies/TRACK.puml)
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[height=0.9\textheight]{figures/track_activity.png}
+  \captionof{figure}{Diagramme de séquence de l'envoi d'un fichier audio}
+\end{minipage}
 
-## Paquet et ressources ui
+## Paquet et ressources `ui`
 Concernant l'interface graphique, nous avons utilisé la librairie JavaFX. Celle-ci nous a permis de faire usage de l'outil Scene Builder afin de développer, en premier lieu, une maquette qui s'est ensuite développée, à travers plusieurs étapes, en l'interface graphique d'aujourd'hui. Le fonctionnement de JavaFX demande à avoir deux notions qui communiquent entre elles: un ou plusieurs fichiers FXML qui définissent l'arrangement de la fenêtre et une ou plusieurs classes Java qui permettent de lancer la fenêtre et communiquer avec ses composants.
 Dans un premier temps, nous avons développé un fichier FXML avec l'aide de Scene Builder. Grâce à celui-ci, nous avons pu apprendre les bons usages FXML. Nous avons ensuite créé un fichier Java depuis lequel nous étions capables lancer la fenêtre au démarrage du programme. Cependant, le code se développant et devenant de plus en plus important, nous avons pris la décision de diviser aussi bien les fichiers FXML que les fichiers Java en plusieurs classes permettant d'avoir un regard plus précis sur chaque partie de notre implémentation.
 Ainsi, nous avons aujourd'hui plusieurs classes Java et plusieurs fichiers FXML qui sont reliés à leur classe principale `UIController` respectivement `main.fxml`.
@@ -671,8 +718,8 @@ Nous l'avons utilisé dans le but de forcer l'utilisation de l'IPv4 pour les int
 
 Lors du lancement de notre programme, la réelle exécution de celui-ci est la suivante:
 
-0. Exécution du programme Commusica
-1. Lancement de Capsule -> Définition des paramètres à utiliser pour la JVM 2. Lancement de Commusica avec les paramètres JVM souhaités
+1. Exécution du programme Commusica
+2. Lancement de Capsule -> Définition des paramètres à utiliser pour la JVM 2. Lancement de Commusica avec les paramètres JVM souhaités
 3. Démarrage de Commusica`
 
 ## Git / GitHub
@@ -684,6 +731,7 @@ Nous l'avons utilisé afin de permettre à chacun de développer séparément et
 IntelliJ IDEA est un environnement de développement intégré, autrement dit, un ensemble d'outils destinés au développement logiciel.
 
 Nous l'avons choisi pour les raisons suivantes:
+
 - Intégration avec les outils de gestions de versions tel que Git.
 - Une autocomplétion hors pair.
 - L'analyse et inspection : il analyse en temps réel et en permanence le code, à la recherche de problèmes potentiels.
@@ -815,7 +863,7 @@ En conclusion, nous avons essayé de réaliser un programme qui regroupe les qua
 
 Nous pensons avoir atteint ces objectifs. Il y a encore des points à améliorer mais nous avons réussi à produire un programme fonctionnel qui répond à la quasi totalité des points du cahier des charges.
 
-# Bilan
+# Bilans personnels
 ## Ludovic
 J'ai la fierté de pouvoir me dire que ce projet de semestre s'est très bien passé. J'ai l'impression que l'on a su toujours communiquer dans le respect et en tenant compte des points de vue de chacun à la construction du projet. Cela a permis de pouvoir créer une réelle cohésion de groupe afin de réaliser quelque chose, qui n'était à la base qu'une idée sur papier, de fonctionnel et qui correspond quasiment à la version à laquelle on a réfléchit en tout début de projet.
 
@@ -869,8 +917,6 @@ Pour la gestion du projet le chef de groupe  Ludovic à parfaitement bien joué 
  
  
 ## Yosra
-
-## Bilan du groupe
 
 # Sources
 - Capsule ([capsule.io](capsule.io)) - Site officiel de la librairie Capsule
@@ -1383,11 +1429,23 @@ Les fonctionnalités listées ci-dessous ne sont pas nécessaires au bon fonctio
 7. Une fois l'événement terminé, la musique est conservée sur le serveur jusqu'à ce que l'administrateur décide de nettoyer la base de données ou que la capacité maximum de stockage soit atteinte.
 8. Le client conserve une copie des métadonnées des chansons qui lui ont plu, dans sa base de données locale et peut, de ce fait, retrouver les morcaux qui lui ont plu lors de cet événement.
 
-![Schéma préliminaire du fonctionnement général](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/cahier-des-charges/master/Overview.plantuml)
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics{figures/overview.png}
+  \captionof{figure}{Schéma préliminaire du fonctionnement général}
+\end{minipage}
 
-![Schéma préliminaire du schéma d'activité](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/cahier-des-charges/master/Activity.plantuml)
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics{figures/database_orig.png}
+  \captionof{figure}{Schéma préliminaire de la base de données}
+\end{minipage}
 
-![Schéma préliminaire de la base de données](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/cahier-des-charges/master/Database.plantuml)
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{figures/activity.png}
+  \captionof{figure}{Schéma préliminaire du schéma d'activité}
+\end{minipage}
 
 \pagebreak
 

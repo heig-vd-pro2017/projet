@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * @brief Class that makes a link between a track and a playlist
+ * Class that makes a link between a track and a playlist
  */
 public class PlaylistTrackId implements Serializable {
 
@@ -18,14 +18,14 @@ public class PlaylistTrackId implements Serializable {
     private Track track;
 
     /**
-     * @brief Create a link between playlist and track.
+     * Create a link between playlist and track.
      */
     public PlaylistTrackId() {
 
     }
 
     /**
-     * @brief Create a link between a playlist and a track.
+     * Create a link between a playlist and a track.
      *
      * @param playlist The playlist.
      * @param track The track.
@@ -37,7 +37,7 @@ public class PlaylistTrackId implements Serializable {
     }
 
     /**
-     * @brief Set the playlist of the PlaylistTrack.
+     * Set the playlist of the PlaylistTrack.
      *
      * @param playlist The playlist.
      */
@@ -46,7 +46,7 @@ public class PlaylistTrackId implements Serializable {
     }
 
     /**
-     * @brief Get the playlist of the PlaylistTrack.
+     * Get the playlist of the PlaylistTrack.
      *
      * @return The playlist.
      */
@@ -55,7 +55,7 @@ public class PlaylistTrackId implements Serializable {
     }
 
     /**
-     * @brief Set the track of the PlaylistTrack.
+     * Set the track of the PlaylistTrack.
      *
      * @param track The track.
      */
@@ -64,7 +64,7 @@ public class PlaylistTrackId implements Serializable {
     }
 
     /**
-     * @brief Get the track of the PlaylistTrack.
+     * Get the track of the PlaylistTrack.
      *
      * @return The track.
      */

@@ -32,7 +32,7 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 /**
- * @brief This class represents the server side of the application.
+ * This class represents the server side of the application.
  */
 public class ServerCore extends AbstractCore implements ICore {
 
@@ -58,7 +58,7 @@ public class ServerCore extends AbstractCore implements ICore {
     private ScheduledExecutorService broadcastPlaylist;
 
     /**
-     * @brief Setup the core as a server.
+     * Setup the core as a server.
      */
     public ServerCore() {
 
@@ -78,7 +78,7 @@ public class ServerCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief What to do when there is an end of communication.
+     * What to do when there is an end of communication.
      *
      * @param args Args of the command.
      *
@@ -89,9 +89,8 @@ public class ServerCore extends AbstractCore implements ICore {
         return "";
     }
 
-
     /**
-     * @brief Entry point to send the current playlist by multicast. It also sends the server InetAdress, name
+     * Entry point to send the current playlist by multicast. It also sends the server InetAdress, name
      * and id.
      *
      * @param args Args of the command.
@@ -123,7 +122,7 @@ public class ServerCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Add the user to the active clients.
+     * Add the user to the active clients.
      *
      * @param args Args of the command.
      *
@@ -143,7 +142,7 @@ public class ServerCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Method invoked when the client sends the TRACK_REQUEST command. It retrieves the Track object
+     * Method invoked when the client sends the TRACK_REQUEST command. It retrieves the Track object
      * by the args and then check if it is already stored in the database. It checks if the id (MD5 checksum
      * of the file) is already present. If not it checks if a track with the same title, artist, album and length
      * (with a 5s delta) is already stored in the database
@@ -157,7 +156,7 @@ public class ServerCore extends AbstractCore implements ICore {
         LOG.info("Client would like to know if the server accepts the track.");
 
         // Get the command arguments
-        Integer userId = Integer.parseInt((String) args.remove(0)); // A UTILISER POUR VERIFIER LES SESSIONS !!
+        Integer userId = Integer.parseInt((String) args.remove(0));
         args.remove(0); // Remove the socket as it's not needed in this command
         Track trackToReceive = Serialize.unserialize((String) args.remove(0), Track.class);
 
@@ -229,7 +228,7 @@ public class ServerCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Method invoked when the client send the SENDING_TRACK command. retrieve by the unicast socket
+     * Method invoked when the client send the SENDING_TRACK command. retrieve by the unicast socket
      * by the args and the delegate the transfer to the FileManager.
      * Once the track is received, it compare the MD5 checksum with the id of the track to receive (which is
      * its own MD5 checksum). It then checks the format and if all checks pass, it store the new track in the
@@ -279,7 +278,7 @@ public class ServerCore extends AbstractCore implements ICore {
         Future<Object> future = executor.submit(task);
 
         try {
-            tempFile = (File) future.get(5, TimeUnit.SECONDS);
+            tempFile = (File) future.get(15, TimeUnit.SECONDS);
         } catch (TimeoutException ex) {
 
             // Delete the temp file
@@ -384,7 +383,7 @@ public class ServerCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Receive the ask for an upvote on a specific track by a client
+     * Receive the ask for an upvote on a specific track by a client
      *
      * @param args Args of the command.
      *
@@ -455,7 +454,7 @@ public class ServerCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Receive the ask for a downvote on a specific track by a client
+     * Receive the ask for a downvote on a specific track by a client
      *
      * @param args Args of the command.
      *
@@ -524,7 +523,7 @@ public class ServerCore extends AbstractCore implements ICore {
 
 
     /**
-     * @brief Sends a vote for the next track from the server side.
+     * Sends a vote for the next track from the server side.
      *
      * @param args Args of the command.
      *
@@ -541,7 +540,7 @@ public class ServerCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Entry point to send a play/pause vote from the server side.
+     * Entry point to send a play/pause vote from the server side.
      *
      * @param args Args of the command.
      *
@@ -560,7 +559,7 @@ public class ServerCore extends AbstractCore implements ICore {
 
 
     /**
-     * @brief Entry point to send an upvote from the server side.
+     * Entry point to send an upvote from the server side.
      *
      * @param args Args of the command.
      *
@@ -578,7 +577,7 @@ public class ServerCore extends AbstractCore implements ICore {
 
 
     /**
-     * @brief Entry point to send a downvote from the server side.
+     * Entry point to send a downvote from the server side.
      *
      * @param args Args of the command.
      *
@@ -596,7 +595,7 @@ public class ServerCore extends AbstractCore implements ICore {
 
 
     /**
-     * @brief Entry point to send the PLAY_PAUSE_REQUEST command.
+     * Entry point to send the PLAY_PAUSE_REQUEST command.
      *
      * @param args Args of the command.
      *
@@ -646,7 +645,7 @@ public class ServerCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Receive the ask for the next song by a client.
+     * Receive the ask for the next song by a client.
      *
      * @param args Args of the command.
      *
@@ -687,7 +686,7 @@ public class ServerCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Entry point to send the PREVIOUS_TRACK_REQUEST command.
+     * Entry point to send the PREVIOUS_TRACK_REQUEST command.
      *
      * @param args Args of the command.
      *
@@ -721,7 +720,7 @@ public class ServerCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Entry point to send a volume up request from the server side.
+     * Entry point to send a volume up request from the server side.
      *
      * @param args Args of the command.
      *
@@ -738,7 +737,7 @@ public class ServerCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Receive the ask to turn the volume up by a client.
+     * Receive the ask to turn the volume up by a client.
      *
      * @param args Args of the command.
      *
@@ -776,7 +775,7 @@ public class ServerCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Entry point to send a volume down request from the server side.
+     * Entry point to send a volume down request from the server side.
      *
      * @param args Args of the command.
      *
@@ -793,7 +792,7 @@ public class ServerCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Receive the ask to turn the volume down by a client.
+     * Receive the ask to turn the volume down by a client.
      *
      * @param args Args of the command.
      *
