@@ -761,9 +761,6 @@ Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui
 # Retour sur le cahier des charges
 Avec les tests réalisés ci-dessus et selon notre cahier des charges, voici le récapitulatif des fonctionnalités implémentées dans notre projet.
 
-### Fonctionnalités importantes
-Les fonctionnalités listées ci-dessous, dans l'ordre d'importance, sont nécessaires au bon fonctionnement de l'application.
-
 Fonction                                                        Fonctionnalité importante ?     Réalisé         Remarques
 Démarrage et arrêt corrects du programme                        Oui                             Oui             -
 Droits client-serveur                                           Oui                             Oui             -
@@ -784,8 +781,8 @@ Voir la liste des serveurs accessibles côté client              Oui           
 Accéder au serveur                                              Oui                             Oui             -
 Ajouter de la musique au serveur                                Oui                             Oui             -
 Un client ne peut pas enregistrer deux fois la même chanson durant le même événement    Oui         Oui         -
-Un client doit pouvoir supprimer une chanson de ses favoris ou ses playlists            Oui         Non         Le code gère cela, mais aucune liaison avec l'interface graphique.
-Un client doit pouvoir supprimer une playlist avec toutes les chansons contenues dans ladite playlist            Oui         Non         Le code gère cela, mais aucune liaison avec l'interface graphique.
+Un client doit pouvoir supprimer une chanson de ses favoris ou ses playlists            Oui         Partiellement         Le code gère cela, mais aucune liaison avec l'interface graphique.
+Un client doit pouvoir supprimer une playlist avec toutes les chansons contenues dans ladite playlist            Oui         Partiellement         Le code gère cela, mais aucune liaison avec l'interface graphique.
 Support d'autres formats de musique                             Non                             Oui             Ajout du support du WAV.
 Taille de fenêtre non-fixe                                      Non                             Oui             -
 Fusionner le code de l'application serveur et client            Non                             Oui             Choix au démarrage
