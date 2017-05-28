@@ -790,6 +790,15 @@ Mon seul regret est de ne pas avoir pu mieux impliquer tout le monde sur le dév
 ## Lucas
 
 ## Denise
+En tant que première expérience dans un projet qui part de zéro et qui finit sur un programme fonctionnel, je peux dire que j'ai appris énormément, que ce soit au niveau technique, aussi bien qu'au niveau relationnel.
+
+Du point de vue de la gestion du projet, j'ai le sentiment que Ludovic Delafontaine nous a permis à tous de rester sereins du début à la fin. En effet, il a eu la capacité de se remettre en question tout au long du projet, de nous permettre de lui dire si quelque chose n'allait pas bien et de traiter chaque étape du projet avec énormément de tranquillité et d'assurance.
+Les membres du groupes ayant déjà participé à des projets auparavant ont également permis de rendre l'expérience plus rassurante et pédagogique.
+
+Le seul regret que j'aie pu avoir durant ce projet est très certainement le fait que, malgré mon implication importante dans l'interface graphique au début du projet, je n'aie pas pu fournir autant de code que ce que j'aurais désiré, mon manque d'expérience en étant sûrement la raison. Je vois toutefois dans cela d'un côté positif: j'ai pu apprendre de ce que les autres ont fait en restant au courant de l'évolution du programme et en participant aux discussions qui ont permis de le faire évoluer et devenir ce qu'il est aujourd'hui.
+
+Globalement, je pense que c'est une expérience qui restera gravée en moi et qui m'aura permis de bâtir d'excellentes bases en vue de mon futur dans les projets d'informatique.
+
 
 ## David
 Ce projet fut une expérience enrichissante sur plusieurs point:
