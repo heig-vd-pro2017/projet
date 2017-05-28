@@ -164,7 +164,7 @@ Si vous choisissez d'utiliser l'application en tant que serveur, l'interface ser
 ![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_Playlist_playing.PNG)  
 
 4. Le nombre total des votes pour chaque chanson  
-![alt text]()
+![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/server_vote.PNG)  
   
 5. La chanson en cours de lecture.  
 ![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/server_track_playing.PNG)  
@@ -195,7 +195,7 @@ Si vous choisissez d'utiliser l'application en tant que client, l'interface sera
 4. La chanson en cours de lecture.  
 ![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_track_playing.PNG)  
 
-![alt text]()
+![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_pause_next_volume.jpg)  
 (1) Si vous voulez passer à la chanson suivante, vous pouvez cliquer sur ce bouton. La chanson suivante sera jouée si la mojorité           des présents le demande.  
 (2) Si vous voulez augmenter ou diminuer le volume, vous pouvez cliquer sur ce bouton. Le volume sera modifié si la mojorité                 des présents le demande.
 

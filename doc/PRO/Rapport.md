@@ -50,7 +50,7 @@ header-includes:
     - \fancyhead[RO,RE]{HEIG-VD - PRO 2017}
 
     # Redefine TOC style.
-    - \setcounter{tocdepth}{2}
+    - \setcounter{tocdepth}{1}
 
     # 'listings' settings.
     - \lstset{breaklines = true}
@@ -101,7 +101,7 @@ header-includes:
 \title{Commusica\\Le lecteur de musique communautaire et égalitaire}
 
 \author{Chef de projet: Ludovic Delafontaine\\
-   Chef adjoint: Lucas Elisei\\
+   Chef remplaçant: Lucas Elisei\\
    Membres: David Truan, Denise Gemesio, Thibaut Togue, Yosra Harbaoui\\
    Responsable du cours: René Rentsch}
 
@@ -129,9 +129,13 @@ header-includes:
 # Introduction
 Durant le quatrième semestre de la section TIC de l'HEIG-VD, nous devons effectuer un projet par groupes de cinq ou six personnes. Le but est de mettre en oeuvre les connaissances que nous avons acquises au long des semestres précédents à travers un projet conséquent. Nous devrons prendre conscience des difficultés liées au travail de groupe, ainsi qu'apprendre à planifier un travail sur plusieurs mois. Au terme du semestre, nous devons rendre un programme complet et fonctionnel, avec une documentation adéquate et être capables de le présenter et le défendre.
 
-Dans le cadre du projet, l'équipe de programmation est composée du chef d'équipe Ludovic Delafontaine, de son remplaçant Lucas Elisei et des membres David Truan, Thibaut Togue, Yosra Harbaoui et Denise Gemesio.
+Le projet dure 16 semaines et vaut trois crédits. Un crédit valant 30 heures de travail, le temps de travail est de 540 heures pour toute l'équipe, soit cinq heures et demi par membres du projet par semaine.
+
+Dans le cadre du projet, l'équipe de programmation est composée du chef de projet Ludovic Delafontaine, de son remplaçant Lucas Elisei et des membres David Truan, Thibaut Togue, Yosra Harbaoui et Denise Gemesio.
 
 Dans ce rapport, nous allons expliquer notre démarche de travail et les principaux choix d'architecture et de design de code. Il sera structuré selon les principaux paquets de notre application.
+
+Ce rapport, étant à rendre deux semaines avant la fin du temps total aloué pour le projet, s'arrête donc en semaine quatorze et il restera la défense orale qui ne sera pas expliquée dans ce document.
 
 # Objectif
 Le but de notre programme est de proposer une application client-serveur qui permettra aux clients d'envoyer des fichiers musicaux au serveur pour que celui-ci les joue. Il se démarque d'une simple application de lecture en continu (streaming) dans le fait que la liste de lecture ne peut être changée que par les clients, par le biais d'un système de votes positifs ou négatifs. Ceux-ci permettent à un morceau d'être placé plus en avant ou en arrière dans la liste de lecture. Cela permet donc à chacun de donner son avis, tout en centralisant la lecture de la musique sur un seul ordinateur. De plus, l'application met à disposition les fonctionnalités suivantes pour une expérience encore plus communautaire:
@@ -229,11 +233,20 @@ Pour retrouver l'extension du fichier, nous avons procédé de la manière suiva
 - Pour les M4A, nous regardons les premiers octets en partant du quatrième octet depuis le début du fichier.
 - Pour les WAV, à partir du huitième octet depuis le début du fichier.
 
-![Aperçu hexadécimal d'un fichier MP3](images/mp3-file-hexeditor.png)
+\befin{figure}
+  \includegraphics{images/mp3-file-hexeditor.png}
+  \caption{Aperçu hexadécimal d'un fichier MP3}
+\end{figure}
 
-![Aperçu hexadécimal d'un fichier M4A](images/m4a-file-hexeditor.png)
+\befin{figure}
+  \includegraphics{images/m4a-file-hexeditor.png}
+  \caption{Aperçu hexadécimal d'un fichier M4A}
+\end{figure}
 
-![Aperçu hexadécimal d'un fichier WAV](images/wav-file-hexeditor.png)
+\befin{figure}
+  \includegraphics{images/wav-file-hexeditor.png}
+  \caption{Aperçu hexadécimal d'un fichier WAV}
+\end{figure}
 
 Connaître le type de fichier nous permettra de traiter uniquement les fichiers supportés pas notre plateforme et, aussi, en termes de sécurité, éviter qu'un utilisateur ne fasse planter le serveur en envoyant un fichier qui n'est pas supporté par celui-ci.
 
@@ -634,7 +647,7 @@ broadcastPlaylist.scheduleAtFixedRate(() -> {
 ```
 
 ## Gson
-Gson est une librairie développée par Google permettant la sérialisation et la désérialisation d'objets en JSON. Nous l'avons utilisé principalement pour envoyer les différents objets à travers le réseau.
+Gson est une librairie développée par Google permettant la sérialisation et la désérialisation d'objets en JSON. Nous l'avons utilisé principalement pour envoyer les différents objets à travers le réseau. Nous avons choisi cet libraire car nous l'avions déjà utilisée en cours et qu'elle permet en peu de lignes d'avoir une sérialisation/désérialisation rapide.
 
 ## Hibernate
 Hibernate est un outil ORM (Object Relational Mapping) qui simplifie la création et l'interaction avec la base de données. Il offre la possibilité de créer automatiquement les tables de la base de données en se basant sur les objets Java. Il n'est donc pas nécessaire de les créer manuellement et il gère la sauvegarde, l'intégrité de la base de données par lui-même.
@@ -661,12 +674,14 @@ Nous l'avons utilisé dans le but de forcer l'utilisation de l'IPv4 pour les int
 
 Lors du lancement de notre programme, la réelle exécution de celui-ci est la suivante:
 
-`Exécution du programme Commusica -> Lancement de Capsule -> Définition des paramètres à utiliser pour la JVM -> Lancement de Commusica avec les paramètres JVM souhaités -> Démarrage de Commusica`
+0. Exécution du programme Commusica
+1. Lancement de Capsule -> Définition des paramètres à utiliser pour la JVM 2. Lancement de Commusica avec les paramètres JVM souhaités
+3. Démarrage de Commusica`
 
 ## Git / GitHub
 Git est un outil de gestions de versions qui permet de simplifier le développement d'une application en gérant automatiquement la fusion de code de deux auteurs différents et pouvoir avoir un historique des actions effectuées tout au long du projet.
 
-Nous l'avons utilisé afin de permettre à chacun de développer séparemment et qu'il puisse gérer la fusion automatiquement. Nous pouvions, au besoin, effectuer des tests sans mettre en péril le reste du projet à l'aide de branches. Nous avons utilisé GitHub afin de centralisé ça sur Internet.
+Nous l'avons utilisé afin de permettre à chacun de développer séparément et qu'il puisse gérer la fusion automatiquement. Nous pouvions, au besoin, effectuer des tests sans mettre en péril le reste du projet à l'aide de branches. Nous avons utilisé GitHub afin de centralisé ça sur Internet.
 
 ## IntelliJ IDEA
 IntelliJ IDEA est un environnement de développement intégré, autrement dit, un ensemble d'outils destinés au développement logiciel.
@@ -680,7 +695,7 @@ Nous l'avons choisi pour les raisons suivantes:
 ## Apache Maven
 Apache Maven est un outil de gestion de projet basé sur POM (modèle d'objet de projet).
 
-Nous l'avons utilisé dans le cadre de notre projet afin de pouvoir gérer les dépendances et la compiliation de façon unifiée au travers de tous les développeurs. Il nous a permis de définir une librairie et sa version à utiliser et ainsi, le code de tous les développeurs se basent sur les mêmes versions et utilisent la même façon de compiler pour s'assurer du bon fonctionnement du programme.
+Nous l'avons utilisé dans le cadre de notre projet afin de pouvoir gérer les dépendances et la compilation de façon unifiée au travers de tous les développeurs. Il nous a permis de définir une librairie et sa version à utiliser et ainsi, le code de tous les développeurs se basent sur les mêmes versions et utilisent la même façon de compiler pour s'assurer du bon fonctionnement du programme.
 
 ## Scene Builder
 Scene builder est un outil qui permet de créer des fichiers au formats FXML via un éditeur graphique.
@@ -693,11 +708,15 @@ Wireshark est un outil essentiel pour comprendre les mécanismes de fonctionneme
 Nous l'avons utilisé dans notre projet afin de vérifier que la communication réseau entre le client et le serveur et s'assurer que tout marchait comme souhaité.
 
 ## PlantUML
-PlantUML est un outil gratuit et open-source qui permet la génération de schémas UML de toutes sortes (diaragrammes de classe, diagrammes de séquences, diagrammes d'activités, etc.) et ce, à l'aide de fichiers textes.
+PlantUML est un outil gratuit et open-source qui permet la génération de schémas UML de toutes sortes (diagrammes de classe, diagrammes de séquences, diagrammes d'activités, etc.) et ce, à l'aide de fichiers textes.
 
 Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui pouvaient être améliorés par plusieurs personnes en même temps à l'aide de Git grâce au fait que c'est simplement des fichiers textes.
 
 # Tests réalisés
+## Côté client
+
+## Côté serveur
+
 **On doit en faire des tableaux et retester toute l'application**
 
 **DG : cette liste me semble relativement massive, on pourrait faire des sous-chapitres**
@@ -713,8 +732,17 @@ Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui
 + Le client peut envoyer une chanson au serveur qui l'accepte ou la refuse (A TESTER PLUS EN DÉTAILS)
 + Le serveur reçoit la chanson et met à jour sa liste de lecture (PAS SÛR QUE ÇA SOIT MIS À JOUR DANS LA DB)
 + Le client reçoit la mise à jour de la playlist
-+ Le client peut upvoter et downvoter une chanson et cette dernière se met à jour. **DG: ce qui suit fait plutôt partie du chapitre "Problèmes subsistants"** Ne marche pas côté serveur.
-+ Le client peut augmenter et diminuer le volume. Ne marche pas côté serveur. **DG : "Problèmes subsistants**
++ Le client peut upvoter et downvoter une chanson et cette dernière se met à jour.  
++ Plusieurs client peuvent envoyer en même temps des fichiers  
++ Le changement de l'interface réseau fonctionne.  
++ Le changement de l'interface réseau ne fait pas tout planter durant un transfert de fichier
++ Le fait d'avoir 2 serveurs fonctionne
++ le fait d'avoir 2 serveurs ayant le même nom fonctionne
++ Un client ne peut rajouter/enlever qu'un seul point par morceau même si il se déconnecte.
++ Les contrôles fonctionnent chez le serveur et chez les client.
++ Un client doit pouvoir se deconnecter facilement.
+
+**DG: ce qui suit fait plutôt partie du chapitre "Problèmes subsistants"** Ne marche pas côté serveur.
 + Coté client, la base de données se met bien à jour lors de l'ajout de chansons, mais la date à laquelle elle a été jouée manque dans l'EphemeralPlaylist et donc ne se met pas à jour dans la base de données du client. **DG : "Problèmes subsistants**
 + Le bouton play/pause marche et change d'état côté client et le bouton marche côté serveur, mais dans ce dernier cas, le bouton côté client ne change pas d'état. **DG : "Problèmes subsistants**
 + La PlaylistTrack se met bien à jour dans la base de données lorsqu'une chanson a été jouée côté client.
@@ -724,33 +752,101 @@ Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui
 + Côté serveur, les tracks sont bien ajoutées à la base de données.
 
 ## Problèmes subsistants
-+ Côté client, une chanson qui n'a pas été jouée se met au dessus des chansons qui ont déjà été jouées si elle a plus de vote que les chansons déjà jouées
-+ La barre du temps est manquante au niveau du client
-+ Le bouton *favoris* situé dans l'interface de contrôle ne marche pas côté client et serveur
-+ Le fait de favoriser une chanson ne l'enregistre pas côté serveur (ne s'affiche pas dans la liste de lecture "Favoris")
-+ Les playlists tracks associées ne sont par contre pas effacées (il doit manquer le CASCADE au niveau de la db pour que ça efface aussi)
+- Il n'y pas moyens de proposer à nouveau une chanson qui a déjà été jouée de la soirée.
+
+## Problèmes potentiels non testés
+- Risque de bloquer toute l'application en cas de charge élevée car la méthode `execute` des Cores est en exclusion mutuelle et donc peut potentiellement bloquer l'interaction avec le serveur s'il y a beaucoup de clients connectés et interagissant avec le serveur.
+
+# Retour sur le cahier des charges
+Avec les tests réalisés ci-dessus et selon notre cahier des charges, voici le récapitulatif des fonctionnalités implémentées dans notre projet.
+
+Fonction                                                        Fonctionnalité importante ?     Réalisé         Remarques
+Démarrage et arrêt corrects du programme                        Oui                             Oui             -
+Droits client-serveur                                           Oui                             Oui             -
+Notification des actions                                        Oui                             Partiellement   Les actions sont bien transmises au client mais ne sont visibles que dans les logs. Il faut encore lier à l'interface graphique.
+Paramétrages basiques du serveur                                Oui                             Oui             -
+Effectuer une annonce de connexion                              Oui                             Oui             L'état du serveur est envoyé à intervals réguliers.
+Réception de la musique                                         Oui                             Oui             -
+Lecture des fichiers MP3 et M4A                                 Oui                             Oui             -
+Ajout de la musique à la base de données/système de stockage    Oui                             Oui             -
+Actions de base sur la musique côté serveur et client           Oui                             Oui             Le bouton pour revenir en arrière n'est pas implémenté car inutile dans notre cas. Il n'est présent que par soucis d'estétisme.
+Interface utilisateur                                           Oui                             Oui             -
+Contrôle du volume de la musique côté serveur et client         Oui                             Oui             -
+Accepter ou refuser l'ajout de nouvelles chansons               Oui                             Oui             -
+Système de vote côté serveur et client                          Oui                             Oui             -
+Système de favoris/playlist                                     Oui                             Oui             -
+Nettoyage de la base de données côté serveur et client          Oui                             Oui             -
+Voir la liste des serveurs accessibles côté client              Oui                             Oui             -
+Accéder au serveur                                              Oui                             Oui             -
+Ajouter de la musique au serveur                                Oui                             Oui             -
+Un client ne peut pas enregistrer deux fois la même chanson durant le même événement    Oui         Oui         -
+Un client doit pouvoir supprimer une chanson de ses favoris ou ses playlists            Oui         Partiellement         Le code gère cela, mais aucune liaison avec l'interface graphique.
+Un client doit pouvoir supprimer une playlist avec toutes les chansons contenues dans ladite playlist            Oui         Partiellement         Le code gère cela, mais aucune liaison avec l'interface graphique.
+Support d'autres formats de musique                             Non                             Oui             Ajout du support du WAV.
+Taille de fenêtre non-fixe                                      Non                             Oui             -
+Fusionner le code de l'application serveur et client            Non                             Oui             Choix au démarrage
+Filtres de recherche                                            Non                             Non             -
+Intégration de services externes                                Non                             Non             -
+Système de transition dynamique entre chansons                  Non                             Non             -
+Ajout d'une dimension communautaire                             Non                             Non             -
+Définir des utilisateurs du système comme administrateurs       Non                             Non             -
+Configuration avancée du serveur                                Non                             Non             -
 
 # Améliorations envisagées
-
-# Planification / organisation
+- Revoir l'architecture du projet pour séparer encore mieux les entités, avec le patron Observable-Observeur par exemple, ce qui permettrait de notifier, à qui veulent entendre, des informations.
+- Rendre tous les messages et commandes asynchrones afin de minimiser les ressources et ne pas bloquer toute l'application lorsqu'il y a beaucoup de charge.
+- Se passer des Singleton afin de rendre notre code plus indépendant.
+- Mieux gérer la concurrence.
+- Réaliser toutes les fonctionnalités optionnelles envisagées dans le cahier des charges.
 
 # Conclusion
+En conclusion, nous avons essayé de réaliser un programme qui regroupe les qualités suivantes:
+
+- Code propre, facile à comprendre et réutilisable.
+- Documentation claire et exhaustive du code.
+- Facile à utiliser et à comprendre pour des utilisateurs néophytes.
+- Niveau d'abstraction le plus élevé possible.
+
+Nous pensons avoir atteint ces objectifs. Il y a encore des points à améliorer mais nous avons réussi à produire un programme fonctionnel qui répond à la quasi totalité des points du cahier des charges.
 
 # Bilan
-
-## Bilan du groupe
-
 ## Ludovic
+J'ai la fierté de pouvoir me dire que ce projet de semestre s'est très bien passé. J'ai l'impression que l'on a su toujours communiquer dans le respect et en tenant compte des points de vue de chacun à la construction du projet. Cela a permis de pouvoir créer une réelle cohésion de groupe afin de réaliser quelque chose, qui n'était à la base qu'une idée sur papier, de fonctionnel et qui correspond quasiment à la version à laquelle on a réfléchit en tout début de projet.
+
+La charge de travail était évidemment conséquente, mais la qualité de travail réalisée par mes collègues ainsi que la volonté de vouloir faire bien et mieux à permis de pouvoir réaliser à la fois quelque chose de beau visuellement mais aussi beau au niveau de la programmation.
+
+Ce projet m'a permis de pouvoir approfondir mes connaissances et compétences techniques ainsi que mes compétences de chef de projet.
+
+On se rend vite compte que la gestion d'une équipe n'est pas une chose aisée, mais qu'avec de bons collègues et les bons outils, même si tout ne se passe pas comme prévu, on arrive à atteindre les objectifs visés.
+
+Mon seul regret est de ne pas avoir pu mieux impliquer tout le monde sur le développement.
 
 ## Lucas
 
 ## Denise
+En tant que première expérience dans un projet qui part de zéro et qui finit sur un programme fonctionnel, je peux dire que j'ai appris énormément, que ce soit au niveau technique, aussi bien qu'au niveau relationnel.
+
+Du point de vue de la gestion du projet, j'ai le sentiment que Ludovic Delafontaine nous a permis à tous de rester sereins du début à la fin. En effet, il a eu la capacité de se remettre en question tout au long du projet, de nous permettre de lui dire si quelque chose n'allait pas bien et de traiter chaque étape du projet avec énormément de tranquillité et d'assurance.
+Les membres du groupes ayant déjà participé à des projets auparavant ont également permis de rendre l'expérience plus rassurante et pédagogique.
+
+Le seul regret que j'aie pu avoir durant ce projet est très certainement le fait que, malgré mon implication importante dans l'interface graphique au début du projet, je n'aie pas pu fournir autant de code que ce que j'aurais désiré, mon manque d'expérience en étant sûrement la raison. Je vois toutefois dans cela d'un côté positif: j'ai pu apprendre de ce que les autres ont fait en restant au courant de l'évolution du programme et en participant aux discussions qui ont permis de le faire évoluer et devenir ce qu'il est aujourd'hui.
+
+Globalement, je pense que c'est une expérience qui restera gravée en moi et qui m'aura permis de bâtir d'excellentes bases en vue de mon futur dans les projets d'informatique.
+
 
 ## David
+Ce projet fut une expérience enrichissante sur plusieurs point:
+- Le fait de devoir trouver une idée d'application et de devoir en rédiger le cahier de charges, de la développer de A à Z et de devoir en produire la documentation complète.
+- Exercer le travail en équipe et ce que cela implique.
+- Fixer un planning et se rendre compte que certaines parties avaient été mal estimées.
+Je pense que notre équipe a bien fonctionné et que les taches ont été reparties correctement, les personnes qui ont moins codé ayant fais plus de documentation.
+J'ai particulièrement apprécier l'engagement de L. Delafontaine en temps que chef de projet qui a su synthétiser les problèmes pour nous les communiquer lorsque cela était nécessaire. L'équipe avait une bonne cohésion et les échanges réguliers ont permis de bien faire évoluer le projet en même temps que de mettre à jour tout e monde sur ce qui avait été fait par les différents membres.
 
 ## Thibaut
 
 ## Yosra
+
+## Bilan du groupe
 
 # Sources
 - Capsule ([capsule.io](capsule.io)) - Site officiel de la librairie Capsule
@@ -1483,6 +1579,63 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 \newpage
 
 ### Lucas Elisei
+- 28.05.2017
+    - Rédaction du rapport (3h00).
+
+- 27.05.2017
+    - Correction d'un bogue qui ne mettait pas correctement à jour la liste des serveurs côté client (0h15).
+    - Rédaction du rapport (1h00).
+
+- 26.05.2017
+    - La barre d'avancement de la chanson en cours de lecture se met maintenant correctement à jour côté client (1h30).
+    - Les chansons déjà jouées se mettent maintenant correctement à jour côté client (1h30).
+    - Correction de bogues liés au rafraîchissement de l'interface graphique côté client (3h00).
+    - Correction d'un bogue qui changeait l'ordre des chansons déjà jouées côté client (1h30).
+    - Ajout du panneau des réglages à l'interface graphique (4h00).
+    - Correction d'un bogue qui affichait mal le nom du serveur auquel le client est connecté (0h30).
+
+- 25.05.2017
+    - Correction d'un bogue qui empêchait les votes des chansons de se mettre à jour côté client (1h30).
+    - Correction d'un bogue qui empêchait le serveur d'upvote des chansons (0h30).
+    - Les chansons s'enregistrent correctement dans la base de données (0h30).
+    - Correction d'exceptions levées par la base de données (1h00).
+    - Changement de la logique de la playlist éphémère (2h00).
+    - La vue de la chanson en cours de lecture se met maintenant à jour côté client et serveur (2h00).
+    - Correction d'un bogue qui empêchait des communications parallèles avec la base de données (0h30).
+    - La vue de la chanson précédente se met maintenant correctement à jour côté client (1h00).
+    - La barre de volume se met maintenant correctement à jour côté client (1h00).
+    - Le bouton play/pause se met maintenant correctement à jour côté client (0h30).
+
+- 24.05.2017
+    - Correction de plusieurs bugs d'affichage liés à l'interface graphique (2h00).
+
+- 23.05.2017
+    - Modification de la sérialisation de la playlist éphémère (1h00).
+    - Meilleure gestion de la sélection d'une playlist au niveau de l'interface graphique (1h00).
+
+- 22.05.2017
+    - Ajout d'une fenêtre au démarrage pour choisir si l'on veut être client ou serveur (0h30).
+    - Ajout de la possibilité de se connecter à un serveur depuis l'interface graphique (1h00).
+    - Ajout de la possibilité de transférer une musique depuis l'interface graphique (1h00).
+    - Modification de la sérialisation d'une musique et de la playlist éphémère (1h30).
+
+- 16.05.2017
+    - Correction d'un bogue qui ne terminait pas correctement le player (0h30).
+    - Correction d'un bogue qui ne laissait pas favoriser les chansons de la playlist éphémère (1h15).
+    - Correction d'un bogue qui laissait la possibilité de voter pour les chansons d'une playlist sauvegardée (0h15).
+
+- 15.05.2017
+    - Revue complète de la logique du PlaylistManager (3h30).
+    - Intégration des actions de favoris à l'interface graphique (1h00).
+
+- 10.05.2017
+    - Création automatique de la playlist "Favoris" dans la base de données si celle-ci n'existait pas (2h00).
+    - Fin de l'embellissement du panneau des playlists (1h00).
+
+- 09.05.2017
+    - Modification du player afin que la prochaine chanson soit jouée automatiquement (0h30).
+    - Début de l'embellissement du panneau des playlists (1h00).
+
 - 06.05.2017
     - Finalisation de la fusion du panneau "chanson précédente" (0h30).
     - Correction de quelques bogues liés aux précédentes itérations (1h30).
@@ -1639,6 +1792,9 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 
 - 27.04.2017
     - Analyse des modifications au niveau de l'interface graphique, compréhension de la nouvelle structure (1h00)
+
+- 11.04.2017
+	- Réglage de la barre de progression de la musique (1h00)
 
 - 10.04.2017
     - Réalisation de la présentation (1h00)
