@@ -111,7 +111,7 @@ header-includes:
 
 \begin{tikzpicture}[remember picture,overlay]
    \node[anchor=north east,inner sep=0.25cm] at (current page.north east)
-              {\includegraphics[scale=1]{images/heig-vd.png}};
+              {\includegraphics[width=5cm]{images/heig-vd.png}};
 \end{tikzpicture}
 
 \newpage
@@ -1366,6 +1366,37 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 \newpage
 
 ### Ludovic Delafontaine
+- 28.05.2017
+    - Rédaction du rapport
+    - Améliorations du template
+    - Ajout d'images
+    - Total du travail (pour le moment): 4h00
+    
+- 27.05.2017
+    - Créations de divers schémas pour le rapport
+    - Rédaction et améliorations du rapport
+    - Corrections dans ServerCore vis à vis de l'interaction avec la base de données
+    - Total du travail: 10h00
+
+- 26.05.2017
+    - Corrections de bugs avec la base de données
+    - Améliorations des logs
+    - Améliorations du rapport
+    - Corrections de problèmes aec les sessions
+    - Total du travail: 12h00
+
+- 25.05.2017
+    - Ajout des commandes manquantes aux Cores
+    - Documentation
+    - Corrections de Null Pointers Exceptions
+    - Total du travail: 12h00
+
+- 24.05.2017
+    - Docmentation de tout le code des classes (1h30)
+
+- 23.05.2017
+    - Améliorations de la base de données (2h00)
+
 - 22.05.2017
     - Finalisation du protocol applicatif (3h00)
     - Documentation (1h00)
