@@ -278,7 +278,7 @@ public class ServerCore extends AbstractCore implements ICore {
         Future<Object> future = executor.submit(task);
 
         try {
-            tempFile = (File) future.get(5, TimeUnit.SECONDS);
+            tempFile = (File) future.get(15, TimeUnit.SECONDS);
         } catch (TimeoutException ex) {
 
             // Delete the temp file
