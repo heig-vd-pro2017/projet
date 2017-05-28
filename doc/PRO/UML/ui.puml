@@ -3,7 +3,6 @@
     namespace ch.tofind.commusica.ui {
 
         class PreviousTrackView {
-            [[PreviousTrackView.html]]
             {static} +CSS_CLASS: String
             {static} -CSS_FILE: String
             {static} -FAV_EMPTY_IMAGE: String
@@ -19,13 +18,11 @@
         }
 
         class ClientServerDialog {
-            [[ClientServerDialog.html]]
             {static} -LOG: Logger
             +start(Stage): void
         }
 
         class PlaylistsListView {
-            [[PlaylistsListView.html]]
             {static} -CSS_FILE: String
             {static} -FXML_FILE: String
             {static} -manager: PlaylistManager
@@ -37,7 +34,6 @@
         }
 
         class CurrentTrackView {
-            [[CurrentTrackView.html]]
             {static} +CSS_CLASS: String
             {static} -CSS_FILE: String
             {static} -FAV_EMPTY_IMAGE: String
@@ -58,7 +54,6 @@
         }
 
         class SettingsView {
-            [[SettingsView.html]]
             {static} -FXML_FILE: String
             -interfacesList: ComboBox<Map.Entry<String, InetAddress>>
             -serverNameField: TextField
@@ -71,7 +66,6 @@
         }
 
         class UIController {
-            [[UIController.html]]
             {static} -LOG: Logger
             {static} -loader: FXMLLoader
             {static} -FXML_FILE: String
@@ -88,7 +82,6 @@
         }
 
         class PlaylistTrackCell {
-            [[PlaylistTrackCell.html]]
             {static} -LOG: Logger
             {static} -FAV_EMPTY_IMAGE: String
             {static} -FAV_FULL_IMAGE: String
@@ -107,7 +100,6 @@
         }
 
         class PlayerControlsView {
-            [[PlayerControlsView.html]]
             {static} -LOG: Logger
             {static} +CSS_CLASS: String
             {static} -CSS_FILE: String
@@ -125,7 +117,6 @@
         }
 
         class TracksListView {
-            [[TracksListView.html]]
             {static} -LOG: Logger
             {static} -playlistManager: PlaylistManager
             +showPlaylist(IPlaylist): void

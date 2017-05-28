@@ -5,7 +5,6 @@
     namespace ch.tofind.commusica.database {
 
         class DatabaseManager {
-            [[DatabaseManager.html]]
             {static} -LOG: Logger
             {static} -instance: DatabaseManager
             -factory: SessionFactory

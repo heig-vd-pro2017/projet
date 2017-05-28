@@ -5,7 +5,6 @@
     namespace ch.tofind.commusica.file {
 
         class FilesFormats {
-            [[FilesFormats.html]]
             {static} +MP3_HEADER: byte[]
             {static} +MP3_HEADER_OFFSET: int
             {static} +MP3_EXTENSION: String
@@ -18,7 +17,6 @@
         }
 
         class FileManager {
-            [[FileManager.html]]
             {static} -LOG: Logger
             {static} -instance: FileManager
             {static} +OUTPUT_DIRECTORY: String

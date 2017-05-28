@@ -5,7 +5,6 @@
     namespace ch.tofind.commusica.core {
 
         abstract class AbstractCore {
-            [[AbstractCore.html]]
             {static} -LOG: Logger
             +execute(String, ArrayList<Object>): String
             {abstract} ~sendUnicast(InetAddress, String): void
@@ -15,7 +14,6 @@
         }
 
         class ServerCore {
-            [[ServerCore.html]]
             {static} -LOG: Logger
             {static} -TIME_BEFORE_PLAYLIST_UPDATE: int
             {static} -name: String
@@ -28,7 +26,6 @@
         }
 
         class ClientCore {
-            [[ClientCore.html]]
             {static} -LOG: Logger
             -multicast: MulticastClient
             -client: UnicastClient
@@ -41,7 +38,6 @@
         }
 
         class Core {
-            [[Core.html]]
             {static} -instance: AbstractCore
             {static} +execute(String, ArrayList<Object>): String
             {static} +isServer(): boolean
@@ -51,7 +47,6 @@
         }
 
         interface ICore {
-            [[ICore.html]]
             {abstract} +sendUnicast(InetAddress, String): void
             {abstract} +sendMulticast(String): void
             {abstract} +stop(): void
