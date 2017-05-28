@@ -233,17 +233,17 @@ Pour retrouver l'extension du fichier, nous avons procédé de la manière suiva
 - Pour les M4A, nous regardons les premiers octets en partant du quatrième octet depuis le début du fichier.
 - Pour les WAV, à partir du huitième octet depuis le début du fichier.
 
-\befin{figure}
+\begin{figure}
   \includegraphics{images/mp3-file-hexeditor.png}
   \caption{Aperçu hexadécimal d'un fichier MP3}
 \end{figure}
 
-\befin{figure}
+\begin{figure}
   \includegraphics{images/m4a-file-hexeditor.png}
   \caption{Aperçu hexadécimal d'un fichier M4A}
 \end{figure}
 
-\befin{figure}
+\begin{figure}
   \includegraphics{images/wav-file-hexeditor.png}
   \caption{Aperçu hexadécimal d'un fichier WAV}
 \end{figure}
