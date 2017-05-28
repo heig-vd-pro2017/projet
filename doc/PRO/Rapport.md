@@ -133,7 +133,13 @@ Le but de notre programme est de proposer une application client-serveur qui per
 - Augmenter et diminuer le volume, si la majorité le souhaite.
 - Système de favoris afin de permettre aux utilisateurs de sauvegarder les informations d'une chanson pour pouvoir la retrouver par la suite.
 
-On souhaite répondre à l'éternel problème de devoir se partager une prise jack ou de devoir se battre pour pouvoir passer un morceau que l'on souhaite écouter.
+Nous souhaitons répondre à l'éternel problème qu'est le fait de devoir se partager une prise jack ou de devoir se battre pour pouvoir passer un morceau que l'on souhaite écouter.
+
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{images/fonctionnement_general.png}
+  \captionof{figure}{Fonctionnement général du programme}
+\end{minipage}
 
 # Public cible
 Cette application visera un public dont la gestion de la musique lors d'un événement est critique.
@@ -911,11 +917,11 @@ De mon côté, j'aimerais aussi dans le futur devélopper ce profil de conceptio
 - Réflechir sur une idée de projet et la réaliser.
 - Plannifier le projet  dans l'inteval de temps mise à disposition.
 
-Pour la gestion du projet le chef de groupe  Ludovic à parfaitement bien joué son rôle, il a sû optimiser la répartition des tâches en vue d'arriver à la solution obtenue et la motivation qu'il apportait à chaque membre du groupe de travail était remarquable, vu que les tâches étaient reparties en petits groupes de deux personnes. Son sens de l'écoute, sa capacité à communiquer et à déléguer a permis à la bonne réalisation du projet. 
+Pour la gestion du projet le chef de groupe  Ludovic à parfaitement bien joué son rôle, il a sû optimiser la répartition des tâches en vue d'arriver à la solution obtenue et la motivation qu'il apportait à chaque membre du groupe de travail était remarquable, vu que les tâches étaient reparties en petits groupes de deux personnes. Son sens de l'écoute, sa capacité à communiquer et à déléguer a permis à la bonne réalisation du projet.
  Ce fut un plaisir de travailler  avec ce groupe. Mes collègues ont toujours été disponibles pour répondre à mes questions et m'éclairer sur certains points. J'ai été aussi un peu fustré par la différence de niveau de programmation et de conception entre moi et les autres menbres du groupe, je pense que je dois encore bien travailler mon côté conceptuelle.
- 
- 
- 
+
+
+
 ## Yosra
 
 # Sources
