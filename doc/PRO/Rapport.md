@@ -1715,14 +1715,73 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 \newpage
 
 ### Yosra Harbaoui
+- 28.05.2017 
+    - Rédaction du manuel d'utilisation. (3h)
+    - Mise à jour du journal du travail. (45min)
+    - Re-lecture du rapport. (2h)
+    
+- 27.05.2017
+    - testes finaux de l'application et vérification du bon fonctionnement. (1h30)
+    - Rédaction du manuel d'utilisateur. (4h)
+    - Rédaction du rapport. (2h)
+    
+- 26.05.2017
+   - Testes de l'application et vérification du bon fonctionnement. (1h30)
+   - Rédaction du rapport. (2h30)
+
+- 25.05.2017
+   - Lecture du code et comprendre les parties ambigûes. (2h30)
+   
+- 24.05.2017
+   - Testes du bon fonctionnement de l'application. (1h)
+   - Corrections orthographiques du rapport. (1h)
+   
+- 23.05.2017
+    - Rédaction du rapport. (1h30)
+    - Lecture des autres différentes parties implémentées. (2h) 
+    
+- 17.05.2017
+    - Testes de l'implémentation des contrôles sur les fichiers (1h).
+
+- 15.05.2017
+    - Documentation sur les contrôles sur les fichiers (1h).
+    
+- 13.05.2017 
+   - Modification de la classe Session (1h30)
+   
+- 12.05.2017
+    - Implémentation de la classe Session (2h)
+    - Testes. (1h)
+    
+- 01.05.2017
+    - Transfert de fichier. (1h)
+    - Testes. (1h)
+    
+- 10.04.2017
+    - Réalisation de la présentation (1h00)
+
+- 09.04.2017
+    - Rédaction de la présentation intermédiaire. (1h00)
+    - Analyse de l'implémentation du protocole de communication. (1h30)
+    - Testes de choix de la bonne interface. (1h)
+    
+- 08.04.2017
+    - Documentation pour le choix de la bonne interface. (2h)
+    
 - 31.03.2017
-    - Implémentation simple d'une connexion client/serveur pour tester la connectivité.
+    - Implémentation simple d'une connexion client/serveur. (3h00)
+    - testes de la connectivité. (1h00)
+    
+ - 27.03.2017
+    - Documentation sur la configuration des outils de compilation (Maven) (1h00)
+    - Documentation sur Hibernate (1h00)
 
 - 25.03.2017
-    - Documentation sur les différents "types" de communications entre un serveur et un client.
+    - Documentation sur les différents "types" de communications entre un serveur et un client. (3h00)
 
 - 21.03.2017
-    - Documentation sur l'implémentation client/serveur.
+    - Documentation sur l'implémentation client/serveur. (2H30)
+    - Installation de Scene Builder et configuration de Intellij. (1h00)
 
 \newpage
 
