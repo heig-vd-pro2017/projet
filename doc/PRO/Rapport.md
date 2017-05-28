@@ -777,9 +777,16 @@ Nous pensons avoir atteint ces objectifs. Il y a encore des points à améliorer
 
 # Bilan
 
-## Bilan du groupe
-
 ## Ludovic
+J'ai la fierté de pouvoir me dire que ce projet de semestre s'est très bien passé. J'ai l'impression que l'on a su toujours communiquer dans le respect et en tenant compte des points de vue de chacun à la construction du projet. Cela a permis de pouvoir créer une réelle cohésion de groupe afin de réaliser quelque chose, qui n'était à la base qu'une idée sur papier, de fonctionnel et qui correspond quasiment à la version à laquelle on a réfléchit en tout début de projet.
+
+La charge de travail était évidemment conséquente, mais la qualité de travail réalisée par mes collègues ainsi que la volonté de vouloir faire bien et mieux à permis de pouvoir réaliser à la fois quelque chose de beau visuellement mais aussi beau au niveau de la programmation.
+
+Ce projet m'a permis de pouvoir approfondir mes connaissances et compétences techniques ainsi que mes compétences de chef de projet.
+
+On se rend vite compte que la gestion d'une équipe n'est pas une chose aisée, mais qu'avec de bons collègues et les bons outils, même si tout ne se passe pas comme prévu, on arrive à atteindre les objectifs visés.
+
+Mon seul regret est de ne pas avoir pu mieux impliquer tout le monde sur le développement.
 
 ## Lucas
 
@@ -796,6 +803,8 @@ J'ai particulièrement apprécier l'engagement de L. Delafontaine en temps que c
 ## Thibaut
 
 ## Yosra
+
+## Bilan du groupe
 
 # Sources
 - Capsule ([capsule.io](capsule.io)) - Site officiel de la librairie Capsule
