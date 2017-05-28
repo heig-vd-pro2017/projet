@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 /**
- * @brief This class can get properties from a configuration file
+ * This class can get properties from a configuration file
  */
 public class Serialize {
 
@@ -18,7 +18,7 @@ public class Serialize {
             .create();
 
     /**
-     * @brief Serialize an object to JSON.
+     * Serialize an object to JSON.
      *
      * @param object The object to serialize.
      *
@@ -29,7 +29,7 @@ public class Serialize {
     }
 
     /**
-     * @brief Unserialize an object from JSON.
+     * Unserialize an object from JSON.
      *
      * @param jsonObject The object to unserialize.
      * @param objectClass The destination class for the object.

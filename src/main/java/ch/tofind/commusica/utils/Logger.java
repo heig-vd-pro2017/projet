@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * @brief This class is used for debugging.
+ * This class is used for debugging.
  */
 public class Logger {
 
@@ -45,7 +45,7 @@ public class Logger {
     }
 
     /**
-     * @brief Logger constructor.
+     * Logger constructor.
      *
      * @param className Name of the class that asked the debug.
      */
@@ -54,7 +54,7 @@ public class Logger {
     }
 
     /**
-     * @brief Display the log message with a certain level.
+     * Display the log message with a certain level.
      *
      * @param level The level of the message.
      * @param message The message to display.
@@ -70,7 +70,7 @@ public class Logger {
     }
 
     /**
-     * @brief Throw an exception with a certain level.
+     * Throw an exception with a certain level.
      *
      * @param level The level of the exception.
      * @param e The exception to throw.
@@ -81,7 +81,7 @@ public class Logger {
     }
 
     /**
-     * @brief Log as info.
+     * Log as info.
      *
      * @param message The message to display.
      */
@@ -90,7 +90,7 @@ public class Logger {
     }
 
     /**
-     * @brief Log as warning.
+     * Log as warning.
      *
      * @param message The message to display.
      */
@@ -99,7 +99,7 @@ public class Logger {
     }
 
     /**
-     * @brief Log as error.
+     * Log as error.
      *
      * @param message The message to display.
      */
@@ -108,7 +108,7 @@ public class Logger {
     }
 
     /**
-     * @brief Log as error.
+     * Log as error.
      *
      * @param e The exception that has been thrown.
      */

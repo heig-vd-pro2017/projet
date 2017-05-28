@@ -18,7 +18,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 /**
- * @brief This class represents a cell with the PlaylistTrack information.
+ * This class represents a cell with the PlaylistTrack information.
  */
 public class PlaylistTrackCell {
 
@@ -59,7 +59,7 @@ public class PlaylistTrackCell {
     private ImageView favoriteImageView;
 
     /**
-     * @brief Make a new cell with the PlaylistTrack informations.
+     * Make a new cell with the PlaylistTrack informations.
      *
      * @param playlistTrack The PlaylistTrack to show in the cell.
      */
@@ -109,7 +109,7 @@ public class PlaylistTrackCell {
     }
 
     /**
-     * @brief Get the current pane.
+     * Get the current pane.
      *
      * @return The pane.
      */

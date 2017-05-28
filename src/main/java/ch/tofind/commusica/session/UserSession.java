@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * @brief Class representing a user session.
+ * Class representing a user session.
  */
 public class UserSession implements ISession {
 
@@ -22,7 +22,7 @@ public class UserSession implements ISession {
     private Set<String> downvotedTracks;
 
     /**
-     * @brief Create a session.
+     * Create a session.
      *
      * @param id ID of the session.
      */
@@ -34,7 +34,7 @@ public class UserSession implements ISession {
     }
 
     /**
-     * @brief Get the upvoted tracks from the current user.
+     * Get the upvoted tracks from the current user.
      *
      * @return The upvoted trackes.
      */
@@ -43,7 +43,7 @@ public class UserSession implements ISession {
     }
 
     /**
-     * @brief Get the downvoted tracks from the current user.
+     * Get the downvoted tracks from the current user.
      *
      * @return The downvoted trackes.
      */
@@ -52,7 +52,7 @@ public class UserSession implements ISession {
     }
 
     /**
-     * @brief Add an upvoted track for the current user.
+     * Add an upvoted track for the current user.
      *
      * @param trackId The ID of the track to upvote.
      */
@@ -62,7 +62,7 @@ public class UserSession implements ISession {
     }
 
     /**
-     * @brief Add an downvoted track for the current user.
+     * Add an downvoted track for the current user.
      *
      * @param trackId The ID of the track to downvote.
      */

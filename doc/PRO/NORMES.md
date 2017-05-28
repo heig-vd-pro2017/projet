@@ -51,7 +51,7 @@ Ne pas écrire d'entêtes commme ceci:
 L'entête des fonctions devra respecter la forme suivante:
 ```
 /**
- * @brief Description about the method
+ * Description about the method
  *
  * @param x Short description
  * @param y Short description
@@ -107,7 +107,7 @@ private ArrayList<Music> playlist;
 L'entête des fichiers devra respecter la forme suivante:
 ```
 /**
- * @brief This class is an example.
+ * This class is an example.
  *
  * Its description continues on multiple lines without any problem. However, if a comment is too long (max. 120
  * characters), feel free to break the comment in two lines.
@@ -173,7 +173,7 @@ class MaClasse {
 # Exemple complet
 ```
 /**
- * @brief This class is an example.
+ * This class is an example.
  *
  * Its description continues on multiple lines without any problem. However, if a comment seems too long (max. 120
  * characters), feel free to break the comment in two lines.
@@ -193,7 +193,7 @@ class MaClasse {
     private booleand amIABoolean;
 
     /**
-     * @brief Description about the method
+     * Description about the method
      *
      * @param x Short description
      * @param y Short description
@@ -208,7 +208,7 @@ class MaClasse {
     }
 
     /**
-     * @brief Description about the method
+     * Description about the method
      *
      * @param c Change the message
      *

@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.UUID;
 
 /**
- * @brief This class represents the file manager and allows interaction with the filesystem.
+ * This class represents the file manager and allows interaction with the filesystem.
  */
 public class FileManager {
 
@@ -24,14 +24,14 @@ public class FileManager {
     public static String OUTPUT_DIRECTORY = Configuration.getInstance().get("TRACKS_DIRECTORY");
 
     /**
-     * @brief FileManager single constructor. Avoid the instantiation.
+     * FileManager single constructor. Avoid the instantiation.
      */
     private FileManager() {
 
     }
 
     /**
-     * @brief Get the object instance.
+     * Get the object instance.
      *
      * @return The instance of the object.
      */
@@ -49,7 +49,7 @@ public class FileManager {
     }
 
     /**
-     * @brief Retrieve a file.
+     * Retrieve a file.
      *
      * @param inputStream The origin of the file.
      * @param fileSize Size of the file.
@@ -121,7 +121,7 @@ public class FileManager {
     }
 
     /**
-     * @brief Check if the file is supported.
+     * Check if the file is supported.
      *
      * @param file The file to check.
      *
@@ -147,7 +147,7 @@ public class FileManager {
     }
 
     /**
-     * @brief Get the Nth first bytes from a file.
+     * Get the Nth first bytes from a file.
      *
      * @param file The file.
      * @param nbBytes Number of bytes wanted.
@@ -193,11 +193,9 @@ public class FileManager {
     }
 
     /**
-     * @brief Delete the file from the filesystem.
+     * Delete the file from the filesystem.
      *
      * @param fileToDelete The file to delete.
-     *
-     * @return Status of the deletion.
      */
     public void delete(File fileToDelete) {
 
@@ -220,7 +218,7 @@ public class FileManager {
     }
 
     /**
-     * @brief Rename the file to a new filename.
+     * Rename the file to a new filename.
      *
      * @param file The file to rename.
      * @param newFilename The new name of the file.
@@ -230,7 +228,7 @@ public class FileManager {
     }
 
     /**
-     * @brief Get the checksum from the file.
+     * Get the checksum from the file.
      *
      * @param file The file to get the checksum.
      *

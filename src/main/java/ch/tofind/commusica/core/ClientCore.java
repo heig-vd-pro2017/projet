@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 /**
- * @brief This class represents the client side of the application.
+ * This class represents the client side of the application.
  */
 public class ClientCore extends AbstractCore implements ICore {
 
@@ -58,7 +58,7 @@ public class ClientCore extends AbstractCore implements ICore {
     private ExecutorService threadPool;
 
     /**
-     * @brief Setup the core as a client.
+     * Setup the core as a client.
      */
     public ClientCore() {
 
@@ -71,7 +71,7 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Method which is invoked when the server sends an END_OF_COMMUNICATION command
+     * Method which is invoked when the server sends an END_OF_COMMUNICATION command
      *
      * @param args Args of the command.
      *             
@@ -83,7 +83,7 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Method invoked when the server sends a PLAYLIST_UPDATE command
+     * Method invoked when the server sends a PLAYLIST_UPDATE command
      * it has two purposes:
      * -Update the client playlist if the server who sends the update is the one saved by the client
      * -Update the available servers list of the client
@@ -120,7 +120,7 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Entry point to notify the server the client want to connect to it. It sends the NEW_ACTIVE_CLIENT command
+     * Entry point to notify the server the client want to connect to it. It sends the NEW_ACTIVE_CLIENT command
      * by Unicast to the server chosen.
      *
      * @param args Args of the command.
@@ -140,7 +140,7 @@ public class ClientCore extends AbstractCore implements ICore {
     }
     
     /**
-     * @brief Entry point to ask the server for a track request. This method does the first check to ensure
+     * Entry point to ask the server for a track request. This method does the first check to ensure
      * the track is in a supported format and then send the command TRACK_REQUEST with all the
      * information available about the track.
      * It also setup the Unicast client for the time of the "transaction" since the UnicastCLient
@@ -196,7 +196,7 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Method invoked when the server sends the TRACK_ACCEPTED command. It is in this method that
+     * Method invoked when the server sends the TRACK_ACCEPTED command. It is in this method that
      * the file is sent by Unicast after the command SENDING_TRACK was sent to the server to make
      * it go into file reception mode.
      *
@@ -222,7 +222,7 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Method invoked when the server sends the TRACK_REFUSED command. It can happen if the
+     * Method invoked when the server sends the TRACK_REFUSED command. It can happen if the
      * track was already on the server or in the database.
      *
      * @param args Args of the command.
@@ -240,7 +240,7 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Method invoked when the server sends the TRACK_SAVED command. It notify that the
+     * Method invoked when the server sends the TRACK_SAVED command. It notify that the
      * track was saved in the server side.
      *
      * @param args Args of the command.
@@ -258,7 +258,7 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Entry point to send the PLAY_PAUSE_REQUEST command.
+     * Entry point to send the PLAY_PAUSE_REQUEST command.
      *
      * @param args Args of the command.
      *
@@ -278,7 +278,7 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Entry point to send the NEXT_TRACK_REQUEST command.
+     * Entry point to send the NEXT_TRACK_REQUEST command.
      *
      * @param args Args of the command.
      *
@@ -298,7 +298,7 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Entry point to send the PREVIOUS_TRACK_REQUEST command.
+     * Entry point to send the PREVIOUS_TRACK_REQUEST command.
      *
      * @param args Args of the command.
      *
@@ -318,7 +318,7 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Entry point to send the TURN_VOLUME_UP_REQUEST command.
+     * Entry point to send the TURN_VOLUME_UP_REQUEST command.
      *
      * @param args Args of the command.
      *
@@ -338,7 +338,7 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Entry point to send the TURN_VOLUME_DOWN_REQUEST command.
+     * Entry point to send the TURN_VOLUME_DOWN_REQUEST command.
      *
      * @param args Args of the command.
      *
@@ -358,7 +358,7 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Entry point to send the UPVOTE_TRACK_REQUEST command. It retrieves by the args
+     * Entry point to send the UPVOTE_TRACK_REQUEST command. It retrieves by the args
      * the id of the Track to upvote and sends it to the server.
      *
      * @param args Args of the command.
@@ -381,7 +381,7 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Entry point to send the DOWNVOTE_TRACK_REQUEST command. It retrieves by the args
+     * Entry point to send the DOWNVOTE_TRACK_REQUEST command. It retrieves by the args
      * the id of the Track to downvote and sends it to the server.
      *
      * @param args Args of the command.
@@ -403,7 +403,7 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Method invoked when the server sends the TRACK_UPVOTED command. It notify that the
+     * Method invoked when the server sends the TRACK_UPVOTED command. It notify that the
      * track was updated in the server side.
      *
      * @param args Args of the command.
@@ -420,7 +420,7 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Method invoked when the server sends the TRACK_DOWNVOTED command. It notify that the
+     * Method invoked when the server sends the TRACK_DOWNVOTED command. It notify that the
      * track was updated in the server side.
      *
      * @param args Args of the command.
@@ -437,7 +437,7 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Method invoked when the server sends the ERROR command. It notify that an ERROR occurred on
+     * Method invoked when the server sends the ERROR command. It notify that an ERROR occurred on
      * the server side
      *
      * @param args Args of the command.
@@ -463,7 +463,7 @@ public class ClientCore extends AbstractCore implements ICore {
     }
 
     /**
-     * @brief Method invoked when the server sends the SUCCESS command. It notify that an action
+     * Method invoked when the server sends the SUCCESS command. It notify that an action
      * succeed.
      *
      * @param args Args of the command.

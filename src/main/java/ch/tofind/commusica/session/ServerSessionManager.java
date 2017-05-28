@@ -44,7 +44,7 @@ public class ServerSessionManager implements ISessionManager {
     }
 
     /**
-     * @brief Get the object instance.
+     * Get the object instance.
      *
      * @return The instance of the object.
      */
@@ -62,7 +62,7 @@ public class ServerSessionManager implements ISessionManager {
     }
 
     /**
-     * @brief Store a new session.
+     * Store a new session.
      *
      * @param id ID of the new session.
      * @param serverIp The server's IP.
@@ -81,7 +81,7 @@ public class ServerSessionManager implements ISessionManager {
     }
 
     /**
-     * @brief Get the available servers for the user.
+     * Get the available servers for the user.
      *
      * @return The available servers.
      */
@@ -90,7 +90,7 @@ public class ServerSessionManager implements ISessionManager {
     }
 
     /**
-     * @brief Delete the sessions that are not active anymore.
+     * Delete the sessions that are not active anymore.
      */
     private void deleteObsoleteSessions() {
 

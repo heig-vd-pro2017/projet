@@ -4,7 +4,7 @@ import java.net.InetAddress;
 import java.util.Date;
 
 /**
- * @brief Class representing a server session.
+ * Class representing a server session.
  */
 public class ServerSession implements ISession {
 
@@ -21,7 +21,7 @@ public class ServerSession implements ISession {
     private Date updated;
 
     /**
-     * @brief Create a session.
+     * Create a session.
      *
      * @param id ID of the session.
      * @param serverIp IP of the server.
@@ -35,7 +35,7 @@ public class ServerSession implements ISession {
     }
 
     /**
-     * @brief Get the server's IP associated with the session.
+     * Get the server's IP associated with the session.
      *
      * @return The server's IP.
      */
@@ -44,7 +44,7 @@ public class ServerSession implements ISession {
     }
 
     /**
-     * @brief Get the server's name associated with the session.
+     * Get the server's name associated with the session.
      *
      * @return The server's name.
      */

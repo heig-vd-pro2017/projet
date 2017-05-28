@@ -78,7 +78,7 @@ header-includes:
 \begingroup
 \let\footnote\thanks
 \begin{center}
-{\LARGE\@title}\vskip1.5em
+{\huge\@title}\vskip1.5em
 \includegraphics[width=10cm, height=10cm]{images/logo.png}\vskip1.5em
 {\LARGE Rapport final}\vskip1.5em
 {\large\@author}\vskip1.5em

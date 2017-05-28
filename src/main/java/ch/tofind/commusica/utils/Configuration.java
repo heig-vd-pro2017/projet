@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
- * @brief This class can get properties from a configuration file.
+ * This class can get properties from a configuration file.
  */
 public class Configuration {
 
@@ -22,7 +22,7 @@ public class Configuration {
     private Properties configuration = null;
 
     /**
-     * @brief Configuration single constructor. Avoid the instantiation.
+     * Configuration single constructor. Avoid the instantiation.
      */
     private Configuration() {
         configuration = new Properties();
@@ -35,7 +35,7 @@ public class Configuration {
     }
 
     /**
-     * @brief Get the object instance
+     * Get the object instance
      * @return The instance of the object
      */
     public static Configuration getInstance() {
@@ -52,7 +52,7 @@ public class Configuration {
     }
 
     /**
-     * @brief Get the property from the configuration file
+     * Get the property from the configuration file
      * @return The property
      */
     public String get(String property) {

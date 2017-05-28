@@ -16,7 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 /**
- * @brief This class represents the player controls view.
+ * This class represents the player controls view.
  */
 public class PlayerControlsView extends GridPane {
 
@@ -48,7 +48,7 @@ public class PlayerControlsView extends GridPane {
     private Slider volumeSlider;
 
     /**
-     * @brief View constructor.
+     * View constructor.
      */
     public PlayerControlsView() {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource(FXML_FILE));

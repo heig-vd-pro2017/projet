@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @brief This class represents a server.
+ * This class represents a server.
  */
 public class Server implements Runnable {
 
@@ -31,7 +31,7 @@ public class Server implements Runnable {
     private ExecutorService threadPool;
 
     /**
-     * @brief Constructor.
+     * Constructor.
      *
      * @param port Port to use for the communication.
      */
@@ -42,7 +42,7 @@ public class Server implements Runnable {
     }
 
     /**
-     * @brief Stop the receptionist.
+     * Stop the receptionist.
      */
     public void stop() {
 

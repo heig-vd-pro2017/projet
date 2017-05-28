@@ -3,7 +3,7 @@ package ch.tofind.commusica.network;
 import java.net.InetAddress;
 
 /**
- * @brief This class represents the network protocol for communication.
+ * This class represents the network protocol for communication.
  */
 public final class NetworkProtocol {
 

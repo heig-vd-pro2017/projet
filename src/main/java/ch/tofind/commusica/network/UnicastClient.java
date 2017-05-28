@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- * @brief This class represents an unicast client.
+ * This class represents an unicast client.
  */
 public class UnicastClient implements Runnable {
 
@@ -29,7 +29,7 @@ public class UnicastClient implements Runnable {
     private BufferedReader in;
 
     /**
-     * @brief Create a unicast client by hostname and port.
+     * Create a unicast client by hostname and port.
      *
      * @param hostname Where to send information.
      * @param port On which port we send information.
@@ -46,7 +46,7 @@ public class UnicastClient implements Runnable {
     }
 
     /**
-     * @brief Create a unicast client using an already existing socket.
+     * Create a unicast client using an already existing socket.
      *
      * @param socket The socket which has already been connected to a server.
      */
@@ -63,7 +63,7 @@ public class UnicastClient implements Runnable {
     }
 
     /**
-     * @brief Send a message to the server.
+     * Send a message to the server.
      *
      * @param command
      */
@@ -73,7 +73,7 @@ public class UnicastClient implements Runnable {
     }
 
     /**
-     * @brief Send a file to the server.
+     * Send a file to the server.
      *
      * @param file The file to send to the server.
      */
