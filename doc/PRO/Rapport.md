@@ -784,7 +784,9 @@ La charge de travail était évidemment conséquente, mais la qualité de travai
 
 Ce projet m'a permis de pouvoir approfondir mes connaissances et compétences techniques ainsi que mes compétences de chef de projet.
 
-Mon seul regret est de ne pas avoir pu mieux impliquer tout le monde sur le développement. Heureusement, les discussions ont permis d'impliquer tout le monde.
+On se rend vite compte que la gestion d'une équipe n'est pas une chose aisée, mais qu'avec de bons collègues et les bons outils, même si tout ne se passe pas comme prévu, on arrive à atteindre les objectifs visés.
+
+Mon seul regret est de ne pas avoir pu mieux impliquer tout le monde sur le développement.
 
 ## Lucas
 
