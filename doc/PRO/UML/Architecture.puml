@@ -24,7 +24,7 @@ package "Base de données" <<Rectangle>> {
 package "Médias" <<Rectangle>> {
 }
 
-"Réseau" -- "Controlleur"
+"Réseau" -- "Contrôleur"
 
 "Controlleur" -- "Sessions"
 
