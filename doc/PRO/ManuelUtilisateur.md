@@ -182,7 +182,7 @@ Les étapes suivants vous explique comment utiliser l'application.
 ## Choix du lancement de l'application
 Une fois l'application lancée, la fenêtre ci-dessous apparaît.
 
-![Choix de lancement du programme](images/choix-lancement.png)
+![Choix de lancement du programme](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/premiere_fenetre.PNG)
 
 En cliquant sur `Cancel`, vous quittez l'application.
 
@@ -195,29 +195,50 @@ Vous avez le choix de lancer l'application en tant que Serveur ou Client.
 Les explications suivantes sont communes aux deux façons de lancer l'application, soit en tant que serveur, soit en tant que client
 
 ### Choix de l'interface réseau
+Le panneau `Settings` vous offre la possibilité de choisir l'interface réseau à utiliser parmi les interfaces que votre ordinateur met à disposition. Une interface par défaut est mise à paramètrée mais il se peut que les clients ne puisse pas vous detecter dans le cas ou celle par défaut n'est pas connectée au réseau. Dans ce cas choisissez la bonne interface (sur **Windows** elle se nommera la plupart du temps *wlan...*).  
+    **Si la connexion fonctionne ne touchez pas cette option.**
+    
+![interface réseau](figures_manuel_utilisateur/server_Playlist_settings.PNG)    
+
 
 ### Choix des listes de lecture et favoris
+Ce panneau vous permet de naviguer entre la playlist actuelle, vos morceaux enregistrés en temps que favoris et les différentes playlists que vous avez hébergé sur votre ordinateur.
+![choix des listes de lecture](figures_manuel_utilisateur/client_Playlists.jpg)  
+
+1. La playlist en cours de lecture  
+2. La liste des palylists sauvegardées des utilisations précédentes
 
 ### Liste de lecture du serveur
+Les chansons présentes actuellement dans la playlist en cours de lecture.  
+![liste de lecture](figures_manuel_utilisateur/client_Playlist_playing.PNG)  
 
 #### Réorganiser la liste de lecture
 
 ### Contrôle de la musique
+![controle de la musique](figures_manuel_utilisateur/client_pause_next_volume.jpg)  
+(1) Si vous voulez passer à la chanson suivante, vous pouvez cliquer sur ce bouton. La chanson suivante sera jouée si la mojorité des présents le demande.  
+(2) Si vous voulez augmenter ou diminuer le volume, vous pouvez cliquer sur ce bouton. Le volume sera modifié si la mojorité des présents le demande.  
 
-### Musique précédente
+### Musique précédente  
+Les informations concernant la chanson précédent la chanson en cours de lecture.
+![musique précédente](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_track_playing.PNG)
 
 ## Serveur
 Les explications suivantes concernent le lancement de l'application en tant que serveur.
 
 ### Configuration du serveur
+Quand vous choisissez de lancer l'application en tant que serveur, une fênetre apparaîtera pour vous demander de nommer votre serveur.
+![donner un nom au serveur](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/nomServeur.PNG).
 
+Vous pouvez ensuite choisir votre interface réseau comme expliqué ci-dessous dans le paragraphe `Choix de l'interface réseau`.
 
 ## Client
 Les explications suivantes concernent le lancement de l'application en tant que client.
 
 ### Choix du serveur
 
-
+Quand vous choisissez de lancer l'application en tant que client, vous aurez le choix de vous connecter à un des serveurs. Vous pourriez choisir parmi une liste de serveurs disonibles.
+![choix du serveur]()
 
 
 
@@ -227,21 +248,12 @@ Les explications suivantes concernent le lancement de l'application en tant que 
 ## Panneaux
 
 ### Settings
-Le panneau `Settings` vous offre les possibilités suivantes:   
-![alt text](figures_manuel_utilisateur/server_Playlist_settings.PNG)  
-    1. Vous pouvez voir le nom du serveur que vous avez choisi lors de sa création.  
-    2. Vous pouvez choisir l'interface réseau à utiliser parmi les interfaces que votre ordinateur met à disposition. Une interface par défaut est mise à paramètrée mais il se peut que les clients ne puisse pas vous detecter dans le cas ou celle par défaut n'est pas connectée au réseau. Dans ce cas choisissez la bonne interface (sur **Windows** elle se nommera la plupart du temps *wlan...*).  
-    **Si la connexion fonctionne ne touchez pas cette option.**
+
 
 ### Playlists
-Ce panneau vous permet de naviguer entre la playlist actuelle, vos morceaux enregistrés en temps que favoris et les différentes playlists que vous avez hébergé sur votre ordinateur.
-![alt text](figures_manuel_utilisateur/client_Playlists.jpg)  
 
-1. La playlist en cours de lecture  
-2. La liste des palylists sauvegardées des utilisations précédentes
 
-3. Les chansons présentes actuellement dans la playlist en cours de lecture.  
-![alt text](figures_manuel_utilisateur/client_Playlist_playing.PNG)  
+3. 
 
 4. Le nombre total des votes pour chaque chanson  
 ![alt text](figures_manuel_utilisateur/server_vote.PNG)  
@@ -249,8 +261,6 @@ Ce panneau vous permet de naviguer entre la playlist actuelle, vos morceaux enre
 5. La chanson en cours de lecture.  
 ![alt text](figures_manuel_utilisateur/server_track_playing.PNG)  
 
-6. Les informations concernant la chanson précédent la chanson en cours de lecture.  
-![alt text](figures_manuel_utilisateur/server_previous_track.PNG)  
 
 ## Client
 Si vous choisissez d'utiliser l'application en tant que client, l'interface sera comme la montre la figure suivante.  
@@ -275,9 +285,6 @@ Si vous choisissez d'utiliser l'application en tant que client, l'interface sera
 4. La chanson en cours de lecture.  
 ![alt text](figures_manuel_utilisateur/client_track_playing.PNG)  
 
-![alt text](figures_manuel_utilisateur/client_pause_next_volume.jpg)  
-(1) Si vous voulez passer à la chanson suivante, vous pouvez cliquer sur ce bouton. La chanson suivante sera jouée si la mojorité des présents le demande.  
-(2) Si vous voulez augmenter ou diminuer le volume, vous pouvez cliquer sur ce bouton. Le volume sera modifié si la mojorité des présents le demande.
 
-5. Les informations concernant la chanson précédent la chanson en cours de lecture.
-![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_track_playing.PNG)  
+
+  
