@@ -718,8 +718,8 @@ Nous l'avons utilisé dans le but de forcer l'utilisation de l'IPv4 pour les int
 
 Lors du lancement de notre programme, la réelle exécution de celui-ci est la suivante:
 
-0. Exécution du programme Commusica
-1. Lancement de Capsule -> Définition des paramètres à utiliser pour la JVM 2. Lancement de Commusica avec les paramètres JVM souhaités
+1. Exécution du programme Commusica
+2. Lancement de Capsule -> Définition des paramètres à utiliser pour la JVM 2. Lancement de Commusica avec les paramètres JVM souhaités
 3. Démarrage de Commusica`
 
 ## Git / GitHub
@@ -731,6 +731,7 @@ Nous l'avons utilisé afin de permettre à chacun de développer séparément et
 IntelliJ IDEA est un environnement de développement intégré, autrement dit, un ensemble d'outils destinés au développement logiciel.
 
 Nous l'avons choisi pour les raisons suivantes:
+
 - Intégration avec les outils de gestions de versions tel que Git.
 - Une autocomplétion hors pair.
 - L'analyse et inspection : il analyse en temps réel et en permanence le code, à la recherche de problèmes potentiels.
@@ -862,7 +863,7 @@ En conclusion, nous avons essayé de réaliser un programme qui regroupe les qua
 
 Nous pensons avoir atteint ces objectifs. Il y a encore des points à améliorer mais nous avons réussi à produire un programme fonctionnel qui répond à la quasi totalité des points du cahier des charges.
 
-# Bilan
+# Bilans personnels
 ## Ludovic
 J'ai la fierté de pouvoir me dire que ce projet de semestre s'est très bien passé. J'ai l'impression que l'on a su toujours communiquer dans le respect et en tenant compte des points de vue de chacun à la construction du projet. Cela a permis de pouvoir créer une réelle cohésion de groupe afin de réaliser quelque chose, qui n'était à la base qu'une idée sur papier, de fonctionnel et qui correspond quasiment à la version à laquelle on a réfléchit en tout début de projet.
 
@@ -906,8 +907,6 @@ J'ai particulièrement apprécier l'engagement de L. Delafontaine en temps que c
 ## Thibaut
 
 ## Yosra
-
-## Bilan du groupe
 
 # Sources
 - Capsule ([capsule.io](capsule.io)) - Site officiel de la librairie Capsule
