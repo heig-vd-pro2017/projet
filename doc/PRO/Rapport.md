@@ -857,7 +857,17 @@ Je pense que notre équipe a bien fonctionné et que les taches ont été repart
 J'ai particulièrement apprécier l'engagement de L. Delafontaine en temps que chef de projet qui a su synthétiser les problèmes pour nous les communiquer lorsque cela était nécessaire. L'équipe avait une bonne cohésion et les échanges réguliers ont permis de bien faire évoluer le projet en même temps que de mettre à jour tout e monde sur ce qui avait été fait par les différents membres.
 
 ## Thibaut
+Ce projet a été une très belle expérience pour pour les raisons suivantes:
+- Travailler dans un groupe où les menbres ont des profils différents car dans le groupe il y avait des membres avec des profils conceptuels, certains avec des profils organisationels et d'autres avec des profils pratiques.
+De mon côté, j'aimerais aussi dans le futur devélopper ce profil de conception qui est primordial pour un ingénieur.
+- Réflechir sur une idée de projet et la réaliser.
+- Plannifier le projet  dans l'inteval de temps mise à disposition.
 
+Pour la gestion du projet le chef de groupe  Ludovic à parfaitement bien joué son rôle, il a sû optimiser la répartition des tâches en vue d'arriver à la solution obtenue et la motivation qu'il apportait à chaque membre du groupe de travail était remarquable, vu que les tâches étaient reparties en petits groupes de deux personnes. Son sens de l'écoute, sa capacité à communiquer et à déléguer a permis à la bonne réalisation du projet. 
+ Ce fut un plaisir de travailler  avec ce groupe. Mes collègues ont toujours été disponibles pour répondre à mes questions et m'éclairer sur certains points. J'ai été aussi un peu fustré par la différence de niveau de programmation et de conception entre moi et les autres menbres du groupe, je pense que je dois encore bien travailler mon côté conceptuelle.
+ 
+ 
+ 
 ## Yosra
 
 ## Bilan du groupe
@@ -1830,39 +1840,42 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 \newpage
 
 ### Thibaut Togue Kamga
+- 28.05.2017
+	- Reflexion sur les scénarios des tests.(02h00)
 - 27.05.2017
-  	- Corrections du rapport après les suggestions de Denise Gemesio (1h00)
+  	- Corrections du rapport après les suggestions de Denise Gemesio (2h00)
+  	- Relecture du rapport(2h30)
 
 - 26.05.2017
-  	- Rapport: description des technologies utilisées (0h30)
-  	- Rapport: description du paquet Session (1h00)
-  	- Définition du diagramme d’activité de l'échange de fichiers entre le client et le serveur, ensuite repris par Ludovic Delafontaine (1h30)
+  	- Rapport: description des technologies utilisées (01h30)
+  	- Rapport: description du paquet Session (2h30)
+  	- Définition du diagramme d’activité de l'échange de fichiers entre le client et le serveur, ensuite repris par Ludovic Delafontaine (02h00)
 
 - 25.05.2017
-  	- Rapport: description des paquets Database et File (1h00)
-  	- Réalisation du diagramme UML de chaque paquet avec Plantuml, ensuite repris par Ludovic Delafontaine (2h00)
-  	- Réalisation du diagramme UML de tout le projet, ensuite repris par Ludovic Delafontaine (1h00)
+  	- Rapport: description des paquets Database et File (2h00)
+  	- Réalisation du diagramme UML de chaque paquet avec Plantuml, ensuite repris par Ludovic Delafontaine (2h30)
+  	- Réalisation du diagramme UML de tout le projet, ensuite repris par Ludovic Delafontaine (2h00)
 
 - 24.05.2017
-	- Rapport: description du paquet media (1h00)
+	- Rapport: description du paquet media (2h00)
 
 - 23.05.2017
-	- Test de l'application et discussions concernant le rapport (1h30)
+	- Test de l'application et discussions concernant le rapport (2h00)
 
 - 18.05.2017
-	- Début de rapport (définir la structure du rapport, introduction, objectif, description package Configuration du rapport) (2h00)
+	- Début de rapport (définir la structure du rapport, introduction, objectif, description package Configuration du rapport) (3h00)
 
 - 11.05.2017
-	- Lecture du code contrôleur pour la documentation (2h00)
+	- Lecture du code contrôleur pour la documentation (2h30)
 
 - 26.04.2017
-	- Test du player avec le playlistManager (2h00)
+	- Test du player avec le playlistManager (2h30)
 
 - 17.04.2017
-    - Finalisation du player et filemanager, validé par Ludovic (1h30)
+    - Finalisation du player et filemanager, validé par Ludovic (2h00)
 
 - 10.04.2017
-    - Implémentation du player sans playlistManager et tests (3h00)
+    - Implémentation du player sans playlistManager et tests (4h00)
 
 - 06.04.2017
     - Tutoriel playerMedia pour l'implémentation du player (2h00)
@@ -1871,16 +1884,16 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
     - Implémentation du player avec SourceDataline mais inutile car impossible de lire les mp3 (4h00)
 
 - 30.03.2017
-    - Tutoriel sur les file poperties de Java et implémentation du fichier de configuration, modification du file Manager d'après la discussion avec le groupe pour la réservation de la mémoire et tests (3h00)
+    - Tutoriel sur les file poperties de Java et implémentation du fichier de configuration, modification du file Manager d'après la discussion avec le groupe pour la réservation de la mémoire et tests (3h30)
 
 - 27.03.2017
-    - Implémentation du fileManager (2h00)
+    - Implémentation du fileManager (3h00)
 
 - 22.03.2017
-    - Tutoriel sur [https://www.jmdoudoux.fr/java/dej/chap-hibernate.htm](https://www.jmdoudoux.fr/java/dej/chap-hibernate.htm) pour la réalisation de la couche persistance de l'application avec **ORM** (2h00)
+    - Tutoriel sur [https://www.jmdoudoux.fr/java/dej/chap-hibernate.htm](https://www.jmdoudoux.fr/java/dej/chap-hibernate.htm) pour la réalisation de la couche persistance de l'application avec **ORM** (3h00)
 
 - 20.03.2017
-    - Test du fichier SQLite à travers des conteneurs Docker et correction des bugs (2h00)
+    - Test du fichier SQLite à travers des conteneurs Docker et correction des bugs (3h30)
 
 \newpage
 
