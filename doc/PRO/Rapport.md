@@ -914,27 +914,27 @@ J'ai particulièrement apprécié l'engagement de Ludovic Delafontaine en tant q
 
 ## Thibaut
 Ce projet a été une très belle expérience pour les raisons suivantes:
-- Travailler dans un groupe où les menbres ont des profils différents car dans le groupe il y avait des membres avec des profils conceptuels, certains avec des profils organisationels et d'autres avec des profils pratiques.
-De mon côté, j'aimerais aussi dans le futur devélopper ce profil de conception qui est primordial pour un ingénieur.
+
+- Travailler dans un groupe où les membres ont des profils différents, car dans le groupe il y avait des membres avec des profils conceptuels, certains avec des profils organisationels et d'autres avec des profils pratiques. De mon côté, j'aimerais aussi dans le futur devélopper ce profil de conception qui est primordial pour un ingénieur.
 - Réflechir sur une idée de projet et la réaliser.
-- Plannifier le projet  dans l'inteval de temps mise à disposition.
+- Planifier le projet dans l'intervalle de temps mis à disposition.
 
-Pour la gestion du projet le chef de groupe  Ludovic à parfaitement bien joué son rôle, il a sû optimiser la répartition des tâches en vue d'arriver à la solution obtenue et la motivation qu'il apportait à chaque membre du groupe de travail était remarquable, vu que les tâches étaient reparties en petits groupes de deux personnes. Son sens de l'écoute, sa capacité à communiquer et à déléguer a permis à la bonne réalisation du projet.
- Ce fut un plaisir de travailler  avec ce groupe. Mes collègues ont toujours été disponibles pour répondre à mes questions et m'éclairer sur certains points. J'ai été aussi un peu fustré par la différence de niveau de programmation et de conception entre moi et les autres menbres du groupe, je pense que je dois encore bien travailler mon côté conceptuelle.
-
-
+Pour la gestion du projet, le chef de groupe, Ludovic, a parfaitement bien joué son rôle, il a su optimiser la répartition des tâches en vue d'arriver à la solution obtenue et la motivation qu'il apportait à chaque membre du groupe de travail était remarquable, vu que les tâches étaient reparties en petits groupes de deux personnes. Son sens de l'écoute, sa capacité à communiquer et à déléguer a permis la bonne réalisation du projet.
+Ce fut un plaisir de travailler avec ce groupe. Mes collègues ont toujours été disponibles pour répondre à mes questions et m'éclairer sur certains points. J'ai été aussi un peu fustré par la différence de niveau de programmation et de conception entre les autres menbres du groupe et moi, je pense que je dois encore bien travailler mon côté conceptuel.
 
 ## Yosra
 N'étant pas une personne d'expérience dans le domaine puisque je n'ai pas eu l'occasion de participer à plusieurs projets informatiques auparavant, cette nouvelle expérience n'a pas été immédiate et facile.  
 
-Ensemble, nous sommes partis d'une simple idée à développer part la suite. Notre équipe a du donc unir ses forces afin que le projet aboutisse et qu'on puisse atteindre les objectifs fixés au tout départ.  
-Certains membres du groupe, quant à eux, avaient déjà acquis assez d'expérience durant plusieurs projets informatiques auxquels ils ont déjà pu participe et étaient donc toujours à l'écoute et prêts à donner un coup de main en cas de besoin.  
+Ensemble, nous sommes partis d'une simple idée à développer part la suite. Notre équipe a dû donc unir ses forces afin que le projet aboutisse et qu'on puisse atteindre les objectifs fixés au tout départ.  
+Certains membres du groupe, quant à eux, avaient déjà acquis assez d'expérience durant plusieurs projets informatiques auxquels ils ont déjà pu participer et étaient donc toujours à l'écoute et prêts à donner un coup de main en cas de besoin.  
 
-Pour ma part j'étais dans le groupe s'occupant plus de la partie liée au réseau. Cette expérience m'a donc appris, d'une part, à avoir une certaine flexibilité d'adaptation dans les différents domaines concernant un même projet. D'autre part, elle ma permis d'acquérir de grandes compétences tout comme l'aisance relationnelle, l'espérait d'initiative ainsi que qu'une bonne organisation.  
+Pour ma part j'étais dans le groupe s'occupant plus de la partie liée au réseau. Cette expérience m'a donc appris, d'une part, à avoir une certaine flexibilité d'adaptation dans les différents domaines concernant un même projet. D'autre part, elle ma permis d'acquérir de grandes compétences tout comme l'aisance relationnelle, la prise d'initiative ainsi que qu'une bonne organisation.  
 
 Pour ce qui concerne la gestion du groupe, Ludovic Delafontaine a réussi à guider le projet et assurer son avancement. Nous étions tous impliqués dans la réalisation du projet et il était toujours à l'écoute.  
 
 Pour conclure, je dirai que cette expérience unique en son genre m'a bien marquée et a sans doute été un apprentissage très précieux qui me sera utile dans le monde professionnel.
+
+\pagebreak
 
 # Sources
 - Capsule ([capsule.io](capsule.io)) - Site officiel de la librairie Capsule
@@ -1863,6 +1863,8 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 - 28.05.2017
 	- Planification finale, création (0h30)
 	- Planification finale, modification (1h00)
+	- Correction du rapport (3h30)
+	- Planification finale, modification (0h30)
 
 - 27.05.2017
 	- Relecture complète du rapport et corrections orthographiques et grammaticales (3h00)
@@ -1925,9 +1927,9 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
   	- Relecture du rapport(2h30)
 
 - 26.05.2017
-  	- Rapport: description des technologies utilisées (01h30)
+  	- Rapport: description des technologies utilisées (1h30)
   	- Rapport: description du paquet Session (2h30)
-  	- Définition du diagramme d’activité de l'échange de fichiers entre le client et le serveur, ensuite repris par Ludovic Delafontaine (02h00)
+  	- Définition du diagramme d’activité de l'échange de fichiers entre le client et le serveur, ensuite repris par Ludovic Delafontaine (2h00)
 
 - 25.05.2017
   	- Rapport: description des paquets Database et File (2h00)
