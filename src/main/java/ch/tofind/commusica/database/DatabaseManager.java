@@ -9,7 +9,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
 /**
- * @brief This class represents the database and allows interaction with the real database
+ * This class represents the database and allows interaction with the real database
  */
 public class DatabaseManager {
 
@@ -29,7 +29,7 @@ public class DatabaseManager {
     private Transaction transaction;
 
     /**
-     * @brief DatabaseManager single constructor. Avoid the instantiation.
+     * DatabaseManager single constructor. Avoid the instantiation.
      */
     private DatabaseManager() {
         try {
@@ -44,7 +44,7 @@ public class DatabaseManager {
     }
 
     /**
-     * @brief Get the object instance.
+     * Get the object instance.
      *
      * @return The instance of the object.
      */
@@ -62,7 +62,7 @@ public class DatabaseManager {
     }
 
     /**
-     * @brief Get the Hibernate session.
+     * Get the Hibernate session.
      *
      * @return The Hibernate session.
      */
@@ -71,7 +71,7 @@ public class DatabaseManager {
     }
 
     /**
-     * @brief Execute the query on the database.
+     * Execute the query on the database.
      *
      * @param query The query to execute.
      */
@@ -93,7 +93,7 @@ public class DatabaseManager {
     }
 
     /**
-     * @brief Save the object in the database.
+     * Save the object in the database.
      *
      * @param object The object to save.
      */
@@ -115,7 +115,7 @@ public class DatabaseManager {
     }
 
     /**
-     * @brief Delete the object from the database.
+     * Delete the object from the database.
      *
      * @param object The object to delete.
      */
@@ -136,7 +136,7 @@ public class DatabaseManager {
     }
 
     /**
-     * @brief Update the object from the database.
+     * Update the object from the database.
      *
      * @param object The object to update.
      */
@@ -157,7 +157,7 @@ public class DatabaseManager {
     }
 
     /**
-     * @brief Close the database connection.
+     * Close the database connection.
      */
     public void close() {
 

@@ -78,7 +78,7 @@ header-includes:
 \begingroup
 \let\footnote\thanks
 \begin{center}
-{\LARGE\@title}\vskip1.5em
+{\Huge\@title}\vskip1.5em
 \includegraphics[width=10cm, height=10cm]{images/logo.png}\vskip1.5em
 {\LARGE Rapport final}\vskip1.5em
 {\large\@author}\vskip1.5em
@@ -89,7 +89,9 @@ header-includes:
 }
 \makeatother
 
-\title{Commusica\\Le lecteur de musique communautaire et égalitaire}
+\title{%
+  Commusica \vskip0.4em
+  \large Le lecteur de musique communautaire et égalitaire}
 
 \author{Chef de projet: Ludovic Delafontaine\\
    Chef remplaçant: Lucas Elisei\\
@@ -133,7 +135,13 @@ Le but de notre programme est de proposer une application client-serveur qui per
 - Augmenter et diminuer le volume, si la majorité le souhaite.
 - Système de favoris afin de permettre aux utilisateurs de sauvegarder les informations d'un morceau de musique pour pouvoir le retrouver par la suite.
 
-On souhaite répondre à l'éternel problème de devoir se partager une prise jack ou de devoir se battre pour pouvoir passer un morceau que l'on souhaite écouter.
+Nous souhaitons répondre à l'éternel problème qu'est le fait de devoir se partager une prise jack ou de devoir se battre pour pouvoir passer un morceau que l'on souhaite écouter.
+
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[height=0.3\textheight]{images/fonctionnement_general.png}
+  \captionof{figure}{Fonctionnement général du programme}
+\end{minipage}
 
 # Public cible
 Cette application visera un public dont la gestion de la musique lors d'un événement est critique.
@@ -194,7 +202,7 @@ Les différentes tables sont générées automatiquement par Hibernate (voir `Te
 Cette entité représente ce que nous allons montrer à l'utilisateur, afin qu'il ait une interface pour intéragir avec le programme. Cette interface sera liée directement au contrôleur, qui saura quoi faire en fonction de l'action demandée.
 
 ## Entité *Médias*
-Cette entité regroupe tout ce qui concerne les médias de notre application : moreaux de musique, listes de lecture, lecteur de musique.
+Cette entité regroupe tout ce qui concerne les médias de notre application : morceaux de musique, listes de lecture, lecteur de musique.
 
 \pagebreak
 
@@ -255,6 +263,8 @@ Pour retrouver l'extension du fichier, nous avons procédé de la manière suiva
 \end{minipage}
 
 Connaître le type de fichier nous permettra de traiter uniquement les fichiers supportés par notre plateforme et, aussi, en termes de sécurité, éviter qu'un utilisateur ne fasse planter le serveur en envoyant un fichier qui n'est pas supporté par celui-ci.
+
+\pagebreak
 
 ## Paquet `network`
 
@@ -722,6 +732,7 @@ Lors du lancement de notre programme, la réelle exécution de celui-ci est la s
 4. Lancement de Commusica avec les paramètres JVM souhaités
 5. Démarrage de Commusica`
 
+
 ## Git / GitHub
 Git est un outil de gestion de versions qui permet de simplifier le développement d'une application en gérant automatiquement la fusion de code de deux auteurs différents et, permet également de pouvoir avoir un historique des actions effectuées tout au long du projet.
 
@@ -858,7 +869,7 @@ En conclusion, nous avons essayé de réaliser un programme qui regroupe les qua
 
 Nous pensons avoir atteint ces objectifs. Il y a encore des points à améliorer mais nous avons réussi à produire un programme fonctionnel qui réponde à la quasi totalité des points du cahier des charges.
 
-# Bilan
+# Bilans personnels
 ## Ludovic
 J'ai la fierté de pouvoir me dire que ce projet de semestre s'est très bien passé. J'ai l'impression que l'on a toujours su communiquer dans le respect et en tenant compte des points de vue de chacun à la construction du projet. Cela a permis de pouvoir créer une réelle cohésion de groupe afin de réaliser quelque chose, qui n'était à la base qu'une idée sur papier, de fonctionnel et qui correspond quasiment à la version à laquelle nous avons réfléchi en tout début de projet.
 
@@ -902,10 +913,28 @@ Je pense que notre équipe a bien fonctionné et que les tâches ont été répa
 J'ai particulièrement apprécié l'engagement de Ludovic Delafontaine en tant que chef de projet qui a su synthétiser les problèmes pour nous et les communiquer lorsque cela était nécessaire. L'équipe avait une bonne cohésion et les échanges réguliers ont permis de bien faire évoluer le projet en même temps que de mettre à jour tout le monde sur ce qui avait été fait par les différents membres.
 
 ## Thibaut
+Ce projet a été une très belle expérience pour les raisons suivantes:
+- Travailler dans un groupe où les menbres ont des profils différents car dans le groupe il y avait des membres avec des profils conceptuels, certains avec des profils organisationels et d'autres avec des profils pratiques.
+De mon côté, j'aimerais aussi dans le futur devélopper ce profil de conception qui est primordial pour un ingénieur.
+- Réflechir sur une idée de projet et la réaliser.
+- Plannifier le projet  dans l'inteval de temps mise à disposition.
+
+Pour la gestion du projet le chef de groupe  Ludovic à parfaitement bien joué son rôle, il a sû optimiser la répartition des tâches en vue d'arriver à la solution obtenue et la motivation qu'il apportait à chaque membre du groupe de travail était remarquable, vu que les tâches étaient reparties en petits groupes de deux personnes. Son sens de l'écoute, sa capacité à communiquer et à déléguer a permis à la bonne réalisation du projet.
+ Ce fut un plaisir de travailler  avec ce groupe. Mes collègues ont toujours été disponibles pour répondre à mes questions et m'éclairer sur certains points. J'ai été aussi un peu fustré par la différence de niveau de programmation et de conception entre moi et les autres menbres du groupe, je pense que je dois encore bien travailler mon côté conceptuelle.
+
+
 
 ## Yosra
+N'étant pas une personne d'expérience dans le domaine puisque je n'ai pas eu l'occasion de participer à plusieurs projets informatiques auparavant, cette nouvelle expérience n'a pas été immédiate et facile.  
 
-## Bilan du groupe
+Ensemble, nous sommes partis d'une simple idée à développer part la suite. Notre équipe a du donc unir ses forces afin que le projet aboutisse et qu'on puisse atteindre les objectifs fixés au tout départ.  
+Certains membres du groupe, quant à eux, avaient déjà acquis assez d'expérience durant plusieurs projets informatiques auxquels ils ont déjà pu participe et étaient donc toujours à l'écoute et prêts à donner un coup de main en cas de besoin.  
+
+Pour ma part j'étais dans le groupe s'occupant plus de la partie liée au réseau. Cette expérience m'a donc appris, d'une part, à avoir une certaine flexibilité d'adaptation dans les différents domaines concernant un même projet. D'autre part, elle ma permis d'acquérir de grandes compétences tout comme l'aisance relationnelle, l'espérait d'initiative ainsi que qu'une bonne organisation.  
+
+Pour ce qui concerne la gestion du groupe, Ludovic Delafontaine a réussi à guider le projet et assurer son avancement. Nous étions tous impliqués dans la réalisation du projet et il était toujours à l'écoute.  
+
+Pour conclure, je dirai que cette expérience unique en son genre m'a bien marquée et a sans doute été un apprentissage très précieux qui me sera utile dans le monde professionnel.
 
 # Sources
 - Capsule ([capsule.io](capsule.io)) - Site officiel de la librairie Capsule
@@ -1889,39 +1918,42 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 \newpage
 
 ### Thibaut Togue Kamga
+- 28.05.2017
+	- Reflexion sur les scénarios des tests.(04h00)
 - 27.05.2017
-  	- Corrections du rapport après les suggestions de Denise Gemesio (1h00)
+  	- Corrections du rapport après les suggestions de Denise Gemesio (2h00)
+  	- Relecture du rapport(2h30)
 
 - 26.05.2017
-  	- Rapport: description des technologies utilisées (0h30)
-  	- Rapport: description du paquet Session (1h00)
-  	- Définition du diagramme d’activité de l'échange de fichiers entre le client et le serveur, ensuite repris par Ludovic Delafontaine (1h30)
+  	- Rapport: description des technologies utilisées (01h30)
+  	- Rapport: description du paquet Session (2h30)
+  	- Définition du diagramme d’activité de l'échange de fichiers entre le client et le serveur, ensuite repris par Ludovic Delafontaine (02h00)
 
 - 25.05.2017
-  	- Rapport: description des paquets Database et File (1h00)
-  	- Réalisation du diagramme UML de chaque paquet avec Plantuml, ensuite repris par Ludovic Delafontaine (2h00)
-  	- Réalisation du diagramme UML de tout le projet, ensuite repris par Ludovic Delafontaine (1h00)
+  	- Rapport: description des paquets Database et File (2h00)
+  	- Réalisation du diagramme UML de chaque paquet avec Plantuml, ensuite repris par Ludovic Delafontaine (2h30)
+  	- Réalisation du diagramme UML de tout le projet, ensuite repris par Ludovic Delafontaine (2h00)
 
 - 24.05.2017
-	- Rapport: description du paquet media (1h00)
+	- Rapport: description du paquet media (2h00)
 
 - 23.05.2017
-	- Test de l'application et discussions concernant le rapport (1h30)
+	- Test de l'application et discussions concernant le rapport (2h00)
 
 - 18.05.2017
-	- Début de rapport (définir la structure du rapport, introduction, objectif, description package Configuration du rapport) (2h00)
+	- Début de rapport (définir la structure du rapport, introduction, objectif, description package Configuration du rapport) (3h00)
 
 - 11.05.2017
-	- Lecture du code contrôleur pour la documentation (2h00)
+	- Lecture du code contrôleur pour la documentation (2h30)
 
 - 26.04.2017
-	- Test du player avec le playlistManager (2h00)
+	- Test du player avec le playlistManager (2h30)
 
 - 17.04.2017
-    - Finalisation du player et filemanager, validé par Ludovic (1h30)
+    - Finalisation du player et filemanager, validé par Ludovic (2h00)
 
 - 10.04.2017
-    - Implémentation du player sans playlistManager et tests (3h00)
+    - Implémentation du player sans playlistManager et tests (4h00)
 
 - 06.04.2017
     - Tutoriel playerMedia pour l'implémentation du player (2h00)
@@ -1930,16 +1962,16 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
     - Implémentation du player avec SourceDataline mais inutile car impossible de lire les mp3 (4h00)
 
 - 30.03.2017
-    - Tutoriel sur les file poperties de Java et implémentation du fichier de configuration, modification du file Manager d'après la discussion avec le groupe pour la réservation de la mémoire et tests (3h00)
+    - Tutoriel sur les file poperties de Java et implémentation du fichier de configuration, modification du file Manager d'après la discussion avec le groupe pour la réservation de la mémoire et tests (3h30)
 
 - 27.03.2017
-    - Implémentation du fileManager (2h00)
+    - Implémentation du fileManager (3h00)
 
 - 22.03.2017
-    - Tutoriel sur [https://www.jmdoudoux.fr/java/dej/chap-hibernate.htm](https://www.jmdoudoux.fr/java/dej/chap-hibernate.htm) pour la réalisation de la couche persistance de l'application avec **ORM** (2h00)
+    - Tutoriel sur [https://www.jmdoudoux.fr/java/dej/chap-hibernate.htm](https://www.jmdoudoux.fr/java/dej/chap-hibernate.htm) pour la réalisation de la couche persistance de l'application avec **ORM** (3h00)
 
 - 20.03.2017
-    - Test du fichier SQLite à travers des conteneurs Docker et correction des bugs (2h00)
+    - Test du fichier SQLite à travers des conteneurs Docker et correction des bugs (3h30)
 
 \newpage
 
@@ -2014,4 +2046,4 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 
 \newpage
 
-## Panification initiale et son évolution
+## Planification initiale et son évolution

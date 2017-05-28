@@ -1,7 +1,7 @@
 package ch.tofind.commusica.file;
 
 /**
- * @brief These constants are used to check the format of a file.
+ * These constants are used to check the format of a file.
  */
 public class FilesFormats {
 

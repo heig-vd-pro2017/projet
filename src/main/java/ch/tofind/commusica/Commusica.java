@@ -1,16 +1,11 @@
 package ch.tofind.commusica;
 
-import ch.tofind.commusica.core.Core;
 import ch.tofind.commusica.ui.ClientServerDialog;
-import ch.tofind.commusica.ui.UIController;
 import ch.tofind.commusica.utils.Logger;
-import ch.tofind.commusica.utils.Network;
-import javafx.application.Platform;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
 
-import java.util.Optional;
-
+/**
+ * This class is the main class.
+ */
 public class Commusica {
 
     private static final Logger LOG = new Logger(Commusica.class.getSimpleName());
@@ -23,5 +18,4 @@ public class Commusica {
 
         System.exit(0);
     }
-
 }

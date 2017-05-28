@@ -1,12 +1,10 @@
 @startuml
 
-    skinparam monochrome true
     skinparam classAttributeIconSize 0
 
     namespace ch.tofind.commusica.media {
 
         interface IPlaylist {
-            [[IPlaylist.html]]
             {abstract} +addTrack(Track): boolean
             {abstract} +contains(Track): boolean
             {abstract} +getPlaylistTrack(Track): PlaylistTrack
@@ -15,7 +13,6 @@
         }
 
         class SavedPlaylist {
-            [[SavedPlaylist.html]]
             -id: Integer
             -name: String
             -dateAdded: Date
@@ -25,7 +22,6 @@
         }
 
         class EphemeralPlaylist {
-            [[EphemeralPlaylist.html]]
             {static} -LOG: Logger
             -tracksList: ObservableSortedPlaylistTrackList
             +EphemeralPlaylist(String)
@@ -38,7 +34,6 @@
         }
 
         class Track {
-            [[Track.html]]
             -id: String
             -title: String
             -artist: String
@@ -53,7 +48,6 @@
         }
 
         class Player {
-            [[Player.html]]
             {static} -LOG: Logger
             {static} -currentPlayer: Player
             -player: MediaPlayer

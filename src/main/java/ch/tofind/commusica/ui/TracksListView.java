@@ -23,7 +23,7 @@ import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 
 /**
- * @brief Represents a graphic list view of tracks.
+ * Represents a graphic list view of tracks.
  *
  * Used to draw the central pane of the application.
  *
@@ -37,7 +37,7 @@ public class TracksListView extends ListView<PlaylistTrack> {
     private static PlaylistManager playlistManager = PlaylistManager.getInstance();
 
     /**
-     * @brief View constructor.
+     * View constructor.
      *
      * Default constructor of the class.
      * Calls \ref ListView default constructor and handles loading of the FXML file.
@@ -75,7 +75,7 @@ public class TracksListView extends ListView<PlaylistTrack> {
     }
 
     /**
-     * @brief Loads a playlist.
+     * Loads a playlist.
      *
      * Loads a playlist in the view.
      * Calls PlaylistManager#showPlaylist(SavedPlaylist).
@@ -90,7 +90,7 @@ public class TracksListView extends ListView<PlaylistTrack> {
 
 
     /**
-     * @brief Allows the drag and drop to add tracks.
+     * Allows the drag and drop to add tracks.
      */
     private void initializeDragAndDrop() {
         setOnDragOver(event -> {

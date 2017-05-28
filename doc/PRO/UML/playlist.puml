@@ -1,12 +1,10 @@
 @startuml
 
-    skinparam monochrome true
     skinparam classAttributeIconSize 0
 
     namespace ch.tofind.commusica.playlist {
 
         class PlaylistTrack {
-            [[PlaylistTrack.html]]
             -hasBeenPlayed: ReadOnlyBooleanWrapper
             -votes: Integer
             -votesProperty: IntegerProperty
@@ -17,7 +15,6 @@
         }
 
         class PlaylistManager {
-            [[PlaylistManager.html]]
             {static} -LOG: Logger
             {static} -instance: PlaylistManager
             -savedPlaylists: List<SavedPlaylist>
@@ -36,12 +33,10 @@
         }
 
         class VoteComparator {
-            [[VoteComparator.html]]
             +compare(PlaylistTrack, PlaylistTrack): int
         }
 
         class PlaylistTrackId {
-            [[PlaylistTrackId.html]]
             -playlist: SavedPlaylist
             -track: Track
             +PlaylistTrackId(SavedPlaylist, Track)

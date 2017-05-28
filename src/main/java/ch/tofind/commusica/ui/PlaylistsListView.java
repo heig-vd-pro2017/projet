@@ -15,7 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 /**
- * @brief This class shows the list of all the playlists.
+ * This class shows the list of all the playlists.
  */
 public class PlaylistsListView extends AnchorPane {
 
@@ -38,7 +38,7 @@ public class PlaylistsListView extends AnchorPane {
     ListView<SavedPlaylist> playlistsView;
 
     /**
-     * @brief View constructor.
+     * View constructor.
      */
     public PlaylistsListView() {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource(FXML_FILE));
@@ -58,14 +58,14 @@ public class PlaylistsListView extends AnchorPane {
     }
 
     /**
-     * @brief Refresh the UI.
+     * Refresh the UI.
      */
     public void refresh() {
         playlistsView.setItems(FXCollections.observableList(manager.getSavedPlaylists()));
     }
 
     /**
-     * @brief Inner class that defines a PlaylistCell
+     * Inner class that defines a PlaylistCell
      */
     private class PlaylistCell extends ListCell<SavedPlaylist> {
 

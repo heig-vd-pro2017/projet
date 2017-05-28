@@ -19,7 +19,7 @@ import javafx.scene.media.MediaPlayer;
 import java.io.File;
 
 /**
- * @brief This class represents a player that can play a track.
+ * This class represents a player that can play a track.
  */
 public class Player {
 
@@ -57,7 +57,7 @@ public class Player {
 
 
     /**
-     * @brief Player single constructor. Avoid the instantiation.
+     * Player single constructor. Avoid the instantiation.
      */
     private Player(double volumeStep) {
         this.volumeStep = volumeStep;
@@ -82,7 +82,7 @@ public class Player {
     }
 
     /**
-     * @brief Get the object instance.
+     * Get the object instance.
      *
      * @return The instance of the object.
      */
@@ -99,7 +99,7 @@ public class Player {
     }
 
     /**
-     * @brief Ask the playlist manager the next playlist and load it in the player and plays it.
+     * Ask the playlist manager the next playlist and load it in the player and plays it.
      */
     public void load() {
 
@@ -150,7 +150,7 @@ public class Player {
     }
 
     /**
-     * @brief Get the current time of a playimg track.
+     * Get the current time of a playimg track.
      *
      * @return The current time of the playing track.
      */
@@ -159,7 +159,7 @@ public class Player {
     }
 
     /**
-     * @brief Get the current track in the player.
+     * Get the current track in the player.
      *
      * @return The current track.
      */
@@ -168,7 +168,7 @@ public class Player {
     }
 
     /**
-     * @brief Get the current track property in the player.
+     * Get the current track property in the player.
      *
      * @return The current track property.
      */
@@ -177,7 +177,7 @@ public class Player {
     }
 
     /**
-     * @brief Get the privous track property in the player.
+     * Get the privous track property in the player.
      *
      * @return The previous track property.
      */
@@ -186,7 +186,7 @@ public class Player {
     }
 
     /**
-     * @brief Get the playing status of the running player.
+     * Get the playing status of the running player.
      *
      * @return The playing property of the running player.
      */
@@ -199,7 +199,7 @@ public class Player {
     }
 
     /**
-     * @brief Get the playing status of the running player.
+     * Get the playing status of the running player.
      *
      * @return The playing status of the running player.
      */
@@ -208,7 +208,7 @@ public class Player {
     }
 
     /**
-     * @brief Start the player. Ask the PlaylistManager for tracks if needed.
+     * Start the player. Ask the PlaylistManager for tracks if needed.
      */
     public void play() {
         if (currentTrackProperty.getValue() == null) {
@@ -222,7 +222,7 @@ public class Player {
     }
 
     /**
-     * @brief Pause the player.
+     * Pause the player.
      */
     public void pause() {
         if (player != null) {
@@ -232,7 +232,7 @@ public class Player {
     }
 
     /**
-     * @brief Stop the player.
+     * Stop the player.
      */
     public void stop() {
         if (player != null) {
@@ -242,14 +242,14 @@ public class Player {
     }
 
     /**
-     * @brief Rise the volume of the player.
+     * Rise the volume of the player.
      */
     public void riseVolume() {
         volumeProperty.setValue(Math.min(volumeProperty.getValue() + volumeStep, MAX_VOLUME));
     }
 
     /**
-     * @brief Lower the volume of the player.
+     * Lower the volume of the player.
      */
     public void lowerVolume() {
         volumeProperty.setValue(Math.max(volumeProperty.getValue() - volumeStep, MIN_VOLUME));

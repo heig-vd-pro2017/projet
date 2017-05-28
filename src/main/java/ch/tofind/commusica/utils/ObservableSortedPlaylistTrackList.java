@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @brief This class represents all the PlaylistTrack in the UI.
+ * This class represents all the PlaylistTrack in the UI.
  */
 public class ObservableSortedPlaylistTrackList extends ObservableListBase<PlaylistTrack> {
 

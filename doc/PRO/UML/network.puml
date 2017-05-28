@@ -1,12 +1,10 @@
 @startuml
 
-    skinparam monochrome true
     skinparam classAttributeIconSize 0
 
     namespace ch.tofind.commusica.network {
 
         class UnicastClient {
-            [[UnicastClient.html]]
             {static} -LOG: Logger
             -socket: Socket
             -out: PrintWriter
@@ -19,7 +17,6 @@
         }
 
         class MulticastClient {
-            [[MulticastClient.html]]
             {static} -LOG: Logger
             -port: int
             -multicastGroup: InetAddress
@@ -32,7 +29,6 @@
         }
 
         class Server {
-            [[Server.html]]
             {static} -LOG: Logger
             -socket: ServerSocket
             -port: int
@@ -44,7 +40,6 @@
         }
 
         class NetworkProtocol {
-            [[NetworkProtocol.html]]
             {static} +interfaceToUse: InetAddress
             {static} +MULTICAST_PORT: int
             {static} +UNICAST_PORT: int
