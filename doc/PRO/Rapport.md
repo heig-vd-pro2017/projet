@@ -50,7 +50,7 @@ header-includes:
     - \fancyhead[RO,RE]{HEIG-VD - PRO 2017}
 
     # Redefine TOC style.
-    - \setcounter{tocdepth}{2}
+    - \setcounter{tocdepth}{1}
 
     # 'listings' settings.
     - \lstset{breaklines = true}
@@ -101,7 +101,7 @@ header-includes:
 \title{Commusica\\Le lecteur de musique communautaire et égalitaire}
 
 \author{Chef de projet: Ludovic Delafontaine\\
-   Chef adjoint: Lucas Elisei\\
+   Chef remplaçant: Lucas Elisei\\
    Membres: David Truan, Denise Gemesio, Thibaut Togue, Yosra Harbaoui\\
    Responsable du cours: René Rentsch}
 
@@ -129,9 +129,13 @@ header-includes:
 # Introduction
 Durant le quatrième semestre de la section TIC de l'HEIG-VD, nous devons effectuer un projet par groupes de cinq ou six personnes. Le but est de mettre en oeuvre les connaissances que nous avons acquises au long des semestres précédents à travers un projet conséquent. Nous devrons prendre conscience des difficultés liées au travail de groupe, ainsi qu'apprendre à planifier un travail sur plusieurs mois. Au terme du semestre, nous devons rendre un programme complet et fonctionnel, avec une documentation adéquate et être capables de le présenter et le défendre.
 
-Dans le cadre du projet, l'équipe de programmation est composée du chef d'équipe Ludovic Delafontaine, de son remplaçant Lucas Elisei et des membres David Truan, Thibaut Togue, Yosra Harbaoui et Denise Gemesio.
+Le projet dure 16 semaines et vaut trois crédits. Un crédit valant 30 heures de travail, le temps de travail est de 540 heures pour toute l'équipe, soit cinq heures et demi par membres du projet par semaine.
+
+Dans le cadre du projet, l'équipe de programmation est composée du chef de projet Ludovic Delafontaine, de son remplaçant Lucas Elisei et des membres David Truan, Thibaut Togue, Yosra Harbaoui et Denise Gemesio.
 
 Dans ce rapport, nous allons expliquer notre démarche de travail et les principaux choix d'architecture et de design de code. Il sera structuré selon les principaux paquets de notre application.
+
+Ce rapport, étant à rendre deux semaines avant la fin du temps total aloué pour le projet, s'arrête donc en semaine quatorze et il restera la défense orale qui ne sera pas expliquée dans ce document.
 
 # Objectif
 Le but de notre programme est de proposer une application client-serveur qui permettra aux clients d'envoyer des fichiers musicaux au serveur pour que celui-ci les joue. Il se démarque d'une simple application de lecture en continu (streaming) dans le fait que la liste de lecture ne peut être changée que par les clients, par le biais d'un système de votes positifs ou négatifs. Ceux-ci permettent à un morceau d'être placé plus en avant ou en arrière dans la liste de lecture. Cela permet donc à chacun de donner son avis, tout en centralisant la lecture de la musique sur un seul ordinateur. De plus, l'application met à disposition les fonctionnalités suivantes pour une expérience encore plus communautaire:
@@ -229,11 +233,20 @@ Pour retrouver l'extension du fichier, nous avons procédé de la manière suiva
 - Pour les M4A, nous regardons les premiers octets en partant du quatrième octet depuis le début du fichier.
 - Pour les WAV, à partir du huitième octet depuis le début du fichier.
 
-![Aperçu hexadécimal d'un fichier MP3](images/mp3-file-hexeditor.png)
+\befin{figure}
+  \includegraphics{images/mp3-file-hexeditor.png}
+  \caption{Aperçu hexadécimal d'un fichier MP3}
+\end{figure}
 
-![Aperçu hexadécimal d'un fichier M4A](images/m4a-file-hexeditor.png)
+\befin{figure}
+  \includegraphics{images/m4a-file-hexeditor.png}
+  \caption{Aperçu hexadécimal d'un fichier M4A}
+\end{figure}
 
-![Aperçu hexadécimal d'un fichier WAV](images/wav-file-hexeditor.png)
+\befin{figure}
+  \includegraphics{images/wav-file-hexeditor.png}
+  \caption{Aperçu hexadécimal d'un fichier WAV}
+\end{figure}
 
 Connaître le type de fichier nous permettra de traiter uniquement les fichiers supportés pas notre plateforme et, aussi, en termes de sécurité, éviter qu'un utilisateur ne fasse planter le serveur en envoyant un fichier qui n'est pas supporté par celui-ci.
 
@@ -675,7 +688,9 @@ Nous l'avons utilisé dans le but de forcer l'utilisation de l'IPv4 pour les int
 
 Lors du lancement de notre programme, la réelle exécution de celui-ci est la suivante:
 
-`Exécution du programme Commusica -> Lancement de Capsule -> Définition des paramètres à utiliser pour la JVM -> Lancement de Commusica avec les paramètres JVM souhaités -> Démarrage de Commusica`
+0. Exécution du programme Commusica
+1. Lancement de Capsule -> Définition des paramètres à utiliser pour la JVM 2. Lancement de Commusica avec les paramètres JVM souhaités
+3. Démarrage de Commusica`
 
 ## Git / GitHub
 Git est un outil de gestions de versions qui permet de simplifier le développement d'une application en gérant automatiquement la fusion de code de deux auteurs différents et pouvoir avoir un historique des actions effectuées tout au long du projet.
@@ -712,6 +727,11 @@ PlantUML est un outil gratuit et open-source qui permet la génération de sché
 Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui pouvaient être améliorés par plusieurs personnes en même temps à l'aide de Git grâce au fait que c'est simplement des fichiers textes.
 
 # Tests réalisés
+## Côté client
+
+## Côté serveur
+
+
 **On doit en faire des tableaux et retester toute l'application**
 
 **DG : cette liste me semble relativement massive, on pourrait faire des sous-chapitres**
@@ -738,17 +758,27 @@ Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui
 + Côté serveur, les tracks sont bien ajoutées à la base de données.
 
 ## Problèmes subsistants
-+ Côté client, une chanson qui n'a pas été jouée se met au dessus des chansons qui ont déjà été jouées si elle a plus de vote que les chansons déjà jouées
-+ La barre du temps est manquante au niveau du client
-+ Le bouton *favoris* situé dans l'interface de contrôle ne marche pas côté client et serveur
-+ Le fait de favoriser une chanson ne l'enregistre pas côté serveur (ne s'affiche pas dans la liste de lecture "Favoris")
-+ Les playlists tracks associées ne sont par contre pas effacées (il doit manquer le CASCADE au niveau de la db pour que ça efface aussi)
+- Il n'y pas moyens de proposer à nouveau une chanson qui a déjà été jouée de la soirée.
+
+## Problèmes potentiels non testés
+- Risque de bloquer toute l'application en cas de charge élevée car la méthode `execute` des Cores est en exclusion mutuelle et donc peut potentiellement bloquer l'intéraction avec le serveur s'il y a beaucoup de clients connectés et intéragissants avec le serveur.
 
 # Améliorations envisagées
-
-# Planification / organisation
+- Revoir l'architecture du projet pour séparer encore mieux les entités, avec le patron Obersable-Observeur par exemple, ce qui permettrait de notifer, à qui veulent entendre, des informations.
+- Rendre tous les messages et commandes asynchrones afin de minimiser les ressources et ne pas bloquer toute l'application lorsqu'il y a beaucoup de charge.
+- Se passer des Singleton afin de rendre notre code plus indépendant.
+- Mieux gérer la concurrence.
+- Réaliser toutes les fonctionnalités optionnelles envisagées dans le cahier des charges.
 
 # Conclusion
+En conclusion, nous avons essayé de réaliser un programme qui regroupe les qualités suivantes:
+
+- Code propre, facile à comprendre et réutilisable.
+- Documentation claire et exaustive du code.
+- Facile à utiliser et à comprendre pour des utilisateurs néophytes.
+- Niveau d'abstraction le plus élevé possible.
+
+Nous pensons avoir réussi à atteindre ces objectifs. Il y a encore des points à améliorer mais nous avons réussi à produire un programme fonctionnel qui répond à la quasi totalité des points du cahier des charges.
 
 # Bilan
 
