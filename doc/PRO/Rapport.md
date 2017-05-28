@@ -233,17 +233,17 @@ Pour retrouver l'extension du fichier, nous avons procédé de la manière suiva
 - Pour les M4A, nous regardons les premiers octets en partant du quatrième octet depuis le début du fichier.
 - Pour les WAV, à partir du huitième octet depuis le début du fichier.
 
-\befin{figure}
+\begin{figure}
   \includegraphics{images/mp3-file-hexeditor.png}
   \caption{Aperçu hexadécimal d'un fichier MP3}
 \end{figure}
 
-\befin{figure}
+\begin{figure}
   \includegraphics{images/m4a-file-hexeditor.png}
   \caption{Aperçu hexadécimal d'un fichier M4A}
 \end{figure}
 
-\befin{figure}
+\begin{figure}
   \includegraphics{images/wav-file-hexeditor.png}
   \caption{Aperçu hexadécimal d'un fichier WAV}
 \end{figure}
@@ -716,7 +716,6 @@ Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui
 
 ## Côté serveur
 
-
 **On doit en faire des tableaux et retester toute l'application**
 
 **DG : cette liste me semble relativement massive, on pourrait faire des sous-chapitres**
@@ -833,6 +832,15 @@ Mon seul regret est de ne pas avoir pu mieux impliquer tout le monde sur le dév
 ## Lucas
 
 ## Denise
+En tant que première expérience dans un projet qui part de zéro et qui finit sur un programme fonctionnel, je peux dire que j'ai appris énormément, que ce soit au niveau technique, aussi bien qu'au niveau relationnel.
+
+Du point de vue de la gestion du projet, j'ai le sentiment que Ludovic Delafontaine nous a permis à tous de rester sereins du début à la fin. En effet, il a eu la capacité de se remettre en question tout au long du projet, de nous permettre de lui dire si quelque chose n'allait pas bien et de traiter chaque étape du projet avec énormément de tranquillité et d'assurance.
+Les membres du groupes ayant déjà participé à des projets auparavant ont également permis de rendre l'expérience plus rassurante et pédagogique.
+
+Le seul regret que j'aie pu avoir durant ce projet est très certainement le fait que, malgré mon implication importante dans l'interface graphique au début du projet, je n'aie pas pu fournir autant de code que ce que j'aurais désiré, mon manque d'expérience en étant sûrement la raison. Je vois toutefois dans cela d'un côté positif: j'ai pu apprendre de ce que les autres ont fait en restant au courant de l'évolution du programme et en participant aux discussions qui ont permis de le faire évoluer et devenir ce qu'il est aujourd'hui.
+
+Globalement, je pense que c'est une expérience qui restera gravée en moi et qui m'aura permis de bâtir d'excellentes bases en vue de mon futur dans les projets d'informatique.
+
 
 ## David
 Ce projet fut une expérience enrichissante sur plusieurs point:
@@ -1793,6 +1801,9 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 - 27.04.2017
     - Analyse des modifications au niveau de l'interface graphique, compréhension de la nouvelle structure (1h00)
 
+- 11.04.2017
+	- Réglage de la barre de progression de la musique (1h00)
+
 - 10.04.2017
     - Réalisation de la présentation (1h00)
 
@@ -1868,14 +1879,73 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 \newpage
 
 ### Yosra Harbaoui
+- 28.05.2017
+    - Rédaction du manuel d'utilisation. (3h)
+    - Mise à jour du journal du travail. (45min)
+    - Re-lecture du rapport. (2h)
+
+- 27.05.2017
+    - testes finaux de l'application et vérification du bon fonctionnement. (1h30)
+    - Rédaction du manuel d'utilisateur. (4h)
+    - Rédaction du rapport. (2h)
+
+- 26.05.2017
+   - Testes de l'application et vérification du bon fonctionnement. (1h30)
+   - Rédaction du rapport. (2h30)
+
+- 25.05.2017
+   - Lecture du code et comprendre les parties ambigûes. (2h30)
+
+- 24.05.2017
+   - Testes du bon fonctionnement de l'application. (1h)
+   - Corrections orthographiques du rapport. (1h)
+
+- 23.05.2017
+    - Rédaction du rapport. (1h30)
+    - Lecture des autres différentes parties implémentées. (2h)
+
+- 17.05.2017
+    - Testes de l'implémentation des contrôles sur les fichiers (1h).
+
+- 15.05.2017
+    - Documentation sur les contrôles sur les fichiers (1h).
+
+- 13.05.2017
+   - Modification de la classe Session (1h30)
+
+- 12.05.2017
+    - Implémentation de la classe Session (2h)
+    - Testes. (1h)
+
+- 01.05.2017
+    - Transfert de fichier. (1h)
+    - Testes. (1h)
+
+- 10.04.2017
+    - Réalisation de la présentation (1h00)
+
+- 09.04.2017
+    - Rédaction de la présentation intermédiaire. (1h00)
+    - Analyse de l'implémentation du protocole de communication. (1h30)
+    - Testes de choix de la bonne interface. (1h)
+
+- 08.04.2017
+    - Documentation pour le choix de la bonne interface. (2h)
+
 - 31.03.2017
-    - Implémentation simple d'une connexion client/serveur pour tester la connectivité.
+    - Implémentation simple d'une connexion client/serveur. (3h00)
+    - testes de la connectivité. (1h00)
+
+ - 27.03.2017
+    - Documentation sur la configuration des outils de compilation (Maven) (1h00)
+    - Documentation sur Hibernate (1h00)
 
 - 25.03.2017
-    - Documentation sur les différents "types" de communications entre un serveur et un client.
+    - Documentation sur les différents "types" de communications entre un serveur et un client. (3h00)
 
 - 21.03.2017
-    - Documentation sur l'implémentation client/serveur.
+    - Documentation sur l'implémentation client/serveur. (2H30)
+    - Installation de Scene Builder et configuration de Intellij. (1h00)
 
 \newpage
 
