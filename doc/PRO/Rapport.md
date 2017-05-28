@@ -81,7 +81,18 @@ header-includes:
 {\Huge\@title}\vskip1.5em
 \includegraphics[width=10cm, height=10cm]{images/logo.png}\vskip1.5em
 {\LARGE Rapport final}\vskip1.5em
-{\large\@author}\vskip1.5em
+{
+    \large
+    \begin{tabular}{ll}
+        \underline{Chef de projet} & Ludovic Delafontaine \\
+        \underline{Chef remplaçant} & Lucas Elisei \\
+        \underline{Membres} & David Truan \\
+        & Denise Gemesio \\
+        & Thibault Togue \\
+        & Yosra Harbaoui \\
+        \\
+        \underline{Professeur} & René Rentsch \\
+    \end{tabular}}\vskip1.5em
 {\large\@date}
 \end{center}
 \endgroup
