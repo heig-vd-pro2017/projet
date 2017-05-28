@@ -544,8 +544,13 @@ Concernant les votes, deux fonctions - une pour les votes positifs et l'autre po
 Dans le cas des favoris, il n'y a nul besoin de passer par le `Core` car tout ce que l'utilisateur veut, c'est enregistrer l'information dans sa liste personnelle de chansons favorites.
 
 ### `SettingsView`
-**DG : TODO**
-*En haut à droite*
+Le panneau en haut à droite de l'interface graphique propose quelques réglages simples mais importants quant au bon fonctionnement du programme. Ce panneau n'a pas le même comportement selon si l'utilisateur est un client ou un serveur.
+
+Si l'utilisateur a choisi d'être le serveur, alors le nom qu'il aura choisi lors du lancement de l'application sera affiché afin qu'il lui soit simple de retrouver cette information à tout moment. Ce champ est final et ne peut pas être modifié tant que le programme est en cours d'exécution.
+
+Si l'utilisateur a choisi d'être un client, une liste des serveurs disponibles sur le réseau local s'affichera. Lorsqu'un serveur est sélectionné dans la liste, le programme se charge de connecter le client au serveur précédemment choisi.
+
+Enfin, un deuxième paramètre est commun aux deux types d'utilisateurs: le choix de l'interface réseau à utiliser. Celle-ci se choisit à l'aide d'un menu déroulant qui nous fournit la liste des interfaces réseau disponibles ainsi que leur adresse *IPv4* associée.
 
 ### `PreviousTrackView`
 Dans le panneau en bas à gauche, nous pouvons apercevoir un espace réservé à la chanson qui vient de se terminer. Ce panneau nous a semblé utile de par le fait que, souvent, nous nous sommes personnellement retrouvés à vouloir noter le nom d'une chanson que nous venions d'écouter et, le temps de prendre notre téléphone pour identifier ladite chanson, celle-ci avait eu le temps de se terminer. Ainsi, ce panneau offre la possibilité à tous les utilisateurs de retrouver facilement et sauvegarder en un seul "clic" les informations d'une chanson.
