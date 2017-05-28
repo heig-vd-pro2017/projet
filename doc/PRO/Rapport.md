@@ -816,37 +816,12 @@ Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui
 # Retour sur le cahier des charges
 Avec les tests réalisés ci-dessus et selon notre cahier des charges, voici le récapitulatif des fonctionnalités implémentées dans notre projet.
 
-Fonction                                                        Fonctionnalité importante ?     Réalisé         Remarques
-Démarrage et arrêt corrects du programme                        Oui                             Oui             -
-Droits client-serveur                                           Oui                             Oui             -
-Notification des actions                                        Oui                             Partiellement   Les actions sont bien transmises au client mais ne sont visibles que dans les logs. Il faut encore lier à l'interface graphique.
-Paramétrages basiques du serveur                                Oui                             Oui             -
-Effectuer une annonce de connexion                              Oui                             Oui             L'état du serveur est envoyé à intervals réguliers.
-Réception de la musique                                         Oui                             Oui             -
-Lecture des fichiers MP3 et M4A                                 Oui                             Oui             -
-Ajout de la musique à la base de données/système de stockage    Oui                             Oui             -
-Actions de base sur la musique côté serveur et client           Oui                             Oui             Le bouton pour revenir en arrière n'est pas implémenté car inutile dans notre cas. Il n'est présent que par soucis d'estétisme.
-Interface utilisateur                                           Oui                             Oui             -
-Contrôle du volume de la musique côté serveur et client         Oui                             Oui             -
-Accepter ou refuser l'ajout de nouveaux morceaux              Oui                             Oui             -
-Système de vote côté serveur et client                          Oui                             Oui             -
-Système de favoris/playlist                                     Oui                             Oui             -
-Nettoyage de la base de données côté serveur et client          Oui                             Oui             -
-Voir la liste des serveurs accessibles côté client              Oui                             Oui             -
-Accéder au serveur                                              Oui                             Oui             -
-Ajouter de la musique au serveur                                Oui                             Oui             -
-Un client ne peut pas enregistrer deux fois le même morceau durant le même événement    Oui         Oui         -
-Un client doit pouvoir supprimer un morceau de ses favoris ou ses playlists            Oui         Partiellement         Le code gère cela, mais aucune liaison avec l'interface graphique.
-Un client doit pouvoir supprimer une playlist avec tous les morceaux contenus dans ladite playlist            Oui         Partiellement         Le code gère cela, mais aucune liaison avec l'interface graphique.
-Support d'autres formats de musique                             Non                             Oui             Ajout du support du WAV.
-Taille de fenêtre non-fixe                                      Non                             Oui             -
-Fusionner le code de l'application serveur et client            Non                             Oui             Choix au démarrage
-Filtres de recherche                                            Non                             Non             -
-Intégration de services externes                                Non                             Non             -
-Système de transition dynamique entre morceaux                  Non                             Non             -
-Ajout d'une dimension communautaire                             Non                             Non             -
-Définir des utilisateurs du système comme administrateurs       Non                             Non             -
-Configuration avancée du serveur                                Non                             Non             -
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[height=0.9\textheight]{images/suivi_CdC.png}
+  \captionof{figure}{Fonctionnalités implémentées}
+\end{minipage}
+
 
 # Améliorations envisagées
 - Revoir l'architecture du projet pour mieux séparer les entités, avec le patron Observable-Observeur, par exemple, ce qui permettrait de notifier, à qui veut entendre, des informations.
@@ -919,27 +894,27 @@ J'ai particulièrement apprécié l'engagement de Ludovic Delafontaine en tant q
 
 ## Thibaut
 Ce projet a été une très belle expérience pour les raisons suivantes:
-- Travailler dans un groupe où les menbres ont des profils différents car dans le groupe il y avait des membres avec des profils conceptuels, certains avec des profils organisationels et d'autres avec des profils pratiques.
-De mon côté, j'aimerais aussi dans le futur devélopper ce profil de conception qui est primordial pour un ingénieur.
+
+- Travailler dans un groupe où les membres ont des profils différents, car dans le groupe il y avait des membres avec des profils conceptuels, certains avec des profils organisationels et d'autres avec des profils pratiques. De mon côté, j'aimerais aussi dans le futur devélopper ce profil de conception qui est primordial pour un ingénieur.
 - Réflechir sur une idée de projet et la réaliser.
-- Plannifier le projet  dans l'inteval de temps mise à disposition.
+- Planifier le projet dans l'intervalle de temps mis à disposition.
 
-Pour la gestion du projet le chef de groupe  Ludovic à parfaitement bien joué son rôle, il a sû optimiser la répartition des tâches en vue d'arriver à la solution obtenue et la motivation qu'il apportait à chaque membre du groupe de travail était remarquable, vu que les tâches étaient reparties en petits groupes de deux personnes. Son sens de l'écoute, sa capacité à communiquer et à déléguer a permis à la bonne réalisation du projet.
- Ce fut un plaisir de travailler  avec ce groupe. Mes collègues ont toujours été disponibles pour répondre à mes questions et m'éclairer sur certains points. J'ai été aussi un peu fustré par la différence de niveau de programmation et de conception entre moi et les autres menbres du groupe, je pense que je dois encore bien travailler mon côté conceptuelle.
-
-
+Pour la gestion du projet, le chef de groupe, Ludovic, a parfaitement bien joué son rôle, il a su optimiser la répartition des tâches en vue d'arriver à la solution obtenue et la motivation qu'il apportait à chaque membre du groupe de travail était remarquable, vu que les tâches étaient reparties en petits groupes de deux personnes. Son sens de l'écoute, sa capacité à communiquer et à déléguer a permis la bonne réalisation du projet.
+Ce fut un plaisir de travailler avec ce groupe. Mes collègues ont toujours été disponibles pour répondre à mes questions et m'éclairer sur certains points. J'ai été aussi un peu fustré par la différence de niveau de programmation et de conception entre les autres menbres du groupe et moi, je pense que je dois encore bien travailler mon côté conceptuel.
 
 ## Yosra
 N'étant pas une personne d'expérience dans le domaine puisque je n'ai pas eu l'occasion de participer à plusieurs projets informatiques auparavant, cette nouvelle expérience n'a pas été immédiate et facile.  
 
-Ensemble, nous sommes partis d'une simple idée à développer part la suite. Notre équipe a du donc unir ses forces afin que le projet aboutisse et qu'on puisse atteindre les objectifs fixés au tout départ.  
-Certains membres du groupe, quant à eux, avaient déjà acquis assez d'expérience durant plusieurs projets informatiques auxquels ils ont déjà pu participe et étaient donc toujours à l'écoute et prêts à donner un coup de main en cas de besoin.  
+Ensemble, nous sommes partis d'une simple idée à développer part la suite. Notre équipe a dû donc unir ses forces afin que le projet aboutisse et qu'on puisse atteindre les objectifs fixés au tout départ.  
+Certains membres du groupe, quant à eux, avaient déjà acquis assez d'expérience durant plusieurs projets informatiques auxquels ils ont déjà pu participer et étaient donc toujours à l'écoute et prêts à donner un coup de main en cas de besoin.  
 
-Pour ma part j'étais dans le groupe s'occupant plus de la partie liée au réseau. Cette expérience m'a donc appris, d'une part, à avoir une certaine flexibilité d'adaptation dans les différents domaines concernant un même projet. D'autre part, elle ma permis d'acquérir de grandes compétences tout comme l'aisance relationnelle, l'espérait d'initiative ainsi que qu'une bonne organisation.  
+Pour ma part j'étais dans le groupe s'occupant plus de la partie liée au réseau. Cette expérience m'a donc appris, d'une part, à avoir une certaine flexibilité d'adaptation dans les différents domaines concernant un même projet. D'autre part, elle ma permis d'acquérir de grandes compétences tout comme l'aisance relationnelle, la prise d'initiative ainsi que qu'une bonne organisation.  
 
 Pour ce qui concerne la gestion du groupe, Ludovic Delafontaine a réussi à guider le projet et assurer son avancement. Nous étions tous impliqués dans la réalisation du projet et il était toujours à l'écoute.  
 
 Pour conclure, je dirai que cette expérience unique en son genre m'a bien marquée et a sans doute été un apprentissage très précieux qui me sera utile dans le monde professionnel.
+
+\pagebreak
 
 # Sources
 - Capsule ([capsule.io](capsule.io)) - Site officiel de la librairie Capsule
@@ -1825,6 +1800,9 @@ Et voici nos heures effectives.
 \newpage
 
 ### David Truan
+- 28.06.2017
+    - Finition du rapport et création des tableaux (3h).
+
 - 27.06.2017
     - Finition des package Core et Network du rapport (3h00)
     - Création de différents schémas pour le rapport (1h00)
@@ -1910,6 +1888,8 @@ Et voici nos heures effectives.
 - 28.05.2017
 	- Planification finale, création (0h30)
 	- Planification finale, modification (1h00)
+	- Correction du rapport (3h30)
+	- Planification finale, modification (0h30)
 
 - 27.05.2017
 	- Relecture complète du rapport et corrections orthographiques et grammaticales (3h00)
@@ -1972,9 +1952,9 @@ Et voici nos heures effectives.
   	- Relecture du rapport(2h30)
 
 - 26.05.2017
-  	- Rapport: description des technologies utilisées (01h30)
+  	- Rapport: description des technologies utilisées (1h30)
   	- Rapport: description du paquet Session (2h30)
-  	- Définition du diagramme d’activité de l'échange de fichiers entre le client et le serveur, ensuite repris par Ludovic Delafontaine (02h00)
+  	- Définition du diagramme d’activité de l'échange de fichiers entre le client et le serveur, ensuite repris par Ludovic Delafontaine (2h00)
 
 - 25.05.2017
   	- Rapport: description des paquets Database et File (2h00)
