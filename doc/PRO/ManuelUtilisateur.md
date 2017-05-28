@@ -132,7 +132,7 @@ Son intêret et de proposer une expérience communautaire en permettant à tous 
 
 Version de Commusica: 1.0
 
-Version de ce document: 1.0
+Version du manuel utilisateur: 1.0
 
 # Prérequis
 ## Système d'exploitation et logiciels
@@ -182,7 +182,7 @@ Les étapes suivants vous explique comment utiliser l'application.
 ## Choix du lancement de l'application
 Une fois l'application lancée, la fenêtre ci-dessous apparaît.
 
-![alt text](figures_manuel_utilisateur/premiere_fenetre.PNG)
+![Choix de lancement du programme](images/choix-lancement.png)
 
 En cliquant sur `Cancel`, vous quittez l'application.
 
@@ -191,12 +191,39 @@ Vous avez le choix de lancer l'application en tant que Serveur ou Client.
 - Serveur: Réceptionnera la musique et la lira sur le système audio.
 - Client: Peut envoyer de la musique au serveur ou interagir avec.
 
-## Interface de base
+## Interface commune
+Les explications suivantes sont communes aux deux façons de lancer l'application, soit en tant que serveur, soit en tant que client
+
+### Choix de l'interface réseau
+
+### Choix des listes de lecture et favoris
+
+### Liste de lecture du serveur
+
+#### Réorganiser la liste de lecture
+
+### Contrôle de la musique
+
+### Musique précédente
+
+## Serveur
+Les explications suivantes concernent le lancement de l'application en tant que serveur.
+
+### Configuration du serveur
 
 
-Si vous choisissez d'utiliser l'application en tant que serveur, l'interface suivante va s'ouvrir après un bref délai.  
-![alt text](figures_manuel_utilisateur/Server.PNG)  
+## Client
+Les explications suivantes concernent le lancement de l'application en tant que client.
 
+### Choix du serveur
+
+
+
+
+
+
+
+**ANCIENNE VERSION**
 ## Panneaux
 
 ### Settings
