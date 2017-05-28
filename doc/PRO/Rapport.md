@@ -166,27 +166,27 @@ Une fois l'architecture bien définie, nous avons déterminé des normes de dév
 ![Architecture du programme](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/projet/master/doc/PRO/UML/Architecture.puml){height=200px}
 
 ## Entité *Réseau*
-Cette entité permet toute la gestion du réseau entre les clients et le serveur. Elle permet de répondre aux attentes suivantes :
+Cette entité permet la gestion du réseau entre les clients et le serveur. Elle permet de répondre aux attentes suivantes :
 
 - Le serveur doit pouvoir gérer plusieurs clients, mais sans devoir garder une connexion constante entre chaque client et le serveur.
-- Un serveur ou un client doivent pouvoir communiquer l'un avec l'autre en utilisant une liaison de communication "privée" à l'aide de l'Unicast.
-- Un serveur doit pouvoir diffuser à tous les clients un message afin que tout le monde le réceptionne et le traite à l'aide du Multicast.
+- Un serveur et un client doivent pouvoir communiquer l'un avec l'autre en utilisant une liaison de communication "privée" à l'aide de l'Unicast.
+- Un serveur doit pouvoir diffuser à tous les clients un message, afin que tout le monde le réceptionne et le traite à l'aide du Multicast.
 
 ## Entité *Contrôleur*
-Cette entité permet le contrôle de l'application. C'est elle qui va gérer le comportement de l'application et faire la liaison, le mieux possible, entre toutes les entités décrites ci-dessus ainsi que répondre aux demandes des utilisateurs et des serveurs.
+Cette entité permet le contrôle de l'application. C'est elle qui va gérer son comportement, faire la liaison entre toutes les entités et répondre aux demandes des utilisateurs et des serveurs.
 
 ## Entités *Utilitaires*
-Ces entités sont celles qui ne trouvent pas leur place dans des entités spécifique. L'entité de configuration qui permet de récupérer des propriétés d'un fichier de configuration fait notamment partie de ces entités utilitaires.
+Ces entités sont celles qui ne trouvent pas leur place dans des entités spécifiques. L'entité de configuration, qui permet de récupérer des propriétés d'un fichier de configuration, fait notamment partie de ces entités utilitaires.
 
 ## Entité *Sessions*
-Cette entité permet de gérer des notions de sessions afin de connaître les personnes connectées et les serveurs accessibles. Il y a notamment deux notions de session : les sessions serveur et les sessions utilisateur.
+Cette entité permet de gérer les notions de session qui servent à connaître les personnes connectées ou les serveurs accessibles. Il y a notamment deux notions de session : les sessions utilisateur et les sessions serveur.
 
-## Entité *Système de fichiers*
-Cette entité a pour rôle d'assurer la gestion des fichiers en interagissant avec le système de fichiers. Elle permet de sauvegarder, supprimer, renommer des fichiers sur le disque, recevoir des fichiers par le réseau et vérifier qu'ils ne soient pas corrompus.
-
-Dans le cas des sessions serveur, le but est de savoir si un serveur est encore accessible. A chaque mise à jour de la part du (des) serveur(s), la session associée sera mise à jour. Si un des serveurs venait à être éteint ou déconnecté, le client supprimerait le serveur afin qu'il ne tente pas d'y accéder.
+Dans le cas des sessions serveur, le but est de savoir si un serveur est encore accessible. A chaque mise à jour de la part du serveur, la session associée sera mise à jour. Si l'un des serveurs venait à être éteint ou déconnecté, le client supprimerait le serveur afin qu'il ne tente pas d'y accéder.
 
 Dans le cas des sessions utilisateur, le but est de pouvoir limiter un utilisateur dans son nombre d'actions sur le serveur - voter pour un morceau, voter contre un morceau, faire une demande de changement de musique, etc. - et savoir combien d'utilisateurs sont actifs sur le serveur afin de savoir quand une action définie par une majorité doit avoir lieu.
+
+## Entité *Système de fichiers*
+Cette entité a pour rôle d'assurer la gestion des fichiers, en interagissant avec le système de fichiers. Elle permet de sauvegarder, supprimer, renommer des fichiers sur le disque, recevoir des fichiers par réseau et vérifier qu'ils ne soient pas corrompus.
 
 ## Entité *Base de données*
 Cette entité est une abstraction de la base de données. Elle permet de simplifier l'interaction avec cette dernière en mettant à disposition des méthodes pour les opérations de base sur la base de données.
@@ -198,7 +198,7 @@ Les différentes tables sont générées automatiquement par Hibernate (voir `Te
 ## Entité *Médias*
 Cette entité regroupe tout ce qui concerne les médias de notre application : chansons, listes de lecture, lecteur de musique.
 
-## Entité visuelle
+## Entité *Interface graphique*
 L'entité visuelle est ce que l'on va montrer à l'utilisateur afin qu'il ait une interface pour intéragir avec le programme. Cette interface sera liée directement au contrôleur, qui saura quoi faire en fonction de l'action demandée.
 
 # Description technique
