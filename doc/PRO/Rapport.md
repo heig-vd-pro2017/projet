@@ -857,7 +857,7 @@ Je pense que notre équipe a bien fonctionné et que les taches ont été repart
 J'ai particulièrement apprécier l'engagement de L. Delafontaine en temps que chef de projet qui a su synthétiser les problèmes pour nous les communiquer lorsque cela était nécessaire. L'équipe avait une bonne cohésion et les échanges réguliers ont permis de bien faire évoluer le projet en même temps que de mettre à jour tout e monde sur ce qui avait été fait par les différents membres.
 
 ## Thibaut
-Ce projet a été une très belle expérience pour pour les raisons suivantes:
+Ce projet a été une très belle expérience pour les raisons suivantes:
 - Travailler dans un groupe où les menbres ont des profils différents car dans le groupe il y avait des membres avec des profils conceptuels, certains avec des profils organisationels et d'autres avec des profils pratiques.
 De mon côté, j'aimerais aussi dans le futur devélopper ce profil de conception qui est primordial pour un ingénieur.
 - Réflechir sur une idée de projet et la réaliser.
