@@ -23,7 +23,7 @@ header-includes:
     - \definecolor{pred}{rgb}{0.9, 0.0, 0.0}
 
     - \renewcommand{\ttdefault}{pcr}
- 
+
     # 'fancyhdr' settings.
     - \pagestyle{fancy}
     - \fancyhead[CO,CE]{}
@@ -93,7 +93,7 @@ header-includes:
 
 \begin{tikzpicture}[remember picture,overlay]
    \node[anchor=north east,inner sep=0.25cm] at (current page.north east)
-              {\includegraphics[scale=0.3]{heig-vd.png}};
+              {\includegraphics[scale=1]{heig-vd.png}};
 \end{tikzpicture}
 
 \newpage
@@ -135,7 +135,7 @@ Nous avons donc pris trois semaines, avant de commencer le développement, afin 
 
 Une fois l'architecture bien définie, nous avons déterminé des normes de développement afin d'utiliser toutes et tous la même façon de coder. Parmi les points discutés, nous avons abouti aux conventions suivantes :
 
-- Langue de documentation : la langue véhiculaire de l'informatique étant l'anglais, il était évident que le développement allait se faire dans cette langue. C'est la raison pour laquelle notre code, ainsi que la JavaDoc, sont écrits en anglais. 
+- Langue de documentation : la langue véhiculaire de l'informatique étant l'anglais, il était évident que le développement allait se faire dans cette langue. C'est la raison pour laquelle notre code, ainsi que la JavaDoc, sont écrits en anglais.
 - Utilisation de la JavaDoc pour la génération future d'une documentation technique.
 - Définition de la syntaxe à utiliser pour les variables, constantes et autres structures syntaxiques.
 
@@ -182,16 +182,15 @@ Ces entités sont celles qui ne trouvent pas leur place dans des entités spéci
 # Description technique
 La description technique se développera dans l'ordre croissant de complexité des différentes entités de notre programme.
 
-Pour chacune de ces entités, nous décrirons brièvement le but des différentes classes.
+Pour chacune des paquets, dérivés des entitées décrites ci-dessus, nous décrirons brièvement le but des différentes classes.
 
 ## Paquet database
 
 ![Paquet database](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/projet/master/doc/PRO/UML/database.puml){ height=200px }
 
-
-**Parler du système de cache de Hibernate, comment il faut pour savoir ce qui est déjà dans la base de données. Voir l'interface Serializable**
-
 Ce paquet est constitué essentiellement de la classe `DatabaseManager` dont le rôle est d'assurer les méthodes définies par les notions CRUD (Create, Read, Update, Delete) de la base de données de notre application et d'assurer la fermeture de la connexion à celle-ci.
+
+Hibernate est la librairie utilisée dans notre projet afin de pouvoir communiquer avec la base de données. Elle utilise un système de Session afin de garder en cache les différentes informations de la base de données. Avant d'enregistrer sur la base de données, Hibernate va interroger son cache afin de savoir si l'information est disponible et s'il est nécessaire de faire une quelconque action sur la base de données réelles.
 
 ## Paquet file
 
@@ -210,7 +209,11 @@ Pour retrouver l'extension du fichier, nous avons procédé de la manière suiva
 - Pour les M4A, nous regardons les premiers octets en partant du quatrième octet depuis le début du fichier.
 - Pour les WAV, à partir du huitième octet depuis le début du fichier.
 
-**Ajouter des images d'un éditeur hexadicimal des trois fichiers pour expliquer les constantes**
+![Aperçu hexadécimal d'un fichier MP3](images/mp3-file-hexeditor.png)
+
+![Aperçu hexadécimal d'un fichier M4A](images/m4a-file-hexeditor.png)
+
+![Aperçu hexadécimal d'un fichier WAV](images/wav-file-hexeditor.png)
 
 Connaître le type de fichier nous permettra de traiter uniquement les fichiers supportés pas notre plateforme et, aussi, en termes de sécurité, éviter qu'un utilisateur ne fasse planter le serveur en envoyant un fichier qui n'est pas supporté par celui-ci.
 
@@ -224,44 +227,48 @@ Pour répondre aux besoin architecturaux vus plus haut, nous avons développé p
 La plupart des commandes listées ci-dessous sont disponibles dans la classe `ApplicationProtocol`, mais, comme elles sont envoyées par le réseau, nous avons préféré les expliquer ici.
 Toutes les commandes envoyées par Unicast ont comme deux premiers arguments :
 - L'ID de l'expéditeur, qui est le hash de l'adresse MAC de l'interface réseau qu'il utilise.
-- Le socket utilisé pour la communication qui est rajouté à la réception, avant d'envoyer la commande au `Core` (la notion de `Core` est développée au chapitre `Core` **).
+- Le socket utilisé pour la communication qui est rajouté à la réception, avant d'envoyer la commande au `Core` (la notion de `Core` est développée au chapitre `Core`).
 
 De ce fait, les tableaux ci-dessous n'indiquent, dans leur colonne `Arguments`, que les arguments en plus de ces deux dans l'ordre dans lequel ils sont envoyés.
 
-La seule commande envoyée en Multicast est `PLAYLIST_UPDATE`, qui est envoyée depuis le serveur à tous les client.  
+La seule commande envoyée en Multicast est `PLAYLIST_UPDATE`, qui est envoyée depuis le serveur à tous les client.
 
-#### Commandes envoyées par le client
+Les objets décrits ci-dessous sont évidemment sérialisés avant d'être transférés sur le réseau.
 
-| Nom de la commande       | Arguments                                               | Explications                                                                                 |
-|--------------------------|---------------------------------------------------------|---------------------------------------------------------------------------------------------|
-| `SEND_FIRST_CONNECTION`    | Aucun                                                   | Commande envoyée par un client lors de sa première connexion à un serveur.                   |
-| `TRACK_REQUEST`            | JSON de la Track à envoyer                              | Envoie au serveur les informations de la Track que le client veut envoyer.                   |
-| `SENDING_TRACK`            | Taille du fichier à envoyer, JSON de la Track à envoyer | Indique au serveur que le client va commencer l'envoi du fichier en réponse à `TRACK_ACCEPTED`.                           |
-| `PLAY_PAUSE_REQUEST`       | Aucun                                                   | Envoie au serveur l'information d'un souhait de mettre le morceau actuel en lecture/pause.   |
-| `NEXT_TRACK_REQUEST`       | Aucun                                                   | Envoie au serveur l'information d'un souhait de passer au morceau suivant.                   |
-| `TURN_VOLUME_UP_REQUEST`   | Aucun                                                   | Envoie au serveur l'information d'un souhait d'augmenter le volume.                          |
-| `TURN_VOLUME_DOWN_REQUEST` | Aucun                                                   | Envoie au serveur l'information d'un souhait de baisser le volume.                           |
-| `UPVOTE_TRACK_REQUEST`     | ID de la Track à upvoter                                | Envoie au serveur l'information d'un souhait d'upvoter un morceau de la liste de lecture.    |
-| `DOWNVOTE_TRACK_REQUEST`   | ID de la Track à downvoter                              | Envoie au serveur l'information d'un souhait de downvoter un morceau de la liste de lecture. |
-| `END_OF_COMMUNICATION` |Aucun| Commande indiquant que la communication doit être stoppée.|
+Commande                                                                    Arguments    But
+--------------------------    -------------------------------------------------------    ----------------------------------------------------------------------------
+`SEND_FIRST_CONNECTION`       Aucun                                                      Envoyée lors de sa première connexion à un serveur.
+`TRACK_REQUEST`               Track à envoyer                                            Permet de savoir s'il faut envoyer le fichier ou si le système l'a déjà.
+`SENDING_TRACK`               Taille du fichier à envoyer,                               Envoi du fichier en réponse à `TRACK_ACCEPTED` si accepté.
+                              Track à envoyer
+`PLAY_PAUSE_REQUEST`          Aucun                                                      Souhait de mettre le morceau actuel en lecture/pause.
+`NEXT_TRACK_REQUEST`          Aucun                                                      Souhait de passer au morceau suivant.
+`TURN_VOLUME_UP_REQUEST`      Aucun                                                      Souhait d'augmenter le volume.
+`TURN_VOLUME_DOWN_REQUEST`    Aucun                                                      Souhait de baisser le volume.
+`UPVOTE_TRACK_REQUEST`        ID de la Track à upvoter                                   Souhait d'upvoter un morceau de la liste de lecture.
+`DOWNVOTE_TRACK_REQUEST`      ID de la Track à downvoter                                 Souhait de downvoter un morceau de la liste de lecture.
+`END_OF_COMMUNICATION`        Aucun                                                      La communication doit être stoppée.
+--------------------------    -------------------------------------------------------    ----------------------------------------------------------------------------
+Table: Commandes envoyées par le client au serveur
 
-#### Commandes envoyées par le serveur
-| Nom de la commande | Arguments                                                                              | Explications                                                                                                             |
-|--------------------|----------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|
-| `PLAYLIST_UPDATE`    | JSON de l'InetAddress du serveur, nom du serveur, JSON de la liste de lecture actuelle | Envoi la liste de lecture actuelle avec les informations du serveur à tous les client en Multicast.                      |
-| `TRACK_ACCEPTED`     | Aucun                                                                                  | Commande envoyée au client en réponse à la commande `TRACK_REQUEST` lorsque le morceau demandé est accepté.             |
-| `TRACK_REFUSED`      | Aucun                                                                                  | Commande envoyée au client en réponse à la commande `TRACK_REQUEST` lorsque le morceau demandé est refusé.              |
-| `TRACK_SAVED`        | Aucun                                                                                  | Indique au client que le morceau qu'il a envoyé a bien été sauvé sur le serveur. Réponse à `SENDING_TRACK`.                |
-| `TRACK_UPVOTED`      | Aucun                                                                                  | Commande envoyée au client en réponse à la commande `UPVOTE_TRACK_REQUEST` lorsque le morceau demandé a bien été upvoté.   |
-| `TRACK_DOWNVOTED`    | Aucun                                                                                  | Commande envoyée au client en réponse à la commande `UPVOTE_TRACK_REQUEST` lorsque le morceau demandé a bien été downvoté. |
-| `SUCCESS`            | Message de succès                                                                      | Envoie un message de succès au client lors du succès d'une commande                                                    |
-| `ERROR`              | Message d'erreur                                                                       | Envoie un message d'erreur au client lors de l'erreur d'une commande                                                   |
-| `END_OF_COMMUNICATION` |Aucun| Commande indiquant que la communication doit être stoppée.|
-
+Commande                                                                    Arguments    But
+--------------------------    -------------------------------------------------------    ----------------------------------------------------------------------------
+`PLAYLIST_UPDATE`             L'adresse du serveur,                                      Notifier tous les clients en Multicast de l'état du système.
+                              le nom du serveur,
+                              la liste de lecture en cours
+`TRACK_ACCEPTED`              Aucun                                                      Réponse à la commande `TRACK_REQUEST` lorsque le morceau est accepté.
+`TRACK_REFUSED`               Aucun                                                      Réponse à la commande `TRACK_REQUEST` lorsque le morceau est refusé.
+`TRACK_SAVED`                 Aucun                                                      Réponse à `SENDING_TRACK` si le morceau a été enregistré avec succès.
+`TRACK_UPVOTED`               Aucun                                                      Réponse à la commande `UPVOTE_TRACK_REQUEST` si le morceau a été upvoté.
+`TRACK_DOWNVOTED`             Aucun                                                      Réponse à la commande `UPVOTE_TRACK_REQUEST` si le morceau a été downvoté.
+`SUCCESS`                     Message de succès                                          Envoie un message de succès au client lors du succès d'une commande
+`ERROR`                       Message d'erreur                                           Envoie un message d'erreur au client lors de l'erreur d'une commande
+`END_OF_COMMUNICATION`        Aucun                                                      Commande indiquant que la communication doit être stoppée.
+--------------------------    -------------------------------------------------------    ----------------------------------------------------------------------------
+Table: Commandes envoyées par le serveur au client
 
 ### `Server`
 Côté serveur, nous avons décidé d'opter pour une architecture avec un thread réceptionniste `Server` qui va attendre une nouvelle connexion de la part des clients. Une fois un nouveau client arrivé, il va lancer un thread `UnicastClient` qui va s'occuper de la communication avec le client. Cette communication se fait via un socket Unicast car il s'agit d'une communication privée entre le serveur et le client. Nous avons choisi cette solution car plusieurs connexions avec des clients peuvent survenir simultanément et ce système réceptionniste, avec un thread par client, gère plusieurs connexions en même temps, contrairement à un système avec un seul thread qui s'occupe d'un client à la fois.
-
 
 ### `UnicastClient`
 La classe `UnicastClient` va pouvoir recevoir les commandes venant du réseau et en renvoyer. Elle implémente l'interface `Runnable`, ce qui lui permet de s'exécuter en tant que thread. Sa force réside dans le fait qu'elle peut être utilisée aussi bien du côté server que du côté client, grâce au fait qu'elle lit les commandes reçues et les envoie au `Core` pour qu'il les exécute.
@@ -269,7 +276,6 @@ La classe `UnicastClient` va pouvoir recevoir les commandes venant du réseau et
 ![Diagramme d'activité de la réception/envoi unicast](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/projet/master/doc/PRO/actvity/UnicastClient.puml)
 
 Ce diagramme montre la lecture d'une commande venant du réseau et son découpage pour en extraire les arguments et la passer au `Core`. Celui-ci s'occupera d'exécuter la commande si elle est disponible dans l'instance de son `AbstractCore` (voir chapitre `Core`). Le `Core` renvoie ensuite une commande à envoyer en réponse à celle reçue. La communication se termine lorsque l'une des extrémités envoie la commande `END_OF_COMMUNICATION` ou qu'elle ferme son socket.
-
 
 ### `MulticastClient`
 Cette classe implémente aussi l'interface `Runnable` dans le but de lancer son exécution dans un nouveau thread. Comme pour `UnicastClient`, cette classe peut être utilisée du côté serveur comme du côté client. La méthode `run()` permet au thread de rejoindre le groupe Multicast à l'adresse définie dans le `NetworkProtocol`. Le thread va ensuite attendre de recevoir des datagrammes venant du groupe Multicast jusqu'à son arrêt par la méthode `stop()`.
@@ -281,8 +287,9 @@ Les `Core` ont chacun un `MulticastClient` pour pouvoir envoyer la liste de lect
 ### `NetworkProtocol`
 C'est dans cette classe que sont définies les commandes spécifiques au réseau `END_OF_COMMUNICATION` et `END_OF_COMMAND`. Les ports pour les différents sockets ainsi que l'adresse du groupe Multicast se trouvent également dans cette classe. Ces derniers ont été choisis arbitrairement parmi les plages disponibles. Bien que peu probable, il est possible qu'une autre application utilise ces mêmes ports. Dans ce cas, le bon fonctionnement de **Commusica** se retrouverait corrompu. Nous n'avons pas voulu laisser ces valeurs dans le fichier de configuration car il est indispensable d'avoir les mêmes ports chez le serveur et chez les clients. Nous avons donc préféré prendre le risque qu'un autre programme utilise les mêmes ports plutôt qu'un utilisateur change ces valeurs.
 
-### Threads lancés
+### Threads lancés pour gérer la communication client-serveur
 Voici les différents threads lancés par le client et le serveur.
+
 ![Threads lancés par le serveur et les clients](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/projet/master/doc/PRO/other_diagrams/network_threads.puml)
 
 ## Paquet session
@@ -329,15 +336,17 @@ Ce package permet de définir tous les éléments nécessaires à la gestion de 
 La classe EphermeralPlaylist représente la liste de lecture en cours de construction, c'est-à-dire, la liste de lecture en cours de lecture. Cela permet de mettre à jour l'interface graphique lors d'une action sur un élément de la playlist. La mise à jour se fait grâce au pattern observeur, à travers la liste `ObservableSortedPlaylistTrackList`, qui joue, en même temps, le rôle d'observable et d'observeur. Elle observe des chansons de la liste dans le but de changer l'état de la liste de lecture en cas de vote positif ou négatif, et devient observable dans le cas où elle envoie des notifications lors des mises à jour. Dans cette classe, nous avons aussi le champ `delegate` qui représente la liste de lecture qui sera enregistrée dans la base de données pour le suivi de celle-ci.
 
 ### `Player`
+Cette classe permet de réaliser les actions de base sur la musique telles que la lecture, la mise sur pause, passer à la musique suivante, etc.
 
-**Parler de comment le player interroge le liste de lecture manager pour récupérer la musique suivante**
-
-Cette classe permet de réaliser les actions de base sur la musique (play, pause, stop, next, previous). Pour l'implémentation, nous avions le choix entre `Mediaplayer` et `sourceDataLine`, nous avons préféré utiliser `Mediaplayer` pour les raisons suivantes:
+Lors de l'implémentation, nous avions le choix entre deux paquets : `javafx.scene.media` et `javax.sound` proposant tous les deux différentes classes pour gérer des fichiers audio et les jouer. Nous avons préféré utiliser `javafx.scene.media` pour les raisons suivantes:
 
 - Facile à implémenter
-- Accepte plus de formats que sourceDataLine. Par exemple, MP3 n'est pas supporté par sourceDataLine.
+- Accepte plus de formats que `javax.sound`. Par exemple, MP3 n'est pas supporté par `javax.sound`.
+- Beaucoup plus abstrait, `javax.sound` demandant de travailler directement au niveau des byes.
 
-Le concept de JavaFX Media est basé sur les entités suivantes:
+De plus, `javafx.scene.media` étant issu de JavaFX, que nous utilisons pour l'interface graphique, risque de mieux s'intégrer à cette dernière.
+
+Le paquet `javafx.scene.media` propose les classes suivantes:
 
 - `Media` media resource, contient des informations sur les médias, telles que leur source, leur résolution et leurs métadonnées.
 - `MediaPlayer` est le composant clé fournissant les contrôles pour la lecture de médias.
@@ -345,9 +354,14 @@ Le concept de JavaFX Media est basé sur les entités suivantes:
 
 Nous avons aussi utilisé, dans cette classe, les propriétés JavaFX dans le but est de mettre à jour de manière automatique l'interface utilisateur lorsqu'une modification se produit.
 
+Une fois que `Player` a fini de la lire sa chanson, il va interroger le `PlaylistManager` qui va lui fournir la prochaine chanson à jouer, en se basant sur le nombre de votes de cette derière à l'aide du `VoteComparator`.
+
 ### `SavedPlaylist`
-**Décrire beaucoup plus que ça**
-Comme son nom l'indique, elle permet de sauvegarder les playlists.
+Cette classe est utilisée afin de stocker une `EphermeralPlaylist` dans la playlists et récupérer une ancienne playlist dans la base de données.
+
+La différence entre les deux classes se situe dans le fait que `EphermeralPlaylist` est une playlist en cours de construction alors que la `SavedPlaylist` est le résutat final d'une `EphermeralPlaylist`.
+
+Seule `SavedPlaylist` est stockée dans la base de données et persistante dans la vie du programme.
 
 ### `Track`
 Cette classe représente une chanson, elle en regroupe toutes les informations nécessaires à une identité unique.
@@ -409,7 +423,7 @@ Grâce à la librairie Gson de Google, cette classe est utilisée dans la séria
 ### `EphemeralPlaylistSerializer`
 Cette classe permet de sérialiser et désérialiser une liste de lecture en JSON. L'utilité de cette classe réside principalement dans la communication réseau.
 
-**Expliquer pourquoi on avait besoin de ça**
+En effet, afin de pouvoir indiquer l'état de la liste de lecture éphémère aux différents
 
 ### `Logger`
 Cette classe a été créée uniquement pour aider à déboguer le programme, pour comprendre ce qu'il se passe à chaque étape. Son affichage permet de savoir dans quelle classe a lieu une action. Des couleurs ont été attribuées aux différentes notifications :
@@ -664,7 +678,7 @@ Apache Maven est un outil puissant de gestion de projet basé sur POM (modèle d
 Scene builder est un outil qui permet de créer des fichiers au formats FXML via un éditeur graphique.
 
 ### Wireshark
-Wireshark est un outil essentiel pour comprendre les mécanismes de fonctionnement des protocoles de communication sur les réseaux. Il capture des paquets directement sur les interfaces du système utilisé ou lit des fichiers de captures sauvegardées. 
+Wireshark est un outil essentiel pour comprendre les mécanismes de fonctionnement des protocoles de communication sur les réseaux. Il capture des paquets directement sur les interfaces du système utilisé ou lit des fichiers de captures sauvegardées.
 Nous l'avons utilisé dans notre projet pour sniffer la communication entre le client et le serveur afin de contrôler le bon fonctionnement de la communication réseau.
 
 ### PlantUML
@@ -1365,11 +1379,11 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
   	- Réalisation du diagramme UML de tout le projet, ensuite repris par Ludovic Delafontaine (1h00)
 
 - 24.05.2017
-	- Rapport: description du paquet media (1h00) 
+	- Rapport: description du paquet media (1h00)
 
 -  23.05.2017
 	- Test de l'application et discussions concernant le rapport (1h30)
-	   
+
 -  18.05.2017
 	- Début de rapport (définir la structure du rapport, introduction, objectif, description package Configuration du rapport) (2h00)
 
