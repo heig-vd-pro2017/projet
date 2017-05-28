@@ -102,100 +102,106 @@ header-includes:
 \newpage
 
 # Introduction
-version de la doc / version du produit
+Ce document est le manuel d'utilisation de l'application **Commusica** développée dans le cadre d'un projet de semestre de la section TIC de la HEIG-VD.
 
-Ce document est le manuel d'utilisation de l'application `Commusica` développée dans le cadre d'un projet de semestre de la section TIC de la HEIG-VD.
+**Commusica** est une application permettant aux utilisateurs d'envoyer des fichiers musicaux à un autre utilisateurs qui se sera préalablement configuré comme serveur. La communication se fait via un réseau local sans fil ou câblé.
+Son intêret et de proposer une expérience communautaire en permettant à tous les utilisateurs de changer l'ordre de la liste de lecture en cours en votant pour ou contre les morceaux s'y trouvant. Ces derniers vont alors changer d'ordre. Le contrôle du volume, de l'arrêt/mise en marche du morceau en cours et du passage au morceau suivant, fonctionnent sur un principe de vote et sont effectuer lorsqu'une majorités des utilisateurs actifs d'un serveur ont voté pour réaliser l'action.
 
-Commusica est une application de lecture en continu (streaming). Grâce à une communication client/serveur, elle permettera aux clients d'envoyer des fichiers musicaux au serveur pour que celui-ci les joue.
+Version 1.0
 
 # Prérequis
-Quels OS utilisés ? quels progs ?
-Commusica peut être utilisée sur:
+## OS
+**Commusica** peut être utilisé sur:
 - Windows 10
 - MAC OS 10.11.6
 
+## Espace de stockage
+Pour une configuration en tant que serveur il faut prévoir suffisamment d'espace de stockage pour recevoir les fichiers le temps que le programme est en fonctionnement. Cela va donc varier selon les usage que vous en faites mais il est préférable de prévoir 1Go d'espace libre.
 
-Pour pouvoir lancer l'application, Le `Java Development Kit (JDK)` doit être installé. Il est téléchargeable gratuitement [ici](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) en choisissant la version qui correspond au système d'exploitation utilisé comme indiqué ci-dessous.  
-![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/JDK_install.PNG)
-
-L'application est sur le CD du projet ou téléchargeable [ici](https://github.com/heig-vd-pro2017/projet).
+## Logiciels
+Pour pouvoir lancer l'application, Le `Java Development Kit (JDK)` doit être installé. Il est téléchargeable gratuitement [ici](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) en choisissant la version qui correspond à votre système d'exploitation utilisé comme indiqué ci-dessous.  
+![alt text](figures_manuel_utilisateur/JDK_install.PNG)
 
 # Lancement
-
 - Ouvrez PowerShell (si vous utiliser Windows) ou Terminal (si vous utilisez Mac OS).
-- tapez : `java -jar commusica-1.0-SNAPSHOT-capsule.jar` puis sur `Entrer`
+- Tapez : `java -jar commusica-1.0-SNAPSHOT-capsule.jar` puis sur `Entrer`
 
-l'application sera lancée directement après avoir taper la ligne ci-dessus.
+L'application sera lancée directement après avoir taper la ligne ci-dessus.
 
 # Utilisation
 ## Première fenêtre
-Une fois l'application est lancée, la fenêtre ci-dessous apparaît.  
-![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/premiere_fenetre.PNG)
+Une fois l'application lancée, la fenêtre ci-dessous apparaît.  
+![alt text](figures_manuel_utilisateur/premiere_fenetre.PNG)
 
 Vous avez deux choix :
 - être Serveur
 - être Client
 
 1. Serveur:
-- Si vous choisissez d'être un serveur, vous cliquez sur `Yes`. 
+- Si vous choisissez d'être un serveur, cliquez sur `Yes`.
 - Vous pouvez ensuite donner un nom à votre serveur puis cliquer sur `OK`.  
-![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/nomServeur.PNG)
+![alt text](figures_manuel_utilisateur/nomServeur.PNG)
+- Le fait d'appuyer sur `Cancel` va quitter l'application
 
 2. Client:
-- Si vous choisissez d'être un client, vous cliquez sur `No`. 
+- Si vous choisissez d'être un client, cliquez sur `No`.
 
-## Serveur
-Si vous choisissez d'utiliser l'application en tant que serveur, l'interface sera comme la montre la figure suivante.  
+## Interface de base
+Si vous choisissez d'utiliser l'application en tant que serveur, l'interface suivante va s'ouvrir après un bref délai.  
+![alt text](figures_manuel_utilisateur/Server.PNG)  
 
-![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/Server.PNG)  
+## Panneaux
 
-1.  Settings : Vous pouvez effectuer les différents paramétrages comme suit :   
-![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/server_Playlist_settings.PNG)  
-    (1) Vous pouvez voir le nom du serveur que vous avez choisi lors de sa création.  
-    (2)  Vous pouvez choisir l'interface de communication parmi les interfaces existantes. Une interface par défaut est mise à                    disposition.
-    
-2.  Playlists :  
-![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_Playlists.jpg)  
+### Settings
+Le panneau `Settings` vous offre les possibilités suivantes:   
+![alt text](figures_manuel_utilisateur/server_Playlist_settings.PNG)  
+    1. Vous pouvez voir le nom du serveur que vous avez choisi lors de sa création.  
+    2. Vous pouvez choisir l'interface réseau à utiliser parmi les interfaces que votre ordinateur met à disposition. Une interface par défaut est mise à paramètrée mais il se peut que les clients ne puisse pas vous detecter dans le cas ou celle par défaut n'est pas connectée au réseau. Dans ce cas choisissez la bonne interface (sur **Windows** elle se nommera la plupart du temps *wlan...*).  
+    **Si la connexion fonctionne ne touchez pas cette option.**
 
-    (1) La playlist en cours de lecture  
-    (2) La liste des palylists sauvegardées des utilisations précédentes
+### Playlists
+Ce panneau vous permet de naviguer entre la playlist actuelle, vos morceaux enregistrés en temps que favoris et les différentes playlists que vous avez hébergé sur votre ordinateur.
+![alt text](figures_manuel_utilisateur/client_Playlists.jpg)  
+
+1. La playlist en cours de lecture  
+2. La liste des palylists sauvegardées des utilisations précédentes
 
 3. Les chansons présentes actuellement dans la playlist en cours de lecture.  
-![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_Playlist_playing.PNG)  
+![alt text](figures_manuel_utilisateur/client_Playlist_playing.PNG)  
 
 4. Le nombre total des votes pour chaque chanson  
-![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/server_vote.PNG)  
-  
+![alt text](figures_manuel_utilisateur/server_vote.PNG)  
+
 5. La chanson en cours de lecture.  
-![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/server_track_playing.PNG)  
+![alt text](figures_manuel_utilisateur/server_track_playing.PNG)  
 
 6. Les informations concernant la chanson précédent la chanson en cours de lecture.  
-![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/server_previous_track.PNG)  
+![alt text](figures_manuel_utilisateur/server_previous_track.PNG)  
 
 ## Client
 Si vous choisissez d'utiliser l'application en tant que client, l'interface sera comme la montre la figure suivante.  
-![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client.PNG)
+![alt text](figures_manuel_utilisateur/client.PNG)
 
 1. Settings : Vous pouvez effectuer les différents paramétrages comme suit:  
-![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_settings.jpg)
+![alt text](figures_manuel_utilisateur/client_settings.jpg)
     (1) Vous pouvez choisir la connexion à un server parmi les serveurs existants.
     (1) Vous pouvez choisir l'interface de communication parmi les interfaces existantes. Une interface par défaut est mise à                   disposition.  
 
 2.  Playlists :  
-![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_Playlists.jpg)    
+![alt text](figures_manuel_utilisateur/client_Playlists.jpg)    
 
     (1) La playlist en cours de lecture  
     (2) La liste des palylists sauvegardées des utilisations précédentes
 
 3. Les chansons présentes actuellement dans la playlist en cours de lecture.  
-![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_Playlist_playing.PNG)   
+![alt text](figures_manuel_utilisateur/client_Playlist_playing.PNG)   
 (3.1) Le nombre total des votes pour chaque chanson, vous pouvez voter pour ou contre une chanson. Plus le nombre total de votes est           grand, plus la chanson est aura plus de chance d'être joué après la chanson en cours de lecture.  
 (3.2) Vous pouvez favoriser une chanson en cliquant sur cette étoile.
-  
-4. La chanson en cours de lecture.  
-![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_track_playing.PNG)  
 
-![alt text](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_pause_next_volume.jpg)  
+4. La chanson en cours de lecture.  
+![alt text](figures_manuel_utilisateur/client_track_playing.PNG)  
+
+![alt text](figures_manuel_utilisateur/client_pause_next_volume.jpg)  
 (1) Si vous voulez passer à la chanson suivante, vous pouvez cliquer sur ce bouton. La chanson suivante sera jouée si la mojorité           des présents le demande.  
 (2) Si vous voulez augmenter ou diminuer le volume, vous pouvez cliquer sur ce bouton. Le volume sera modifié si la mojorité                 des présents le demande.
 
