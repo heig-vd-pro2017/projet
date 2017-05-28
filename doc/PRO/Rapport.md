@@ -923,12 +923,16 @@ Pour la gestion du projet le chef de groupe  Ludovic à parfaitement bien joué 
 
 
 ## Yosra
-N'étant pas une personne d'expérience dans le domaine puisque je n'ai pas eu l'occasion de participer à plusieurs projets informatiques auparavant, cette nouvelle expérience n'a pas été immédiate et facile. 
-Ensemble, nous sommes partis d'une simple idée à développer part la suite. Notre équipe a du donc unir ses forces afin que le projet aboutisse et qu'on puisse atteindre les objectifs fixés au tout départ. 
-Certains membres du groupe, quant à eux, avaient déjà acquis assez d'expérience durant plusieurs projets informatiques auxquels ils ont déjà pu participe et étaient donc toujours à l'écoute et prêts à donner un coup de main en cas de besoin. 
-Pour ma part j'étais dans le groupe s'occupant plus de la partie liée au réseau. Cette expérience m'a donc appris, d'une part, à avoir une certaine flexibilité d'adaptation dans les différents domaines concernant un même projet. D'autre part, elle ma permis d'acquérir de grandes compétences tout comme l'aisance relationnelle, l'espérait d'initiative ainsi que qu'une bonne organisation. 
-Pour ce qui concerne la gestion du groupe, Ludovic Delafontaine a réussi à guider le projet et assurer son avancement. Nous étions tous impliqués dans la réalisation du projet et il était toujours à l'écoute.
-our conclure, je dirai que cette expérience unique en son genre m'a bien marquée et a sans doute été un apprentissage très précieux qui me sera utile dans le monde professionnel.
+N'étant pas une personne d'expérience dans le domaine puisque je n'ai pas eu l'occasion de participer à plusieurs projets informatiques auparavant, cette nouvelle expérience n'a pas été immédiate et facile.  
+
+Ensemble, nous sommes partis d'une simple idée à développer part la suite. Notre équipe a du donc unir ses forces afin que le projet aboutisse et qu'on puisse atteindre les objectifs fixés au tout départ.  
+Certains membres du groupe, quant à eux, avaient déjà acquis assez d'expérience durant plusieurs projets informatiques auxquels ils ont déjà pu participe et étaient donc toujours à l'écoute et prêts à donner un coup de main en cas de besoin.  
+
+Pour ma part j'étais dans le groupe s'occupant plus de la partie liée au réseau. Cette expérience m'a donc appris, d'une part, à avoir une certaine flexibilité d'adaptation dans les différents domaines concernant un même projet. D'autre part, elle ma permis d'acquérir de grandes compétences tout comme l'aisance relationnelle, l'espérait d'initiative ainsi que qu'une bonne organisation.  
+
+Pour ce qui concerne la gestion du groupe, Ludovic Delafontaine a réussi à guider le projet et assurer son avancement. Nous étions tous impliqués dans la réalisation du projet et il était toujours à l'écoute.  
+
+Pour conclure, je dirai que cette expérience unique en son genre m'a bien marquée et a sans doute été un apprentissage très précieux qui me sera utile dans le monde professionnel.
 
 # Sources
 - Capsule ([capsule.io](capsule.io)) - Site officiel de la librairie Capsule
