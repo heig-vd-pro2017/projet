@@ -127,33 +127,33 @@ header-includes:
 # Introduction
 Durant le quatrième semestre de la section TIC de l'HEIG-VD, nous devons effectuer un projet par groupes de cinq ou six personnes. Le but est de mettre en oeuvre les connaissances que nous avons acquises au long des semestres précédents à travers un projet conséquent. Nous devrons prendre conscience des difficultés liées au travail de groupe, ainsi qu'apprendre à planifier un travail sur plusieurs mois. Au terme du semestre, nous devons rendre un programme complet et fonctionnel, avec une documentation adéquate et être capables de le présenter et le défendre.
 
-Le projet dure 16 semaines et vaut trois crédits. Un crédit valant 30 heures de travail, le temps de travail est de 540 heures pour toute l'équipe, soit cinq heures et demi par membres du projet par semaine.
+Le projet dure seize semaines et vaut trois crédits. Un crédit valant 30 heures de travail, le temps de travail est de 540 heures pour toute l'équipe, soit cinq heures et demi par membres du projet, par semaine.
 
 Dans le cadre du projet, l'équipe de programmation est composée du chef de projet Ludovic Delafontaine, de son remplaçant Lucas Elisei et des membres David Truan, Thibaut Togue, Yosra Harbaoui et Denise Gemesio.
 
 Dans ce rapport, nous allons expliquer notre démarche de travail et les principaux choix d'architecture et de design de code. Il sera structuré selon les principaux paquets de notre application.
 
-Ce rapport, étant à rendre deux semaines avant la fin du temps total aloué pour le projet, s'arrête donc en semaine quatorze et il restera la défense orale qui ne sera pas expliquée dans ce document.
+Ce rapport, étant à rendre deux semaines avant la fin du temps total alloué pour le projet, s'arrête donc en semaine quatorze. Les deux dernières semaines seront consacrées à la défense orale, étape qui ne sera pas expliquée dans ce document.
 
 # Objectif
 Le but de notre programme est de proposer une application client-serveur qui permettra aux clients d'envoyer des fichiers musicaux au serveur pour que celui-ci les joue. Il se démarque d'une simple application de lecture en continu (streaming) dans le fait que la liste de lecture ne peut être changée que par les clients, par le biais d'un système de votes positifs ou négatifs. Ceux-ci permettent à un morceau d'être placé plus en avant ou en arrière dans la liste de lecture. Cela permet donc à chacun de donner son avis, tout en centralisant la lecture de la musique sur un seul ordinateur. De plus, l'application met à disposition les fonctionnalités suivantes pour une expérience encore plus communautaire:
 
-- Passer au morceau suivant si la majorité le souhaite. Cela aura pour effet de récupérer la musique suivante la plus demandée et de la lire.
-- Augmenter et diminuer le volume si la majorité le souhaite.
-- Système de favoris pour permettre aux utilisateurs de sauvegarder les informations d'une chanson pour pouvoir la retrouver par la suite.
+- Passer au morceau suivant, si la majorité le souhaite. Cela aura pour effet de récupérer la chanson suivante la plus demandée et de la lire.
+- Augmenter et diminuer le volume, si la majorité le souhaite.
+- Système de favoris afin de permettre aux utilisateurs de sauvegarder les informations d'une chanson pour pouvoir la retrouver par la suite.
 
 On souhaite répondre à l'éternel problème de devoir se partager une prise jack ou de devoir se battre pour pouvoir passer un morceau que l'on souhaite écouter.
 
 # Public cible
 Cette application visera un public dont la gestion de la musique lors d'un événement est critique.
-Cela peut autant concerner les lieux publics tels que les bars ou encore les événements privés, tels que les soirées entre amis.
+Cela peut autant concerner les lieux publics, tels que les bars, ou encore, les événements privés, tels que les soirées entre amis.
 
 Notre application se voudra donc simple à utiliser, afin qu'un néophyte dans le domaine de l'informatique puisse l'utiliser.
 
 # Conception et normes
-Avant de se lancer dans le développement, nous avons pris le temps de réfléchir à l'architecture de notre programme. Nous avons souhaité séparer au mieux les différentes entités de notre application, afin de simplifier le développement, la compréhension du programme et rester très abstraits.
+Avant de nous lancer dans le développement, nous avons pris le temps de réfléchir à l'architecture de notre programme. Nous avons souhaité séparer au mieux les différentes entités de notre application, afin de simplifier le développement, la compréhension du programme et rester très abstraits.
 
-Nous avons donc pris trois semaines, avant de commencer le développement, afin de définir l'architecture du programme décrite ci-dessous.
+Avant de commencer le développement, nous avons donc passé trois semaines à définir l'architecture du programme décrite au chapitre suivant.
 
 Une fois l'architecture bien définie, nous avons déterminé des normes de développement afin d'utiliser toutes et tous la même façon de coder. Parmi les points discutés, nous avons abouti aux conventions suivantes :
 
@@ -165,41 +165,41 @@ Une fois l'architecture bien définie, nous avons déterminé des normes de dév
 
 ![Architecture du programme](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/heig-vd-pro2017/projet/master/doc/PRO/UML/Architecture.puml){height=200px}
 
-## Entité base de données
-Cette entité est une abstraction de la base de données. Elle permet de simplifier l'interaction avec cette dernière en mettant à disposition des méthodes pour les opérations de base sur la base de données.
-
-Cette entité permet, par exemple, à un utilisateur de sauvegarder les métadonnées des chansons qui lui plaisent dans la base de données.
-
-Les différentes tables sont générées automatiquement par Hibernate (voir `Technlogies utilisées` et la corrélation entre les classes Java et la base de données est définie dans les fichiers `.hbm.xml` dans le dossier `ressources/models`), ce qui permet de séparer les deux notions: programmation orientées objet et base de données.
-
-## Entité système de fichiers
-Cette entité a pour rôle d'assurer la gestion des fichiers en interagissant avec le système de fichiers. Elle permet de sauvegarder, supprimer, renommer des fichiers sur le disque, recevoir des fichiers par le réseau et vérifier qu'ils ne soient pas corrompus.
-
-## Entité réseau
+## Entité *Réseau*
 Cette entité permet toute la gestion du réseau entre les clients et le serveur. Elle permet de répondre aux attentes suivantes :
 
 - Le serveur doit pouvoir gérer plusieurs clients, mais sans devoir garder une connexion constante entre chaque client et le serveur.
 - Un serveur ou un client doivent pouvoir communiquer l'un avec l'autre en utilisant une liaison de communication "privée" à l'aide de l'Unicast.
 - Un serveur doit pouvoir diffuser à tous les clients un message afin que tout le monde le réceptionne et le traite à l'aide du Multicast.
 
-## Entité sessions
+## Entité *Contrôleur*
+Cette entité permet le contrôle de l'application. C'est elle qui va gérer le comportement de l'application et faire la liaison, le mieux possible, entre toutes les entités décrites ci-dessus ainsi que répondre aux demandes des utilisateurs et des serveurs.
+
+## Entités *Utilitaires*
+Ces entités sont celles qui ne trouvent pas leur place dans des entités spécifique. L'entité de configuration qui permet de récupérer des propriétés d'un fichier de configuration fait notamment partie de ces entités utilitaires.
+
+## Entité *Sessions*
 Cette entité permet de gérer des notions de sessions afin de connaître les personnes connectées et les serveurs accessibles. Il y a notamment deux notions de session : les sessions serveur et les sessions utilisateur.
+
+## Entité *Système de fichiers*
+Cette entité a pour rôle d'assurer la gestion des fichiers en interagissant avec le système de fichiers. Elle permet de sauvegarder, supprimer, renommer des fichiers sur le disque, recevoir des fichiers par le réseau et vérifier qu'ils ne soient pas corrompus.
 
 Dans le cas des sessions serveur, le but est de savoir si un serveur est encore accessible. A chaque mise à jour de la part du (des) serveur(s), la session associée sera mise à jour. Si un des serveurs venait à être éteint ou déconnecté, le client supprimerait le serveur afin qu'il ne tente pas d'y accéder.
 
 Dans le cas des sessions utilisateur, le but est de pouvoir limiter un utilisateur dans son nombre d'actions sur le serveur - voter pour un morceau, voter contre un morceau, faire une demande de changement de musique, etc. - et savoir combien d'utilisateurs sont actifs sur le serveur afin de savoir quand une action définie par une majorité doit avoir lieu.
 
-## Entité médias
-Cette entité regroupe tout ce qui concerne les médias de notre application : chansons, listes de lecture, lecteur de musique.
+## Entité *Base de données*
+Cette entité est une abstraction de la base de données. Elle permet de simplifier l'interaction avec cette dernière en mettant à disposition des méthodes pour les opérations de base sur la base de données.
 
-## Entité contrôleur
-Cette entité permet le contrôle de l'application. C'est elle qui va gérer le comportement de l'application et faire la liaison, le mieux possible, entre toutes les entités décrites ci-dessus ainsi que répondre aux demandes des utilisateurs et des serveurs.
+Cette entité permet, par exemple, à un utilisateur de sauvegarder les métadonnées des chansons qui lui plaisent dans la base de données.
+
+Les différentes tables sont générées automatiquement par Hibernate (voir `Technlogies utilisées` et la corrélation entre les classes Java et la base de données est définie dans les fichiers `.hbm.xml` dans le dossier `ressources/models`), ce qui permet de séparer les deux notions: programmation orientées objet et base de données.
+
+## Entité *Médias*
+Cette entité regroupe tout ce qui concerne les médias de notre application : chansons, listes de lecture, lecteur de musique.
 
 ## Entité visuelle
 L'entité visuelle est ce que l'on va montrer à l'utilisateur afin qu'il ait une interface pour intéragir avec le programme. Cette interface sera liée directement au contrôleur, qui saura quoi faire en fonction de l'action demandée.
-
-## Entités utilitaires
-Ces entités sont celles qui ne trouvent pas leur place dans des entités spécifique. L'entité de configuration qui permet de récupérer des propriétés d'un fichier de configuration fait notamment partie de ces entités utilitaires.
 
 # Description technique
 La description technique se développera dans l'ordre croissant de complexité des différentes entités de notre programme.
