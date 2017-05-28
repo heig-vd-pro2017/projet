@@ -132,9 +132,9 @@ Ce rapport, étant à rendre deux semaines avant la fin du temps total alloué p
 # Objectif
 Le but de notre programme est de proposer une application client-serveur qui permettra aux clients d'envoyer des fichiers musicaux au serveur pour que celui-ci les joue. Il se démarque d'une simple application de lecture en continu (streaming) dans le fait que la liste de lecture ne peut être changée que par les clients, par le biais d'un système de votes positifs ou négatifs. Ceux-ci permettent à un morceau d'être placé plus en avant ou en arrière dans la liste de lecture. Cela permet donc à chacun de donner son avis, tout en centralisant la lecture de la musique sur un seul ordinateur. De plus, l'application met à disposition les fonctionnalités suivantes pour une expérience encore plus communautaire:
 
-- Passer au morceau suivant, si la majorité le souhaite. Cela aura pour effet de récupérer la chanson suivante la plus demandée et de la lire.
+- Passer au morceau suivant, si la majorité le souhaite. Cela aura pour effet de récupérer le morceau de musique suivant la plus demandée et de la lire.
 - Augmenter et diminuer le volume, si la majorité le souhaite.
-- Système de favoris afin de permettre aux utilisateurs de sauvegarder les informations d'une chanson pour pouvoir la retrouver par la suite.
+- Système de favoris afin de permettre aux utilisateurs de sauvegarder les informations d'un morceau de musique pour pouvoir le retrouver par la suite.
 
 Nous souhaitons répondre à l'éternel problème qu'est le fait de devoir se partager une prise jack ou de devoir se battre pour pouvoir passer un morceau que l'on souhaite écouter.
 
@@ -174,48 +174,47 @@ Une fois l'architecture bien définie, nous avons déterminé des normes de dév
 \end{minipage}
 
 ## Entité *Réseau*
-Cette entité permet toute la gestion du réseau entre les clients et le serveur. Elle permet de répondre aux attentes suivantes :
+Cette entité permet la gestion du réseau entre les clients et le serveur. Elle permet de répondre aux attentes suivantes :
 
 - Le serveur doit pouvoir gérer plusieurs clients, mais sans devoir garder une connexion constante entre chaque client et le serveur.
-- Un serveur ou un client doivent pouvoir communiquer l'un avec l'autre en utilisant une liaison de communication "privée" à l'aide de l'Unicast.
-- Un serveur doit pouvoir diffuser à tous les clients un message afin que tout le monde le réceptionne et le traite à l'aide du Multicast.
+- Un serveur et un client doivent pouvoir communiquer l'un avec l'autre en utilisant une liaison de communication "privée" à l'aide de l'Unicast.
+- Un serveur doit pouvoir diffuser à tous les clients un message, afin que tout le monde le réceptionne et le traite à l'aide du Multicast.
 
 ## Entité *Contrôleur*
-Cette entité permet le contrôle de l'application. C'est elle qui va gérer le comportement de l'application et faire la liaison, le mieux possible, entre toutes les entités décrites ci-dessus ainsi que répondre aux demandes des utilisateurs et des serveurs.
+Cette entité permet le contrôle de l'application. C'est elle qui va gérer son comportement, faire la liaison entre toutes les entités et répondre aux demandes des utilisateurs et des serveurs.
 
 ## Entités *Utilitaires*
-Ces entités sont celles qui ne trouvent pas leur place dans des entités spécifique. L'entité de configuration qui permet de récupérer des propriétés d'un fichier de configuration fait notamment partie de ces entités utilitaires.
+Ces entités sont celles qui ne trouvent pas leur place dans des entités spécifiques. L'entité de configuration, qui permet de récupérer des propriétés d'un fichier de configuration, fait notamment partie de ces entités utilitaires.
 
 ## Entité *Sessions*
-Cette entité permet de gérer des notions de sessions afin de connaître les personnes connectées et les serveurs accessibles. Il y a notamment deux notions de session : les sessions serveur et les sessions utilisateur.
-
-## Entité *Système de fichiers*
-Cette entité a pour rôle d'assurer la gestion des fichiers en interagissant avec le système de fichiers. Elle permet de sauvegarder, supprimer, renommer des fichiers sur le disque, recevoir des fichiers par le réseau et vérifier qu'ils ne soient pas corrompus.
-
-Dans le cas des sessions serveur, le but est de savoir si un serveur est encore accessible. A chaque mise à jour de la part du (des) serveur(s), la session associée sera mise à jour. Si un des serveurs venait à être éteint ou déconnecté, le client supprimerait le serveur afin qu'il ne tente pas d'y accéder.
+Cette entité permet de gérer les notions de session qui servent à connaître les personnes connectées ou les serveurs accessibles. Il y a notamment deux notions de session : les sessions utilisateur et les sessions serveur.
 
 Dans le cas des sessions utilisateur, le but est de pouvoir limiter un utilisateur dans son nombre d'actions sur le serveur - voter pour un morceau, voter contre un morceau, faire une demande de changement de musique, etc. - et savoir combien d'utilisateurs sont actifs sur le serveur afin de savoir quand une action définie par une majorité doit avoir lieu.
+
+Dans le cas des sessions serveur, le but est de savoir si un serveur est encore accessible. A chaque mise à jour de la part du serveur, la session associée sera mise à jour. Si l'un des serveurs venait à être éteint ou déconnecté, le client supprimerait le serveur afin qu'il ne tente pas d'y accéder.
+
+## Entité *Système de fichiers*
+Cette entité a pour rôle d'assurer la gestion des fichiers, en interagissant avec le système de fichiers. Elle permet de sauvegarder, supprimer, renommer des fichiers sur le disque, recevoir des fichiers par réseau et vérifier qu'ils ne soient pas corrompus.
 
 ## Entité *Base de données*
 Cette entité est une abstraction de la base de données. Elle permet de simplifier l'interaction avec cette dernière en mettant à disposition des méthodes pour les opérations de base sur la base de données.
 
-Cette entité permet, par exemple, à un utilisateur de sauvegarder les métadonnées des chansons qui lui plaisent dans la base de données.
+Cette entité permet à un utilisateur, par exemple, de sauvegarder les métadonnées des morceaux qui lui plaisent dans la base de données.
 
-Les différentes tables sont générées automatiquement par Hibernate (voir `Technlogies utilisées` et la corrélation entre les classes Java et la base de données est définie dans les fichiers `.hbm.xml` dans le dossier `ressources/models`), ce qui permet de séparer les deux notions: programmation orientées objet et base de données.
-
-## Entité *Médias*
-Cette entité regroupe tout ce qui concerne les médias de notre application : chansons, listes de lecture, lecteur de musique.
+Les différentes tables sont générées automatiquement par Hibernate (voir `Technlogies utilisées` et la corrélation entre les classes Java et la base de données est définie dans les fichiers `.hbm.xml`, dans le dossier `ressources/models`), ce qui permet de séparer les deux notions: programmation orientée objet et base de données.
 
 ## Entité *Interface graphique*
-L'entité visuelle est ce que l'on va montrer à l'utilisateur afin qu'il ait une interface pour intéragir avec le programme. Cette interface sera liée directement au contrôleur, qui saura quoi faire en fonction de l'action demandée.
+Cette entité représente ce que nous allons montrer à l'utilisateur, afin qu'il ait une interface pour intéragir avec le programme. Cette interface sera liée directement au contrôleur, qui saura quoi faire en fonction de l'action demandée.
 
-## Entités *Utilitaires*
-Ces entités sont celles qui ne trouvent pas leur place dans des entités spécifique. L'entité de configuration qui permet de récupérer des propriétés d'un fichier de configuration fait notamment partie de ces entités utilitaires.
+## Entité *Médias*
+Cette entité regroupe tout ce qui concerne les médias de notre application : morceaux de musique, listes de lecture, lecteur de musique.
+
+\pagebreak
 
 # Description technique
 La description technique se développera dans l'ordre croissant de complexité des différentes entités de notre programme.
 
-Pour chacune des paquets, dérivés des entitées décrites ci-dessus, nous décrirons brièvement le but des différentes classes.
+Pour chacun des paquets, dérivés des entités décrites au chapitre précédent, nous décrirons brièvement le but des différentes classes.
 
 ## Paquet `database`
 
@@ -225,9 +224,9 @@ Pour chacune des paquets, dérivés des entitées décrites ci-dessus, nous déc
   \captionof{figure}{Paquet \lstinline{database}}
 \end{minipage}
 
-Ce paquet est constitué essentiellement de la classe `DatabaseManager` dont le rôle est d'assurer les méthodes définies par les notions CRUD (Create, Read, Update, Delete) de la base de données de notre application et d'assurer la fermeture de la connexion à celle-ci.
+Ce paquet est constitué essentiellement de la classe `DatabaseManager`, dont le rôle est d'assurer les méthodes définies par les notions CRUD - Create, Read, Update, Delete - de la base de données de notre application et d'assurer la fermeture de la connexion à celle-ci.
 
-Hibernate est la librairie utilisée dans notre projet afin de pouvoir communiquer avec la base de données. Elle utilise un système de Session afin de garder en cache les différentes informations de la base de données. Avant d'enregistrer sur la base de données, Hibernate va interroger son cache afin de savoir si l'information est disponible et s'il est nécessaire de faire une quelconque action sur la base de données réelles.
+*Hibernate* est la librairie utilisée dans notre projet afin de pouvoir communiquer avec la base de données. Elle utilise un système de sessions afin de garder en cache les différentes informations de la base de données. Avant d'enregistrer quoi que ce soit dans cette dernière, Hibernate va interroger son cache afin de savoir si l'information est disponible et s'il est nécessaire de faire une quelconque action sur la base de données réelle.
 
 ## Paquet `file`
 
@@ -240,15 +239,15 @@ Hibernate est la librairie utilisée dans notre projet afin de pouvoir communiqu
 Le paquet `file` est constitué de deux classes: `FileManager` et `FilesFormats`.
 
 ### `FilesFormats`
-Actuellement, notre application supporte trois formats de fichiers audio: MP3, M4A et WAV. La classe permet de définir les caractéristiques d'un fichier, c'est-à-dire, tous les éléments nous permettant de connaître le type du fichier.
+Actuellement, notre application supporte trois formats de fichiers audio: MP3, M4A et WAV. Cette classe permet de définir les caractéristiques d'un fichier, c'est-à-dire, tous les éléments nous permettant de connaître le type de fichier.
 
 ### `FileManager`
 Cette classe permet de supprimer, stocker et déterminer le type de fichier.
 Pour retrouver l'extension du fichier, nous avons procédé de la manière suivante :
 
-- Pour les fichiers MP3, nous regardons les trois premiers octets depuis le début du fichier.
-- Pour les M4A, nous regardons les premiers octets en partant du quatrième octet depuis le début du fichier.
-- Pour les WAV, à partir du huitième octet depuis le début du fichier.
+- Pour les fichiers MP3, nous regardons les trois premiers octets, depuis le début du fichier.
+- Pour les fichier M4A, nous regardons les premiers octets, en partant du quatrième octet, depuis le début du fichier.
+- Pour les fichiers WAV, nous regardons à partir du huitième octet, depuis le début du fichier.
 
 \begin{minipage}{\linewidth}
   \centering
@@ -268,7 +267,7 @@ Pour retrouver l'extension du fichier, nous avons procédé de la manière suiva
   \captionof{figure}{Aperçu hexadécimal d'un fichier WAV}
 \end{minipage}
 
-Connaître le type de fichier nous permettra de traiter uniquement les fichiers supportés pas notre plateforme et, aussi, en termes de sécurité, éviter qu'un utilisateur ne fasse planter le serveur en envoyant un fichier qui n'est pas supporté par celui-ci.
+Connaître le type de fichier nous permettra de traiter uniquement les fichiers supportés par notre plateforme et, aussi, en termes de sécurité, éviter qu'un utilisateur ne fasse planter le serveur en envoyant un fichier qui n'est pas supporté par celui-ci.
 
 \pagebreak
 
@@ -280,13 +279,14 @@ Connaître le type de fichier nous permettra de traiter uniquement les fichiers 
   \captionof{figure}{Paquet \lstinline{network}}
 \end{minipage}
 
-Pour répondre aux besoin architecturaux vus plus haut, nous avons développé plusieurs classes qui s'occupent de gérer les sockets et envois de commande via le réseau. Nous savions que notre protocole enverrait du texte car la lecture de ligne dans un flux d'entrée se fait facilement grâce à la méthode `readline()`. Nous avions aussi besoin d'envoyer des objet sérialisés au format JSON.
+Pour répondre aux besoin architecturaux vus au chapitre 5, nous avons développé plusieurs classes qui s'occupent de gérer les sockets et envois de commandes via le réseau. Nous savions que notre protocole enverrait du texte, car la lecture de ligne dans un flux d'entrée se fait facilement grâce à la méthode `readline()`. Nous avions également besoin d'envoyer des objet sérialisés au format JSON.
 
 ### Protocole et commandes
-La plupart des commandes listées ci-dessous sont disponibles dans la classe `ApplicationProtocol`, mais, comme elles sont envoyées par le réseau, nous avons préféré les expliquer ici.
+La plupart des commandes listées ci-dessous sont disponibles dans la classe `ApplicationProtocol`, mais, comme elles sont envoyées par le réseau, nous avons préféré les expliquer dans ce chapitre.
 Toutes les commandes envoyées par Unicast ont comme deux premiers arguments :
+
 - L'ID de l'expéditeur, qui est le hash de l'adresse MAC de l'interface réseau qu'il utilise.
-- Le socket utilisé pour la communication qui est rajouté à la réception, avant d'envoyer la commande au `Core` (la notion de `Core` est développée au chapitre `Core`).
+- Le socket utilisé pour la communication, qui est rajouté à la réception, avant d'envoyer la commande au `Core` (la notion de `Core` est développée au chapitre `Core`).
 
 De ce fait, les tableaux ci-dessous n'indiquent, dans leur colonne `Arguments`, que les arguments en plus de ces deux dans l'ordre dans lequel ils sont envoyés.
 
@@ -307,15 +307,15 @@ Les objets décrits ci-dessous sont évidemment sérialisés avant d'être trans
 \end{minipage}
 
 ### `Server`
-Côté serveur, nous avons décidé d'opter pour une architecture avec un thread réceptionniste `Server` qui va attendre une nouvelle connexion de la part des clients. Une fois un nouveau client arrivé, il va lancer un thread `UnicastClient` qui va s'occuper de la communication avec le client. Cette communication se fait via un socket Unicast car il s'agit d'une communication privée entre le serveur et le client. Nous avons choisi cette solution car plusieurs connexions avec des clients peuvent survenir simultanément et ce système réceptionniste, avec un thread par client, gère plusieurs connexions en même temps, contrairement à un système avec un seul thread qui s'occupe d'un client à la fois.
+Côté serveur, nous avons décidé d'opter pour une architecture avec un thread réceptionniste `Server` qui va attendre une nouvelle connexion de la part des clients. Une fois un client arrivé, il va lancer un thread `UnicastClient` qui va s'occuper de la communication avec le client. Cette communication se fait via un socket Unicast, car il s'agit d'une communication privée entre le serveur et le client. Nous avons choisi cette solution, car plusieurs connexions avec des clients peuvent survenir simultanément et ce système réceptionniste, avec un thread par client, gère plusieurs connexions en même temps, contrairement à un système avec un seul thread qui s'occupe d'un client à la fois.
 
 ### `UnicastClient`
-La classe `UnicastClient` va pouvoir recevoir les commandes venant du réseau et en renvoyer. Elle implémente l'interface `Runnable`, ce qui lui permet de s'exécuter en tant que thread. Sa force réside dans le fait qu'elle peut être utilisée aussi bien du côté server que du côté client, grâce au fait qu'elle lit les commandes reçues et les envoie au `Core` pour qu'il les exécute.
+La classe `UnicastClient` va pouvoir recevoir les commandes venant du réseau et en renvoyer. Elle implémente l'interface `Runnable`, ce qui lui permet de s'exécuter en tant que thread. Sa force réside dans le fait qu'elle peut être utilisée aussi bien du côté serveur que du côté client, grâce au fait qu'elle lit les commandes reçues et les envoie au `Core` pour qu'il les exécute.
 
 \begin{minipage}{\linewidth}
   \centering
   \includegraphics[height=0.6\textheight]{figures/unicast_client.png}
-  \captionof{figure}{Diagramme d'activité de la réception et de l'envoi unicast}
+  \captionof{figure}{Diagramme d'activité de la réception et de l'envoi Unicast}
 \end{minipage}
 
 Ce diagramme montre la lecture d'une commande venant du réseau et son découpage pour en extraire les arguments et la passer au `Core`. Celui-ci s'occupera d'exécuter la commande si elle est disponible dans l'instance de son `AbstractCore` (voir chapitre `Core`). Le `Core` renvoie ensuite une commande à envoyer en réponse à celle reçue. La communication se termine lorsque l'une des extrémités envoie la commande `END_OF_COMMUNICATION` ou qu'elle ferme son socket.
@@ -323,14 +323,14 @@ Ce diagramme montre la lecture d'une commande venant du réseau et son découpag
 ### `MulticastClient`
 Cette classe implémente aussi l'interface `Runnable` dans le but de lancer son exécution dans un nouveau thread. Comme pour `UnicastClient`, cette classe peut être utilisée du côté serveur comme du côté client. La méthode `run()` permet au thread de rejoindre le groupe Multicast à l'adresse définie dans le `NetworkProtocol`. Le thread va ensuite attendre de recevoir des datagrammes venant du groupe Multicast jusqu'à son arrêt par la méthode `stop()`.
 
-Nous avons été confrontés à un problème lors du développement, lorsque nous nous sommes rendu compte qu'un `MulticastSocket` utilisait la première interface réseau disponible sur l'ordinateur plutôt que celle qui était réellement connectée. Cela prenait énormément de temps à être résolu et nous avons donc mis à disposition un choix d'interfaces réseau dans l'interface utilisateur.
+Nous avons été confrontés à un problème lors du développement, lorsque nous nous sommes rendus compte qu'un `MulticastSocket` utilisait la première interface réseau disponible sur l'ordinateur plutôt que celle qui était réellement connectée. Cela prenant énormément de temps à être résolu, nous avons décidé de mettre à disposition un choix d'interfaces réseau dans les interfaces graphiques de l'utilisateur et du serveur.
 
-Les `Core` ont chacun un `MulticastClient` pour pouvoir envoyer la liste de lecture actuelle ainsi que les informations sur l'état du lecteur - en pause ou en lecture, état du volume, etc.).
+Les `Core` ont chacun un `MulticastClient` pour pouvoir envoyer la liste de lecture actuelle ainsi que les informations sur l'état du lecteur - en pause ou en lecture, état du volume, etc.
 
-Pour utiliser le Multicast, il est nécessaire de spécifier quelle est l'interface réseau à utiliser pour l'émission et la réception des données. C'est la raison pour laquelle, dans le cas où la machine a plusieurs interfaces, de sélectionner la bonne dans la liste de l'interface graphique.
+Pour utiliser le Multicast, il est nécessaire de spécifier quelle est l'interface réseau à utiliser pour l'émission et la réception des données. Dans le cas où la machine a plusieurs interfaces réseau, il faudra faire attention et sélectionner la bonne interface dans la liste de l'interface graphique.
 
 ### `NetworkProtocol`
-C'est dans cette classe que sont définies les commandes spécifiques au réseau `END_OF_COMMUNICATION` et `END_OF_COMMAND`. Les ports pour les différents sockets ainsi que l'adresse du groupe Multicast se trouvent également dans cette classe. Ces derniers ont été choisis arbitrairement parmi les plages disponibles. Bien que peu probable, il est possible qu'une autre application utilise ces mêmes ports. Dans ce cas, le bon fonctionnement de **Commusica** se retrouverait corrompu. Nous n'avons pas voulu laisser ces valeurs dans le fichier de configuration car il est indispensable d'avoir les mêmes ports chez le serveur et chez les clients. Nous avons donc préféré prendre le risque qu'un autre programme utilise les mêmes ports plutôt qu'un utilisateur change ces valeurs.
+C'est dans cette classe que sont définies les commandes spécifiques au réseau : `END_OF_COMMUNICATION` et `END_OF_COMMAND`. Les ports pour les différents sockets ainsi que l'adresse du groupe Multicast se trouvent également dans cette classe. Ces derniers ont été choisis arbitrairement parmi les plages disponibles. Bien que peu probable, il est possible qu'une autre application utilise ces mêmes ports. Dans ce cas, le bon fonctionnement de **Commusica** se retrouverait corrompu. Nous n'avons pas voulu laisser ces valeurs dans le fichier de configuration car il est indispensable d'avoir les mêmes ports chez le serveur et chez les clients. Nous avons donc préféré prendre le risque qu'un autre programme utilise les mêmes ports plutôt qu'un utilisateur change ces valeurs.
 
 ### Threads lancés pour gérer la communication client-serveur
 Voici les différents threads lancés par le client et le serveur.
@@ -338,7 +338,7 @@ Voici les différents threads lancés par le client et le serveur.
 \begin{minipage}{\linewidth}
   \centering
   \includegraphics[width=\linewidth]{figures/network_threads.png}
-  \captionof{figure}{Threads lancés les clients et le serveur}
+  \captionof{figure}{Threads lancés par les clients et le serveur}
 \end{minipage}
 
 ## Paquet `session`
@@ -354,9 +354,9 @@ Cette entité permet de gérer la notion de session afin de connaître les perso
 ### `ISession`
 L'interface `ISession` permet de définir le fait qu'une session soit caractérisée par un identifiant et une date de dernière mise à jour. Cela est nécessaire pour la bonne exécution de certaines méthodes.
 
-L'identifiant est toujours un ID unique `Integer` qui est généré à l'aide de l'adresse MAC de l'une des interfaces réseau du serveur/client.
+L'identifiant est toujours un ID unique `Integer` qui est généré à l'aide de l'adresse MAC de l'une des interfaces réseau du serveur ou du client.
 
-La méthode `update()` permet de mettre à jour la session afin qu'elle ne soit pas nettoyée par le `ScheduledExecutorService` (voir ci-dessous).
+La méthode `update()` permet de mettre à jour la session afin qu'elle ne soit pas nettoyée par le `ScheduledExecutorService` (voir chapitre 6.4.5).
 
 ### `ServerSession`
 Cette classe représente une session serveur.
@@ -364,10 +364,10 @@ Cette classe représente une session serveur.
 En plus de l'identifiant unique, un serveur est représenté par un nom et une adresse de destination afin de savoir comment l'atteindre.
 
 ### `UserSession`
-Cette classe représente une session utilisateur. Le but est de pouvoir identifer un utilisateur unique afin d'éviter qu'il puisse faire plusieurs actions consécutives sans limite. En plus de cela, cette classe permet de savoir, par exemple, à partir de quand un changement de chanson doit être effectué - la majorité des utilisateurs doit avoir voté un changement de chanson.
+Cette classe représente une session utilisateur. Le but est de pouvoir identifer un utilisateur unique afin d'éviter qu'il puisse faire plusieurs actions consécutives, sans limite. En plus de cela, cette classe permet de savoir, par exemple, à partir de quand un changement de morceau doit être effectué - la majorité des utilisateurs doit avoir voté un changement de morceau de musique.
 
 ### `ISessionManager`
-Cette interface demande à chaque SessionManager de mettre à disposition une méthode `stop()`. En effet, chaque SessionManager démarre un `ScheduledExecutorService` dont le but est de nettoyer les sessions inactives du système, soit en les supprimant, soit en les désactivant, et ce, à intervalles réguliers définis dans le fichier de configuration.
+Cette interface demande à chaque SessionManager de mettre à disposition une méthode `stop()`. En effet, chaque SessionManager démarre un `ScheduledExecutorService` dont le but est de nettoyer les sessions inactives du système, soit en les supprimant, soit en les désactivant, et ce, à intervalles réguliers définis dans le fichier de configuration (chapitre 6.7.1).
 
 ### `ServerSessionManager`
 Cette classe permet de gérer les différentes sessions des serveurs. Elle permet de stocker et savoir quels sont les serveurs actifs.
@@ -377,7 +377,7 @@ Elle est constituée d'une `Map` permettant de stocker les différents serveurs 
 Elle est nettoyée à l'aide du `ScheduledExecutorService` afin de supprimer de l'interface graphique les serveurs qui ne sont plus accessibles.
 
 ### `UserSessionManager`
-Cette classe permet de gérer le stockage, le nettoyage ainsi que les votes des différentes sessions utilisateur. Elle permet de garder à jour deux listes qui permettent de stocker les utilisateurs actifs et inactifs. Elle a un système de mise à jour automatique à l'aide d'un `ScheduledExecutorService`. Pour ce qui est des votes, elle permet d'empêcher qu'un utilisateur ne vote plusieurs fois pour la même actions (score, pause, etc.).
+Cette classe permet de gérer le stockage, le nettoyage ainsi que les votes des différentes sessions utilisateur. Elle permet de garder à jour deux listes qui permettent de stocker les utilisateurs actifs et inactifs. Elle a un système de mise à jour automatique à l'aide d'un `ScheduledExecutorService`. Pour ce qui est des votes, elle permet d'empêcher qu'un utilisateur ne vote plusieurs fois pour la même action - score, pause, etc.
 
 \pagebreak
 
@@ -386,58 +386,58 @@ Cette classe permet de gérer le stockage, le nettoyage ainsi que les votes des 
 \begin{minipage}{\linewidth}
   \centering
   \includegraphics[width=\linewidth]{figures/media.png}
-  \captionof{figure}{paquet \lstinline{media}}
+  \captionof{figure}{Paquet \lstinline{media}}
 \end{minipage}
 
 Ce package permet de définir tous les éléments nécessaires à la gestion de la musique au niveau de l'application.
 
 ### `EphemeralPlaylist`
-La classe EphemeralPlaylist représente la liste de lecture en cours de construction, c'est-à-dire, la liste de lecture en cours de lecture. Cela permet de mettre à jour l'interface graphique lors d'une action sur un élément de la playlist. La mise à jour se fait grâce au pattern observeur, à travers la liste `ObservableSortedPlaylistTrackList`, qui joue, en même temps, le rôle d'observable et d'observeur. Elle observe des chansons de la liste dans le but de changer l'état de la liste de lecture en cas de vote positif ou négatif, et devient observable dans le cas où elle envoie des notifications lors des mises à jour. Dans cette classe, nous avons aussi le champ `delegate` qui représente la liste de lecture qui sera enregistrée dans la base de données pour le suivi de celle-ci.
+La classe EphemeralPlaylist représente la liste de lecture en cours de construction et de lecture. Cette classe permet de mettre à jour l'interface graphique, lors d'une action sur un élément de la playlist. La mise à jour se fait grâce au pattern observeur, à travers la liste `ObservableSortedPlaylistTrackList`, qui joue, en même temps, le rôle d'observable et d'observeur. Elle observe les morceaux de musique de la liste dans le but de changer son état en cas de vote positif ou négatif, et est observable dans le cas où elle envoie des notifications lors des mises à jour. Dans cette classe, nous avons aussi le champ `delegate` qui représente la liste de lecture qui sera enregistrée dans la base de données pour le suivi de celle-ci.
 
 ### `Player`
-Cette classe permet de réaliser les actions de base sur la musique telles que la lecture, la mise sur pause, passer à la musique suivante, etc.
+Cette classe permet de réaliser les actions de base sur la musique telles que la lecture, la mise sur pause, passer au morceau suivant, etc.
 
-Lors de l'implémentation, nous avions le choix entre deux paquets : `javafx.scene.media` et `javax.sound` proposant tous les deux différentes classes pour gérer des fichiers audio et les jouer. Nous avons préféré utiliser `javafx.scene.media` pour les raisons suivantes:
+Lors de l'implémentation, nous avions le choix entre deux paquets : `javafx.scene.media` et `javax.sound` proposant tous deux différentes classes pour gérer des fichiers audio et les jouer. Nous avons préféré utiliser `javafx.scene.media` pour les raisons suivantes:
 
-- Facile à implémenter
+- Facilité d'implémentation.
 - Accepte plus de formats que `javax.sound`. Par exemple, MP3 n'est pas supporté par `javax.sound`.
-- Beaucoup plus abstrait, `javax.sound` demandant de travailler directement au niveau des byes.
+- Beaucoup plus abstrait, `javax.sound` demande de travailler directement au niveau des octets.
 
-De plus, `javafx.scene.media` étant issu de JavaFX, que nous utilisons pour l'interface graphique, risque de mieux s'intégrer à cette dernière.
+De plus, `javafx.scene.media` étant issu de JavaFX, que nous utilisons pour l'interface graphique, s'intègre mieux à cette dernière.
 
 Le paquet `javafx.scene.media` propose les classes suivantes:
 
-- `Media` media resource, contient des informations sur les médias, telles que leur source, leur résolution et leurs métadonnées.
+- `Media` représente une ressource média qui contient des informations telles que la source, la résolution et les métadonnées.
 - `MediaPlayer` est le composant clé fournissant les contrôles pour la lecture de médias.
-- `MediaView` permettant de supporter l'animation, la translucidité et les effets.
+- `MediaView` permet de supporter l'animation, la translucidité et les effets.
 
-Nous avons aussi utilisé, dans cette classe, les propriétés JavaFX dans le but est de mettre à jour de manière automatique l'interface utilisateur lorsqu'une modification se produit.
+Nous avons aussi utilisé, dans cette classe, les propriétés JavaFX dont le but est de mettre à jour de manière automatique l'interface utilisateur lorsqu'une modification se produit.
 
-Une fois que `Player` a fini de la lire sa chanson, il va interroger le `PlaylistManager` qui va lui fournir la prochaine chanson à jouer, en se basant sur le nombre de votes de cette derière à l'aide du `VoteComparator`.
+Une fois que `Player` a fini de lire un morceau, il va interroger le `PlaylistManager` qui va lui fournir le prochain morceau à jouer, en se basant sur le nombre de votes de ce dernier à l'aide du `VoteComparator`.
 
 ### `SavedPlaylist`
-Cette classe est utilisée afin de stocker une `EphermeralPlaylist` dans la playlists et récupérer une ancienne playlist dans la base de données.
+Cette classe est utilisée afin de stocker une `EphermeralPlaylist` dans la base de données et en récupérer une ancienne playlist.
 
-La différence entre les deux classes se situe dans le fait que `EphermeralPlaylist` est une playlist en cours de construction alors que la `SavedPlaylist` est le résutat final d'une `EphermeralPlaylist`.
+La différence entre les deux classes se situe dans le fait que `EphermeralPlaylist` est une playlist en cours de construction alors que `SavedPlaylist` est le résutat final d'une `EphermeralPlaylist`.
 
-Seule `SavedPlaylist` est stockée dans la base de données et persistante dans la vie du programme.
+Seule `SavedPlaylist` est stockée dans la base de données et est persistante dans la vie du programme.
 
 ### `Track`
-Cette classe représente une chanson, elle en regroupe toutes les informations nécessaires à une identité unique.
+Cette classe représente un morceau de musique, elle en regroupe toutes les informations nécessaires à une identité unique.
 Nous avons implémenté trois constructeurs :
 
 - Le constructeur vide : toutes les classes persistantes doivent avoir un constructeur par défaut pour que Hibernate puisse les instancier en utilisant le constructeur `Constructor.newInstance()`.
 - `public Track(String id, String title, String artist, String album, Integer length, String uri)` : constructeur permettant de créer une instance de `Track` lorsque tous les paramètres sont connus.
-- `public Track(AudioFile audioFile)` : constructeur permettant de créer une instance de `Track` à partir d'un fichier audio. Il est utile lorsque nous souhaitons transférer un fichier et effectuer un contrôle sur une chanson, au lieu de vérifier le fichier audio lui-même.
+- `public Track(AudioFile audioFile)` : constructeur permettant de créer une instance de `Track` à partir d'un fichier audio. Il est utile lorsque nous souhaitons transférer un fichier et effectuer un contrôle sur un morceau de musique, au lieu de vérifier le fichier audio lui-même.
 
  \pagebreak
 
 ## Paquet `playlist`
 Le paquet `playlist` met en oeuvre ce qui a trait à la gestion des playlists, dans notre cas :
 
-- Le lien entre une certaine chanson et les playlists dans lesquelles elle se trouve.
+- Le lien entre un certain morceau et les playlists dans lesquelles il se trouve.
 - La sélection d'une certaine playlist.
-- La gestion des votes positifs et négatifs concernant les chansons contenues dans une liste de lecture spécifique.
+- La gestion des votes positifs et négatifs concernant les morceaux contenus dans une liste de lecture spécifique.
 
 ### `PlaylistManager`
 La classe `PlaylistManager` représente un gestionnaire de playlists et a plusieurs utilités :
@@ -445,49 +445,47 @@ La classe `PlaylistManager` représente un gestionnaire de playlists et a plusie
 - Récupérer la liste de lecture en cours de création.
 - Récupérer les playlists sauvegardées.
 - Récupérer la liste de lecture des favoris.
-- Ajouter/supprimer des chansons à la liste de lecture des favoris.
-- Créer/supprimer une playlist.
+- Ajouter ou supprimer des morceaux à la liste de lecture des favoris.
+- Créer ou supprimer une playlist.
 
 ### `PlaylistTrack`
-La classe `PlaylistTrack` permet non seulement de représenter le lien entre une chanson et une playlist, mais aussi de connaître le nombre de votes de la chanson, ce qui sera ensuite utile au niveau de la classe `VoteComparator` qui organise les chansons dans la liste de lecture selon le nombre de votes. Cela peut être fait grâce au fait que `PlaylistTrack` met à disposition une variable `votesProperty` à laquelle un observeur a été ajouté afin que l'interface graphique se réorganise correctement.
+La classe `PlaylistTrack` permet non seulement de représenter le lien entre une morceau et une playlist, mais aussi de connaître le nombre de votes du morceau, ce qui sera ensuite utile au niveau de la classe `VoteComparator` qui organise les morceaux dans la liste de lecture selon le nombre de votes. Cela peut être fait grâce au fait que `PlaylistTrack` met à disposition une variable `votesProperty` à laquelle un observeur a été ajouté afin que l'interface graphique se réorganise correctement.
 
 ### `PlaylistTrackId`
-Cette classe permet de créer le lien entre une certaine liste de lecture et une chanson. Grâce à l'implémentation d'un hashcode, nous pouvons nous servir de celui-ci afin de vérifier que la chanson reliée à la liste de lecture n'existe pas déjà dans la base de données.
+Cette classe permet de créer le lien entre une certaine liste de lecture et un morceau. Grâce à l'implémentation d'un hashcode, nous pouvons nous servir de celui-ci afin de vérifier que le morceau relié à la liste de lecture n'existe pas déjà dans la base de données.
 
 ### `VoteComparator`
-Le comparateur de vote ne possède qu'une fonction. Celle-ci sert tout simplement à déterminer, entre deux chansons, laquelle a le plus grand nombre de votes. Il a été créé dans le but de réorganiser la liste de lecture en commençant par les chansons les plus votées.
+Le comparateur de vote ne possède qu'une fonction. Celle-ci sert tout simplement à déterminer, entre deux morceaux, lequel a le plus grand nombre de votes. Il a été créé dans le but de réorganiser la liste de lecture en commençant par les morceaux les plus votés.
 
 ## Paquet `utils`
 Le paquet `utils` réunit tous les utilitaires dont nous avons eu besoin au sein de plusieurs classes et dont l'implémentation n'avait aucun sens au sein desdites classes. L'utilité de chaque classe diffère alors énormément.
 
 ### `Configuration`
-Cette classe permet la récupération des propriétés définies dans un fichier de configuration. Elle fixe le fichier de configuration à utiliser et permet l'accès à ces dernières.
+Cette classe permet la récupération des propriétés définies dans un fichier de configuration. Elle fixe le fichier de configuration à utiliser et permet l'accès aux propriétés.
 
 Le ficher de configuration du programme utilisé dans le cadre de ce projet est `commusica.properties`. Il donne accès aux paramètres suivants :    
 
  +  DEBUG : permet de choisir d'afficher ou non la sortie du programme
  +  DATE_FORMAT : choix du format de la date
  +  VOLUME_STEP : choix du pas d'augmentation et abaissement de la musique
- +  TRACKS_DIRECTORY : choix du chemin relatif où les chansons seront stockées
+ +  TRACKS_DIRECTORY : choix du chemin relatif où les morceaux seront stockés
  +  TIME_BEFORE_SESSION_INACTIVE : choix du délai d'inactivité d'une session
- +  TIME_BETWEEN_PLAYLIST_UPDATES : choix du délai de mise à jour des playlists et leurs chansons
+ +  TIME_BETWEEN_PLAYLIST_UPDATES : choix du délai de mise à jour des playlists et leurs morceaux
 
 ### `Network`
 Cette classe permet de récupérer toutes les informations basiques de la machine concernant le réseau. Elle va, en outre, permettre de récupérer les interfaces disponibles nécessaires à la connexion à un certain serveur et configurer le réseau pour le reste de l'application.
 
 ### `ObservableSortedPlaylistTracklist`
-Cette classe permet de récupérer les informations nécessaires à l'affichage des chansons dans la liste de lecture en écoute. Cet utilitaire a été créé afin de pouvoir faciliter la récupération d'informations depuis les classes mettant en oeuvre l'interface graphique.
+Cette classe permet de récupérer les informations nécessaires à l'affichage des morceaux de musique dans la liste de lecture en écoute. Cet utilitaire a été créé afin de pouvoir faciliter la récupération d'informations depuis les classes implémentant l'interface graphique.
 
 ### `Serialize`
 Grâce à la librairie Gson de Google, cette classe est utilisée dans la sérialisation (Objet Java -> JSON) et désérialisation (JSON -> Objet Java).
 
 ### `EphemeralPlaylistSerializer`
-Cette classe permet de sérialiser et désérialiser une liste de lecture en JSON. L'utilité de cette classe réside principalement dans la communication réseau.
-
-En effet, afin de pouvoir indiquer l'état de la liste de lecture éphémère aux différents
+Cette classe permet de sérialiser et désérialiser une liste de lecture en JSON. Son utilité réside principalement dans la communication réseau. 
 
 ### `Logger`
-Cette classe a été créée uniquement pour aider à déboguer le programme, pour comprendre ce qu'il se passe à chaque étape. Son affichage permet de savoir dans quelle classe a lieu une action. Des couleurs ont été attribuées aux différentes notifications :
+Cette classe a été créée uniquement pour aider à déboguer le programme et comprendre ce qu'il se passe à chaque étape. Son affichage permet de savoir dans quelle classe a lieu une action. Des couleurs ont été attribuées aux différentes notifications :
 
 - Bleu, pour les informations
 - Rouge, pour les erreurs
@@ -508,7 +506,7 @@ L'affichage des logs peut être désactivé au niveau du fichier de configuratio
 
 Pour garder un niveau d'abstraction le plus élevé possible, nous avons voulu faire transiter, à travers un contrôleur, toutes les informations venant du réseau et des utilisateurs, le but étant d'avoir le même point d'entrée que l'on soit client ou serveur. Pour cela, il nous fallait un contrôleur central qui puisse être appelé de la même façon, quel que soit le choix de l'identité. C'est alors à celui-ci de vérifier l'existence d'une fonction et de communiquer l'action à exécuter à l'entité concernée. Pour résoudre ce problème, notre raisonnement nous a mené à nous tourner vers la réflexivité offerte par Java. Ce mécanisme permet d'instancier des méthodes à l'exécution en utilisant la méthode `invoke(Object obj, Object... args)` ayant comme premier paramètre un String représentant le nom de la méthode à invoquer et comme deuxième paramètre un tableau d'`Object` contentant les différents arguments dont la méthode invoquée a besoin.
 
-Il nous fallait maintenant une classe qui puisse jouer le rôle du contrôleur. Pour cela, nous avons développé les `Core`, qui se trouvent tous dans le paquet `core`.
+Il nous fallait maintenant une classe qui puisse jouer le rôle du contrôleur. Pour cela, nous avons développé les `Core`, qui se trouvent dans le paquet `core`.
 
 ### `Core`
 C'est une classe statique qui joue le rôle de point d'entrée. Elle dispose d'un attribut `AbstractCore` qui sera instancié soit en `ClientCore`, soit en `ServerCore`. Elle met aussi à disposition des méthodes statiques qui seront atteignables depuis les autres classes du programme.
@@ -519,11 +517,11 @@ En plus des méthodes lui permettant de se paramétrer comme client ou serveur, 
 public static String execute(String command, ArrayList<Object> args)
 ```
 
-Cette méthode statique qui peut être appelée n'importe où dans le programme appellera la méthode du même nom de la classe `AbstractCore`, qui est décrite plus loin.
-Cela permet de pouvoir exécuter des commandes quelque soit le type de Core configuré: soit serveur, soit client.
+Cette méthode statique qui peut être appelée n'importe où dans le programme appellera la méthode du même nom de la classe `AbstractCore`, qui est décrite au chapitre 6.8.3.
+Cela permet de pouvoir exécuter des commandes quelque soit le type de Core configuré: serveur ou client.
 
 ### `ICore`
-C'est une interface qui définit ce qui est nécessaire au Core, à savoir des méthodes permettant d'envoyer des messages en Unicast ou en Multicast et une méthode pour arrêter le Core. Toutes les classes héritant d'`AbstractCore` doivent implémenter cette interface.
+`ICore` est une interface qui définit ce qui est nécessaire au Core, à savoir des méthodes permettant d'envoyer des messages en Unicast ou en Multicast et une méthode pour arrêter le Core. Toutes les classes héritant d'`AbstractCore` doivent implémenter cette interface.
 
 ### `AbstractCore`
 Cette classe abstraite met à disposition les méthodes permettant à ses sous-classes de s'exécuter correctement. Contrairement à `Core`, cette classe va utiliser la réflexivité dans sa méthode execute(), comme ceci:  
@@ -546,7 +544,7 @@ public synchronized String execute(String command, ArrayList<Object> args) {
 }
 ```
 
-Nous recevons une commande et un tableau correspondant aux arguments de la méthode à invoquer. Ensuite, le programme essaie de trouver la méthode ayant un nom correspondant à la commande, si elle est disponible dans l'instance de la classe. Si c'est le cas, cette dernière va l'invoquer et donc exécuter ladite méthode, sinon une exception est levée. C'est grâce à cette méthode que tout prend son sens, car on a maintenant une instance d'`AbstractCore` qui est soit `ClientCore`, soit `ServerCore` avec une seule méthode pour en appeler d'autres qui seront, elles, implémentées dans les sous-classes d'`AbstractCore`.
+Nous recevons une commande et un tableau correspondant aux arguments de la méthode à invoquer. Ensuite, le programme essaie de trouver la méthode ayant un nom correspondant à la commande. Si c'est le cas, cette dernière va l'invoquer et donc exécuter ladite méthode, sinon une exception est levée. C'est grâce à cette méthode que tout prend son sens, car on a maintenant une instance d'`AbstractCore` qui est soit `ClientCore`, soit `ServerCore` avec une seule méthode pour en appeler d'autres qui seront, elles, implémentées dans les sous-classes d'`AbstractCore`.
 
 ### `ServerCore` et `ClientCore`
 
@@ -591,27 +589,27 @@ Mise à part la configuration initiale de la fenêtre, `UIController` permet aus
 ### `PlaylistsListView`
 `PlaylistsListView` concerne la vue en haut à gauche affichant les playlists disponibles :
 
-- **PLAYING** : la liste de lecture en cours de création
-- **FAVORITES** : la liste de lecture des favoris
-- **SAVED** : la liste des playlists sauvegardées d'anciens événements
+- PLAYING : la liste de lecture en cours de création
+- FAVORITES : la liste de lecture des favoris
+- SAVED : la liste des playlists sauvegardées d'anciens événements
 
 Comme spécifié au chapitre précédent, la liste sélectionnée par défaut est la liste en cours de création.
 Dans la classe `PlaylistsListView`, nous faisons usage d'une méthode de la classe `FXCollections` permettant d'attacher un observeur à n'importe quel objet du programme. Ainsi, nous pouvons facilement modifier l'affichage des playlists au fur et à mesure des actions faites au niveau du serveur ou du client.
 
 ### `TracksListView`
 La classe `TracksListView` agit sur le panneau en haut au centre de l'interface graphique principale en le dessinant et définissant les usages basiques de celui-ci.
-Cette classe permet d'afficher une liste de lecture et glisser/déposer un élément audio au sein du panneau, grâce à la méthode `initializeDragAndDrop()`. La liste de lecture est initialisée comme liste observable, ce qui fait que dès qu'un changement subvient, celle-ci se met à jour. Cependant, elle n'est pas encore peuplée par les chansons contenues dans la playlist. Cette question ainsi que celle des upvotes, downvotes et favoris sont traitées dans une autre classe implémentée spécialement pour cet usage : `PlaylistTrackCell`.
+Cette classe permet d'afficher une liste de lecture et glisser/déposer un élément audio au sein du panneau, grâce à la méthode `initializeDragAndDrop()`. La liste de lecture est initialisée comme liste observable, ce qui fait que dès qu'un changement subvient, celle-ci se met à jour. Cependant, elle n'est pas encore peuplée par les morceaux de musique contenus dans la playlist. Cette question ainsi que celle des upvotes, downvotes et favoris sont traitées dans une autre classe implémentée spécialement pour cet usage : `PlaylistTrackCell`.
 
-La méthode `initializeDragAndDrop()` de la classe `TracksListView` mérite une explication plus détaillée. Nous avons longtemps réfléchi à la meilleure façon d'implémenter le téléchargement d'une chanson. Le "drag and drop" (glisser/déposer) nous a finalement semblé être la technique la plus intuitive d'ajout de chansons.
+La méthode `initializeDragAndDrop()` de la classe `TracksListView` mérite une explication plus détaillée. Nous avons longtemps réfléchi à la meilleure façon d'implémenter le téléchargement d'un morceau. Le "drag and drop" (glisser/déposer) nous a finalement semblé être la technique la plus intuitive d'ajout de musique.
 Cette méthode, relativement complexe, nous permet donc de déterminer quand une personne a déposé un fichier dans le panneau et ce, grâce à la méthode JavaFX `setOnDragDropped()` de la classe `TransferMode`. C'est alors que nous allons faire usage du constructeur de la classe `Track` prenant en paramètre un `AudioFile`.
-Si c'est le serveur qui a glissé/déposé une chanson, alors la méthode appellera directement la méthode du `PlaylistManager` permettant d'ajouter une chanson.
-Dans le cas du client, la méthode passera d'abord par la classe `Core` à laquelle il enverra la commande `SEND_TRACK_REQUEST` avec comme argument la chanson sérialisée en JSON.
+Si c'est le serveur qui a glissé/déposé un morceau, alors la méthode appellera directement la méthode du `PlaylistManager` permettant d'ajouter un morceau.
+Dans le cas du client, la méthode passera d'abord par la classe `Core` à laquelle il enverra la commande `SEND_TRACK_REQUEST` avec comme argument le morceau sérialisé en JSON.
 Nous remarquons ici, encore une fois, l'intérêt et l'importance de la classe `Core`.
 
 ### `PlaylistTrackCell`
-`PlaylistTrackCell` est une classe utilisée dans chaque cellule de la liste centrale afin de définir les boutons d'upvote, downvote et favoris et leurs actions. Elle va également permettre de définir le titre, l'artiste, l'album et le nombre de votes d'une chanson.
+`PlaylistTrackCell` est une classe utilisée dans chaque cellule de la liste centrale afin de définir les boutons d'upvote, downvote et favoris et leurs actions. Elle va également permettre de définir le titre, l'artiste, l'album et le nombre de votes d'un morceau.
 Concernant les votes, deux fonctions - une pour les votes positifs et l'autre pour les votes négatifs - permettent de communiquer avec le `Core` à travers des commandes. Les commandes - `SEND_DOWNVOTE_TRACK_REQUEST` et `SEND_UPVOTE_TRACK_REQUEST` - sont utilisées dans ces deux cas spécifiques car l'incidence qu'aura un vote sera globale à tous les participants. Ainsi, le `Core` doit être averti du fait que l'événement a eu lieu pour en informer le serveur afin qu'il renvoie l'information à tout le monde. Encore une fois, le `Core` use de son pouvoir de messager à travers le programme.
-Dans le cas des favoris, il n'y a nul besoin de passer par le `Core` car tout ce que l'utilisateur veut, c'est enregistrer l'information dans sa liste personnelle de chansons favorites.
+Dans le cas des favoris, il n'y a nul besoin de passer par le `Core` car tout ce que l'utilisateur veut, c'est enregistrer l'information dans sa liste personnelle de morceaux de musique favoris.
 
 ### `SettingsView`
 Le panneau en haut à droite de l'interface graphique propose quelques réglages simples mais importants quant au bon fonctionnement du programme. Ce panneau n'a pas le même comportement selon si l'utilisateur est un client ou un serveur.
@@ -620,40 +618,42 @@ Si l'utilisateur a choisi d'être le serveur, alors le nom qu'il aura choisi lor
 
 Si l'utilisateur a choisi d'être un client, une liste des serveurs disponibles sur le réseau local s'affichera. Lorsqu'un serveur est sélectionné dans la liste, le programme se charge de connecter le client au serveur précédemment choisi.
 
-Enfin, un deuxième paramètre est commun aux deux types d'utilisateurs: le choix de l'interface réseau à utiliser. Celle-ci se choisit à l'aide d'un menu déroulant qui nous fournit la liste des interfaces réseau disponibles ainsi que leur adresse *IPv4* associée.
+Enfin, un deuxième paramètre est commun aux deux types d'utilisateurs: le choix de l'interface réseau à utiliser. Celle-ci se choisit à l'aide d'un menu déroulant qui nous fournit la liste des interfaces réseau disponibles ainsi que leur adresse IPv4 associée.
 
 ### `PreviousTrackView`
-Dans le panneau en bas à gauche, nous pouvons apercevoir un espace réservé à la chanson qui vient de se terminer. Ce panneau nous a semblé utile de par le fait que, souvent, nous nous sommes personnellement retrouvés à vouloir noter le nom d'une chanson que nous venions d'écouter et, le temps de prendre notre téléphone pour identifier ladite chanson, celle-ci avait eu le temps de se terminer. Ainsi, ce panneau offre la possibilité à tous les utilisateurs de retrouver facilement et sauvegarder en un seul "clic" les informations d'une chanson.
-Pour ce panneau, nous n'avons pas repris le même type de cellule que dans le panneau central du haut, car il n'y a pas de sens au fait de pouvoir upvoter ou downvoter une chanson déjà écoutée. C'est pourquoi, nous avons créé un panneau sur mesure contenant uniquement l'étoile des favoris et permettant ainsi uniquement d'ajouter la chanson à sa liste de chansons favorites.
+Dans le panneau en bas à gauche, nous pouvons apercevoir un espace réservé au morceau qui vient de se terminer. Ce panneau nous a semblé utile de par le fait que, souvent, nous nous sommes personnellement retrouvés à vouloir noter le nom d'un morceau que nous venions d'écouter et, le temps de prendre notre téléphone pour identifier ledit morceau de musique, celui-ci avait eu le temps de se terminer. Ainsi, ce panneau offre la possibilité à tous les utilisateurs de retrouver facilement et sauvegarder en un seul *clic* les informations d'un morceau.
+Pour ce panneau, nous n'avons pas repris le même type de cellule que dans le panneau central du haut, car il n'y a pas de sens au fait de pouvoir upvoter ou downvoter un morceau déjà écouté. C'est pourquoi, nous avons créé un panneau sur mesure contenant uniquement l'étoile des favoris et permettant ainsi uniquement d'ajouter le morceau de musique à sa liste de morceaux favoris.
 
 ### `CurrentTrackView`
-Dans le panneau du bas, au milieu, nous pouvons apercevoir le résumé de la chanson actuellement en écoute. Les boutons ainsi que les informations sont exactement les mêmes que dans le cas de la dernière chanson grisée, affichée dans la liste de lecture du panneau en haut au centre.
-Nous avons choisi cet affichage de façon à pouvoir faciliter l'accès à la chanson actuelle dans le cas où l'utilisateur aurait décidé de faire défiler la liste de lecture et aurait perdu de vue la chanson actuelle.
-Le vrai défi de cette classe a cependant été celui de pouvoir remplir la jauge d'écoute selon l'avancement de la chanson. Cela a évidemment été fait à travers un observeur sur l'instance de `Player` qui possède l'information sur le temps écoulé.
+Dans le panneau du bas, au milieu, nous pouvons apercevoir le résumé du morceau actuellement en écoute. Les boutons ainsi que les informations sont exactement les mêmes que dans le cas du dernier morceau grisé, affiché dans la liste de lecture du panneau en haut au centre.
+Nous avons choisi cet affichage de façon à pouvoir faciliter l'accès au morceau actuel dans le cas où l'utilisateur aurait décidé de faire défiler la liste de lecture et aurait perdu de vue le morceau actuel.
+Le vrai défi de cette classe a cependant été celui de pouvoir remplir la jauge d'écoute selon l'avancement du morceau de musique. Cela a évidemment été fait à travers un observeur sur l'instance de `Player` qui possède l'information sur le temps écoulé.
 Sur la gauche du panneau central, nous pouvons également apercevoir des boutons de contrôle.
 
 #### `PlayerControlsView`
-`PlayerControlsView` qui se trouve dans le même panneau que `CurrentTrackView`représente les boutons "play/pause", "chanson suivante", "chanson précédente" et "volume". Ces quatre boutons représentent en fait cinq actions distinctes qui transiteront toutes à travers le `Core`. En effet, nous nous trouvons encore une fois face à une classe de l'interface graphique dont le `Core` est indispensable à son bon fonctionnement.
+`PlayerControlsView`, qui se trouve dans le même panneau que `CurrentTrackView`représente les boutons *play/pause*, *morceau suivant*, *morceau précédent* et *volume*. Ces quatre boutons représentent en fait cinq actions distinctes qui transiteront toutes à travers le `Core`. En effet, nous nous trouvons encore une fois face à une classe de l'interface graphique dont le `Core` est indispensable à son bon fonctionnement.
 Le `Core` est en mesure de déterminer vers qui il devra tourner la demande d'action à travers l'une des commandes suivantes :
 
 - `SEND_TURN_VOLUME_DOWN_REQUEST` : pour baisser le volume
 - `SEND_TURN_VOLUME_UP_REQUEST` : pour augmenter le volume
-- `SEND_NEXT_TRACK_REQUEST` : pour écouter la chanson suivante
-- `SEND_PREVIOUS_TRACK_REQUEST` : pour écouter la chanson précédente
+- `SEND_NEXT_TRACK_REQUEST` : pour écouter le morceau suivant
+- `SEND_PREVIOUS_TRACK_REQUEST` : pour écouter le morceau précédente
 - `SEND_PLAY_PAUSE_REQUEST` : pour arrêter ou démarrer la musique
 
 Dans ces cas précis, c'est la classe `UserSessionManager`qui sera concernée par la commande.
-Finalement, nous voyons dans cette classe encore une trace de ce que nous avions initialement implémenté. En effet, comme dans tous controleurs de musique, les boutons play/pause, chanson suivante et chanson précédente sont toujours présents. Cependant, dans le concept que nous visions à créer, nous n'avons jamais voulu permettre aux utilisateurs de revenir en arrière mais bien de se trouver dans un flux continu de musique.
+Finalement, nous voyons dans cette classe encore une trace de ce que nous avions initialement implémenté. En effet, comme dans tous controleurs de musique, les boutons play/pause, morceau suivant et morceau précédent sont toujours présents. Cependant, dans le concept que nous visions à créer, nous n'avons jamais voulu permettre aux utilisateurs de revenir en arrière mais bien de se trouver dans un flux continu de musique.
 
 ### Fichiers FXML
 Le fichier FXML de base, tout comme le fichier Java de base, a été découpé en plusieurs fichiers afin de comprendre plus facilement l'implémentation et la modifier.
 Comme dans les fichiers Java, nous avons un fichier principal, `main.fxml`, qui permet de découper l'interface principale en plusieurs panneaux. Ensuite, pour chacun des panneaux, nous avons des fichiers portant le même nom que leurs classes Java.
 Nous avons dû ajouter aux fichiers FXML un ID à chaque structure dont les actions nous intéressaient, et, pour certaines, nous avons également dû lier une action à une certaine méthode. Ainsi, dès l'instant que, dans le code Java, nous rencontrons un `@FXML`, cela veut dire que nous avons un lien direct avec les structures des fichiers FXML.
 
+\pagebreak
+
 # Technologies utilisées
 
 ## Singleton
-Comme expliqué précédemment, nous avons implémenté une partie de nos classes comme étant des Singleton. Ce patron de conception fait qu'une classe n'a qu'une seule instance.  
+Comme expliqué précédemment, nous avons implémenté une partie de nos classes comme étant des *Singleton*. Ce patron de conception fait en sorte qu'une classe n'ait qu'une seule instance.  
 Voici un exemple avec la classe `FileManager`:
 
 ```
@@ -675,14 +675,14 @@ public static FileManager getInstance() {
 }
 ```
 
-Ce patron de conception est simple à mettre en œuvre avec une variable d'instance de la classe, une constructeur privé et une méthode `getInstance()` renvoyant l'instance de la classe. Il est particulièrement adapté à toutes nos classes de type `Manager` car il ne doit y avoir qu'une seule instance de celle-ci par programme.
+Ce patron de conception est simple à mettre en oeuvre avec une variable d'instance de la classe, une constructeur privé et une méthode `getInstance()` renvoyant l'instance de la classe. Il est particulièrement adapté à toutes nos classes de type `Manager`, car il ne doit y avoir qu'une seule instance de celle-ci par programme.
 
 ## Réflexion
 La réflexion offerte par Java a été utilisée dans le cadre des Core afin de pouvoir déterminer, lors de l'exécution, si une méthode était implémentée et pouvait être appelée. Cela a permis d'éviter la redondance de code entre un Core côté serveur et un Core côté client et n'implémenter que les méthodes qui devaient être gérées par l'une ou l'autre de ces entités.
 
 ## ThreadPool
 `ThreadPool` est un outil offert par Java permettant de définir un objet `ExecutorService` mettant à disposition un nombre de threads défini par le programmeur. Il suffit ensuite de lui soumettre des objets instance de la classe `Thread` pour qu'il les lance automatiquement selon la disponibilité de son *pool*. Cela permet donc de limiter le nombre de threads lancés simultanément.  
-Voici un exemple d'une utilisation pour le lancement d'un nouveau thread lors d'une connexion d'un client sur le socket du serveur:  
+Voici un exemple d'utilisation pour le lancement d'un nouveau thread, lors de la connexion d'un client sur le socket du serveur:  
 
 ```
 Socket clientSocket = socket.accept();
@@ -692,7 +692,7 @@ threadPool.submit(client);
 ```
 
 ## ScheduledExecutorService
-Sous-classe de `ExecutorService`, cette classe permet l'exécution d'un bloc de code à une fréquence définie par le programmeur. Nous l'avons utilisée pour toutes les tâches, comme l'envoi de la liste de lecture ou la suppression de sessions utilisateurs obsolètes.  
+Sous-classe de `ExecutorService`, cette classe permet l'exécution d'un bloc de code à une fréquence définie par le programmeur. Nous l'avons utilisée pour des tâches telles que l'envoi de la liste de lecture ou la suppression de sessions utilisateurs obsolètes.  
 
 Exemple de l'envoi de la liste de lecture toutes les `TIME_BEFORE_PLAYLIST_UPDATE` secondes:  
 
@@ -704,56 +704,59 @@ broadcastPlaylist.scheduleAtFixedRate(() -> {
 ```
 
 ## Gson
-Gson est une librairie développée par Google permettant la sérialisation et la désérialisation d'objets en JSON. Nous l'avons utilisé principalement pour envoyer les différents objets à travers le réseau. Nous avons choisi cet libraire car nous l'avions déjà utilisée en cours et qu'elle permet en peu de lignes d'avoir une sérialisation/désérialisation rapide.
+Gson est une librairie développée par Google permettant la sérialisation et la désérialisation d'objets en JSON. Nous l'avons utilisé principalement pour envoyer les différents objets à travers le réseau. Nous avons choisi cette libraire car nous l'avons déjà utilisée en cours et qu'elle permet en peu de lignes d'avoir une sérialisation ou désérialisation rapide.
 
 ## Hibernate
-Hibernate est un outil ORM (Object Relational Mapping) qui simplifie la création et l'interaction avec la base de données. Il offre la possibilité de créer automatiquement les tables de la base de données en se basant sur les objets Java. Il n'est donc pas nécessaire de les créer manuellement et il gère la sauvegarde, l'intégrité de la base de données par lui-même.
+Hibernate est un outil ORM (Object Relational Mapping) qui simplifie la création et l'interaction avec la base de données. Il offre la possibilité de créer automatiquement les tables de la base de données en se basant sur les objets Java. Il n'est donc pas nécessaire de les créer manuellement et il gère la sauvegarde et l'intégrité de la base de données par lui-même.
 
 Nous l'avons utilisé afin de pouvoir nous concentrer sur le code et lui déléguer la gestion de la base de données.
 
 ## JavaFX
-JavaFX est une bibliothèque Java permettant la création d'applications de bureau. Les applications écrites à l'aide de cette bibliothèque peuvent fonctionner sur plusieurs plateformes. Par rapport à Swing, JavaFX nous offre:
+JavaFX est une bibliothèque Java permettant la création d'applications de bureau. Les applications écrites à l'aide de cette bibliothèque peuvent fonctionner sur plusieurs plateformes. Par rapport à Swing, JavaFX nous offre les avantages suivants :
 
 - Les styles CSS, qui nous ont permis de styliser notre application
 - La séparation de l'interface et du code
 
-Le point majeur qui nous a fait choisir JavaFX est la séparation facile entre le code et l'interface graphique à l'aide de fichiers (F)XML permettant de définir la structure de notre interface et ne pas polluer le code avec des concepts qui n'ont pas de sens dans celui-ci.
+Le point majeur qui nous a fait choisir JavaFX est la séparation facile entre le code et l'interface graphique, à l'aide de fichiers FXML, permettant de définir la structure de notre interface sans polluer le code avec des concepts qui n'auraient pas de sens dans celui-ci.
 
 ## JAudiotagger
 JAudiotagger est une API Java pour la lecture et l'écriture des métadonnées des fichiers audio. Il supporte des formats tels que MP3, MP4, WAV, etc.
 
-Nous l'avons utilisé dans notre projet car JavaFX ne propose pas un moyen de récupérer les métadonnées des chansons et parce que c'est la librairie à ce sujet la plus connue et adaptée à nos besoins.
+Nous l'avons utilisé dans notre projet car JavaFX ne propose pas d'outil de récupération des métadonnées des morceaux de musique et car c'est la librairie la plus connue et adaptée à nos besoins.
 
 ## Capsule
 Capsule est un outil de déploiement pour les applications Java. Une capsule est un fichier JAR exécutable unique qui contient tout ce que l'application doit avoir pour pouvoir s'exécuter.
 
-Nous l'avons utilisé dans le but de forcer l'utilisation de l'IPv4 pour les interfaces réseaux sur les ordinateurs Macintosh qui, par défaut, préfèrent l'IPv6 et ne pouvaient donc pas communiquer avec les autres systèmes qui, eux, préfèrent l'IPv4.
+Nous l'avons utilisé dans le but de forcer l'utilisation de l'IPv4 pour les interfaces réseaux sur les ordinateurs Macintosh qui, par défaut, préfèrent l'IPv6 et ne peuvent donc pas communiquer avec les autres systèmes qui, eux, préfèrent l'IPv4.
 
 Lors du lancement de notre programme, la réelle exécution de celui-ci est la suivante:
 
 1. Exécution du programme Commusica
-2. Lancement de Capsule -> Définition des paramètres à utiliser pour la JVM 2. Lancement de Commusica avec les paramètres JVM souhaités
-3. Démarrage de Commusica`
+2. Lancement de Capsule
+3. Définition des paramètres à utiliser pour la JVM 2
+4. Lancement de Commusica avec les paramètres JVM souhaités
+5. Démarrage de Commusica`
+
 
 ## Git / GitHub
-Git est un outil de gestions de versions qui permet de simplifier le développement d'une application en gérant automatiquement la fusion de code de deux auteurs différents et pouvoir avoir un historique des actions effectuées tout au long du projet.
+Git est un outil de gestion de versions qui permet de simplifier le développement d'une application en gérant automatiquement la fusion de code de deux auteurs différents et, permet également de pouvoir avoir un historique des actions effectuées tout au long du projet.
 
-Nous l'avons utilisé afin de permettre à chacun de développer séparément et qu'il puisse gérer la fusion automatiquement. Nous pouvions, au besoin, effectuer des tests sans mettre en péril le reste du projet à l'aide de branches. Nous avons utilisé GitHub afin de centralisé ça sur Internet.
+Nous l'avons utilisé afin de permettre à chacun de développer séparément et qu'il puisse gérer la fusion automatiquement. Nous pouvions, au besoin, effectuer des tests sans mettre en péril le reste du projet à l'aide de branches. Nous avons utilisé GitHub afin de centraliser cela sur Internet.
 
 ## IntelliJ IDEA
 IntelliJ IDEA est un environnement de développement intégré, autrement dit, un ensemble d'outils destinés au développement logiciel.
 
 Nous l'avons choisi pour les raisons suivantes:
 
-- Intégration avec les outils de gestions de versions tel que Git.
-- Une autocomplétion hors pair.
-- L'analyse et inspection : il analyse en temps réel et en permanence le code, à la recherche de problèmes potentiels.
-- Un déboguer simple et efficace à utiliser.
+- Intégration avec les outils de gestions de versions tels que Git.
+- Autocomplétion hors pair.
+- Analyse et inspection : il analyse en temps réel et en permanence le code, à la recherche de problèmes potentiels.
+- Débogueur simple et efficace à utiliser.
 
 ## Apache Maven
-Apache Maven est un outil de gestion de projet basé sur POM (modèle d'objet de projet).
+Apache Maven est un outil de gestion de projet basé sur *POM* (*Modèle d'Objet de Projet*).
 
-Nous l'avons utilisé dans le cadre de notre projet afin de pouvoir gérer les dépendances et la compilation de façon unifiée au travers de tous les développeurs. Il nous a permis de définir une librairie et sa version à utiliser et ainsi, le code de tous les développeurs se basent sur les mêmes versions et utilisent la même façon de compiler pour s'assurer du bon fonctionnement du programme.
+Nous l'avons utilisé dans le cadre de notre projet afin de pouvoir gérer les dépendances et la compilation de façon unifiées chez tous les développeurs. Il nous a permis de définir une librairie et sa version à utiliser et ainsi, le code de tous les développeurs se base sur les mêmes versions et compile de la même façon pour s'assurer du bon fonctionnement du programme.
 
 ## Scene Builder
 Scene builder est un outil qui permet de créer des fichiers au formats FXML via un éditeur graphique.
@@ -761,25 +764,22 @@ Scene builder est un outil qui permet de créer des fichiers au formats FXML via
 Nous l'avons utilisé afin de découvrir les principes de réalisation d'interfaces graphiques à l'aide de JavaFX.
 
 ## Wireshark
-Wireshark est un outil essentiel pour comprendre les mécanismes de fonctionnement des protocoles de communication sur les réseaux. Il capture des paquets directement sur les interfaces réseaux du système utilisé.
+Wireshark est un outil essentiel pour comprendre les mécanismes de fonctionnement des protocoles de communication sur les réseaux. Il capture des paquets directement sur les interfaces réseau du système utilisé.
 
-Nous l'avons utilisé dans notre projet afin de vérifier que la communication réseau entre le client et le serveur et s'assurer que tout marchait comme souhaité.
+Nous l'avons utilisé dans notre projet afin de vérifier que la communication réseau entre le client et le serveur marche comme prévu.
 
 ## PlantUML
-PlantUML est un outil gratuit et open-source qui permet la génération de schémas UML de toutes sortes (diagrammes de classe, diagrammes de séquences, diagrammes d'activités, etc.) et ce, à l'aide de fichiers textes.
+PlantUML est un outil gratuit et open source qui permet la génération de schémas UML de toutes sortes - diagrammes de classe, diagrammes de séquences, diagrammes d'activités, etc. - et ce, à l'aide de fichiers textes.
 
-Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui pouvaient être améliorés par plusieurs personnes en même temps à l'aide de Git grâce au fait que c'est simplement des fichiers textes.
+Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui pouvaient être améliorés par plusieurs personnes en même temps à l'aide de Git grâce au fait que ce sont simplement des fichiers textes.
 
 # Tests réalisés
-## Côté client
-
-## Côté serveur
 
 **On doit en faire des tableaux et retester toute l'application**
 
-**DG : cette liste me semble relativement massive, on pourrait faire des sous-chapitres**
-**DG : attention, certains de ces points, à cause de la tournure de phrase, sont des observations et non des tests**
-**DG : j'ai déplacé certaines observations de points qui ne marchent pas dans "Problèmes subsistants"**
+## Côté client
+
+## Côté serveur
 
 + Lancement du programme avec chacun des rôles
 + Choix entre serveur et client fonctionnel
@@ -787,10 +787,10 @@ Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui
 + La liste des serveurs disponibles se met bien à jour côté client
 + Le client peut sélectionner et se connecter au serveur
 + Le client reçoit et met à jour sa liste de lecture en fonction de celle du serveur auquel il est connecté (IL FAUDRA TESTER AVEC PLUSIEURS SERVEURS)
-+ Le client peut envoyer une chanson au serveur qui l'accepte ou la refuse (A TESTER PLUS EN DÉTAILS)
-+ Le serveur reçoit la chanson et met à jour sa liste de lecture (PAS SÛR QUE ÇA SOIT MIS À JOUR DANS LA DB)
++ Le client peut envoyer un morceau au serveur qui l'accepte ou la refuse (A TESTER PLUS EN DÉTAILS)
++ Le serveur reçoit le morceau et met à jour sa liste de lecture (PAS SÛR QUE ÇA SOIT MIS À JOUR DANS LA DB)
 + Le client reçoit la mise à jour de la playlist
-+ Le client peut upvoter et downvoter une chanson et cette dernière se met à jour.  
++ Le client peut upvoter et downvoter un morceau et cette dernière se met à jour.  
 + Plusieurs client peuvent envoyer en même temps des fichiers  
 + Le changement de l'interface réseau fonctionne.  
 + Le changement de l'interface réseau ne fait pas tout planter durant un transfert de fichier
@@ -798,19 +798,17 @@ Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui
 + le fait d'avoir 2 serveurs ayant le même nom fonctionne
 + Un client ne peut rajouter/enlever qu'un seul point par morceau même si il se déconnecte.
 + Les contrôles fonctionnent chez le serveur et chez les client.
-+ Un client doit pouvoir se deconnecter facilement.
-
-**DG: ce qui suit fait plutôt partie du chapitre "Problèmes subsistants"** Ne marche pas côté serveur.
-+ Coté client, la base de données se met bien à jour lors de l'ajout de chansons, mais la date à laquelle elle a été jouée manque dans l'EphemeralPlaylist et donc ne se met pas à jour dans la base de données du client. **DG : "Problèmes subsistants**
++ Un client doit pouvoir se deconnecter facilement. Ne marche pas côté serveur.
++ Coté client, la base de données se met bien à jour lors de l'ajout de morceaux, mais la date à laquelle il a été jouée manque dans l'EphemeralPlaylist et donc ne se met pas à jour dans la base de données du client. **DG : "Problèmes subsistants**
 + Le bouton play/pause marche et change d'état côté client et le bouton marche côté serveur, mais dans ce dernier cas, le bouton côté client ne change pas d'état. **DG : "Problèmes subsistants**
-+ La PlaylistTrack se met bien à jour dans la base de données lorsqu'une chanson a été jouée côté client.
-+ Favoriser une chanson côté client l'enregistre bien dans la base de données
++ La PlaylistTrack se met bien à jour dans la base de données lorsqu'un morcau a été joué côté client.
++ Favoriser un morceau côté client l'enregistre bien dans la base de données
 + A la fermeture du programme côté client, toutes les tracks qui n'ont pas été jouées sont bien effacées de la base de données
 + A la fermeture du programme côté serveur, les tracks enregistrées sont bien effacées
 + Côté serveur, les tracks sont bien ajoutées à la base de données.
 
 ## Problèmes subsistants
-- Il n'y pas moyens de proposer à nouveau une chanson qui a déjà été jouée de la soirée.
+- Il n'y pas moyen de proposer à nouveau un morceau qui a déjà été joué durant la soirée.
 
 ## Problèmes potentiels non testés
 - Risque de bloquer toute l'application en cas de charge élevée car la méthode `execute` des Cores est en exclusion mutuelle et donc peut potentiellement bloquer l'interaction avec le serveur s'il y a beaucoup de clients connectés et interagissant avec le serveur.
@@ -830,28 +828,28 @@ Ajout de la musique à la base de données/système de stockage    Oui          
 Actions de base sur la musique côté serveur et client           Oui                             Oui             Le bouton pour revenir en arrière n'est pas implémenté car inutile dans notre cas. Il n'est présent que par soucis d'estétisme.
 Interface utilisateur                                           Oui                             Oui             -
 Contrôle du volume de la musique côté serveur et client         Oui                             Oui             -
-Accepter ou refuser l'ajout de nouvelles chansons               Oui                             Oui             -
+Accepter ou refuser l'ajout de nouveaux morceaux              Oui                             Oui             -
 Système de vote côté serveur et client                          Oui                             Oui             -
 Système de favoris/playlist                                     Oui                             Oui             -
 Nettoyage de la base de données côté serveur et client          Oui                             Oui             -
 Voir la liste des serveurs accessibles côté client              Oui                             Oui             -
 Accéder au serveur                                              Oui                             Oui             -
 Ajouter de la musique au serveur                                Oui                             Oui             -
-Un client ne peut pas enregistrer deux fois la même chanson durant le même événement    Oui         Oui         -
-Un client doit pouvoir supprimer une chanson de ses favoris ou ses playlists            Oui         Partiellement         Le code gère cela, mais aucune liaison avec l'interface graphique.
-Un client doit pouvoir supprimer une playlist avec toutes les chansons contenues dans ladite playlist            Oui         Partiellement         Le code gère cela, mais aucune liaison avec l'interface graphique.
+Un client ne peut pas enregistrer deux fois le même morceau durant le même événement    Oui         Oui         -
+Un client doit pouvoir supprimer un morceau de ses favoris ou ses playlists            Oui         Partiellement         Le code gère cela, mais aucune liaison avec l'interface graphique.
+Un client doit pouvoir supprimer une playlist avec tous les morceaux contenus dans ladite playlist            Oui         Partiellement         Le code gère cela, mais aucune liaison avec l'interface graphique.
 Support d'autres formats de musique                             Non                             Oui             Ajout du support du WAV.
 Taille de fenêtre non-fixe                                      Non                             Oui             -
 Fusionner le code de l'application serveur et client            Non                             Oui             Choix au démarrage
 Filtres de recherche                                            Non                             Non             -
 Intégration de services externes                                Non                             Non             -
-Système de transition dynamique entre chansons                  Non                             Non             -
+Système de transition dynamique entre morceaux                  Non                             Non             -
 Ajout d'une dimension communautaire                             Non                             Non             -
 Définir des utilisateurs du système comme administrateurs       Non                             Non             -
 Configuration avancée du serveur                                Non                             Non             -
 
 # Améliorations envisagées
-- Revoir l'architecture du projet pour séparer encore mieux les entités, avec le patron Observable-Observeur par exemple, ce qui permettrait de notifier, à qui veulent entendre, des informations.
+- Revoir l'architecture du projet pour mieux séparer les entités, avec le patron Observable-Observeur, par exemple, ce qui permettrait de notifier, à qui veut entendre, des informations.
 - Rendre tous les messages et commandes asynchrones afin de minimiser les ressources et ne pas bloquer toute l'application lorsqu'il y a beaucoup de charge.
 - Se passer des Singleton afin de rendre notre code plus indépendant.
 - Mieux gérer la concurrence.
@@ -860,27 +858,27 @@ Configuration avancée du serveur                                Non            
 # Difficultés et problèmes rencontrés
 Les points suivants ne sont pas forcément des difficultés mais surtout des points sur lesquels nous avons passé beaucoup plus de temps que prévu.
 
-- Base de données: La gestion de la base de données à l'aide de Hibernate nous a pris du temps à certains moments car il a fallu bien comprendre le fonctionnement de ce dernier et comment il évalue les objets afin de savoir s'ils doivent être sauvegarés ou non dans la base de données.
+- Base de données: la gestion de la base de données à l'aide de Hibernate nous a pris énormément de temps à certains moments car il a fallu bien comprendre le fonctionnement de ce dernier et comment il évalue les objets afin de savoir s'ils doivent être sauvegarés ou non dans la base de données.
 
-- Interfaces réseaux: Le multicast demandant d'utiliser une interface réseau précise, nous avons été confronté à un problème sur certaines machines car il y avait plus d'une interface réseau de disponible. Avec de la chance, la première sélectionnée par Java était la bonne, mais pour certaines machines, avec des interfaces réseaux virtuelles, cela à poser des problèmes car le Multicast était émis/reçu sur la mauvaise interface.
+- Interfaces réseaux: le Multicast demandant d'utiliser une interface réseau précise, nous avons été confrontés à un problème sur certaines machines car il y avait plus d'une interface réseau de disponible. Avec de la chance, la première sélectionnée par Java était la bonne, mais pour certaines machines, avec des interfaces réseaux virtuelles, cela à posé problème car le Multicast était émis ou reçu sur la mauvaise interface.
 
-- Interface graphique: L'interace graphique n'a pas posé de problèmes en soit mais a pris beaucoup plus de temps que prévu. afin de rendre un programme ergonomique et beau.
+- Interface graphique: l'interace graphique n'a pas posé de problème en soi mais l'implémentation a pris plus de temps que prévu pour rendre le programme davantage ergonomique et beau.
 
 # Conclusion
 En conclusion, nous avons essayé de réaliser un programme qui regroupe les qualités suivantes:
 
 - Code propre, facile à comprendre et réutilisable.
 - Documentation claire et exhaustive du code.
-- Facile à utiliser et à comprendre pour des utilisateurs néophytes.
+- Facilité à utiliser et à comprendre pour des utilisateurs néophytes.
 - Niveau d'abstraction le plus élevé possible.
 
-Nous pensons avoir atteint ces objectifs. Il y a encore des points à améliorer mais nous avons réussi à produire un programme fonctionnel qui répond à la quasi totalité des points du cahier des charges.
+Nous pensons avoir atteint ces objectifs. Il y a encore des points à améliorer mais nous avons réussi à produire un programme fonctionnel qui réponde à la quasi totalité des points du cahier des charges.
 
 # Bilans personnels
 ## Ludovic
-J'ai la fierté de pouvoir me dire que ce projet de semestre s'est très bien passé. J'ai l'impression que l'on a su toujours communiquer dans le respect et en tenant compte des points de vue de chacun à la construction du projet. Cela a permis de pouvoir créer une réelle cohésion de groupe afin de réaliser quelque chose, qui n'était à la base qu'une idée sur papier, de fonctionnel et qui correspond quasiment à la version à laquelle on a réfléchit en tout début de projet.
+J'ai la fierté de pouvoir me dire que ce projet de semestre s'est très bien passé. J'ai l'impression que l'on a toujours su communiquer dans le respect et en tenant compte des points de vue de chacun à la construction du projet. Cela a permis de pouvoir créer une réelle cohésion de groupe afin de réaliser quelque chose, qui n'était à la base qu'une idée sur papier, de fonctionnel et qui correspond quasiment à la version à laquelle nous avons réfléchi en tout début de projet.
 
-La charge de travail était évidemment conséquente, mais la qualité de travail réalisée par mes collègues ainsi que la volonté de vouloir faire bien et mieux à permis de pouvoir réaliser à la fois quelque chose de beau visuellement mais aussi beau au niveau de la programmation.
+La charge de travail était évidemment conséquente, mais la qualité de travail réalisée par mes collègues ainsi que la volonté de vouloir faire bien et mieux a permis de pouvoir réaliser à la fois quelque chose de beau visuellement mais aussi beau au niveau de la programmation.
 
 Ce projet m'a permis de pouvoir approfondir mes connaissances et compétences techniques ainsi que mes compétences de chef de projet.
 
@@ -893,29 +891,31 @@ C'est la première fois que je travaille sur un projet d'une telle envergure et 
 
 Je suis très content de la cohésion du groupe et même si certaines personnes ont moins participé au niveau du code, elles ont su apporter leur expérience quant aux réflexions sur ce dernier. Nous avons toujours avancé dans la bonne entente et chacun a su être à l'écoute des critiques constructives des autres. Même si nous avons décidé de partager le travail en trois groupes, chacun a participé au développement de chaque partie de l'application.
 
-Pour ce qui est du management du groupe, Ludovic a su donner des directives très claires pour que le projet avance. Mise à part cela, je n'ai pas vraiment ressenti de hiérarchie dans le groupe et c'était vraiment plaisant. Chacun avait son mot à dire et personne n'était mis à l'écart. Tout le monde a su être à l'écoute de chacun.
+Pour ce qui est du management du groupe, Ludovic a su donner des directives très claires pour que le projet avance. Mis à part cela, je n'ai pas vraiment ressenti de hiérarchie dans le groupe et c'était vraiment plaisant. Chacun avait son mot à dire et personne n'était mis à l'écart. Tout le monde a su être à l'écoute de chacun.
 
-D'un point de vue personnel, je suis très heureux du résultat final. Les objectifs principaux que nous nous étions fixés ont quasiment tous été remplis complètement. Ce projet m'a permis de découvrir différentes technologies comme JavaFX ou Hibernate que je pourrais réutiliser dans certains de mes projets personnels.
+D'un point de vue personnel, je suis très heureux du résultat final. Les objectifs principaux que nous nous étions fixés ont quasiment tous été complètement remplis. Ce projet m'a permis de découvrir différentes technologies comme JavaFX ou Hibernate que je pourrais réutiliser dans certains de mes projets personnels.
 
-En conclusion, ce projet m'a donné envie d'en réaliser d'autres de la même ampleur et avec le même type de personne. La charge de travail était certes conséquente mais ce n'en fut pas moins un plaisir d'arriver à ce résultat.
+En conclusion, ce projet m'a donné envie d'en réaliser d'autres de la même ampleur et avec le même type de personnes. La charge de travail était certes conséquente mais ce n'en fut pas moins un plaisir d'arriver à ce résultat.
 
 ## Denise
 En tant que première expérience dans un projet qui part de zéro et qui finit sur un programme fonctionnel, je peux dire que j'ai appris énormément, que ce soit au niveau technique, aussi bien qu'au niveau relationnel.
 
 Du point de vue de la gestion du projet, j'ai le sentiment que Ludovic Delafontaine nous a permis à tous de rester sereins du début à la fin. En effet, il a eu la capacité de se remettre en question tout au long du projet, de nous permettre de lui dire si quelque chose n'allait pas bien et de traiter chaque étape du projet avec énormément de tranquillité et d'assurance.
-Les membres du groupes ayant déjà participé à des projets auparavant ont également permis de rendre l'expérience plus rassurante et pédagogique.
+Les membres du groupes ayant déjà participé à des projets auparavant ont également permis de rendre l'expérience plus rassurante et pédagogique. Je pense surtout que le fait que nous nous soyons vus régulièrement a permis une dynamique de groupe excellente.
 
-Le seul regret que j'aie pu avoir durant ce projet est très certainement le fait que, malgré mon implication importante dans l'interface graphique au début du projet, je n'aie pas pu fournir autant de code que ce que j'aurais désiré, mon manque d'expérience en étant sûrement la raison. Je vois toutefois dans cela d'un côté positif: j'ai pu apprendre de ce que les autres ont fait en restant au courant de l'évolution du programme et en participant aux discussions qui ont permis de le faire évoluer et devenir ce qu'il est aujourd'hui.
+Le seul regret que j'aie pu avoir durant ce projet est très certainement le fait que, malgré mon implication importante dans l'interface graphique au début celui-ci, je n'aie pas pu fournir autant de code que ce que j'aurais désiré, mon manque d'expérience en étant sûrement la raison. Je vois toutefois cela d'un côté positif: j'ai pu apprendre de ce que les autres ont fait en restant au courant de l'évolution du programme et en participant aux discussions qui ont permis de le faire évoluer et devenir ce qu'il est aujourd'hui.
 
 Globalement, je pense que c'est une expérience qui restera gravée en moi et qui m'aura permis de bâtir d'excellentes bases en vue de mon futur dans les projets d'informatique.
 
 ## David
-Ce projet fut une expérience enrichissante sur plusieurs point:
+Ce projet fut une expérience enrichissante sur plusieurs points :
+
 - Le fait de devoir trouver une idée d'application et de devoir en rédiger le cahier de charges, de la développer de A à Z et de devoir en produire la documentation complète.
 - Exercer le travail en équipe et ce que cela implique.
 - Fixer un planning et se rendre compte que certaines parties avaient été mal estimées.
-Je pense que notre équipe a bien fonctionné et que les taches ont été reparties correctement, les personnes qui ont moins codé ayant fais plus de documentation.
-J'ai particulièrement apprécier l'engagement de L. Delafontaine en temps que chef de projet qui a su synthétiser les problèmes pour nous les communiquer lorsque cela était nécessaire. L'équipe avait une bonne cohésion et les échanges réguliers ont permis de bien faire évoluer le projet en même temps que de mettre à jour tout e monde sur ce qui avait été fait par les différents membres.
+
+Je pense que notre équipe a bien fonctionné et que les tâches ont été réparties correctement, les personnes qui ont moins codé ayant fait plus de documentation.
+J'ai particulièrement apprécié l'engagement de Ludovic Delafontaine en tant que chef de projet qui a su synthétiser les problèmes pour nous et les communiquer lorsque cela était nécessaire. L'équipe avait une bonne cohésion et les échanges réguliers ont permis de bien faire évoluer le projet en même temps que de mettre à jour tout le monde sur ce qui avait été fait par les différents membres.
 
 ## Thibaut
 Ce projet a été une très belle expérience pour les raisons suivantes:
@@ -958,13 +958,13 @@ Pour conclure, je dirai que cette expérience unique en son genre m'a bien marqu
 - La tabulation est de quatre espaces
 - La longeur maximale des lignes de code est sur 120 caractères
 - La notation doxygen ([doxygen.org](doxygen.org)) sera utilisée pour documenter le code, avec le caractère `@` et non `\`
-- Une entête de fichier (doxygen) sera utilisée pour chaque fichier
+- Un en-tête de fichier (doxygen) sera utilisé pour chaque fichier
 - Utilisation de la notation camel case pour les variables et méthodes
-- Les variables de types statiques sont en majuscules
+- Les variables de type statique sont en majuscules
 - Ne pas utiliser de caractères spéciaux dans les variables et fonctions
 
-### Entêtes
-Les entêtes de fonctions et fichiers devront respecter la forme suivante:
+### En-têtes
+Les en-têtes de fonctions et fichiers devront respecter la forme suivante :
 
 ```java
 /**
@@ -987,7 +987,7 @@ Les entêtes de fonctions et fichiers devront respecter la forme suivante:
  */
 ```
 
-Ne pas écrire d'entêtes commme ceci:
+Ne pas écrire d'en-têtes commme ceci:
 ```java
 /** This comment starts at the very top...
  * ...but should has started here.
@@ -1003,7 +1003,7 @@ Ne pas écrire d'entêtes commme ceci:
 ```
 
 ### Fonctions
-L'entête des fonctions devra respecter la forme suivante:
+L'en-tête des fonctions devra respecter la forme suivante:
 ```java
 /**
  * Description about the method
@@ -1018,14 +1018,14 @@ public int myMethod(int x, int y) {
 }
 ```
 
-Au sein de fonction, ne pas utiliser la forme de commentaires multi-lines:
+Au sein d'une fonction, ne pas utiliser la forme de commentaire multi-lines:
 ```java
 /**
  * This is a comment
  * inside a function
  */
 ```
-car si l'on souhaite commenter une partie de la fonction, les caractères `*/` couperont la commentation de la fonction.
+car si l'on souhaite commenter une partie de la fonction, les caractères `*/` couperont la fonction en commentaire.
 
 Utiliser la forme suivante:
 ```java
@@ -1033,7 +1033,7 @@ Utiliser la forme suivante:
 //! inside a function
 ```
 
-Les parenthèses aux fonctions restent collées au nom de la fonction, comme en mathématiques:
+Les parenthèses des fonctions restent collées au nom de la fonction, comme en mathématiques:
 ```java
 public int iAmACoolFunctionWithoutAnySpaces(int iHateSpaces) {
     ...
@@ -1058,8 +1058,8 @@ private unsigned int volume;
 private ArrayList<Music> playlist;
 ```
 
-### Entête des fichiers
-L'entête des fichiers devra respecter la forme suivante:
+### En-tête des fichiers
+L'en-tête des fichiers devra respecter la forme suivante:
 ```java
 /**
  * This class is an example.
@@ -1070,7 +1070,7 @@ L'entête des fichiers devra respecter la forme suivante:
 ```
 
 ### Les instructions de branchement
-Les instructions de branchement sont écrites de la façon suivante, le `_` illustrant un espace:
+Les instructions de branchement sont écrites de la façon suivante, le '_' illustrant un espace:
 
 ```java
 if_(condition1_&&_condition2)_{
@@ -1623,7 +1623,7 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
     - Fusion du travail de tout le monde sur la branche master (0h45)
 
 - 09.05.2017
-    - Reflexion avec David Truan au niveau de la nouvelle implémentation client/serveur (1h)
+    - Reflexion avec David Truan au niveau de la nouvelle implémentation client/serveur (1h00)
 
 - 07.05.2017
     - Améliorations des notions de client/serveur (3h00)
@@ -1647,7 +1647,7 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 - 05.04.2017
     - Ajout de la classe Playlist et de sa table associée pour la base de données (01h00)
     - Ajout de la classe permettant de récupérer des propriétés depuis un fichier de configuration (00h30)
-    - Documentation des différentes classes (00:30)
+    - Documentation des différentes classes (00h30)
 
 - 03.04.2017
     - Finalisation de la classe Track avec l'ajout de l'interface DatabaseObject (0h30)
@@ -1693,24 +1693,26 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
     - Rédaction du rapport (1h00).
 
 - 26.05.2017
-    - La barre d'avancement de la chanson en cours de lecture se met maintenant correctement à jour côté client (1h30).
-    - Les chansons déjà jouées se mettent maintenant correctement à jour côté client (1h30).
+    - La barre d'avancement du morceau en cours de lecture se met maintenant correctement à jour côté client (1h30).
+    - Les morceaux déjà joués se mettent maintenant correctement à jour côté client (1h30).
     - Correction de bogues liés au rafraîchissement de l'interface graphique côté client (3h00).
-    - Correction d'un bogue qui changeait l'ordre des chansons déjà jouées côté client (1h30).
+    - Correction d'un bogue qui changeait l'ordre des morceaux déjà joués côté client (1h30).
     - Ajout du panneau des réglages à l'interface graphique (4h00).
     - Correction d'un bogue qui affichait mal le nom du serveur auquel le client est connecté (0h30).
+    - Total du travail: 11h30
 
 - 25.05.2017
-    - Correction d'un bogue qui empêchait les votes des chansons de se mettre à jour côté client (1h30).
-    - Correction d'un bogue qui empêchait le serveur d'upvote des chansons (0h30).
-    - Les chansons s'enregistrent correctement dans la base de données (0h30).
+    - Correction d'un bogue qui empêchait les votes des morceaux de se mettre à jour côté client (1h30).
+    - Correction d'un bogue qui empêchait le serveur d'upvote des morceaux (0h30).
+    - Les morceaux s'enregistrent correctement dans la base de données (0h30).
     - Correction d'exceptions levées par la base de données (1h00).
     - Changement de la logique de la playlist éphémère (2h00).
-    - La vue de la chanson en cours de lecture se met maintenant à jour côté client et serveur (2h00).
+    - La vue du morceau en cours de lecture se met maintenant à jour côté client et serveur (2h00).
     - Correction d'un bogue qui empêchait des communications parallèles avec la base de données (0h30).
-    - La vue de la chanson précédente se met maintenant correctement à jour côté client (1h00).
+    - La vue du morceau précédent se met maintenant correctement à jour côté client (1h00).
     - La barre de volume se met maintenant correctement à jour côté client (1h00).
     - Le bouton play/pause se met maintenant correctement à jour côté client (0h30).
+    - Total du travail : 9h30
 
 - 24.05.2017
     - Correction de plusieurs bugs d'affichage liés à l'interface graphique (2h00).
@@ -1727,8 +1729,8 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 
 - 16.05.2017
     - Correction d'un bogue qui ne terminait pas correctement le player (0h30).
-    - Correction d'un bogue qui ne laissait pas favoriser les chansons de la playlist éphémère (1h15).
-    - Correction d'un bogue qui laissait la possibilité de voter pour les chansons d'une playlist sauvegardée (0h15).
+    - Correction d'un bogue qui ne laissait pas favoriser les morceaux de la playlist éphémère (1h15).
+    - Correction d'un bogue qui laissait la possibilité de voter pour les morceaux d'une playlist sauvegardée (0h15).
 
 - 15.05.2017
     - Revue complète de la logique du PlaylistManager (3h30).
@@ -1739,20 +1741,20 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
     - Fin de l'embellissement du panneau des playlists (1h00).
 
 - 09.05.2017
-    - Modification du player afin que la prochaine chanson soit jouée automatiquement (0h30).
+    - Modification du player afin que le prochain morceau soit jouée automatiquement (0h30).
     - Début de l'embellissement du panneau des playlists (1h00).
 
 - 06.05.2017
-    - Finalisation de la fusion du panneau "chanson précédente" (0h30).
+    - Finalisation de la fusion du panneau "morceau précédent" (0h30).
     - Correction de quelques bogues liés aux précédentes itérations (1h30).
 
 - 03.05.2017
     - Fusion du panneau "playlist en cours de lecture" avec le code (1h00).
-    - Implémentation d'une structure de données pour le tri des chansons des playlists (2h00).
-    - Début de la fusion du panneau "chanson précédente" avec le code (0h15).
+    - Implémentation d'une structure de données pour le tri des morceaux des playlists (2h00).
+    - Début de la fusion du panneau "morceau précédent" avec le code (0h15).
 
 - 02.05.2017
-    - Fusion du panneau "chanson en cours de lecture" avec le code (1h00).
+    - Fusion du panneau "morceau en cours de lecture" avec le code (1h00).
 
 - 01.05.2017
     - Documentation quant à la fusion du code et de l'interface graphique (0h30).
@@ -1762,16 +1764,16 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
     - Découpage de l'interface graphique en modules (2h00)
 
 - 21.04.2017
-    - Implémentation de chargement de playlists dans l'interface graphique (4h)
+    - Implémentation de chargement de playlists dans l'interface graphique (4h00)
 
 - 17.04.2017
     - Mise à jour de l'interface graphique (panneau central) selon les choix retenus lors de la précédente réunion. (1h00)
 
-- 29.03.2017 (1h)
-    - Ajout des actions d'*upvote* et *downvote* pour les chansons (seulement graphique).
+- 29.03.2017 (1h00)
+    - Ajout des actions d'*upvote* et *downvote* pour les morceaux (seulement graphique).
 
-- 28.03.2017 (4h)
-    - Ajout du style des cellules représentant des chansons dans la playlist en cours de lecture (panneau central).
+- 28.03.2017 (4h00)
+    - Ajout du style des cellules représentant des morceaux dans la playlist en cours de lecture (panneau central).
     - Tests du player et suite de la base de données (2h00)
 
 - 21.03.2017
@@ -1783,83 +1785,83 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 
 ### David Truan
 - 27.06.2017
-    - Finition des package Core et Network du rapport (3h).
-    - Création de différents schémas pour le rapport (1h).
-    - Correction du code pour le changement de l'interface (30min).
-    - Tests sur le programme (30min).
+    - Finition des package Core et Network du rapport (3h00)
+    - Création de différents schémas pour le rapport (1h00)
+    - Correction du code pour le changement de l'interface (0h30)
+    - Tests sur le programme (0h30)
 
 - 26.06.2017
-    - Continuation du rapport sur la partie Network et Core (3h).
-    - Codage des réactions de l'UI chez le client et des fonctions de vote manquante du serveur (2h).
-    - Codage d'une fenêtre pour choisir le nom du serveur (45min).
-    - Tests sur le programme (1h).
+    - Continuation du rapport sur la partie Network et Core (3h00)
+    - Codage des réactions de l'UI chez le client et des fonctions de vote manquante du serveur (2h00)
+    - Codage d'une fenêtre pour choisir le nom du serveur (0h45)
+    - Tests sur le programme (1h00)
 
 - 25.05.2017
     - Début de l'explication des cores dans le rapport (1h30).
 
 - 24.05.2017
-    - Correction de bugs liés é la majorités des votes et au lancement des morceaux (1h).
+    - Correction de bugs liés é la majorités des votes et au lancement des morceaux (1h00).
 
 - 21.05.2017
     - Ajout des commandes pour les upvote/downvote et leur gestion dans UserSession (1h30).
-    - Documentation et ajout de messages d'erreur (1h).
-    - Meilleure notification des nouveaux clients au serveur (30min).
+    - Documentation et ajout de messages d'erreur (1h00).
+    - Meilleure notification des nouveaux clients au serveur (0h30).
 
 - 16.05.2017
-    - Implémentation des checks si un morceau est dans la base de donnée (30min).
+    - Implémentation des checks si un morceau est dans la base de donnée (0h30).
 
 - 15.05.2017
-    - Reflexion de l'implémentation des contrôles sur les fichiers (1h).
-    - Implémentation de check de checksum MD5 pour les fichiers transférés (1h).
-    - Cleaning des Cores clients et serveurs (2h).
+    - Reflexion de l'implémentation des contrôles sur les fichiers (1h00)
+    - Implémentation de check de checksum MD5 pour les fichiers transférés (1h00).
+    - Cleaning des Cores clients et serveurs (2h00)
 
 - 14.05.2017
-    - Mise en place de la decouverte de serveurs (1h30).
-    - Amélioration de la communiation et fix de bug des Cores (2h).
+    - Mise en place de la decouverte de serveurs (1h30)
+    - Amélioration de la communiation et fix de bug des Cores (2h00)
 
 - 09.05.2017
-    - Reflexion avec Ludovic Delafontaine au niveau de la nouvelle implémentation client/serveur (1h)
+    - Reflexion avec Ludovic Delafontaine au niveau de la nouvelle implémentation client/serveur (1h00)
 
 - 04.05.2017
-    - Lecture des Metadatas des fichiers et tests de la libraire audio utilisée (2h).
-    - Implémentation de la lecture des signatures des fichiers audios (1h)
+    - Lecture des Metadatas des fichiers et tests de la libraire audio utilisée (2h00)
+    - Implémentation de la lecture des signatures des fichiers audios (1h00)
 
 - 02.05.2017
-    - Finition de quelques bugs du serveur (1h).
-    - Délégation du transfert de fichier au FileManager(10min).
-    - Refonte de la classe Session (30min).
+    - Finition de quelques bugs du serveur (1h00)
+    - Délégation du transfert de fichier au FileManager(0h10)
+    - Refonte de la classe Session (0h30)
 
 - 01.05.2017
-    - Mise au propre du network (2h)
-    - Déconnexion client/serveur.
-    - Singletons des threads.
-    - Remise en forme du client.
+    - Mise au propre du network (2h00)
+    - Déconnexion client/serveur
+    - Singletons des threads
+    - Remise en forme du client
 
 - 30.04.2017
-    - Transfert de fichier .mp3 et implémentation dans le projet (2h)
-    - Mise au propre des classes du package network et finition du protocole (1h)
-    - Mise en place de la mise à jour de la playlist (1h)
+    - Transfert de fichier .mp3 et implémentation dans le projet (2h00)
+    - Mise au propre des classes du package network et finition du protocole (1h00)
+    - Mise en place de la mise à jour de la playlist (1h00)
 
 - 08.04.2017
-    - Ajout d'une méthode pour choisir sa bonne interface et modification du code pour prendre en compte cela. (2h)
-    - Ajout de fonctionnalités au programme de test. (10min)
-    - Mise au propre rapide des classes et création de a classe Protocol et de packages client/server. (1h)
+    - Ajout d'une méthode pour choisir sa bonne interface et modification du code pour prendre en compte cela. (2h00)
+    - Ajout de fonctionnalités au programme de test. (0h10)
+    - Mise au propre rapide des classes et création de a classe Protocol et de packages client/server. (1h00)
 
 - 01.04.2017
-    - Tests pour le Multicast. Toujours des problèmes (2h)
+    - Tests pour le Multicast. Toujours des problèmes (2h00)
 
 - 30.03.2017
-    - Réflexion sur l'implémentation et début de code pour la découverte de serveurs par les clients (2h)
+    - Réflexion sur l'implémentation et début de code pour la découverte de serveurs par les clients (2h00)
 
 - 25.03.2017
-    - Documentation et première implémentation (test) du multicast en Java. (2h)
-    - Réévaluation de l'intêret de NetPort en tant que classe. (30min)
+    - Documentation et première implémentation (test) du multicast en Java. (2h00)
+    - Réévaluation de l'intêret de NetPort en tant que classe. (0h30)
 
 - 21.03.2017
-    - Meilleur division client/serveur et base du protocole (1h)
+    - Meilleur division client/serveur et base du protocole (1h00)
 
 - 20.03.2017
-    - Essais et documentation sur la partie client/serveur (3h)
+    - Essais et documentation sur la partie client/serveur (3h00)
 
 \newpage
 
@@ -1981,46 +1983,46 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 
 ### Yosra Harbaoui
 - 28.05.2017
-    - Rédaction du manuel d'utilisation. (3h)
-    - Mise à jour du journal du travail. (45min)
-    - Re-lecture du rapport. (2h)
+    - Rédaction du manuel d'utilisation. (3h00)
+    - Mise à jour du journal du travail. (0h45)
+    - Re-lecture du rapport. (2h00)
 
 - 27.05.2017
-    - testes finaux de l'application et vérification du bon fonctionnement. (1h30)
-    - Rédaction du manuel d'utilisateur. (4h)
-    - Rédaction du rapport. (2h)
+    - Tests finaux de l'application et vérification du bon fonctionnement. (1h30)
+    - Rédaction du manuel d'utilisateur. (4h00)
+    - Rédaction du rapport. (2h00)
 
 - 26.05.2017
-   - Testes de l'application et vérification du bon fonctionnement. (1h30)
-   - Rédaction du rapport. (2h30)
+	- Tests de l'application et vérification du bon fonctionnement. (1h30)
+   	- Rédaction du rapport. (2h30)
 
 - 25.05.2017
-   - Lecture du code et comprendre les parties ambigûes. (2h30)
+   	- Lecture du code et comprendre les parties ambigües. (2h30)
 
 - 24.05.2017
-   - Testes du bon fonctionnement de l'application. (1h)
-   - Corrections orthographiques du rapport. (1h)
+   	- Tests du bon fonctionnement de l'application. (1h00)
+   	- Corrections orthographiques du rapport. (1h00)
 
 - 23.05.2017
     - Rédaction du rapport. (1h30)
-    - Lecture des autres différentes parties implémentées. (2h)
+    - Lecture des autres différentes parties implémentées. (2h00)
 
 - 17.05.2017
-    - Testes de l'implémentation des contrôles sur les fichiers (1h).
+    - Tests de l'implémentation des contrôles sur les fichiers (1h00)
 
 - 15.05.2017
-    - Documentation sur les contrôles sur les fichiers (1h).
+    - Documentation sur les contrôles sur les fichiers (1h00).
 
 - 13.05.2017
-   - Modification de la classe Session (1h30)
+   	- Modification de la classe Session (1h30)
 
 - 12.05.2017
-    - Implémentation de la classe Session (2h)
-    - Tests (1h)
+    - Implémentation de la classe Session (2h00)
+    - Tests (1h00)
 
 - 01.05.2017
-    - Transfert de fichier (1h)
-    - Tests (1h)
+    - Transfert de fichier (1h00)
+    - Tests (1h00)
 
 - 10.04.2017
     - Réalisation de la présentation (1h00)
@@ -2028,10 +2030,10 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 - 09.04.2017
     - Rédaction de la présentation intermédiaire. (1h00)
     - Analyse de l'implémentation du protocole de communication. (1h30)
-    - Tests de choix de la bonne interface (1h)
+    - Tests de choix de la bonne interface (1h00)
 
 - 08.04.2017
-    - Documentation pour le choix de la bonne interface (2h)
+    - Documentation pour le choix de la bonne interface (2h00)
 
 - 31.03.2017
     - Implémentation simple d'une connexion client/serveur (3h00)
