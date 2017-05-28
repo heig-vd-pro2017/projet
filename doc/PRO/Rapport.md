@@ -140,11 +140,7 @@ Nous souhaitons répondre à l'éternel problème qu'est le fait de devoir se pa
 
 \begin{minipage}{\linewidth}
   \centering
-<<<<<<< HEAD
-  \includegraphics[width=12cm]{images/fonctionnement_general.png}
-=======
   \includegraphics[height=0.3\textheight]{images/fonctionnement_general.png}
->>>>>>> d4ef571460c21f8ce42664927b7cfa5fb46d7aa0
   \captionof{figure}{Fonctionnement général du programme}
 \end{minipage}
 
@@ -818,10 +814,11 @@ Avec les tests réalisés ci-dessus et selon notre cahier des charges, voici le 
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[height=0.9\textheight]{images/suivi_CdC.png}
+  \includegraphics[width=\linewidth]{images/suivi_CdC.png}
   \captionof{figure}{Fonctionnalités implémentées}
 \end{minipage}
 
+\newpage
 
 # Améliorations envisagées
 - Revoir l'architecture du projet pour mieux séparer les entités, avec le patron Observable-Observeur, par exemple, ce qui permettrait de notifier, à qui veut entendre, des informations.
@@ -1157,6 +1154,49 @@ class MaClasse {
 
 \newpage
 
+## Planification initiale et son évolution
+
+### Planification initiale retravaillée
+Notre Gantt n'étant pas adapté à ce genre de projet a demandé à être retravaillé selon un template fourni par M. Rentsch.
+
+La version initiale non retravaillée est ci-dessous.
+
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{images/gantt-rentsch-initial.png}
+  \captionof{figure}[]{Planification initiale retravaillée}
+\end{minipage}
+
+### Heures effectives
+Et voici nos heures effectives.
+
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{images/gantt-rentsch-initial.png}
+  \captionof{figure}[]{Heures effectives}
+\end{minipage}
+
+### Gantt initial personnel
+Nous mettons à disposition la première version de notre planification qui était basée sur un Gantt.
+
+\newpage
+
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{images/gantt1.png}
+  \captionof{figure}[]{Gantt initial personnel - partie 1}
+\end{minipage}
+
+\newpage
+
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{images/gantt2.png}
+  \captionof{figure}[]{Gantt initial personnel - partie 2}
+\end{minipage}
+
+\newpage
+
 ## Cahier des charges
 Le cahier des charges ci-dessous est une copie conforme de celui fourni au début du semestre.
 
@@ -1430,19 +1470,19 @@ Les fonctionnalités listées ci-dessous ne sont pas nécessaires au bon fonctio
 \begin{minipage}{\linewidth}
   \centering
   \includegraphics{figures/overview.png}
-  \captionof{figure}{Schéma préliminaire du fonctionnement général}
+  \captionof{figure}[]{Schéma préliminaire du fonctionnement général}
 \end{minipage}
 
 \begin{minipage}{\linewidth}
   \centering
   \includegraphics{figures/database_orig.png}
-  \captionof{figure}{Schéma préliminaire de la base de données}
+  \captionof{figure}[]{Schéma préliminaire de la base de données}
 \end{minipage}
 
 \begin{minipage}{\linewidth}
   \centering
   \includegraphics[width=\linewidth]{figures/activity.png}
-  \captionof{figure}{Schéma préliminaire du schéma d'activité}
+  \captionof{figure}[]{Schéma préliminaire du schéma d'activité}
 \end{minipage}
 
 \pagebreak
@@ -1494,47 +1534,6 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 ### Annexes
 - Planification
 - Mockups de l'application
-
-\newpage
-
-## Planification initiale et son évolution
-
-### Gantt initial personnel
-Nous mettons à disposition la première version de notre planification qui était basée sur un Gantt.
-
-\begin{minipage}{\linewidth}
-  \centering
-  \includegraphics[width=\linewidth]{images/gantt1.png}
-  \captionof{figure}{Gantt initial personnel - partie 1}
-\end{minipage}
-
-\newpage
-
-\begin{minipage}{\linewidth}
-  \centering
-  \includegraphics[width=\linewidth]{images/gantt2.png}
-  \captionof{figure}{Gantt initial personnel - partie 2}
-\end{minipage}
-
-\newpage
-
-### Planification initiale retravaillée
-Notre Gantt n'étant pas adapté à ce genre de projet a demandé à être retravaillé selon un template fourni par M. Rentsch.
-
-\begin{minipage}{\linewidth}
-  \centering
-  \includegraphics[width=\linewidth]{images/gantt-rentsch-initial.png}
-  \captionof{figure}{Planification initiale retravaillée}
-\end{minipage}
-
-### Heures effectives
-Et voici nos heures effectives.
-
-\begin{minipage}{\linewidth}
-  \centering
-  \includegraphics[width=\linewidth]{images/gantt-rentsch-initial.png}
-  \captionof{figure}{Heures effectives}
-\end{minipage}
 
 \newpage
 
