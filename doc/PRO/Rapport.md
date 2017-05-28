@@ -122,8 +122,6 @@ header-includes:
 
 \listoffigures
 
-\listoftables
-
 \newpage
 
 # Introduction
@@ -840,7 +838,6 @@ Les membres du groupes ayant déjà participé à des projets auparavant ont ég
 Le seul regret que j'aie pu avoir durant ce projet est très certainement le fait que, malgré mon implication importante dans l'interface graphique au début du projet, je n'aie pas pu fournir autant de code que ce que j'aurais désiré, mon manque d'expérience en étant sûrement la raison. Je vois toutefois dans cela d'un côté positif: j'ai pu apprendre de ce que les autres ont fait en restant au courant de l'évolution du programme et en participant aux discussions qui ont permis de le faire évoluer et devenir ce qu'il est aujourd'hui.
 
 Globalement, je pense que c'est une expérience qui restera gravée en moi et qui m'aura permis de bâtir d'excellentes bases en vue de mon futur dans les projets d'informatique.
-
 
 ## David
 Ce projet fut une expérience enrichissante sur plusieurs point:
