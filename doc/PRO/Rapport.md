@@ -78,7 +78,7 @@ header-includes:
 \begingroup
 \let\footnote\thanks
 \begin{center}
-{\huge\@title}\vskip1.5em
+{\Huge\@title}\vskip1.5em
 \includegraphics[width=10cm, height=10cm]{images/logo.png}\vskip1.5em
 {\LARGE Rapport final}\vskip1.5em
 {\large\@author}\vskip1.5em
@@ -89,7 +89,9 @@ header-includes:
 }
 \makeatother
 
-\title{Commusica\\Le lecteur de musique communautaire et égalitaire}
+\title{%
+  Commusica \vskip0.4em
+  \large Le lecteur de musique communautaire et égalitaire}
 
 \author{Chef de projet: Ludovic Delafontaine\\
    Chef remplaçant: Lucas Elisei\\
