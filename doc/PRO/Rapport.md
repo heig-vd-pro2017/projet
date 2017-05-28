@@ -1755,10 +1755,10 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
     - Réévaluation de l'intêret de NetPort en tant que classe. (30min)
 
 - 21.03.2017
-    - Meilleur division client/serveur et base du protocole (1h).
+    - Meilleur division client/serveur et base du protocole (1h)
 
 - 20.03.2017
-    - Essais et documentation sur la partie client/serveur (3h).
+    - Essais et documentation sur la partie client/serveur (3h)
 
 \newpage
 
@@ -1912,11 +1912,11 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 
 - 12.05.2017
     - Implémentation de la classe Session (2h)
-    - Testes. (1h)
+    - Tests (1h)
 
 - 01.05.2017
-    - Transfert de fichier. (1h)
-    - Testes. (1h)
+    - Transfert de fichier (1h)
+    - Tests (1h)
 
 - 10.04.2017
     - Réalisation de la présentation (1h00)
@@ -1924,14 +1924,14 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 - 09.04.2017
     - Rédaction de la présentation intermédiaire. (1h00)
     - Analyse de l'implémentation du protocole de communication. (1h30)
-    - Testes de choix de la bonne interface. (1h)
+    - Tests de choix de la bonne interface (1h)
 
 - 08.04.2017
-    - Documentation pour le choix de la bonne interface. (2h)
+    - Documentation pour le choix de la bonne interface (2h)
 
 - 31.03.2017
-    - Implémentation simple d'une connexion client/serveur. (3h00)
-    - testes de la connectivité. (1h00)
+    - Implémentation simple d'une connexion client/serveur (3h00)
+    - Tests de la connectivité (1h00)
 
  - 27.03.2017
     - Documentation sur la configuration des outils de compilation (Maven) (1h00)
@@ -1941,7 +1941,7 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
     - Documentation sur les différents "types" de communications entre un serveur et un client. (3h00)
 
 - 21.03.2017
-    - Documentation sur l'implémentation client/serveur. (2H30)
+    - Documentation sur l'implémentation client/serveur. (2h30)
     - Installation de Scene Builder et configuration de Intellij. (1h00)
 
 \newpage
