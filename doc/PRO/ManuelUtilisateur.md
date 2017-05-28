@@ -202,7 +202,7 @@ Le panneau `Settings` vous offre la possibilité de choisir l'interface réseau 
 
 
 ### Choix des listes de lecture et favoris
-Ce panneau vous permet de naviguer entre la playlist actuelle, vos morceaux enregistrés en temps que favoris et les différentes playlists que vous avez hébergé sur votre ordinateur.
+Ce panneau vous permet de naviguer entre la playlist actuelle, vos morceaux enregistrés en temps que favoris et les différentes playlists que vous avez hébergé sur votre ordinateur.  
 ![choix des listes de lecture](figures_manuel_utilisateur/client_Playlists.jpg)  
 
 1. Le panneau `Playlists` contient toutes les listes de lectures.
@@ -223,15 +223,17 @@ Cette étoile sera remplie tout en noir comme ![létoile après de favoriser](ht
 
 ### Contrôle de la musique
 
-Si vous n'aimez pas la chanson en cours de lecture, voulez passer à la chanson suivante. Vous pouvez cliquer sur ce bouton ![chanson suivante](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/next.PNG)
+Si vous n'aimez pas la chanson en cours de lecture, voulez passer à la chanson suivante. Vous pouvez cliquer sur ce bouton ![chanson suivante](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/next.PNG)  
 La chanson suivante sera jouée si la mojorité des présents le demande.  
 
-Si vous voulez mettre la playlist en pause, vous pouvez cliquer sur ce bouton ![mettre la chanson en pause](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/pause.PNG) La playlist ne jouera plus si la mojorité des présents le demande.  
+Si vous voulez mettre la playlist en pause, vous pouvez cliquer sur ce bouton ![mettre la chanson en pause](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/pause.PNG)  
+La playlist ne jouera plus si la mojorité des présents le demande.  
 
-Si vous voulez augmenter ou diminuer le volume, vous pouvez modifier le volume en utilisant ![controle de volume](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/volume.PNG) Le volume sera modifié si la mojorité des présents le demande.  
+Si vous voulez augmenter ou diminuer le volume, vous pouvez modifier le volume en utilisant ![controle de volume](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/volume.PNG)  
+Le volume sera modifié si la mojorité des présents le demande.  
 
 ### Musique précédente  
-Les informations concernant la chanson précédent la chanson en cours de lecture.
+Les informations concernant la chanson précédent la chanson en cours de lecture.  
 ![musique précédente](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_track_playing.PNG)  
 Vous pouvez favoriser la chanson précédente en cliquant sur l'étoile comme expliqué ci-dessous dans le paragraphe `Réorganiser la liste de lecture`. Cependant, vous n'aurez plus le droit de voter pour ou contre cette chansons. 
 
@@ -239,7 +241,7 @@ Vous pouvez favoriser la chanson précédente en cliquant sur l'étoile comme ex
 Les explications suivantes concernent le lancement de l'application en tant que serveur.
 
 ### Configuration du serveur
-Quand vous choisissez de lancer l'application en tant que serveur, une fênetre apparaîtera pour vous demander de nommer votre serveur.
+Quand vous choisissez de lancer l'application en tant que serveur, une fênetre apparaîtera pour vous demander de nommer votre serveur.  
 ![donner un nom au serveur](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/nomServeur.PNG).
 
 Vous pouvez ensuite choisir votre interface réseau comme expliqué ci-dessous dans le paragraphe `Choix de l'interface réseau`.
@@ -251,6 +253,5 @@ Les explications suivantes concernent le lancement de l'application en tant que 
 
 Quand vous choisissez de lancer l'application en tant que client, vous aurez le choix de vous connecter à un des serveurs. Vous pourriez choisir parmi une liste de serveurs disonibles.
 ![choix du serveur](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/server_list.PNG)  
-
 Une fois vous êtes connecté, vous pouvez voir la playlist en cours de lecture et toutes les informations liées aux chansons de cette playlist.
 
