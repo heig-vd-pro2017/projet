@@ -1481,8 +1481,8 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
     - Tests de récupération des metadatas des fichiers (0h20)
 
 - 21.03.2017
-    - Avancement dans la base de données
-    - Corrections et améliorations
+    - Avancement dans la base de données (1h00)
+    - Corrections et améliorations (0h30)
 
 - 18.03.2017
     - Création du schéma de la base de données (0h30)
@@ -1621,7 +1621,7 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 ### Denise Gemesio
 - 28.05.2017
 	- Planification finale, création (0h30)
-	- Planification finale, modification
+	- Planification finale, modification (1h00)
 
 - 27.05.2017
 	- Relecture complète du rapport et corrections orthographiques et grammaticales (3h00)
