@@ -93,7 +93,7 @@ header-includes:
   Commusica \vskip0.4em
   \large Le lecteur de musique communautaire et égalitaire}
 
-\author{Groupe 4B\\\\
+\author{Groupe 4B\\
    Chef de projet: Ludovic Delafontaine\\
    Chef remplaçant: Lucas Elisei\\
    Membres: David Truan, Denise Gemesio, Thibaut Togue, Yosra Harbaoui\\
@@ -482,7 +482,7 @@ Cette classe permet de récupérer les informations nécessaires à l'affichage 
 Grâce à la librairie Gson de Google, cette classe est utilisée dans la sérialisation (Objet Java -> JSON) et désérialisation (JSON -> Objet Java).
 
 ### `EphemeralPlaylistSerializer`
-Cette classe permet de sérialiser et désérialiser une liste de lecture en JSON. Son utilité réside principalement dans la communication réseau. 
+Cette classe permet de sérialiser et désérialiser une liste de lecture en JSON. Son utilité réside principalement dans la communication réseau.
 
 ### `Logger`
 Cette classe a été créée uniquement pour aider à déboguer le programme et comprendre ce qu'il se passe à chaque étape. Son affichage permet de savoir dans quelle classe a lieu une action. Des couleurs ont été attribuées aux différentes notifications :
@@ -1522,6 +1522,47 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 
 \newpage
 
+## Planification initiale et son évolution
+
+### Gantt initial personnel
+Nous mettons à disposition la première version de notre planification qui était basée sur un Gantt.
+
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{images/gantt1.png}
+  \captionof{figure}{Gantt initial personnel - partie 1}
+\end{minipage}
+
+\newpage
+
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{images/gantt2.png}
+  \captionof{figure}{Gantt initial personnel - partie 2}
+\end{minipage}
+
+\newpage
+
+### Planification initiale retravaillée
+Notre Gantt n'étant pas adapté à ce genre de projet a demandé à être retravaillé selon un template fourni par M. Rentsch.
+
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{images/gantt-rentsch-initial.png}
+  \captionof{figure}{Planification initiale retravaillée}
+\end{minipage}
+
+### Heures effectives
+Et voici nos heures effectives.
+
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{images/gantt-rentsch-initial.png}
+  \captionof{figure}{Heures effectives}
+\end{minipage}
+
+\newpage
+
 ## Journal de travail
 *Le journal de travail débute le 15.03.2017*
 
@@ -2049,7 +2090,3 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 - 21.03.2017
     - Documentation sur l'implémentation client/serveur. (2h30)
     - Installation de Scene Builder et configuration de Intellij. (1h00)
-
-\newpage
-
-## Planification initiale et son évolution
