@@ -268,18 +268,15 @@ La seule commande envoyée en Multicast est `PLAYLIST_UPDATE`, qui est envoyée 
 
 Les objets décrits ci-dessous sont évidemment sérialisés avant d'être transférés sur le réseau.
 
-
-  \includegraphics{images/commandes_client_serveur.png}
+\includegraphics{images/commandes_client_serveur.png}
   \begin{figure}
   \caption{Commandes envoyées par le client au serveur}
 \end{figure}
-
 
 \begin{figure}
   \includegraphics{images/commande_serveur_client.png}
   \caption{Commandes envoyées par le serveur au client}
 \end{figure}
-
 
 ### `Server`
 Côté serveur, nous avons décidé d'opter pour une architecture avec un thread réceptionniste `Server` qui va attendre une nouvelle connexion de la part des clients. Une fois un nouveau client arrivé, il va lancer un thread `UnicastClient` qui va s'occuper de la communication avec le client. Cette communication se fait via un socket Unicast car il s'agit d'une communication privée entre le serveur et le client. Nous avons choisi cette solution car plusieurs connexions avec des clients peuvent survenir simultanément et ce système réceptionniste, avec un thread par client, gère plusieurs connexions en même temps, contrairement à un système avec un seul thread qui s'occupe d'un client à la fois.
@@ -297,6 +294,8 @@ Cette classe implémente aussi l'interface `Runnable` dans le but de lancer son 
 Nous avons été confrontés à un problème lors du développement, lorsque nous nous sommes rendu compte qu'un `MulticastSocket` utilisait la première interface réseau disponible sur l'ordinateur plutôt que celle qui était réellement connectée. Cela prenait énormément de temps à être résolu et nous avons donc mis à disposition un choix d'interfaces réseau dans l'interface utilisateur.
 
 Les `Core` ont chacun un `MulticastClient` pour pouvoir envoyer la liste de lecture actuelle ainsi que les informations sur l'état du lecteur - en pause ou en lecture, état du volume, etc.).
+
+Pour utiliser le Multicast, il est nécessaire de spécifier quelle est l'interface réseau à utiliser pour l'émission et la réception des données. C'est la raison pour laquelle, dans le cas où la machine a plusieurs interfaces, de sélectionner la bonne dans la liste de l'interface graphique.
 
 ### `NetworkProtocol`
 C'est dans cette classe que sont définies les commandes spécifiques au réseau `END_OF_COMMUNICATION` et `END_OF_COMMAND`. Les ports pour les différents sockets ainsi que l'adresse du groupe Multicast se trouvent également dans cette classe. Ces derniers ont été choisis arbitrairement parmi les plages disponibles. Bien que peu probable, il est possible qu'une autre application utilise ces mêmes ports. Dans ce cas, le bon fonctionnement de **Commusica** se retrouverait corrompu. Nous n'avons pas voulu laisser ces valeurs dans le fichier de configuration car il est indispensable d'avoir les mêmes ports chez le serveur et chez les clients. Nous avons donc préféré prendre le risque qu'un autre programme utilise les mêmes ports plutôt qu'un utilisateur change ces valeurs.
@@ -717,7 +716,6 @@ Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui
 
 ## Côté serveur
 
-
 **On doit en faire des tableaux et retester toute l'application**
 
 **DG : cette liste me semble relativement massive, on pourrait faire des sous-chapitres**
@@ -758,12 +756,56 @@ Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui
 ## Problèmes potentiels non testés
 - Risque de bloquer toute l'application en cas de charge élevée car la méthode `execute` des Cores est en exclusion mutuelle et donc peut potentiellement bloquer l'interaction avec le serveur s'il y a beaucoup de clients connectés et interagissant avec le serveur.
 
+# Retour sur le cahier des charges
+Avec les tests réalisés ci-dessus et selon notre cahier des charges, voici le récapitulatif des fonctionnalités implémentées dans notre projet.
+
+Fonction                                                        Fonctionnalité importante ?     Réalisé         Remarques
+Démarrage et arrêt corrects du programme                        Oui                             Oui             -
+Droits client-serveur                                           Oui                             Oui             -
+Notification des actions                                        Oui                             Partiellement   Les actions sont bien transmises au client mais ne sont visibles que dans les logs. Il faut encore lier à l'interface graphique.
+Paramétrages basiques du serveur                                Oui                             Oui             -
+Effectuer une annonce de connexion                              Oui                             Oui             L'état du serveur est envoyé à intervals réguliers.
+Réception de la musique                                         Oui                             Oui             -
+Lecture des fichiers MP3 et M4A                                 Oui                             Oui             -
+Ajout de la musique à la base de données/système de stockage    Oui                             Oui             -
+Actions de base sur la musique côté serveur et client           Oui                             Oui             Le bouton pour revenir en arrière n'est pas implémenté car inutile dans notre cas. Il n'est présent que par soucis d'estétisme.
+Interface utilisateur                                           Oui                             Oui             -
+Contrôle du volume de la musique côté serveur et client         Oui                             Oui             -
+Accepter ou refuser l'ajout de nouvelles chansons               Oui                             Oui             -
+Système de vote côté serveur et client                          Oui                             Oui             -
+Système de favoris/playlist                                     Oui                             Oui             -
+Nettoyage de la base de données côté serveur et client          Oui                             Oui             -
+Voir la liste des serveurs accessibles côté client              Oui                             Oui             -
+Accéder au serveur                                              Oui                             Oui             -
+Ajouter de la musique au serveur                                Oui                             Oui             -
+Un client ne peut pas enregistrer deux fois la même chanson durant le même événement    Oui         Oui         -
+Un client doit pouvoir supprimer une chanson de ses favoris ou ses playlists            Oui         Partiellement         Le code gère cela, mais aucune liaison avec l'interface graphique.
+Un client doit pouvoir supprimer une playlist avec toutes les chansons contenues dans ladite playlist            Oui         Partiellement         Le code gère cela, mais aucune liaison avec l'interface graphique.
+Support d'autres formats de musique                             Non                             Oui             Ajout du support du WAV.
+Taille de fenêtre non-fixe                                      Non                             Oui             -
+Fusionner le code de l'application serveur et client            Non                             Oui             Choix au démarrage
+Filtres de recherche                                            Non                             Non             -
+Intégration de services externes                                Non                             Non             -
+Système de transition dynamique entre chansons                  Non                             Non             -
+Ajout d'une dimension communautaire                             Non                             Non             -
+Définir des utilisateurs du système comme administrateurs       Non                             Non             -
+Configuration avancée du serveur                                Non                             Non             -
+
 # Améliorations envisagées
 - Revoir l'architecture du projet pour séparer encore mieux les entités, avec le patron Observable-Observeur par exemple, ce qui permettrait de notifier, à qui veulent entendre, des informations.
 - Rendre tous les messages et commandes asynchrones afin de minimiser les ressources et ne pas bloquer toute l'application lorsqu'il y a beaucoup de charge.
 - Se passer des Singleton afin de rendre notre code plus indépendant.
 - Mieux gérer la concurrence.
 - Réaliser toutes les fonctionnalités optionnelles envisagées dans le cahier des charges.
+
+# Difficultés et problèmes rencontrés
+Les points suivants ne sont pas forcément des difficultés mais surtout des points sur lesquels nous avons passé beaucoup plus de temps que prévu.
+
+- Base de données: La gestion de la base de données à l'aide de Hibernate nous a pris du temps à certains moments car il a fallu bien comprendre le fonctionnement de ce dernier et comment il évalue les objets afin de savoir s'ils doivent être sauvegarés ou non dans la base de données.
+
+- Interfaces réseaux: Le multicast demandant d'utiliser une interface réseau précise, nous avons été confronté à un problème sur certaines machines car il y avait plus d'une interface réseau de disponible. Avec de la chance, la première sélectionnée par Java était la bonne, mais pour certaines machines, avec des interfaces réseaux virtuelles, cela à poser des problèmes car le Multicast était émis/reçu sur la mauvaise interface.
+
+- Interface graphique: L'interace graphique n'a pas posé de problèmes en soit mais a pris beaucoup plus de temps que prévu. afin de rendre un programme ergonomique et beau.
 
 # Conclusion
 En conclusion, nous avons essayé de réaliser un programme qui regroupe les qualités suivantes:
@@ -776,7 +818,6 @@ En conclusion, nous avons essayé de réaliser un programme qui regroupe les qua
 Nous pensons avoir atteint ces objectifs. Il y a encore des points à améliorer mais nous avons réussi à produire un programme fonctionnel qui répond à la quasi totalité des points du cahier des charges.
 
 # Bilan
-
 ## Ludovic
 J'ai la fierté de pouvoir me dire que ce projet de semestre s'est très bien passé. J'ai l'impression que l'on a su toujours communiquer dans le respect et en tenant compte des points de vue de chacun à la construction du projet. Cela a permis de pouvoir créer une réelle cohésion de groupe afin de réaliser quelque chose, qui n'était à la base qu'une idée sur papier, de fonctionnel et qui correspond quasiment à la version à laquelle on a réfléchit en tout début de projet.
 
@@ -791,6 +832,15 @@ Mon seul regret est de ne pas avoir pu mieux impliquer tout le monde sur le dév
 ## Lucas
 
 ## Denise
+En tant que première expérience dans un projet qui part de zéro et qui finit sur un programme fonctionnel, je peux dire que j'ai appris énormément, que ce soit au niveau technique, aussi bien qu'au niveau relationnel.
+
+Du point de vue de la gestion du projet, j'ai le sentiment que Ludovic Delafontaine nous a permis à tous de rester sereins du début à la fin. En effet, il a eu la capacité de se remettre en question tout au long du projet, de nous permettre de lui dire si quelque chose n'allait pas bien et de traiter chaque étape du projet avec énormément de tranquillité et d'assurance.
+Les membres du groupes ayant déjà participé à des projets auparavant ont également permis de rendre l'expérience plus rassurante et pédagogique.
+
+Le seul regret que j'aie pu avoir durant ce projet est très certainement le fait que, malgré mon implication importante dans l'interface graphique au début du projet, je n'aie pas pu fournir autant de code que ce que j'aurais désiré, mon manque d'expérience en étant sûrement la raison. Je vois toutefois dans cela d'un côté positif: j'ai pu apprendre de ce que les autres ont fait en restant au courant de l'évolution du programme et en participant aux discussions qui ont permis de le faire évoluer et devenir ce qu'il est aujourd'hui.
+
+Globalement, je pense que c'est une expérience qui restera gravée en moi et qui m'aura permis de bâtir d'excellentes bases en vue de mon futur dans les projets d'informatique.
+
 
 ## David
 Ce projet fut une expérience enrichissante sur plusieurs point:
@@ -1537,6 +1587,63 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 \newpage
 
 ### Lucas Elisei
+- 28.05.2017
+    - Rédaction du rapport (3h00).
+
+- 27.05.2017
+    - Correction d'un bogue qui ne mettait pas correctement à jour la liste des serveurs côté client (0h15).
+    - Rédaction du rapport (1h00).
+
+- 26.05.2017
+    - La barre d'avancement de la chanson en cours de lecture se met maintenant correctement à jour côté client (1h30).
+    - Les chansons déjà jouées se mettent maintenant correctement à jour côté client (1h30).
+    - Correction de bogues liés au rafraîchissement de l'interface graphique côté client (3h00).
+    - Correction d'un bogue qui changeait l'ordre des chansons déjà jouées côté client (1h30).
+    - Ajout du panneau des réglages à l'interface graphique (4h00).
+    - Correction d'un bogue qui affichait mal le nom du serveur auquel le client est connecté (0h30).
+
+- 25.05.2017
+    - Correction d'un bogue qui empêchait les votes des chansons de se mettre à jour côté client (1h30).
+    - Correction d'un bogue qui empêchait le serveur d'upvote des chansons (0h30).
+    - Les chansons s'enregistrent correctement dans la base de données (0h30).
+    - Correction d'exceptions levées par la base de données (1h00).
+    - Changement de la logique de la playlist éphémère (2h00).
+    - La vue de la chanson en cours de lecture se met maintenant à jour côté client et serveur (2h00).
+    - Correction d'un bogue qui empêchait des communications parallèles avec la base de données (0h30).
+    - La vue de la chanson précédente se met maintenant correctement à jour côté client (1h00).
+    - La barre de volume se met maintenant correctement à jour côté client (1h00).
+    - Le bouton play/pause se met maintenant correctement à jour côté client (0h30).
+
+- 24.05.2017
+    - Correction de plusieurs bugs d'affichage liés à l'interface graphique (2h00).
+
+- 23.05.2017
+    - Modification de la sérialisation de la playlist éphémère (1h00).
+    - Meilleure gestion de la sélection d'une playlist au niveau de l'interface graphique (1h00).
+
+- 22.05.2017
+    - Ajout d'une fenêtre au démarrage pour choisir si l'on veut être client ou serveur (0h30).
+    - Ajout de la possibilité de se connecter à un serveur depuis l'interface graphique (1h00).
+    - Ajout de la possibilité de transférer une musique depuis l'interface graphique (1h00).
+    - Modification de la sérialisation d'une musique et de la playlist éphémère (1h30).
+
+- 16.05.2017
+    - Correction d'un bogue qui ne terminait pas correctement le player (0h30).
+    - Correction d'un bogue qui ne laissait pas favoriser les chansons de la playlist éphémère (1h15).
+    - Correction d'un bogue qui laissait la possibilité de voter pour les chansons d'une playlist sauvegardée (0h15).
+
+- 15.05.2017
+    - Revue complète de la logique du PlaylistManager (3h30).
+    - Intégration des actions de favoris à l'interface graphique (1h00).
+
+- 10.05.2017
+    - Création automatique de la playlist "Favoris" dans la base de données si celle-ci n'existait pas (2h00).
+    - Fin de l'embellissement du panneau des playlists (1h00).
+
+- 09.05.2017
+    - Modification du player afin que la prochaine chanson soit jouée automatiquement (0h30).
+    - Début de l'embellissement du panneau des playlists (1h00).
+
 - 06.05.2017
     - Finalisation de la fusion du panneau "chanson précédente" (0h30).
     - Correction de quelques bogues liés aux précédentes itérations (1h30).
@@ -1694,6 +1801,9 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 - 27.04.2017
     - Analyse des modifications au niveau de l'interface graphique, compréhension de la nouvelle structure (1h00)
 
+- 11.04.2017
+	- Réglage de la barre de progression de la musique (1h00)
+
 - 10.04.2017
     - Réalisation de la présentation (1h00)
 
@@ -1769,14 +1879,73 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 \newpage
 
 ### Yosra Harbaoui
+- 28.05.2017
+    - Rédaction du manuel d'utilisation. (3h)
+    - Mise à jour du journal du travail. (45min)
+    - Re-lecture du rapport. (2h)
+
+- 27.05.2017
+    - testes finaux de l'application et vérification du bon fonctionnement. (1h30)
+    - Rédaction du manuel d'utilisateur. (4h)
+    - Rédaction du rapport. (2h)
+
+- 26.05.2017
+   - Testes de l'application et vérification du bon fonctionnement. (1h30)
+   - Rédaction du rapport. (2h30)
+
+- 25.05.2017
+   - Lecture du code et comprendre les parties ambigûes. (2h30)
+
+- 24.05.2017
+   - Testes du bon fonctionnement de l'application. (1h)
+   - Corrections orthographiques du rapport. (1h)
+
+- 23.05.2017
+    - Rédaction du rapport. (1h30)
+    - Lecture des autres différentes parties implémentées. (2h)
+
+- 17.05.2017
+    - Testes de l'implémentation des contrôles sur les fichiers (1h).
+
+- 15.05.2017
+    - Documentation sur les contrôles sur les fichiers (1h).
+
+- 13.05.2017
+   - Modification de la classe Session (1h30)
+
+- 12.05.2017
+    - Implémentation de la classe Session (2h)
+    - Testes. (1h)
+
+- 01.05.2017
+    - Transfert de fichier. (1h)
+    - Testes. (1h)
+
+- 10.04.2017
+    - Réalisation de la présentation (1h00)
+
+- 09.04.2017
+    - Rédaction de la présentation intermédiaire. (1h00)
+    - Analyse de l'implémentation du protocole de communication. (1h30)
+    - Testes de choix de la bonne interface. (1h)
+
+- 08.04.2017
+    - Documentation pour le choix de la bonne interface. (2h)
+
 - 31.03.2017
-    - Implémentation simple d'une connexion client/serveur pour tester la connectivité.
+    - Implémentation simple d'une connexion client/serveur. (3h00)
+    - testes de la connectivité. (1h00)
+
+ - 27.03.2017
+    - Documentation sur la configuration des outils de compilation (Maven) (1h00)
+    - Documentation sur Hibernate (1h00)
 
 - 25.03.2017
-    - Documentation sur les différents "types" de communications entre un serveur et un client.
+    - Documentation sur les différents "types" de communications entre un serveur et un client. (3h00)
 
 - 21.03.2017
-    - Documentation sur l'implémentation client/serveur.
+    - Documentation sur l'implémentation client/serveur. (2H30)
+    - Installation de Scene Builder et configuration de Intellij. (1h00)
 
 \newpage
 
