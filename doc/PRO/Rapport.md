@@ -10,7 +10,7 @@
   2. Afin qu'une image soit correctement placée dans le document, la commande Markdown utilisée jusqu'à maintenant n'est plus d'actualité.
       Il faut maintenant utiliser la syntaxe suivante:
 
-      \befin{figure}
+      \begin{figure}
         \includegraphics{<url local de l'image>}
         \caption{<Légende>}
       \end{figure}
@@ -255,37 +255,18 @@ La seule commande envoyée en Multicast est `PLAYLIST_UPDATE`, qui est envoyée 
 
 Les objets décrits ci-dessous sont évidemment sérialisés avant d'être transférés sur le réseau.
 
-Commande                                                                    Arguments    But
---------------------------    -------------------------------------------------------    ----------------------------------------------------------------------------
-`SEND_FIRST_CONNECTION`       Aucun                                                      Envoyée lors de sa première connexion à un serveur.
-`TRACK_REQUEST`               Track à envoyer                                            Permet de savoir s'il faut envoyer le fichier ou si le système l'a déjà.
-`SENDING_TRACK`               Taille du fichier à envoyer,                               Envoi du fichier en réponse à `TRACK_ACCEPTED` si accepté.
-                              Track à envoyer
-`PLAY_PAUSE_REQUEST`          Aucun                                                      Souhait de mettre le morceau actuel en lecture/pause.
-`NEXT_TRACK_REQUEST`          Aucun                                                      Souhait de passer au morceau suivant.
-`TURN_VOLUME_UP_REQUEST`      Aucun                                                      Souhait d'augmenter le volume.
-`TURN_VOLUME_DOWN_REQUEST`    Aucun                                                      Souhait de baisser le volume.
-`UPVOTE_TRACK_REQUEST`        ID de la Track à upvoter                                   Souhait d'upvoter un morceau de la liste de lecture.
-`DOWNVOTE_TRACK_REQUEST`      ID de la Track à downvoter                                 Souhait de downvoter un morceau de la liste de lecture.
-`END_OF_COMMUNICATION`        Aucun                                                      La communication doit être stoppée.
---------------------------    -------------------------------------------------------    ----------------------------------------------------------------------------
-Table: Commandes envoyées par le client au serveur
 
-Commande                                                                    Arguments    But
---------------------------    -------------------------------------------------------    ----------------------------------------------------------------------------
-`PLAYLIST_UPDATE`             L'adresse du serveur,                                      Notifier tous les clients en Multicast de l'état du système.
-                              le nom du serveur,
-                              la liste de lecture en cours
-`TRACK_ACCEPTED`              Aucun                                                      Réponse à la commande `TRACK_REQUEST` lorsque le morceau est accepté.
-`TRACK_REFUSED`               Aucun                                                      Réponse à la commande `TRACK_REQUEST` lorsque le morceau est refusé.
-`TRACK_SAVED`                 Aucun                                                      Réponse à `SENDING_TRACK` si le morceau a été enregistré avec succès.
-`TRACK_UPVOTED`               Aucun                                                      Réponse à la commande `UPVOTE_TRACK_REQUEST` si le morceau a été upvoté.
-`TRACK_DOWNVOTED`             Aucun                                                      Réponse à la commande `UPVOTE_TRACK_REQUEST` si le morceau a été downvoté.
-`SUCCESS`                     Message de succès                                          Envoie un message de succès au client lors du succès d'une commande
-`ERROR`                       Message d'erreur                                           Envoie un message d'erreur au client lors de l'erreur d'une commande
-`END_OF_COMMUNICATION`        Aucun                                                      Commande indiquant que la communication doit être stoppée.
---------------------------    -------------------------------------------------------    ----------------------------------------------------------------------------
-Table: Commandes envoyées par le serveur au client
+  \includegraphics{images/commandes_client_serveur.png}
+  \begin{figure}
+  \caption{Commandes envoyées par le client au serveur}
+\end{figure}
+
+
+\begin{figure}
+  \includegraphics{images/commande_serveur_client.png}
+  \caption{Commandes envoyées par le serveur au client}
+\end{figure}
+
 
 ### `Server`
 Côté serveur, nous avons décidé d'opter pour une architecture avec un thread réceptionniste `Server` qui va attendre une nouvelle connexion de la part des clients. Une fois un nouveau client arrivé, il va lancer un thread `UnicastClient` qui va s'occuper de la communication avec le client. Cette communication se fait via un socket Unicast car il s'agit d'une communication privée entre le serveur et le client. Nous avons choisi cette solution car plusieurs connexions avec des clients peuvent survenir simultanément et ce système réceptionniste, avec un thread par client, gère plusieurs connexions en même temps, contrairement à un système avec un seul thread qui s'occupe d'un client à la fois.
@@ -472,7 +453,7 @@ En plus des méthodes lui permettant de se paramétrer comme client ou serveur, 
 public static String execute(String command, ArrayList<Object> args)
 ```
 
-Cette méthode statique qui peut être appelée n'importe où dans le programme appelera la méthode du même nom de la classe `AbstractCore`, qui est décrite plus loin.
+Cette méthode statique qui peut être appelée n'importe où dans le programme appellera la méthode du même nom de la classe `AbstractCore`, qui est décrite plus loin.
 Cela permet de pouvoir exécuter des commandes quelque soit le type de Core configuré: soit serveur, soit client.
 
 ### `ICore`
