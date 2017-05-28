@@ -182,7 +182,7 @@ Une fois l'application lancée, la fenêtre ci-dessous apparaît.
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/premiere_fenetre.PNG}
+  \includegraphics{figures_manuel_utilisateur/premiere_fenetre.PNG}
   \captionof{figure}{Choix de lancement du programme}
 \end{minipage}
 
@@ -190,89 +190,6 @@ Vous avez le choix de lancer l'application en tant que Serveur ou Client.
 
 - Serveur: Réceptionnera la musique et la lira sur le système audio.
 - Client: Peut envoyer de la musique au serveur ou interagir avec.
-
-## Interface commune
-Les explications suivantes sont communes aux deux façons de lancer l'application, soit en tant que serveur, soit en tant que client.
-
-### Choix de l'interface réseau
-Le panneau `Settings` vous offre la possibilité de choisir l'interface réseau à utiliser parmi les interfaces que votre ordinateur met à disposition. Une interface par défaut est sélectionnée, mais si les clients ne vous voient pas ou si vous ne voyez pas le serveur auquel vous souhaitez vous connecter, il est peut-être nécessaire de changer l'interface réseau dans la liste déroulante.
-
-Si tout marche, il n'est pas nécessaire de changer d'interface.
-
-\begin{minipage}{\linewidth}
-  \centering
-  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/settings.PNG}
-  \captionof{figure}{Choix de l'interface réseau}
-\end{minipage}
-
-### Choix des listes de lecture et favoris
-Ce panneau vous permet de naviguer entre la liste de lecture actuelle, vos morceaux enregistrés en temps que favoris et les différentes listes de lecture qui ont été sauvegardées sur votre ordinateur lors d'utilisation précédentes de **Commusica**.
-
-\begin{minipage}{\linewidth}
-  \centering
-  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/client_Playlists.jpg}
-  \captionof{figure}{Listes de lectures}
-\end{minipage}
-
-1. Le panneau `Playlists` contient toutes les listes de lectures.
-2. La playlist en cours de lecture
-3. La liste des palylists sauvegardées  des utilisations précédentes
-4. Les playlsits préférées des utilisations précédentes.
-
-### Ajouter de la musique à la liste de lecture en cours
-Afin d'ajouter de la musique à la liste de lecture en cours, il suffit de "Glisser-Déposer" le(s) morceau(x) souhaitée(s) dans le centre de l'interface et celles-ci seront ajoutées au système. Si votre morceau n'apparait pas dans l'interface, il est peut-être nécessaire de recommencer. Cela est dû à d'éventuels problèmes réseaux et le programme n'autorise pas un transfert de fichiers prenant plus de 15 secondes.
-
-### Liste de lecture du serveur
-Les morceaux présents actuellement dans la playlist en cours de lecture.
-
-\begin{minipage}{\linewidth}
-  \centering
-  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/client_Playlist_playing.PNG}
-  \captionof{figure}{Liste de lecture en cours}
-\end{minipage}
-
-Les morceaux lus sont grisés et le dernier morceau est celui en cours de lecture.
-
-#### Gestion d'une chanson  
-Vous avez maintenant une vue sur la liste de lecture du serveur. Vous pouvez, ainsi, voter pour ou contre une ou plusieurs chansons à l'aide des flèches haut et bas. Ceci aura pour conséquence de la réorganiser.
-
-Vous ne pouvez pas voter qu'une seule fois pour ou qu'une seule fois contre un morceau.
-Rien ne vous empêche d'annuler votre vote, mais vous ne pouvez pas voter indéfiniment. De plus, le morceau en cours de lecture ne peut pas être voté pour ou contre, cela n'aura pas d'effet.
-
-Plus le nombre total de votes est grand, plus le morceau aura plus de chance d'être joué après la morceau en cours de lecture.
-
-Vous pouvez favoriser une chanson en cliquant sur cette étoile.
-
-Vous pouvez favoriser un morceau en cliquant sur cette étoile.
-
-### Contrôle de la musique
-
-\begin{minipage}{\linewidth}
-  \centering
-  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/track_playing.png}
-  \captionof{figure}{Contrôle de la musique}
-\end{minipage}
-
-1. Arrêter/jouer la musique si la mojorité des présents le demande
-2. Passer à la musique suivante si la mojorité des présents le demande
-3. Augmenter le volume si la mojorité des présents le demande
-4. Diminuer le volume si la mojorité des présents le demande
-5. Informations sur la chanson
-6. Temps écoulé pour la chanson
-7. Mettre en favori/retirer des favoris la chanson
-8. Nombre de votes reçu pour cette chanson
-
-Si vous voulez passer au morceau suivant, vous pouvez cliquer sur ce bouton. Le morceau suivant sera joué si la mojorité des présents le demande.  
-Si vous voulez augmenter ou diminuer le volume, vous pouvez cliquer sur ce bouton. Le volume sera modifié si la mojorité des présents le demande.  
-
-### Musique précédente  
-Les informations concernant le morceau précédent le morceau en cours de lecture.
-
-\begin{minipage}{\linewidth}
-  \centering
-  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/client_previous_track.PNG}
-  \captionof{figure}{Musique précédente}
-\end{minipage}
 
 ## Serveur
 Les explications suivantes concernent le lancement de l'application en tant que serveur.
@@ -289,7 +206,7 @@ Quand vous choisissez de lancer l'application en tant que serveur, une fênetre 
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/nomServeur.PNG}
+  \includegraphics{figures_manuel_utilisateur/nomServeur.PNG}
   \captionof{figure}{Dialogue pour donner un nom au serveur}
 \end{minipage}
 
@@ -308,8 +225,96 @@ Quand vous choisissez de lancer l'application en tant que client, vous aurez le 
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/server_list.PNG}
+  \includegraphics{figures_manuel_utilisateur/server_list.PNG}
   \captionof{figure}{Choix du serveur}
 \end{minipage}
 
 Une fois vous êtes connecté, vous pouvez voir la playlist en cours de lecture et toutes les informations liées aux morceaux de cette playlist.
+
+## Interface commune
+Les explications suivantes sont communes aux deux façons de lancer l'application, soit en tant que serveur, soit en tant que client.
+
+### Choix de l'interface réseau
+Le panneau `Settings` vous offre la possibilité de choisir l'interface réseau à utiliser parmi les interfaces que votre ordinateur met à disposition. Une interface par défaut est sélectionnée, mais si les clients ne vous voient pas ou si vous ne voyez pas le serveur auquel vous souhaitez vous connecter, il est peut-être nécessaire de changer l'interface réseau dans la liste déroulante.
+
+Si tout marche, il n'est pas nécessaire de changer d'interface.
+
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics{figures_manuel_utilisateur/settings.PNG}
+  \captionof{figure}{Choix de l'interface réseau}
+\end{minipage}
+
+### Choix des listes de lecture et favoris
+Ce panneau vous permet de naviguer entre la liste de lecture actuelle, vos morceaux enregistrés en temps que favoris et les différentes listes de lecture qui ont été sauvegardées sur votre ordinateur lors d'utilisation précédentes de **Commusica**.
+
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics{figures_manuel_utilisateur/client_Playlists.jpg}
+  \captionof{figure}{Listes de lectures}
+\end{minipage}
+
+1. Le panneau `Playlists` contient toutes les listes de lectures.
+2. La playlist en cours de lecture
+3. La liste des palylists sauvegardées  des utilisations précédentes
+4. Les playlsits préférées des utilisations précédentes.
+
+### Ajouter de la musique à la liste de lecture en cours
+Afin d'ajouter de la musique à la liste de lecture en cours, il suffit de "Glisser-Déposer" le(s) morceau(x) souhaitée(s) dans le centre de l'interface et celles-ci seront ajoutées au système. Si votre morceau n'apparait pas dans l'interface, il est peut-être nécessaire de recommencer. Cela est dû à d'éventuels problèmes réseaux et le programme n'autorise pas un transfert de fichiers prenant plus de 15 secondes.
+
+### Liste de lecture du serveur
+Les morceaux présents actuellement dans la playlist en cours de lecture.
+
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics{figures_manuel_utilisateur/client_Playlist_playing.PNG}
+  \captionof{figure}{Liste de lecture en cours}
+\end{minipage}
+
+Les morceaux lus sont grisés et le dernier morceau est celui en cours de lecture.
+
+#### Gestion d'une chanson  
+Vous avez maintenant une vue sur la liste de lecture du serveur. Vous pouvez, ainsi, voter pour ou contre une ou plusieurs chansons à l'aide des flèches haut et bas. Ceci aura pour conséquence de la réorganiser.
+
+Vous ne pouvez pas voter qu'une seule fois pour ou qu'une seule fois contre un morceau.
+Rien ne vous empêche d'annuler votre vote, mais vous ne pouvez pas voter indéfiniment. De plus, le morceau en cours de lecture ne peut pas être voté pour ou contre, cela n'aura pas d'effet.
+
+Plus le nombre total de votes est grand, plus le morceau aura plus de chance d'être joué après la morceau en cours de lecture.
+
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/track-cell.png}
+  \captionof{figure}{Interface de l'application lancée en tant que client}
+\end{minipage}
+
+1. Informations du morceau
+2. Possiblité de favoriser/défavoriser le morceau
+3. Voter pour le passage de la musique
+4. Voter contre le passage de la musique
+5. Total des votes pour le morceau
+
+### Contrôle de la musique
+
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics{figures_manuel_utilisateur/track_playing.png}
+  \captionof{figure}{Contrôle de la musique}
+\end{minipage}
+
+1. Arrêter/jouer la musique si la mojorité des présents le demande
+2. Passer à la musique suivante si la mojorité des présents le demande
+3. Augmenter le volume si la mojorité des présents le demande
+4. Diminuer le volume si la mojorité des présents le demande
+5. Informations sur la chanson
+6. Temps écoulé pour la chanson
+7. Mettre en favori/retirer des favoris la chanson
+8. Nombre de votes reçu pour cette chanson
+
+### Musique précédente  
+Les informations concernant le morceau précédent le morceau en cours de lecture.
+
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics{figures_manuel_utilisateur/client_previous_track.PNG}
+  \captionof{figure}{Musique précédente}
+\end{minipage}
