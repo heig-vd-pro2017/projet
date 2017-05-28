@@ -828,6 +828,15 @@ On se rend vite compte que la gestion d'une équipe n'est pas une chose aisée, 
 Mon seul regret est de ne pas avoir pu mieux impliquer tout le monde sur le développement.
 
 ## Lucas
+C'est la première fois que je travaille sur un projet d'une telle envergure et avec autant de personnes impliquées dans le développement.
+
+Je suis très content de la cohésion du groupe et même si certaines personnes ont moins participé au niveau du code, elles ont su apporter leur expérience quant aux réflexions sur ce dernier. Nous avons toujours avancé dans la bonne entente et chacun a su être à l'écoute des critiques constructives des autres. Même si nous avons décidé de partager le travail en trois groupes, chacun a participé au développement de chaque partie de l'application.
+
+Pour ce qui est du management du groupe, Ludovic a su donner des directives très claires pour que le projet avance. Mise à part cela, je n'ai pas vraiment ressenti de hiérarchie dans le groupe et c'était vraiment plaisant. Chacun avait son mot à dire et personne n'était mis à l'écart. Tout le monde a su être à l'écoute de chacun.
+
+D'un point de vue personnel, je suis très heureux du résultat final. Les objectifs principaux que nous nous étions fixés ont quasiment tous été remplis complètement. Ce projet m'a permis de découvrir différentes technologies comme JavaFX ou Hibernate que je pourrais réutiliser dans certains de mes projets personnels.
+
+En conclusion, ce projet m'a donné envie d'en réaliser d'autres de la même ampleur et avec le même type de personne. La charge de travail était certes conséquente mais ce n'en fut pas moins un plaisir d'arriver à ce résultat.
 
 ## Denise
 En tant que première expérience dans un projet qui part de zéro et qui finit sur un programme fonctionnel, je peux dire que j'ai appris énormément, que ce soit au niveau technique, aussi bien qu'au niveau relationnel.
