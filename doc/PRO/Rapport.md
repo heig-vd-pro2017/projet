@@ -122,8 +122,6 @@ header-includes:
 
 \listoffigures
 
-\listoftables
-
 \newpage
 
 # Introduction
@@ -233,17 +231,17 @@ Pour retrouver l'extension du fichier, nous avons procédé de la manière suiva
 - Pour les M4A, nous regardons les premiers octets en partant du quatrième octet depuis le début du fichier.
 - Pour les WAV, à partir du huitième octet depuis le début du fichier.
 
-\befin{figure}
+\begin{figure}
   \includegraphics{images/mp3-file-hexeditor.png}
   \caption{Aperçu hexadécimal d'un fichier MP3}
 \end{figure}
 
-\befin{figure}
+\begin{figure}
   \includegraphics{images/m4a-file-hexeditor.png}
   \caption{Aperçu hexadécimal d'un fichier M4A}
 \end{figure}
 
-\befin{figure}
+\begin{figure}
   \includegraphics{images/wav-file-hexeditor.png}
   \caption{Aperçu hexadécimal d'un fichier WAV}
 \end{figure}
@@ -268,18 +266,15 @@ La seule commande envoyée en Multicast est `PLAYLIST_UPDATE`, qui est envoyée 
 
 Les objets décrits ci-dessous sont évidemment sérialisés avant d'être transférés sur le réseau.
 
-
-  \includegraphics{images/commandes_client_serveur.png}
+\includegraphics{images/commandes_client_serveur.png}
   \begin{figure}
   \caption{Commandes envoyées par le client au serveur}
 \end{figure}
-
 
 \begin{figure}
   \includegraphics{images/commande_serveur_client.png}
   \caption{Commandes envoyées par le serveur au client}
 \end{figure}
-
 
 ### `Server`
 Côté serveur, nous avons décidé d'opter pour une architecture avec un thread réceptionniste `Server` qui va attendre une nouvelle connexion de la part des clients. Une fois un nouveau client arrivé, il va lancer un thread `UnicastClient` qui va s'occuper de la communication avec le client. Cette communication se fait via un socket Unicast car il s'agit d'une communication privée entre le serveur et le client. Nous avons choisi cette solution car plusieurs connexions avec des clients peuvent survenir simultanément et ce système réceptionniste, avec un thread par client, gère plusieurs connexions en même temps, contrairement à un système avec un seul thread qui s'occupe d'un client à la fois.
@@ -297,6 +292,8 @@ Cette classe implémente aussi l'interface `Runnable` dans le but de lancer son 
 Nous avons été confrontés à un problème lors du développement, lorsque nous nous sommes rendu compte qu'un `MulticastSocket` utilisait la première interface réseau disponible sur l'ordinateur plutôt que celle qui était réellement connectée. Cela prenait énormément de temps à être résolu et nous avons donc mis à disposition un choix d'interfaces réseau dans l'interface utilisateur.
 
 Les `Core` ont chacun un `MulticastClient` pour pouvoir envoyer la liste de lecture actuelle ainsi que les informations sur l'état du lecteur - en pause ou en lecture, état du volume, etc.).
+
+Pour utiliser le Multicast, il est nécessaire de spécifier quelle est l'interface réseau à utiliser pour l'émission et la réception des données. C'est la raison pour laquelle, dans le cas où la machine a plusieurs interfaces, de sélectionner la bonne dans la liste de l'interface graphique.
 
 ### `NetworkProtocol`
 C'est dans cette classe que sont définies les commandes spécifiques au réseau `END_OF_COMMUNICATION` et `END_OF_COMMAND`. Les ports pour les différents sockets ainsi que l'adresse du groupe Multicast se trouvent également dans cette classe. Ces derniers ont été choisis arbitrairement parmi les plages disponibles. Bien que peu probable, il est possible qu'une autre application utilise ces mêmes ports. Dans ce cas, le bon fonctionnement de **Commusica** se retrouverait corrompu. Nous n'avons pas voulu laisser ces valeurs dans le fichier de configuration car il est indispensable d'avoir les mêmes ports chez le serveur et chez les clients. Nous avons donc préféré prendre le risque qu'un autre programme utilise les mêmes ports plutôt qu'un utilisateur change ces valeurs.
@@ -799,6 +796,15 @@ Configuration avancée du serveur                                Non            
 - Mieux gérer la concurrence.
 - Réaliser toutes les fonctionnalités optionnelles envisagées dans le cahier des charges.
 
+# Difficultés et problèmes rencontrés
+Les points suivants ne sont pas forcément des difficultés mais surtout des points sur lesquels nous avons passé beaucoup plus de temps que prévu.
+
+- Base de données: La gestion de la base de données à l'aide de Hibernate nous a pris du temps à certains moments car il a fallu bien comprendre le fonctionnement de ce dernier et comment il évalue les objets afin de savoir s'ils doivent être sauvegarés ou non dans la base de données.
+
+- Interfaces réseaux: Le multicast demandant d'utiliser une interface réseau précise, nous avons été confronté à un problème sur certaines machines car il y avait plus d'une interface réseau de disponible. Avec de la chance, la première sélectionnée par Java était la bonne, mais pour certaines machines, avec des interfaces réseaux virtuelles, cela à poser des problèmes car le Multicast était émis/reçu sur la mauvaise interface.
+
+- Interface graphique: L'interace graphique n'a pas posé de problèmes en soit mais a pris beaucoup plus de temps que prévu. afin de rendre un programme ergonomique et beau.
+
 # Conclusion
 En conclusion, nous avons essayé de réaliser un programme qui regroupe les qualités suivantes:
 
@@ -822,6 +828,15 @@ On se rend vite compte que la gestion d'une équipe n'est pas une chose aisée, 
 Mon seul regret est de ne pas avoir pu mieux impliquer tout le monde sur le développement.
 
 ## Lucas
+C'est la première fois que je travaille sur un projet d'une telle envergure et avec autant de personnes impliquées dans le développement.
+
+Je suis très content de la cohésion du groupe et même si certaines personnes ont moins participé au niveau du code, elles ont su apporter leur expérience quant aux réflexions sur ce dernier. Nous avons toujours avancé dans la bonne entente et chacun a su être à l'écoute des critiques constructives des autres. Même si nous avons décidé de partager le travail en trois groupes, chacun a participé au développement de chaque partie de l'application.
+
+Pour ce qui est du management du groupe, Ludovic a su donner des directives très claires pour que le projet avance. Mise à part cela, je n'ai pas vraiment ressenti de hiérarchie dans le groupe et c'était vraiment plaisant. Chacun avait son mot à dire et personne n'était mis à l'écart. Tout le monde a su être à l'écoute de chacun.
+
+D'un point de vue personnel, je suis très heureux du résultat final. Les objectifs principaux que nous nous étions fixés ont quasiment tous été remplis complètement. Ce projet m'a permis de découvrir différentes technologies comme JavaFX ou Hibernate que je pourrais réutiliser dans certains de mes projets personnels.
+
+En conclusion, ce projet m'a donné envie d'en réaliser d'autres de la même ampleur et avec le même type de personne. La charge de travail était certes conséquente mais ce n'en fut pas moins un plaisir d'arriver à ce résultat.
 
 ## Denise
 En tant que première expérience dans un projet qui part de zéro et qui finit sur un programme fonctionnel, je peux dire que j'ai appris énormément, que ce soit au niveau technique, aussi bien qu'au niveau relationnel.
@@ -832,7 +847,6 @@ Les membres du groupes ayant déjà participé à des projets auparavant ont ég
 Le seul regret que j'aie pu avoir durant ce projet est très certainement le fait que, malgré mon implication importante dans l'interface graphique au début du projet, je n'aie pas pu fournir autant de code que ce que j'aurais désiré, mon manque d'expérience en étant sûrement la raison. Je vois toutefois dans cela d'un côté positif: j'ai pu apprendre de ce que les autres ont fait en restant au courant de l'évolution du programme et en participant aux discussions qui ont permis de le faire évoluer et devenir ce qu'il est aujourd'hui.
 
 Globalement, je pense que c'est une expérience qui restera gravée en moi et qui m'aura permis de bâtir d'excellentes bases en vue de mon futur dans les projets d'informatique.
-
 
 ## David
 Ce projet fut une expérience enrichissante sur plusieurs point:
@@ -1750,10 +1764,10 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
     - Réévaluation de l'intêret de NetPort en tant que classe. (30min)
 
 - 21.03.2017
-    - Meilleur division client/serveur et base du protocole (1h).
+    - Meilleur division client/serveur et base du protocole (1h)
 
 - 20.03.2017
-    - Essais et documentation sur la partie client/serveur (3h).
+    - Essais et documentation sur la partie client/serveur (3h)
 
 \newpage
 
@@ -1871,63 +1885,63 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 \newpage
 
 ### Yosra Harbaoui
-- 28.05.2017 
+- 28.05.2017
     - Rédaction du manuel d'utilisation. (3h)
     - Mise à jour du journal du travail. (45min)
     - Re-lecture du rapport. (2h)
-    
+
 - 27.05.2017
     - testes finaux de l'application et vérification du bon fonctionnement. (1h30)
     - Rédaction du manuel d'utilisateur. (4h)
     - Rédaction du rapport. (2h)
-    
+
 - 26.05.2017
    - Testes de l'application et vérification du bon fonctionnement. (1h30)
    - Rédaction du rapport. (2h30)
 
 - 25.05.2017
    - Lecture du code et comprendre les parties ambigûes. (2h30)
-   
+
 - 24.05.2017
    - Testes du bon fonctionnement de l'application. (1h)
    - Corrections orthographiques du rapport. (1h)
-   
+
 - 23.05.2017
     - Rédaction du rapport. (1h30)
-    - Lecture des autres différentes parties implémentées. (2h) 
-    
+    - Lecture des autres différentes parties implémentées. (2h)
+
 - 17.05.2017
     - Testes de l'implémentation des contrôles sur les fichiers (1h).
 
 - 15.05.2017
     - Documentation sur les contrôles sur les fichiers (1h).
-    
-- 13.05.2017 
+
+- 13.05.2017
    - Modification de la classe Session (1h30)
-   
+
 - 12.05.2017
     - Implémentation de la classe Session (2h)
-    - Testes. (1h)
-    
+    - Tests (1h)
+
 - 01.05.2017
-    - Transfert de fichier. (1h)
-    - Testes. (1h)
-    
+    - Transfert de fichier (1h)
+    - Tests (1h)
+
 - 10.04.2017
     - Réalisation de la présentation (1h00)
 
 - 09.04.2017
     - Rédaction de la présentation intermédiaire. (1h00)
     - Analyse de l'implémentation du protocole de communication. (1h30)
-    - Testes de choix de la bonne interface. (1h)
-    
+    - Tests de choix de la bonne interface (1h)
+
 - 08.04.2017
-    - Documentation pour le choix de la bonne interface. (2h)
-    
+    - Documentation pour le choix de la bonne interface (2h)
+
 - 31.03.2017
-    - Implémentation simple d'une connexion client/serveur. (3h00)
-    - testes de la connectivité. (1h00)
-    
+    - Implémentation simple d'une connexion client/serveur (3h00)
+    - Tests de la connectivité (1h00)
+
  - 27.03.2017
     - Documentation sur la configuration des outils de compilation (Maven) (1h00)
     - Documentation sur Hibernate (1h00)
@@ -1936,7 +1950,7 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
     - Documentation sur les différents "types" de communications entre un serveur et un client. (3h00)
 
 - 21.03.2017
-    - Documentation sur l'implémentation client/serveur. (2H30)
+    - Documentation sur l'implémentation client/serveur. (2h30)
     - Installation de Scene Builder et configuration de Intellij. (1h00)
 
 \newpage
