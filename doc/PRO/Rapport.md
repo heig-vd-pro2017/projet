@@ -1753,6 +1753,9 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 \newpage
 
 ### David Truan
+- 28.06.2017
+    - Finition du rapport et création des tableaux (3h).
+
 - 27.06.2017
     - Finition des package Core et Network du rapport (3h00)
     - Création de différents schémas pour le rapport (1h00)
