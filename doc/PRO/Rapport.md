@@ -1351,17 +1351,36 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 - 02.05.2017
     - Mise au point de l'avancement dans le projet (1h30)
 
+- 28.04.2017
+	- Discussion autour de l'avancement de chacun (1h00)
+
 - 25.04.2017
     - Mise au point des modifications faites durant les vacances (1h30)
 
 - 11.04.2017
-    - Présentation intermédiaire du projet
+    - Présentation intermédiaire du projet + discussions diverses (1h30)
 
 - 10.04.2017
     - Réalisation de la présentation (2h00)
 
 - 04.04.2017
     - Discussion générale: organisation de l'interface graphique, revue des problèmes liés aux classes Track, Playlist et PlaylistManager, discussion autour de l'utilité de Player, discussion autour de NetworkManager, discussion autour de la présentation, création et rédaction de celle-ci (1h30)
+
+- 31.03.2017
+	- Discussion autour de la base de données et de l'avancement de chacun (2h00)
+
+- 28.03.2017
+	- Définition de la hiérarchie des fichiers et réflexions diverses (1h30)
+
+- 24.03.2017
+	- Discussion permettant de savoir où chacun en est et questions sur des doutes divers concernant des choix d'implémentation et architecture (3h00)
+
+- 21.03.2017
+	- Prise de décision des outils: Maven et Markdown (1h30)
+
+- 17.03.2017
+	- Distribution des rôles et choix d'architecture RESTful (2h00)
+
 
 \newpage
 
@@ -1570,6 +1589,10 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 \newpage
 
 ### Denise Gemesio
+- 28.05.2017
+	- Planification finale, création (0h30)
+	- Planification finale, modification
+
 - 27.05.2017
 	- Relecture complète du rapport et corrections orthographiques et grammaticales (3h00)
 	- Rédaction du rapport (UI) (2h00)
@@ -1637,13 +1660,13 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 - 24.05.2017
 	- Rapport: description du paquet media (1h00)
 
--  23.05.2017
+- 23.05.2017
 	- Test de l'application et discussions concernant le rapport (1h30)
 
--  18.05.2017
+- 18.05.2017
 	- Début de rapport (définir la structure du rapport, introduction, objectif, description package Configuration du rapport) (2h00)
 
--  11.05.2017
+- 11.05.2017
 	- Lecture du code contrôleur pour la documentation (2h00)
 
 - 26.04.2017
