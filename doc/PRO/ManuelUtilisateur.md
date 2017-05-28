@@ -251,7 +251,7 @@ Les explications suivantes concernent le lancement de l'application en tant que 
 
 ### Choix du serveur
 
-Quand vous choisissez de lancer l'application en tant que client, vous aurez le choix de vous connecter à un des serveurs. Vous pourriez choisir parmi une liste de serveurs disonibles.
+Quand vous choisissez de lancer l'application en tant que client, vous aurez le choix de vous connecter à un des serveurs. Vous pourriez choisir parmi une liste de serveurs disonibles.  
 ![choix du serveur](https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/server_list.PNG)  
 Une fois vous êtes connecté, vous pouvez voir la playlist en cours de lecture et toutes les informations liées aux chansons de cette playlist.
 
