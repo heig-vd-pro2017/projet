@@ -137,7 +137,7 @@ Nous souhaitons répondre à l'éternel problème qu'est le fait de devoir se pa
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[width=\linewidth]{images/fonctionnement_general.png}
+  \includegraphics[width=12cm]{images/fonctionnement_general.png}
   \captionof{figure}{Fonctionnement général du programme}
 \end{minipage}
 
