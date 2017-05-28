@@ -791,20 +791,20 @@ Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui
 ### Entêtes
 Les entêtes de fonctions et fichiers devront respecter la forme suivante:
 
-```
+```java
 /**
  * This is a correct comment
  */
 ```
 
-```
+```java
 /**
  * This is also
  * a correct comment
  */
 ```
 
-```
+```java
 /**
  * As well as this one in case that the documentation is very long and have "multiple parts".
  *
@@ -813,13 +813,13 @@ Les entêtes de fonctions et fichiers devront respecter la forme suivante:
 ```
 
 Ne pas écrire d'entêtes commme ceci:
-```
+```java
 /** This comment starts at the very top...
  * ...but should has started here.
  */
 ```
 
-```
+```java
 /**
  *
  * Why do we leave empty spaces before and after ? Isn't it useless ?
@@ -829,7 +829,7 @@ Ne pas écrire d'entêtes commme ceci:
 
 ### Fonctions
 L'entête des fonctions devra respecter la forme suivante:
-```
+```java
 /**
  * Description about the method
  *
@@ -844,7 +844,7 @@ public int myMethod(int x, int y) {
 ```
 
 Au sein de fonction, ne pas utiliser la forme de commentaires multi-lines:
-```
+```java
 /**
  * This is a comment
  * inside a function
@@ -853,19 +853,19 @@ Au sein de fonction, ne pas utiliser la forme de commentaires multi-lines:
 car si l'on souhaite commenter une partie de la fonction, les caractères `*/` couperont la commentation de la fonction.
 
 Utiliser la forme suivante:
-```
+```java
 //! This is a multi-line comment
 //! inside a function
 ```
 
 Les parenthèses aux fonctions restent collées au nom de la fonction, comme en mathématiques:
-```
+```java
 public int iAmACoolFunctionWithoutAnySpaces(int iHateSpaces) {
     ...
 }
 ```
 
-```
+```java
 ...
 
 int a = iAmACoolFunctionWithoutAnySpaces(4);
@@ -875,7 +875,7 @@ int a = iAmACoolFunctionWithoutAnySpaces(4);
 
 ### Variables
 Pour commenter des variables, on utilise la forme:
-```
+```java
 //! The current volume of the application
 private unsigned int volume;
 
@@ -1355,13 +1355,22 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
     - Mise au point des modifications faites durant les vacances (1h30)
 
 - 11.04.2017
-    - Présentation intermédiaire du projet
+    - Présentation intermédiaire du projet (0h30)
 
 - 10.04.2017
     - Réalisation de la présentation (2h00)
 
 - 04.04.2017
     - Discussion générale: organisation de l'interface graphique, revue des problèmes liés aux classes Track, Playlist et PlaylistManager, discussion autour de l'utilité de Player, discussion autour de NetworkManager, discussion autour de la présentation, création et rédaction de celle-ci (1h30)
+
+- 28.03.2017
+    - Discussion autour de l'interface graphique et du FileManager (1h30)
+
+- 21.03.2017
+    - Mise en place de Apache Maven et discussion sur le projet (1h30)
+
+- 17.03.2017
+    - Discussion autour de l'architecture et définition de celle-ci (1h30)
 
 \newpage
 
@@ -1371,7 +1380,7 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
     - Améliorations du template
     - Ajout d'images
     - Total du travail (pour le moment): 4h00
-    
+
 - 27.05.2017
     - Créations de divers schémas pour le rapport
     - Rédaction et améliorations du rapport
@@ -1439,13 +1448,13 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
     - Début de la mise à jour du schéma UML selon la réelle implémentation (1h00)
 
 - 05.04.2017
-    - Ajout de la classe Playlist et de sa table associée pour la base de données (01:00)
-    - Ajout de la classe permettant de récupérer des propriétés depuis un fichier de configuration (00:30)
+    - Ajout de la classe Playlist et de sa table associée pour la base de données (01h00)
+    - Ajout de la classe permettant de récupérer des propriétés depuis un fichier de configuration (00h30)
     - Documentation des différentes classes (00:30)
 
 - 03.04.2017
-    - Finalisation de la classe Track avec l'ajout de l'interface DatabaseObject
-    - Merge avec master pour Track
+    - Finalisation de la classe Track avec l'ajout de l'interface DatabaseObject (0h30)
+    - Merge avec master pour Track (0h20)
 
 - 31.03.2017
     - Suite de la base de données avec les classes Playlist, PlaylistTrack et PlaylistTrackId (2h30)
@@ -1458,23 +1467,23 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
     - Début de la classe Track avec sa table dans la base de données à l'aide de Hibernate (1h30)
 
 - 22.03.2017
-    - Player
-    - Tests de lecture de fichiers audio
-    - Tests de récupération des metadatas des fichiers
+    - Player (1h00)
+    - Tests de lecture de fichiers audio (0h45)
+    - Tests de récupération des metadatas des fichiers (0h20)
 
 - 21.03.2017
     - Avancement dans la base de données
     - Corrections et améliorations
 
 - 18.03.2017
-    - Création du schéma de la base de données
-    - Mise à jour du diagramme UML
+    - Création du schéma de la base de données (0h30)
+    - Mise à jour du diagramme UML (0h30)
 
 - 15.03.2017
-    - Ajout des éléments manquants dans les PV
-    - Création du journal de travail
-    - Corrections du diagramme de séquence
-    - Documentation sur Reflexion
+    - Ajout des éléments manquants dans les PV (1h00)
+    - Création du journal de travail (0h15)
+    - Corrections du diagramme de séquence (0h30)
+    - Documentation sur Reflexion (0h45)
 
 \newpage
 
