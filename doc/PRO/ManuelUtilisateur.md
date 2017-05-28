@@ -210,7 +210,7 @@ Ce panneau vous permet de naviguer entre la liste de lecture actuelle, vos morce
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/client_Playlists.jpg}
+  \includegraphics[width=\linewidth]{https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_Playlists.jpg}
   \captionof{figure}{Listes de lectures}
 \end{minipage}
 
@@ -233,7 +233,7 @@ Les chansons présentes actuellement dans la playlist en cours de lecture.
 
 Les chansons lues sont grisées et la dernière chanson est celle en cours de lecture.
 
-#### Réorganiser la liste de lecture   
+#### Gestion d'une chanson  
 Vous avez maintenant une vue sur la liste de lecture du serveur. Vous pouvez, ainsi, voter pour ou contre une ou plusieurs chansons à l'aide des flèches haut et bas. Ceci aura pour conséquence de la réorganiser.
 
 Vous ne pouvez pas voter qu'une seule fois pour ou qu'une seule fois contre une chanson.
@@ -241,7 +241,6 @@ Rien ne vous empêche d'annuler votre vote, mais vous ne pouvez pas voter indéf
 
 Plus le nombre total de votes est grand, plus la chanson aura plus de chance d'être joué après la chanson en cours de lecture.
 
-#### Ajouter la chanson au favoris
 Vous pouvez favoriser une chanson en cliquant sur cette étoile.
 
 
@@ -249,25 +248,37 @@ Vous pouvez favoriser une chanson en cliquant sur cette étoile.
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/client_pause_next_volume.jpg}
+  \includegraphics[width=\linewidth]{https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/track_playing.png}
   \captionof{figure}{Contrôle de la musique}
 \end{minipage}
 
-
-Si vous voulez passer à la chanson suivante, vous pouvez cliquer sur ce bouton. La chanson suivante sera jouée si la mojorité des présents le demande.  
-Si vous voulez augmenter ou diminuer le volume, vous pouvez cliquer sur ce bouton. Le volume sera modifié si la mojorité des présents le demande.  
+1. Arrêter/jouer la musique si la mojorité des présents le demande
+2. Passer à la musique suivante si la mojorité des présents le demande
+3. Augmenter le volume si la mojorité des présents le demande
+4. Diminuer le volume si la mojorité des présents le demande
+5. Informations sur la chanson
+6. Temps écoulé pour la chanson
+7. Mettre en favori/retirer des favoris la chanson
+8. Nombre de votes reçu pour cette chanson
 
 ### Musique précédente  
 Les informations concernant la chanson précédent la chanson en cours de lecture.
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/client_track_playing.PNG}
+  \includegraphics[width=\linewidth]{https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client_previous_track.PNG}
   \captionof{figure}{Musique précédente}
 \end{minipage}
 
 ## Serveur
 Les explications suivantes concernent le lancement de l'application en tant que serveur.
+
+Quand l'application est lancée, la fenêtre suivante sera affichée à l'écran.
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/Server.PNG}
+  \captionof{figure}{Interface de l'application lancée en tant que serveur}
+\end{minipage}
 
 ### Configuration du serveur
 Quand vous choisissez de lancer l'application en tant que serveur, une fênetre apparaîtera pour vous demander de nommer votre serveur.
@@ -280,6 +291,13 @@ Quand vous choisissez de lancer l'application en tant que serveur, une fênetre 
 
 ## Client
 Les explications suivantes concernent le lancement de l'application en tant que client.
+
+Quand l'application est lancée, la fenêtre suivante sera affichée à l'écran.
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{https://github.com/heig-vd-pro2017/projet/blob/master/doc/PRO/figures_manuel_utilisateur/client.PNG}
+  \captionof{figure}{Interface de l'application lancée en tant que client}
+\end{minipage}
 
 ### Choix du serveur
 Quand vous choisissez de lancer l'application en tant que client, vous aurez le choix de vous connecter à un des serveurs. Vous pourriez choisir parmi une liste de serveurs disonibles.
