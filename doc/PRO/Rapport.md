@@ -233,17 +233,17 @@ Pour retrouver l'extension du fichier, nous avons procédé de la manière suiva
 - Pour les M4A, nous regardons les premiers octets en partant du quatrième octet depuis le début du fichier.
 - Pour les WAV, à partir du huitième octet depuis le début du fichier.
 
-\befin{figure}
+\begin{figure}
   \includegraphics{images/mp3-file-hexeditor.png}
   \caption{Aperçu hexadécimal d'un fichier MP3}
 \end{figure}
 
-\befin{figure}
+\begin{figure}
   \includegraphics{images/m4a-file-hexeditor.png}
   \caption{Aperçu hexadécimal d'un fichier M4A}
 \end{figure}
 
-\befin{figure}
+\begin{figure}
   \includegraphics{images/wav-file-hexeditor.png}
   \caption{Aperçu hexadécimal d'un fichier WAV}
 \end{figure}
@@ -1871,48 +1871,48 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 \newpage
 
 ### Yosra Harbaoui
-- 28.05.2017 
+- 28.05.2017
     - Rédaction du manuel d'utilisation. (3h)
     - Mise à jour du journal du travail. (45min)
     - Re-lecture du rapport. (2h)
-    
+
 - 27.05.2017
     - testes finaux de l'application et vérification du bon fonctionnement. (1h30)
     - Rédaction du manuel d'utilisateur. (4h)
     - Rédaction du rapport. (2h)
-    
+
 - 26.05.2017
    - Testes de l'application et vérification du bon fonctionnement. (1h30)
    - Rédaction du rapport. (2h30)
 
 - 25.05.2017
    - Lecture du code et comprendre les parties ambigûes. (2h30)
-   
+
 - 24.05.2017
    - Testes du bon fonctionnement de l'application. (1h)
    - Corrections orthographiques du rapport. (1h)
-   
+
 - 23.05.2017
     - Rédaction du rapport. (1h30)
-    - Lecture des autres différentes parties implémentées. (2h) 
-    
+    - Lecture des autres différentes parties implémentées. (2h)
+
 - 17.05.2017
     - Testes de l'implémentation des contrôles sur les fichiers (1h).
 
 - 15.05.2017
     - Documentation sur les contrôles sur les fichiers (1h).
-    
-- 13.05.2017 
+
+- 13.05.2017
    - Modification de la classe Session (1h30)
-   
+
 - 12.05.2017
     - Implémentation de la classe Session (2h)
     - Testes. (1h)
-    
+
 - 01.05.2017
     - Transfert de fichier. (1h)
     - Testes. (1h)
-    
+
 - 10.04.2017
     - Réalisation de la présentation (1h00)
 
@@ -1920,14 +1920,14 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
     - Rédaction de la présentation intermédiaire. (1h00)
     - Analyse de l'implémentation du protocole de communication. (1h30)
     - Testes de choix de la bonne interface. (1h)
-    
+
 - 08.04.2017
     - Documentation pour le choix de la bonne interface. (2h)
-    
+
 - 31.03.2017
     - Implémentation simple d'une connexion client/serveur. (3h00)
     - testes de la connectivité. (1h00)
-    
+
  - 27.03.2017
     - Documentation sur la configuration des outils de compilation (Maven) (1h00)
     - Documentation sur Hibernate (1h00)
