@@ -1899,7 +1899,7 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 
 ### Thibaut Togue Kamga
 - 28.05.2017
-	- Reflexion sur les scénarios des tests.(02h00)
+	- Reflexion sur les scénarios des tests.(04h00)
 - 27.05.2017
   	- Corrections du rapport après les suggestions de Denise Gemesio (2h00)
   	- Relecture du rapport(2h30)
