@@ -1537,6 +1537,63 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 \newpage
 
 ### Lucas Elisei
+- 28.05.2017
+    - Rédaction du rapport (3h00).
+
+- 27.05.2017
+    - Correction d'un bogue qui ne mettait pas correctement à jour la liste des serveurs côté client (0h15).
+    - Rédaction du rapport (1h00).
+
+- 26.05.2017
+    - La barre d'avancement de la chanson en cours de lecture se met maintenant correctement à jour côté client (1h30).
+    - Les chansons déjà jouées se mettent maintenant correctement à jour côté client (1h30).
+    - Correction de bogues liés au rafraîchissement de l'interface graphique côté client (3h00).
+    - Correction d'un bogue qui changeait l'ordre des chansons déjà jouées côté client (1h30).
+    - Ajout du panneau des réglages à l'interface graphique (4h00).
+    - Correction d'un bogue qui affichait mal le nom du serveur auquel le client est connecté (0h30).
+
+- 25.05.2017
+    - Correction d'un bogue qui empêchait les votes des chansons de se mettre à jour côté client (1h30).
+    - Correction d'un bogue qui empêchait le serveur d'upvote des chansons (0h30).
+    - Les chansons s'enregistrent correctement dans la base de données (0h30).
+    - Correction d'exceptions levées par la base de données (1h00).
+    - Changement de la logique de la playlist éphémère (2h00).
+    - La vue de la chanson en cours de lecture se met maintenant à jour côté client et serveur (2h00).
+    - Correction d'un bogue qui empêchait des communications parallèles avec la base de données (0h30).
+    - La vue de la chanson précédente se met maintenant correctement à jour côté client (1h00).
+    - La barre de volume se met maintenant correctement à jour côté client (1h00).
+    - Le bouton play/pause se met maintenant correctement à jour côté client (0h30).
+
+- 24.05.2017
+    - Correction de plusieurs bugs d'affichage liés à l'interface graphique (2h00).
+
+- 23.05.2017
+    - Modification de la sérialisation de la playlist éphémère (1h00).
+    - Meilleure gestion de la sélection d'une playlist au niveau de l'interface graphique (1h00).
+
+- 22.05.2017
+    - Ajout d'une fenêtre au démarrage pour choisir si l'on veut être client ou serveur (0h30).
+    - Ajout de la possibilité de se connecter à un serveur depuis l'interface graphique (1h00).
+    - Ajout de la possibilité de transférer une musique depuis l'interface graphique (1h00).
+    - Modification de la sérialisation d'une musique et de la playlist éphémère (1h30).
+
+- 16.05.2017
+    - Correction d'un bogue qui ne terminait pas correctement le player (0h30).
+    - Correction d'un bogue qui ne laissait pas favoriser les chansons de la playlist éphémère (1h15).
+    - Correction d'un bogue qui laissait la possibilité de voter pour les chansons d'une playlist sauvegardée (0h15).
+
+- 15.05.2017
+    - Revue complète de la logique du PlaylistManager (3h30).
+    - Intégration des actions de favoris à l'interface graphique (1h00).
+
+- 10.05.2017
+    - Création automatique de la playlist "Favoris" dans la base de données si celle-ci n'existait pas (2h00).
+    - Fin de l'embellissement du panneau des playlists (1h00).
+
+- 09.05.2017
+    - Modification du player afin que la prochaine chanson soit jouée automatiquement (0h30).
+    - Début de l'embellissement du panneau des playlists (1h00).
+
 - 06.05.2017
     - Finalisation de la fusion du panneau "chanson précédente" (0h30).
     - Correction de quelques bogues liés aux précédentes itérations (1h30).
