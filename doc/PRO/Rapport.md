@@ -681,7 +681,7 @@ Lors du lancement de notre programme, la réelle exécution de celui-ci est la s
 ## Git / GitHub
 Git est un outil de gestions de versions qui permet de simplifier le développement d'une application en gérant automatiquement la fusion de code de deux auteurs différents et pouvoir avoir un historique des actions effectuées tout au long du projet.
 
-Nous l'avons utilisé afin de permettre à chacun de développer séparemment et qu'il puisse gérer la fusion automatiquement. Nous pouvions, au besoin, effectuer des tests sans mettre en péril le reste du projet à l'aide de branches. Nous avons utilisé GitHub afin de centralisé ça sur Internet.
+Nous l'avons utilisé afin de permettre à chacun de développer séparément et qu'il puisse gérer la fusion automatiquement. Nous pouvions, au besoin, effectuer des tests sans mettre en péril le reste du projet à l'aide de branches. Nous avons utilisé GitHub afin de centralisé ça sur Internet.
 
 ## IntelliJ IDEA
 IntelliJ IDEA est un environnement de développement intégré, autrement dit, un ensemble d'outils destinés au développement logiciel.
@@ -695,7 +695,7 @@ Nous l'avons choisi pour les raisons suivantes:
 ## Apache Maven
 Apache Maven est un outil de gestion de projet basé sur POM (modèle d'objet de projet).
 
-Nous l'avons utilisé dans le cadre de notre projet afin de pouvoir gérer les dépendances et la compiliation de façon unifiée au travers de tous les développeurs. Il nous a permis de définir une librairie et sa version à utiliser et ainsi, le code de tous les développeurs se basent sur les mêmes versions et utilisent la même façon de compiler pour s'assurer du bon fonctionnement du programme.
+Nous l'avons utilisé dans le cadre de notre projet afin de pouvoir gérer les dépendances et la compilation de façon unifiée au travers de tous les développeurs. Il nous a permis de définir une librairie et sa version à utiliser et ainsi, le code de tous les développeurs se basent sur les mêmes versions et utilisent la même façon de compiler pour s'assurer du bon fonctionnement du programme.
 
 ## Scene Builder
 Scene builder est un outil qui permet de créer des fichiers au formats FXML via un éditeur graphique.
@@ -708,7 +708,7 @@ Wireshark est un outil essentiel pour comprendre les mécanismes de fonctionneme
 Nous l'avons utilisé dans notre projet afin de vérifier que la communication réseau entre le client et le serveur et s'assurer que tout marchait comme souhaité.
 
 ## PlantUML
-PlantUML est un outil gratuit et open-source qui permet la génération de schémas UML de toutes sortes (diaragrammes de classe, diagrammes de séquences, diagrammes d'activités, etc.) et ce, à l'aide de fichiers textes.
+PlantUML est un outil gratuit et open-source qui permet la génération de schémas UML de toutes sortes (diagrammes de classe, diagrammes de séquences, diagrammes d'activités, etc.) et ce, à l'aide de fichiers textes.
 
 Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui pouvaient être améliorés par plusieurs personnes en même temps à l'aide de Git grâce au fait que c'est simplement des fichiers textes.
 
@@ -756,10 +756,10 @@ Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui
 - Il n'y pas moyens de proposer à nouveau une chanson qui a déjà été jouée de la soirée.
 
 ## Problèmes potentiels non testés
-- Risque de bloquer toute l'application en cas de charge élevée car la méthode `execute` des Cores est en exclusion mutuelle et donc peut potentiellement bloquer l'intéraction avec le serveur s'il y a beaucoup de clients connectés et intéragissants avec le serveur.
+- Risque de bloquer toute l'application en cas de charge élevée car la méthode `execute` des Cores est en exclusion mutuelle et donc peut potentiellement bloquer l'interaction avec le serveur s'il y a beaucoup de clients connectés et interagissant avec le serveur.
 
 # Améliorations envisagées
-- Revoir l'architecture du projet pour séparer encore mieux les entités, avec le patron Obersable-Observeur par exemple, ce qui permettrait de notifer, à qui veulent entendre, des informations.
+- Revoir l'architecture du projet pour séparer encore mieux les entités, avec le patron Observable-Observeur par exemple, ce qui permettrait de notifier, à qui veulent entendre, des informations.
 - Rendre tous les messages et commandes asynchrones afin de minimiser les ressources et ne pas bloquer toute l'application lorsqu'il y a beaucoup de charge.
 - Se passer des Singleton afin de rendre notre code plus indépendant.
 - Mieux gérer la concurrence.
@@ -769,11 +769,11 @@ Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui
 En conclusion, nous avons essayé de réaliser un programme qui regroupe les qualités suivantes:
 
 - Code propre, facile à comprendre et réutilisable.
-- Documentation claire et exaustive du code.
+- Documentation claire et exhaustive du code.
 - Facile à utiliser et à comprendre pour des utilisateurs néophytes.
 - Niveau d'abstraction le plus élevé possible.
 
-Nous pensons avoir réussi à atteindre ces objectifs. Il y a encore des points à améliorer mais nous avons réussi à produire un programme fonctionnel qui répond à la quasi totalité des points du cahier des charges.
+Nous pensons avoir atteint ces objectifs. Il y a encore des points à améliorer mais nous avons réussi à produire un programme fonctionnel qui répond à la quasi totalité des points du cahier des charges.
 
 # Bilan
 
