@@ -1,3 +1,21 @@
+<!---
+  Quelques commandes utiles:
+
+  1. Pour compiler le document, il faut que vous ayiez installé Pandoc et XeLaTeX (ou XeTeX).
+      La commande pour compiler le document est la suivate:
+
+      pandoc --latex-engine=xelatex --listings Rapport.md -o Rapport.pdf
+
+
+  2. Afin qu'une image soit correctement placée dans le document, la commande Markdown utilisée jusqu'à maintenant n'est plus d'actualité.
+      Il faut maintenant utiliser la syntaxe suivante:
+
+      \befin{figure}
+        \includegraphics{<url local de l'image>}
+        \caption{<Légende>}
+      \end{figure}
+-->
+
 ---
 lang: fr
 
@@ -16,9 +34,6 @@ header-includes:
     - \usepackage{tikz}
     - \usepackage{hyperref}
     - \usepackage{floatrow}
-
-    # Make figures not floating.
-    - \floatplacement{figure}{!ht}
 
     # Some beautiful colors.
     - \definecolor{pblue}{rgb}{0.13, 0.13, 1.0}
@@ -64,7 +79,6 @@ header-includes:
     # Set links colors
     - \hypersetup{colorlinks,citecolor=black,filecolor=black,linkcolor=black,urlcolor=black}
 ---
-
 \makeatletter
 \renewcommand{\@maketitle}{%
 \newpage
