@@ -717,7 +717,6 @@ Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui
 
 ## Côté serveur
 
-
 **On doit en faire des tableaux et retester toute l'application**
 
 **DG : cette liste me semble relativement massive, on pourrait faire des sous-chapitres**
@@ -1684,6 +1683,9 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 
 - 27.04.2017
     - Analyse des modifications au niveau de l'interface graphique, compréhension de la nouvelle structure (1h00)
+
+- 11.04.2017
+	- Réglage de la barre de progression de la musique (1h00)
 
 - 10.04.2017
     - Réalisation de la présentation (1h00)
