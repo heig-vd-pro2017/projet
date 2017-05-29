@@ -78,6 +78,7 @@ public class ServerSessionManager implements ISessionManager {
             ServerSession serverSession = new ServerSession(id, serverIp, serverName);
             availableServers.put(serverSession.getId(), serverSession);
         }
+
     }
 
     /**
@@ -113,6 +114,10 @@ public class ServerSessionManager implements ISessionManager {
                 }
             }
         }
+    }
+
+    public void clear() {
+        availableServers.clear();
     }
 
     @Override

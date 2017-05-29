@@ -67,6 +67,8 @@ public class ClientCore extends AbstractCore implements ICore {
 
         serverSessionManager = ServerSessionManager.getInstance();
 
+        serverSessionManager.clear();
+
         this.threadPool = Executors.newCachedThreadPool();
     }
 
