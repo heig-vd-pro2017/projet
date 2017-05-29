@@ -217,7 +217,7 @@ Quand l'application est lancée, la fenêtre suivante est affichée à l'écran.
 \begin{minipage}{\linewidth}
   \centering
   \includegraphics[width=\linewidth]{figures_manuel_utilisateur/client.PNG}
-  \captionof{figure}{Interface de l'application lancée en tant que client}
+  \captionof{figure}{Gestion d'un morceau de musique}
 \end{minipage}
 
 ### Choix du serveur
