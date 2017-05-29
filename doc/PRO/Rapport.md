@@ -89,7 +89,7 @@ header-includes:
         \underline{Chef remplaçant} & Lucas Elisei \\
         \underline{Membres} & David Truan \\
         & Denise Gemesio \\
-        & Thibault Togue \\
+        & Thibaut Togue \\
         & Yosra Harbaoui \\
         \\
         \underline{Professeur} & René Rentsch \\
@@ -320,7 +320,7 @@ La classe `UnicastClient` va pouvoir recevoir les commandes venant du réseau et
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[height=0.6\textheight]{figures/unicast_client.png}
+  \includegraphics[height=0.55\textheight]{figures/unicast_client.png}
   \captionof{figure}{Diagramme d'activité de la réception et de l'envoi Unicast}
 \end{minipage}
 
@@ -399,6 +399,8 @@ Ce package permet de définir tous les éléments nécessaires à la gestion de 
 
 ### `EphemeralPlaylist`
 La classe EphemeralPlaylist représente la liste de lecture en cours de construction et de lecture. Cette classe permet de mettre à jour l'interface graphique, lors d'une action sur un élément de la playlist. La mise à jour se fait grâce au pattern observeur, à travers la liste `ObservableSortedPlaylistTrackList`, qui joue, en même temps, le rôle d'observable et d'observeur. Elle observe les morceaux de musique de la liste dans le but de changer son état en cas de vote positif ou négatif, et est observable dans le cas où elle envoie des notifications lors des mises à jour. Dans cette classe, nous avons aussi le champ `delegate` qui représente la liste de lecture qui sera enregistrée dans la base de données pour le suivi de celle-ci.
+
+\pagebreak
 
 ### `Player`
 Cette classe permet de réaliser les actions de base sur la musique telles que la lecture, la mise sur pause, passer au morceau suivant, etc.
@@ -787,6 +789,8 @@ Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui
   \captionof{figure}{Tests réalisés}
 \end{minipage}
 
+\pagebreak
+
 ## Problèmes subsistants
 
 - Il n'y pas moyen de proposer à nouveau un morceau qui a déjà été joué durant la soirée.
@@ -794,6 +798,8 @@ Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui
 
 ## Problèmes potentiels non testés
 - Risque de bloquer toute l'application en cas de charge élevée car la méthode `execute` des Cores est en exclusion mutuelle et donc, peut potentiellement bloquer l'interaction avec le serveur, s'il y a beaucoup de clients connectés et interagissant avec le serveur.
+
+\pagebreak
 
 # Retour sur le cahier des charges
 Avec les tests décrits au chapitre 8 et selon notre cahier des charges, voici le récapitulatif des fonctionnalités implémentées dans notre projet.
@@ -874,6 +880,8 @@ Ce projet fut une expérience enrichissante sur plusieurs points :
 
 Je pense que notre équipe a bien fonctionné et que les tâches ont été réparties correctement, les personnes qui ont moins codé ayant fait plus de documentation.
 J'ai particulièrement apprécié l'engagement de Ludovic Delafontaine en tant que chef de projet qui a su synthétiser les problèmes pour nous et les communiquer lorsque cela était nécessaire. L'équipe avait une bonne cohésion et les échanges réguliers ont permis de bien faire évoluer le projet en même temps que de mettre à jour tout le monde sur ce qui avait été fait par les différents membres.
+
+\pagebreak
 
 ## Thibaut
 Ce projet a été une très belle expérience pour les raisons suivantes:
@@ -960,6 +968,8 @@ Ne pas écrire d'en-têtes commme ceci:
  */
 ```
 
+\pagebreak
+
 ### Fonctions
 L'en-tête des fonctions devra respecter la forme suivante:
 ```java
@@ -1015,6 +1025,8 @@ private unsigned int volume;
 //! The playlist containing all the songs
 private ArrayList<Music> playlist;
 ```
+
+\pagebreak
 
 ### En-tête des fichiers
 L'en-tête des fichiers devra respecter la forme suivante:

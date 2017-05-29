@@ -89,7 +89,7 @@ header-includes:
         \underline{Chef remplaçant} & Lucas Elisei \\
         \underline{Membres} & David Truan \\
         & Denise Gemesio \\
-        & Thibault Togue \\
+        & Thibaut Togue \\
         & Yosra Harbaoui \\
         \\
         \underline{Professeur} & René Rentsch \\
