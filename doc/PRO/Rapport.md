@@ -785,69 +785,19 @@ PlantUML est un outil gratuit et open source qui permet la génération de sché
 Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui pouvaient être améliorés par plusieurs personnes en même temps à l'aide de Git grâce au fait que ce sont simplement des fichiers textes.
 
 # Tests réalisés
-## Communs aux deux interfaces
-- Le programme démarre correctement
-- Le dialogue de choix de démarre s'affiche correctement
-- Le programme se ferme correctement en fermant la fenêtre
 
-## Serveur
-- Le programme démarre bien en tant que serveur si l'option est choisie
-- Le dialogue du nom du serveur s'affiche correctement
-- On peut saisir le nom du serveur
-- Le nom du serveur est enregistré si l'on appuie sur OK
-- La fenêtre de l'interface s'ouvre ensuite correctement
-- La liste des interfaces réseaux disponibles s'affichent correctement
-- Il est possible de changer d'interface réseaux
-- Si aucune interface réseau n'est disponible, rien ne s'affiche
--
-
-
-## Client
-- Le programme démarre bien en tant que client si l'option est choisie
-- Le programme
-
-
-**On doit en faire des tableaux et retester toute l'application**
-
-## Côté client
-
-## Côté serveur
-
-+ Lancement du programme avec chacun des rôles
-+ Choix entre serveur et client fonctionnel
-+ La liste de lecture est bien émise de la part du serveur
-+ La liste des serveurs disponibles se met bien à jour côté client
-+ Le client peut sélectionner et se connecter au serveur
-+ Le client reçoit et met à jour sa liste de lecture en fonction de celle du serveur auquel il est connecté (IL FAUDRA TESTER AVEC PLUSIEURS SERVEURS)
-+ Le client peut envoyer un morceau au serveur qui l'accepte ou la refuse (A TESTER PLUS EN DÉTAILS)
-+ Le serveur reçoit le morceau et met à jour sa liste de lecture (PAS SÛR QUE ÇA SOIT MIS À JOUR DANS LA DB)
-+ Le client reçoit la mise à jour de la playlist
-+ Le client peut upvoter et downvoter un morceau et cette dernière se met à jour.  
-+ Plusieurs client peuvent envoyer en même temps des fichiers  
-+ Le changement de l'interface réseau fonctionne.  
-+ Le changement de l'interface réseau ne fait pas tout planter durant un transfert de fichier
-+ Le fait d'avoir 2 serveurs fonctionne
-+ le fait d'avoir 2 serveurs ayant le même nom fonctionne
-+ Un client ne peut rajouter/enlever qu'un seul point par morceau même si il se déconnecte.
-+ Les contrôles fonctionnent chez le serveur et chez les client.
-+ Un client doit pouvoir se deconnecter facilement. Ne marche pas côté serveur.
-+ Coté client, la base de données se met bien à jour lors de l'ajout de morceaux, mais la date à laquelle il a été jouée manque dans l'EphemeralPlaylist et donc ne se met pas à jour dans la base de données du client. **DG : "Problèmes subsistants**
-+ Le bouton play/pause marche et change d'état côté client et le bouton marche côté serveur, mais dans ce dernier cas, le bouton côté client ne change pas d'état. **DG : "Problèmes subsistants**
-+ La PlaylistTrack se met bien à jour dans la base de données lorsqu'un morcau a été joué côté client.
-+ Favoriser un morceau côté client l'enregistre bien dans la base de données
-+ A la fermeture du programme côté client, toutes les tracks qui n'ont pas été jouées sont bien effacées de la base de données
-+ A la fermeture du programme côté serveur, les tracks enregistrées sont bien effacées
-+ Côté serveur, les tracks sont bien ajoutées à la base de données.
+** AJOUTER TABLEAU ICI
 
 ## Problèmes subsistants
+
 - Il n'y pas moyen de proposer à nouveau un morceau qui a déjà été joué durant la soirée.
-- Des exceptions sont parfois levées dans certains cas d'utilisations.
+- Des exceptions sont levées dans certains cas d'utilisation.
 
 ## Problèmes potentiels non testés
-- Risque de bloquer toute l'application en cas de charge élevée car la méthode `execute` des Cores est en exclusion mutuelle et donc peut potentiellement bloquer l'interaction avec le serveur s'il y a beaucoup de clients connectés et interagissant avec le serveur.
+- Risque de bloquer toute l'application en cas de charge élevée car la méthode `execute` des Cores est en exclusion mutuelle et donc, peut potentiellement bloquer l'interaction avec le serveur, s'il y a beaucoup de clients connectés et interagissant avec le serveur.
 
 # Retour sur le cahier des charges
-Avec les tests réalisés ci-dessus et selon notre cahier des charges, voici le récapitulatif des fonctionnalités implémentées dans notre projet.
+Avec les tests décrits au chapitre 8 et selon notre cahier des charges, voici le récapitulatif des fonctionnalités implémentées dans notre projet.
 
 \begin{minipage}{\linewidth}
   \centering
@@ -1194,9 +1144,9 @@ class MaClasse {
 ## Planification initiale et son évolution
 
 ### Planification initiale retravaillée
-Notre Gantt n'étant pas adapté à ce genre de projet a demandé à être retravaillé selon un template fourni par M. Rentsch.
+Notre diagramme de Gantt n'étant pas adapté à ce genre de projet, il a dû être retravaillé selon un template fourni par M. Rentsch.
 
-La version initiale non retravaillée est ci-dessous.
+La version initiale non retravaillée se trouve au chapitre 15.2.3.
 
 \begin{minipage}{\linewidth}
   \centering
@@ -1205,7 +1155,7 @@ La version initiale non retravaillée est ci-dessous.
 \end{minipage}
 
 ### Heures effectives
-Et voici nos heures effectives.
+Voici les heures effectives que nous avons reportées depuis le journal de travail.
 
 \begin{minipage}{\linewidth}
   \centering
@@ -1213,8 +1163,8 @@ Et voici nos heures effectives.
   \captionof{figure}[]{Heures effectives}
 \end{minipage}
 
-### Gantt initial personnel
-Nous mettons à disposition la première version de notre planification qui était basée sur un Gantt.
+### Diagramme de Gantt initial personnel
+Nous mettons à disposition la première version de notre planification qui était basée sur un diagramme de Gantt.
 
 \newpage
 
