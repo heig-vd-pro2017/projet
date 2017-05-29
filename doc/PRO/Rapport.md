@@ -237,7 +237,7 @@ Hibernate est la librairie utilisée dans notre projet afin de pouvoir communiqu
 
 \begin{minipage}[c]{\linewidth}
   \centering
-  \includegraphics[height=160pt]{figures/database-schema.png}
+  \includegraphics[width=\linewidth]{figures/database-schema.png}
   \captionof{figure}{Schéma de la base de données}
 \end{minipage}
 
@@ -281,8 +281,6 @@ Pour retrouver l'extension du fichier, nous avons procédé de la manière suiva
 \end{minipage}
 
 Connaître le type de fichier nous permettra de traiter uniquement les fichiers supportés par notre plateforme et, aussi, en termes de sécurité, éviter qu'un utilisateur ne fasse planter le serveur en envoyant un fichier qui n'est pas supporté par celui-ci.
-
-\pagebreak
 
 ## Paquet `network`
 
