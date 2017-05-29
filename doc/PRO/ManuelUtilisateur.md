@@ -141,7 +141,7 @@ Version du manuel utilisateur: 1.0
 - Windows 10
 - Mac OS 10.11.6
 
-**Commusica** nécessite au minimum la version 8 de Java, téléchargeable sur leur site, en cliquant sur le lien suivant : [oracle.com/technetwork/java/javase/downloads](oracle.com/technetwork/java/javase/downloads)
+**Commusica** nécessite au minimum la version 8 de Java, téléchargeable sur leur site, en cliquant sur le lien suivant : [oracle.com/technetwork/java/javase/downloads](oracle.com/technetwork/java/javase/downloads).
 
 ## Infrastructure
 Pour une configuration en tant que serveur, il faut prévoir suffisamment d'espace de stockage pour recevoir les fichiers audio temporaires. Cela peut donc varier selon l'usage, mais il est préférable de prévoir 1 Go d'espace libre minimum.
@@ -155,7 +155,7 @@ Les étapes suivantes vous permettent de lancer l'application :
 - Enregistrer **Commusica** sur le disque dur
 - S'assurer d'avoir ces deux fichiers :
     - `commusica-1.0.jar`
-    - `commusica-1.0.properties`
+    - `commusica.properties`
 
 ## Windows
 - Double-cliquer sur le fichier `commusica-1.0.jar`
@@ -173,7 +173,7 @@ Si un message d'avertissement de la part du pare-feu s'ouvre, il est nécessaire
 
 ## Mac OS
 - Ouvrir le Terminal
-- Se déplacer à l'endroit où est sauvegardé le fichier `commusia-1.0.jar`
+- Se déplacer à l'endroit où est sauvegardé le fichier `commusica-1.0.jar`
 - Taper la commande `java -jar commusica-1.0.jar`
 - Appuyer sur `Enter`
 - Le programme devrait se lancer
@@ -188,7 +188,7 @@ Une fois l'application lancée, la fenêtre ci-dessous apparaît.
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[scale=0.9]{mu-images/client-server-chooser.png}
+  \includegraphics[scale=0.6]{mu-images/client-server-chooser.png}
   \captionof{figure}{Choix de lancement du programme}
 \end{minipage}
 
@@ -205,11 +205,9 @@ Quand vous choisissez de lancer l'application en tant que serveur, une fenêtre 
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics{mu-images/server-name.png}
+  \includegraphics[scale=0.8]{mu-images/server-name.png}
   \captionof{figure}{Fenêtre permettant de donner un nom au serveur}
 \end{minipage}
-
-1. Choix du nom du serveur ainsi que de la nouvelle liste de lecture
 
 ### Interface serveur
 Quand le choix du nom de serveur a été fait, la fenêtre principale est affichée à l'écran.
@@ -232,13 +230,19 @@ Le panneau `Settings` vous offre la possibilité de choisir l'interface réseau 
 Si tout marche, il n'est pas nécessaire de changer d'interface.
 
 \begin{minipage}{\linewidth}
-  \centering
-  \includegraphics[scale=1]{mu-images/server-settings.png}
-  \captionof{figure}{Paramètres du serveur}
+    \centering
+    \begin{minipage}{0.45\linewidth}
+        \includegraphics[trim={0 200pt 0 0}, clip=true]{mu-images/server-settings.png}
+        \captionof{figure}{Paramètres du serveur}
+    \end{minipage}
+    \hspace{0.05\linewidth}
+    \begin{minipage}{0.45\linewidth}
+        \begin{enumerate}
+            \item{Nom du serveur permettant de s'en souvenir après sa configuration}
+            \item{Choix de l'interface réseau}
+        \end{enumerate}
+    \end{minipage}
 \end{minipage}
-
-1. Nom du serveur permettant de s'en souvenir après sa configuration
-2. Choix de l'interface réseau
 
 ## Client
 Les explications suivantes concernent le lancement de l'application en tant que client.
@@ -276,13 +280,19 @@ Si vous êtes sur Windows et continuez de rencontrer des problèmes au niveau de
 Le programme devrait maintenant voir les serveurs disponibles.
 
 \begin{minipage}{\linewidth}
-  \centering
-  \includegraphics{mu-images/client-settings.png}
-  \captionof{figure}{Réglages}
+    \centering
+    \begin{minipage}{0.45\linewidth}
+        \includegraphics[trim={0 200pt 0 0}, clip=true]{mu-images/client-settings.png}
+        \captionof{figure}{Paramètre du client}
+    \end{minipage}
+    \hspace{0.05\linewidth}
+    \begin{minipage}{0.45\linewidth}
+        \begin{enumerate}
+            \item{Choix du serveur}
+            \item{Choix de l'interface réseau}
+        \end{enumerate}
+    \end{minipage}
 \end{minipage}
-
-1. Choix du serveur
-2. Choix de l'interface réseau
 
 Une fois proprement connecté, la playlist en cours de lecture et toutes les informations liées aux morceaux de cette playlist sont visibles. Si cela n'est pas le cas, pensez à vérifier que l'interface réseau soit correcte.
 
@@ -293,14 +303,20 @@ Les explications suivantes sont communes aux deux façons d'utiliser l'applicati
 Ce panneau vous permet de naviguer entre la liste de lecture actuelle, votre liste de morceaux favoris et les différentes listes de lecture qui ont été sauvegardées sur votre ordinateur lors d'utilisations précédentes de **Commusica**.
 
 \begin{minipage}{\linewidth}
-  \centering
-  \includegraphics{mu-images/playlists.png}
-  \captionof{figure}{Listes de lectures}
+    \centering
+    \begin{minipage}{0.45\linewidth}
+        \includegraphics[trim={0 80pt 0 0}, clip=true]{mu-images/playlists.png}
+        \captionof{figure}{Listes de lectures}
+    \end{minipage}
+    \hspace{0.05\linewidth}
+    \begin{minipage}{0.45\linewidth}
+        \begin{enumerate}
+            \item{La liste de lecture en cours de lecture}
+            \item{La liste des favoris}
+            \item{Les listes de lecture des utilisations précédentes}
+        \end{enumerate}
+    \end{minipage}
 \end{minipage}
-
-1. La liste de lecture en cours de lecture
-2. La liste des favoris
-3. Les listes de lecture des utilisations précédentes
 
 
 ### Ajouter de la musique à la liste de lecture en cours de lecture
@@ -312,7 +328,7 @@ Les morceaux lus sont grisés. Le dernier morceau grisé en partant du haut est 
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics{mu-images/track-cells.png}
+  \includegraphics[scale=0.8]{mu-images/track-cells.png}
   \captionof{figure}{Liste de lecture en cours de lecture}
 \end{minipage}
 
