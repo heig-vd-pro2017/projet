@@ -841,6 +841,7 @@ Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui
 
 ## Problèmes subsistants
 - Il n'y pas moyen de proposer à nouveau un morceau qui a déjà été joué durant la soirée.
+- Des exceptions sont parfois levées dans certains cas d'utilisations.
 
 ## Problèmes potentiels non testés
 - Risque de bloquer toute l'application en cas de charge élevée car la méthode `execute` des Cores est en exclusion mutuelle et donc peut potentiellement bloquer l'interaction avec le serveur s'il y a beaucoup de clients connectés et interagissant avec le serveur.
@@ -880,7 +881,7 @@ En conclusion, nous avons essayé de réaliser un programme qui regroupe les qua
 - Facilité à utiliser et à comprendre pour des utilisateurs néophytes.
 - Niveau d'abstraction le plus élevé possible.
 
-Nous pensons avoir atteint ces objectifs. Il y a encore des points à améliorer mais nous avons réussi à produire un programme fonctionnel qui réponde à la quasi totalité des points du cahier des charges.
+Nous pensons avoir atteint ces objectifs. Il y a encore des points à améliorer mais nous avons réussi à produire un prototype fonctionnel qui réponde à la quasi totalité des points du cahier des charges.
 
 # Bilans personnels
 ## Ludovic
@@ -1208,7 +1209,7 @@ Et voici nos heures effectives.
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[width=\linewidth]{images/gantt-rentsch-initial.png}
+  \includegraphics[width=\linewidth]{images/gantt-rentsch-final.png}
   \captionof{figure}[]{Heures effectives}
 \end{minipage}
 
