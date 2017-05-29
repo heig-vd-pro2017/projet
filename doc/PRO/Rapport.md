@@ -781,7 +781,11 @@ Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui
 
 # Tests réalisés
 
-** AJOUTER TABLEAU ICI
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{images/tests.png}
+  \captionof{figure}{Tests réalisés}
+\end{minipage}
 
 ## Problèmes subsistants
 
