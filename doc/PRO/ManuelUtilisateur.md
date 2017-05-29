@@ -226,7 +226,7 @@ Quand le choix du nom de serveur a été fait, la fenêtre principale est affich
 4. Détails du morceau venant de se terminer
 5. Contrôles sur la musique et détails du morceau en écoute
 
-### Réglages
+### Réglages du côté serveur
 
 ** AJOUTER NOUVELLE IMAGE ICI **
 
@@ -251,7 +251,7 @@ Quand l'application est lancée, la fenêtre suivante est affichée à l'écran.
 4. Morceau précédent
 5. Contrôles sur la musique et détails du morceau en écoute
 
-### Réglages
+### Réglages du côté client
 Quand vous choisissez de lancer l'application en tant que client, vous avez le choix de vous connecter à l'un des serveurs. Vous pouvez choisir parmi une liste de serveurs disonibles.
 
 \begin{minipage}{\linewidth}
@@ -290,9 +290,10 @@ Ce panneau vous permet de naviguer entre la liste de lecture actuelle, votre lis
   \captionof{figure}{Listes de lectures}
 \end{minipage}
 
-1. La playlist en cours de lecture
-2. La liste des anciennes playlists sauvegardées
-3. Les playlists des utilisations précédentes.
+1. La liste de lecture en cours de lecture
+2. La liste des favoris
+3. Les listes de lecture des utilisations précédentes
+
 
 ### Ajouter de la musique à la liste de lecture en cours de lecture
 Afin d'ajouter de la musique à la liste de lecture en cours, il suffit de glisser-déposer le(s) morceau(x) souhaitée(s) dans le centre de l'interface et celles-ci seront ajoutées au programme. Si votre morceau n'apparaît pas dans l'interface après trente secondes, il est nécessaire de reproduire l'action, le transfert ayant pris trop de temps la première fois.
