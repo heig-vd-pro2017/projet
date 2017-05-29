@@ -1622,6 +1622,10 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 \newpage
 
 ### Ludovic Delafontaine
+- 29.05.2017
+    - Corrections et modifications du manuel utilisateur (2h00)
+    - Elaboration des tests (depuis 12h30)
+
 - 28.05.2017
     - Rédaction du rapport
     - Améliorations du template
@@ -1736,6 +1740,9 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 \newpage
 
 ### Lucas Elisei
+- 29.05.2017
+	- Elaboration des tests et impression du rapport (4h00)
+
 - 28.05.2017
     - Rédaction du rapport (3h00).
 
@@ -1835,16 +1842,19 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 \newpage
 
 ### David Truan
-- 28.06.2017
+- 29.05.2017
+	- Elaboration des tests (4h00)
+
+- 28.05.2017
     - Finition du rapport et création des tableaux (3h).
 
-- 27.06.2017
+- 27.05.2017
     - Finition des package Core et Network du rapport (3h00)
     - Création de différents schémas pour le rapport (1h00)
     - Correction du code pour le changement de l'interface (0h30)
     - Tests sur le programme (0h30)
 
-- 26.06.2017
+- 26.05.2017
     - Continuation du rapport sur la partie Network et Core (3h00)
     - Codage des réactions de l'UI chez le client et des fonctions de vote manquante du serveur (2h00)
     - Codage d'une fenêtre pour choisir le nom du serveur (0h45)
@@ -1920,15 +1930,20 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 \newpage
 
 ### Denise Gemesio
+- 29.05.2017
+	- Corrections et modifications du manuel d'utilisateur (2h00)
+	- Elaboration des tests (4h00)
+
 - 28.05.2017
 	- Planification finale, création (0h30)
 	- Planification finale, modification (1h00)
 	- Correction du rapport (3h30)
 	- Planification finale, modification (0h30)
+	- Correction du manuel d'utilisateur (1h00)
 
 - 27.05.2017
 	- Relecture complète du rapport et corrections orthographiques et grammaticales (3h00)
-	- Rédaction du rapport (UI) (2h00)
+	- Rédaction du rapport (UI) (3h00)
 
 - 26.05.2017
 	- Rédaction du rapport (UI) (5h00)
@@ -1936,11 +1951,11 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 
 - 25.05.2017
     - Rédaction du rapport (paquets playlist, utils et UI) (6h00)
-    - Mise au propre du journal de travail (0h30)
+    - Mise au propre du journal de travail (1h00)
     - Corrections orthographiques et grammaticales du rapport (2h00)
 
 - 24.05.2017
-    - Rédaction du rapport (1h00)
+    - Rédaction du rapport (2h00)
 
 - 23.05.2017
     - Revue de l'introduction et objectifs du rapport (1h00)
@@ -1980,8 +1995,13 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 \newpage
 
 ### Thibaut Togue Kamga
+- 29.05.2017
+	- Elaboration des tests (4h)
+	- Création du document et début des tests (1h30)
+
 - 28.05.2017
-	- Reflexion sur les scénarios des tests.(04h00)
+	- Reflexion sur les scénarios des tests (04h00)
+
 - 27.05.2017
   	- Corrections du rapport après les suggestions de Denise Gemesio (2h00)
   	- Relecture du rapport(2h30)
@@ -2038,6 +2058,9 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
 \newpage
 
 ### Yosra Harbaoui
+- 29.05.2017
+	- Elaboration des tests (1h30)
+
 - 28.05.2017
     - Rédaction du manuel d'utilisation. (3h00)
     - Mise à jour du journal du travail. (0h45)
