@@ -41,7 +41,7 @@ header-includes:
     - \fancyhead[RO,RE]{HEIG-VD - PRO 2017}
 
     # Redefine TOC style.
-    - \setcounter{tocdepth}{1}
+    - \setcounter{tocdepth}{2}
 
     # 'listings' settings.
     - \lstset{breaklines = true}
@@ -245,10 +245,10 @@ Quand l'application est lancée, la fenêtre suivante est affichée à l'écran.
   \captionof{figure}{Gestion d'un morceau de musique}
 \end{minipage}
 
-1. Liste des listes de lectures disponibles
-2. Liste des morceaux de musique présents dans la liste de lecture sélectionnée
+1. Liste des listes de lectures
+2. Liste de lecture en cours de lecture
 3. Réglages
-4. Détails du morceau venant de se terminer
+4. Morceau précédent
 5. Contrôles sur la musique et détails du morceau en écoute
 
 ### Réglages
@@ -257,7 +257,7 @@ Quand vous choisissez de lancer l'application en tant que client, vous avez le c
 \begin{minipage}{\linewidth}
   \centering
   \includegraphics{figures_manuel_utilisateur/server_list.PNG}
-  \captionof{figure}{Choix du serveur}
+  \captionof{figure}{Réglages}
 \end{minipage}
 
 1. Choix du serveur
@@ -324,12 +324,12 @@ Les morceaux lus sont grisés. Le dernier morceau grisé en partant du haut est 
 Votre vote aura pour conséquence d'augmenter ou diminuer le score du morceau d'au maximum un point. Le vote sur le morceau en cours de lecture n'aura pas d'effet.
 Ceci a pour conséquence de réorganiser la liste, les morceaux les plus votés se trouvant en début de liste.
 
-### Contrôles sur la musique
+### Contrôles sur la musique 
 
 \begin{minipage}{\linewidth}
   \centering
   \includegraphics{figures_manuel_utilisateur/track_playing.png}
-  \captionof{figure}{Contrôles sur la musique}
+  \captionof{figure}{Contrôles sur la musique et détails du morceau en écoute}
 \end{minipage}
 
 1. Présent uniquement pour l'esthétique, ce bouton ne fait rien
