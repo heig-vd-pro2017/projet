@@ -128,7 +128,7 @@ header-includes:
 Ce document est le manuel d'utilisation de l'application **Commusica**, développée dans le cadre du projet de semestre de la section TIC de la HEIG-VD.
 
 **Commusica** est une application permettant aux utilisateurs d'envoyer des fichiers musicaux à un autre utilisateur, qui a préalablement choisi le rôle de serveur. La communication se fait via un réseau local sans fil ou câblé.
-Son intérêt est de proposer une expérience communautaire en permettant à tous les utilisateurs de changer l'ordre d'écoute de la liste de lecture en cours, en votant pour ou contre les morceaux la composant. Le contrôle du volume, de l'arrêt, de la mise en marche du morceau en cours et du passage au morceau suivant fonctionnent sur un principe de vote et sont effectués lorsque la majorité des utilisateurs actifs d'un serveur ont voté pour réaliser l'action.
+Son intérêt est de proposer une expérience communautaire en permettant à tous les utilisateurs de changer l'ordre d'écoute de la liste de lecture en cours, en votant pour ou contre les morceaux la composant. Le contrôle du volume, de l'arrêt, de la mise en marche du morceau en cours et du passage au morceau suivant fonctionnent sur un principe de vote et sont effectués lorsque la majorité des utilisateurs actifs d'un serveur a voté pour réaliser l'action.
 
 Version de **Commusica**: 1.0
 
@@ -146,7 +146,9 @@ Version du manuel utilisateur: 1.0
 ## Infrastructure
 Pour une configuration en tant que serveur, il faut prévoir suffisamment d'espace de stockage pour recevoir les fichiers audio temporaires. Cela peut donc varier selon l'usage, mais il est préférable de prévoir 1 Go d'espace libre minimum.
 
-De plus, il est nécessaire d'avoir un système qui puisse diffuser de la musique afin que l'application marche et tous les clients doivent être connectés au même réseau local.
+Il est également nécessaire d'avoir un système qui puisse diffuser de la musique afin que l'application marche. 
+
+Pour finir, tous les clients doivent être connectés au même réseau local.
 
 # Lancement
 Les étapes suivantes vous permettent de lancer l'application :
@@ -208,6 +210,8 @@ Quand vous choisissez de lancer l'application en tant que serveur, une fenêtre 
   \includegraphics[scale=0.8]{mu-images/server-name.png}
   \captionof{figure}{Fenêtre permettant de donner un nom au serveur}
 \end{minipage}
+
+1. Choix du nom du serveur ainsi que de la nouvelle liste de lecture
 
 ### Interface serveur
 Quand le choix du nom de serveur a été fait, la fenêtre principale est affichée à l'écran.
@@ -320,10 +324,9 @@ Ce panneau vous permet de naviguer entre la liste de lecture actuelle, votre lis
 
 
 ### Ajouter de la musique à la liste de lecture en cours de lecture
-Afin d'ajouter de la musique à la liste de lecture en cours, il suffit de glisser-déposer le(s) morceau(x) souhaitée(s) dans le centre de l'interface et celles-ci seront ajoutées au programme. Si votre morceau n'apparaît pas dans l'interface après trente secondes, il est nécessaire de reproduire l'action, le transfert ayant pris trop de temps la première fois.
+Afin d'ajouter de la musique à la liste de lecture en cours de lecture, il suffit de glisser-déposer le(s) morceau(x) souhaitée(s) dans le centre de l'interface et celles-ci seront ajoutées au programme. Si votre morceau n'apparaît pas dans l'interface après trente secondes, il est nécessaire de reproduire l'action, le transfert ayant pris trop de temps la première fois.
 
 ### Liste de lecture en cours de lecture
-
 Les morceaux lus sont grisés. Le dernier morceau grisé en partant du haut est celui en cours de lecture.
 
 \begin{minipage}{\linewidth}
