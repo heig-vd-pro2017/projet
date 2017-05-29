@@ -81,7 +81,19 @@ header-includes:
 {\huge\@title}\vskip1.5em
 \includegraphics[width=10cm, height=10cm]{images/logo.png}\vskip1.5em
 {\LARGE Manuel utilisateur}\vskip1.5em
-{\large\@author}\vskip1.5em
+{
+    \large
+    Groupe 4B\vskip0.4em
+    \begin{tabular}{ll}
+        \underline{Chef de projet} & Ludovic Delafontaine \\
+        \underline{Chef remplaçant} & Lucas Elisei \\
+        \underline{Membres} & David Truan \\
+        & Denise Gemesio \\
+        & Thibault Togue \\
+        & Yosra Harbaoui \\
+        \\
+        \underline{Professeur} & René Rentsch \\
+    \end{tabular}}\vskip1.5em
 {\large\@date}
 \end{center}
 \endgroup
@@ -89,12 +101,9 @@ header-includes:
 }
 \makeatother
 
-\title{Commusica\\Le lecteur de musique communautaire et égalitaire}
-
-\author{Chef de projet: Ludovic Delafontaine\\
-   Chef remplaçant: Lucas Elisei\\
-   Membres: David Truan, Denise Gemesio, Thibaut Togue, Yosra Harbaoui\\
-   Responsable du cours: René Rentsch}
+\title{%
+  Commusica \vskip0.4em
+  \large Le lecteur de musique communautaire et égalitaire}
 
 \date{HEIG-VD - Semestre d'été 2017}
 
@@ -116,33 +125,34 @@ header-includes:
 \newpage
 
 # Introduction
-Ce document est le manuel d'utilisation de l'application **Commusica** développée dans le cadre d'un projet de semestre de la section TIC de la HEIG-VD.
+Ce document est le manuel d'utilisation de l'application **Commusica**, développée dans le cadre du projet de semestre de la section TIC de la HEIG-VD.
 
-**Commusica** est une application permettant aux utilisateurs d'envoyer des fichiers musicaux à un autre utilisateur qui se sera préalablement configuré comme serveur. La communication se fait via un réseau local sans fil ou câblé.
-Son intêret et de proposer une expérience communautaire en permettant à tous les utilisateurs de changer l'ordre de la liste de lecture en cours en votant pour ou contre les morceaux s'y trouvant. Ces derniers vont alors changer d'ordre. Le contrôle du volume, de l'arrêt, de la mise en marche du morceau en cours et du passage au morceau suivant, fonctionnent sur un principe de vote et sont effectués lorsque la majorité des utilisateurs actifs d'un serveur ont voté pour réaliser l'action.
+**Commusica** est une application permettant aux utilisateurs d'envoyer des fichiers musicaux à un autre utilisateur, qui aura préalablement choisi le rôle de serveur. La communication se fait via un réseau local sans fil ou câblé.
+Son intérêt est de proposer une expérience communautaire en permettant à tous les utilisateurs de changer l'ordre d'écoute de la liste de lecture en cours, en votant pour ou contre les morceaux la composant. Le contrôle du volume, de l'arrêt, de la mise en marche du morceau en cours et du passage au morceau suivant fonctionnent sur un principe de vote et sont effectués lorsque la majorité des utilisateurs actifs d'un serveur ont voté pour réaliser l'action.
 
-Version de Commusica: 1.0
+Version de **Commusica**: 1.0
 
 Version du manuel utilisateur: 1.0
 
 # Prérequis
 ## Système d'exploitation et logiciels
-**Commusica** a été testé sur les systèmes suivants et peut donc être utilisé sur:
+**Commusica** a été testé sur les systèmes d'exploitation suivants et peut donc être utilisé sur:
 
 - Windows 10
 - Mac OS 10.11.6
 
-Commusica nécessite au minimum la version 8 de Java, téléchargeable sur leur site [oracle.com/technetwork/java/javase/downloads](oracle.com/technetwork/java/javase/downloads)
+**Commusica** nécessite au minimum la version 8 de Java, téléchargeable sur leur site [oracle.com/technetwork/java/javase/downloads](oracle.com/technetwork/java/javase/downloads)
 
 ## Infrastructure
-Pour une configuration en tant que serveur, il faut prévoir suffisamment d'espace de stockage pour recevoir les fichiers audio temporaires. Cela peut donc varier selon l'usage, mais il est préférable de prévoir 1 Go d'espace libre.
+Pour une configuration en tant que serveur, il faut prévoir suffisamment d'espace de stockage pour recevoir les fichiers audio temporaires. Cela peut donc varier selon l'usage, mais il est préférable de prévoir 1 Go d'espace libre minimum.
 
 De plus, il est nécessaire d'avoir un système qui puisse diffuser de la musique afin que l'application marche et tous les clients doivent être connectés au même réseau local.
 
 # Lancement
-Les étapes suivantes vont vous permettre de lancer l'application.
+Les étapes suivantes vous permettent de lancer l'application :
 
-- Commencer par récupérer la dernière version de **Commusica** puis enregistrez-la sur le disque dur.
+- Récupérer la dernière version de **Commusica**.
+- Enregistrer **Commusica** sur le disque dur.
 - S'assurer d'avoir les deux fichiers suivants pour le bon fonctionnement de **Commusica** :
     - `commusica-1.0.jar`
     - `commusica-1.0.properties`
@@ -154,7 +164,7 @@ Les étapes suivantes vont vous permettre de lancer l'application.
 Si cela ne marche pas :
 
 - Ouvrir PowerShell depuis le menu `Démarrer`
-- Se déplacer à l'endroit où est sauvegardé le fichier `commusia-1.0.jar`
+- Dans l'invite de commande, se déplacer à l'endroit où est sauvegardé le fichier `commusia-1.0.jar`
 - Taper la commande `java -jar commusica-1.0.jar`
 - Appuyer sur `Enter`
 - Le programme devrait se lancer
@@ -169,9 +179,9 @@ Si un message d'avertissement de la part du pare-feu s'ouvre, il est nécessaire
 - Le programme devrait se lancer
 
 # Utilisation
-Les étapes suivantes vous expliquer comment utiliser l'application.
+Les étapes suivantes vous expliquent comment utiliser l'application.
 
-*Rappel: certaines actions nécessitent que la majorité des personnes utilisant le système aient fait le même souhait. C'est la raison pour laquelle votre action peut avoir été prise en compte mais qu'elle n'a pas d'effet immédiat.*
+*Attention: pour que certaines actions fonctionnent, il est nécessaire que la majorité des personnes aient sélectionné ladite action. Ainsi, il est possible que cette dernière ne soit pas effective immédiatement.*
 
 ## Choix du lancement de l'application
 Une fois l'application lancée, la fenêtre ci-dessous apparaît.
@@ -182,28 +192,28 @@ Une fois l'application lancée, la fenêtre ci-dessous apparaît.
   \captionof{figure}{Choix de lancement du programme}
 \end{minipage}
 
-Vous avez le choix entre lancer l'application en tant que serveur ou client.
+Vous avez le choix entre lancer l'application en tant que serveur ou client :
 
 - Serveur: réceptionnera la musique et la lira sur le système audio.
-- Client: peut envoyer des morceaux de musique au serveur et interagir avec celui-ci.
+- Client: pourra envoyer des morceaux de musique au serveur et interagir avec celui-ci.
 
 ## Serveur
 Les explications suivantes concernent le lancement de l'application en tant que serveur.
 
 ### Configuration du serveur
-Quand vous choisissez de lancer l'application en tant que serveur, une fênetre apparaîtera pour vous demander de nommer votre serveur.
+Quand vous choisissez de lancer l'application en tant que serveur, une fênetre apparaît pour vous demander de nommer votre serveur.
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics{figures_manuel_utilisateur/nomServeur.PNG}
+  \includegraphics[scale=0.8]{figures_manuel_utilisateur/nomServeur.PNG}
   \captionof{figure}{Dialogue pour donner un nom au serveur}
 \end{minipage}
 
 ### Interface serveur
-Quand l'application est lancée, la fenêtre suivante sera affichée à l'écran.
+Quand l'application est lancée, la fenêtre suivante est affichée à l'écran.
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/Server.PNG}
+  \includegraphics[width=0.9\linewidth]{figures_manuel_utilisateur/Server.PNG}
   \captionof{figure}{Interface de l'application lancée en tant que serveur}
 \end{minipage}
 
@@ -211,15 +221,16 @@ Quand l'application est lancée, la fenêtre suivante sera affichée à l'écran
 Les explications suivantes concernent le lancement de l'application en tant que client.
 
 ### Interface client
-Quand l'application est lancée, la fenêtre suivante sera affichée à l'écran.
+Quand l'application est lancée, la fenêtre suivante est affichée à l'écran.
+
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/client.PNG}
-  \captionof{figure}{Interface de l'application lancée en tant que client}
+  \includegraphics[width=0.9\linewidth]{figures_manuel_utilisateur/client.PNG}
+  \captionof{figure}{Gestion d'un morceau de musique}
 \end{minipage}
 
 ### Choix du serveur
-Quand vous choisissez de lancer l'application en tant que client, vous aurez le choix de vous connecter à l'un des serveurs. Vous pourrez choisir parmi une liste de serveurs disonibles.
+Quand vous choisissez de lancer l'application en tant que client, vous avez le choix de vous connecter à l'un des serveurs. Vous pouvez choisir parmi une liste de serveurs disonibles.
 
 \begin{minipage}{\linewidth}
   \centering
@@ -230,7 +241,7 @@ Quand vous choisissez de lancer l'application en tant que client, vous aurez le 
 Une fois connecté, vous pouvez voir la playlist en cours de lecture et toutes les informations liées aux morceaux de cette playlist.
 
 ## Interface commune
-Les explications suivantes sont communes aux deux façons de lancer l'application, que ce soit en tant que serveur ou en tant que client.
+Les explications suivantes sont communes aux deux façons d'utiliser l'application, que ce soit en tant que serveur ou en tant que client.
 
 ### Choix de l'interface réseau
 Le panneau `Settings` vous offre la possibilité de choisir l'interface réseau à utiliser parmi les interfaces que votre ordinateur met à disposition. Une interface par défaut est sélectionnée, mais si les clients ne vous voient pas ou si vous ne voyez pas le serveur auquel vous souhaitez vous connecter, il est peut-être nécessaire de changer l'interface réseau dans la liste déroulante.
@@ -244,7 +255,7 @@ Si tout marche, il n'est pas nécessaire de changer d'interface.
 \end{minipage}
 
 ### Choix des listes de lecture et favoris
-Ce panneau vous permet de naviguer entre la liste de lecture actuelle, vos morceaux enregistrés en temps que favoris et les différentes listes de lecture qui ont été sauvegardées sur votre ordinateur lors d'utilisation précédentes de **Commusica**.
+Ce panneau vous permet de naviguer entre la liste de lecture actuelle, votre liste de morceaux favoris et les différentes listes de lecture qui ont été sauvegardées sur votre ordinateur lors d'utilisations précédentes de **Commusica**.
 
 \begin{minipage}{\linewidth}
   \centering
@@ -255,29 +266,22 @@ Ce panneau vous permet de naviguer entre la liste de lecture actuelle, vos morce
 1. Le panneau `Playlists` contient toutes les listes de lectures.
 2. La playlist en cours de lecture
 3. La liste des anciennes playlists sauvegardées
-4. Les playlists préférées des utilisations précédentes.
+4. Les playlists des utilisations précédentes.
 
-### Ajouter de la musique à la liste de lecture en cours
-Afin d'ajouter de la musique à la liste de lecture en cours, il suffit de "Glisser-Déposer" le(s) morceau(x) souhaitée(s) dans le centre de l'interface et celles-ci seront ajoutées au système. Si votre morceau n'apparait pas dans l'interface, il est peut-être nécessaire de recommencer. Cela est dû à d'éventuels problèmes réseaux et le programme n'autorise pas un transfert de fichiers prenant plus de 15 secondes.
+### Ajouter de la musique à la liste de lecture en cours de lecture
+Afin d'ajouter de la musique à la liste de lecture en cours, il suffit de glisser-déposer le(s) morceau(x) souhaitée(s) dans le centre de l'interface et celles-ci seront ajoutées au programme. Si votre morceau n'apparaît pas dans l'interface après trente secondes, il est nécessaire de reproduire l'action, le transfert ayant pris trop de temps la première fois.
 
-### Liste de lecture du serveur
-Les morceaux présents actuellement dans la playlist en cours de lecture.
+### Liste de lecture en cours de lecture
+
+Les morceaux lus sont grisés. Le dernier morceau grisé en partant du haut est celui en cours de lecture.
 
 \begin{minipage}{\linewidth}
   \centering
   \includegraphics{figures_manuel_utilisateur/client_Playlist_playing.PNG}
-  \captionof{figure}{Liste de lecture en cours}
+  \captionof{figure}{Liste de lecture en cours de lecture}
 \end{minipage}
 
-Les morceaux lus sont grisés. Le dernier morceau grisé est celui en cours de lecture.
-
-#### Gestion d'une chanson  
-Vous avez maintenant une vue sur la liste de lecture du serveur. Vous pouvez, ainsi, voter pour ou contre une ou plusieurs chansons à l'aide des flèches haut et bas. Ceci aura pour conséquence de la réorganiser.
-
-Vous ne pouvez voter qu'une seule fois pour ou qu'une seule fois contre un morceau.
-Rien ne vous empêche d'annuler votre vote, mais vous ne pouvez pas voter indéfiniment. De plus, le morceau en cours de lecture ne peut pas être voté pour ou contre, cela n'aura pas d'effet.
-
-Plus le nombre total de votes est grand, plus le morceau aura de chance d'être joué après le morceau en cours de lecture.
+#### Gestion d'un morceau de musique
 
 \begin{minipage}{\linewidth}
   \centering
@@ -285,11 +289,14 @@ Plus le nombre total de votes est grand, plus le morceau aura de chance d'être 
   \captionof{figure}{Interface de l'application lancée en tant que client}
 \end{minipage}
 
-1. Informations du morceau
+1. Informations du morceau de musique
 2. Possiblité de favoriser/défavoriser le morceau
-3. Voter pour le passage du morceau
-4. Voter contre le passage du morceau
+3. Voter pour le morceau
+4. Voter contre le morceau
 5. Total de votes pour le morceau
+
+Votre vote aura pour conséquence d'augmenter ou diminuer le score du morceau d'au maximum un point. De plus, le vote sur le morceau en cours de lecture n'aura pas d'effet.
+Ceci a pour conséquence de la réorganiser, les morceaux les plus votés se retrouvant en début de liste.
 
 ### Contrôle de la musique
 
@@ -299,17 +306,17 @@ Plus le nombre total de votes est grand, plus le morceau aura de chance d'être 
   \captionof{figure}{Contrôle de la musique}
 \end{minipage}
 
-1. Arrêter/jouer la musique si la mojorité des utilisateurs le demande
-2. Passer au morceau suivante si la mojorité des utilisateurs le demande
-3. Augmenter le volume si la mojorité des utilisateurs le demande
-4. Diminuer le volume si la mojorité des utilisateurs le demande
+1. Arrêter/jouer la musique si la majorité des utilisateurs le demande
+2. Passer au morceau suivant si la mojorité des utilisateurs le demande
+3. Augmenter le volume si la majorité des utilisateurs le demande
+4. Diminuer le volume si la majorité des utilisateurs le demande
 5. Informations sur le morceau
 6. Temps écoulé pour le morceau
-7. Mettre en favori/retirer des favoris le morceau
+7. Ajouter/retirer le morceau des favoris
 8. Nombre de votes reçus pour ce morceau
 
 ### Morceau précédent  
-Les informations concernant le morceau précédant le morceau en cours de lecture.
+Grâce à cet encart, vous avez encore la possibilité d'ajouter à vos favoris le morceau qui vient de passer.
 
 \begin{minipage}{\linewidth}
   \centering

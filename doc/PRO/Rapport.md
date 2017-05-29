@@ -785,6 +785,27 @@ PlantUML est un outil gratuit et open source qui permet la génération de sché
 Il a été utilisé afin de pouvoir très simplement créer des schémas UML qui pouvaient être améliorés par plusieurs personnes en même temps à l'aide de Git grâce au fait que ce sont simplement des fichiers textes.
 
 # Tests réalisés
+## Communs aux deux interfaces
+- Le programme démarre correctement
+- Le dialogue de choix de démarre s'affiche correctement
+- Le programme se ferme correctement en fermant la fenêtre
+
+## Serveur
+- Le programme démarre bien en tant que serveur si l'option est choisie
+- Le dialogue du nom du serveur s'affiche correctement
+- On peut saisir le nom du serveur
+- Le nom du serveur est enregistré si l'on appuie sur OK
+- La fenêtre de l'interface s'ouvre ensuite correctement
+- La liste des interfaces réseaux disponibles s'affichent correctement
+- Il est possible de changer d'interface réseaux
+- Si aucune interface réseau n'est disponible, rien ne s'affiche
+-
+
+
+## Client
+- Le programme démarre bien en tant que client si l'option est choisie
+- Le programme
+
 
 **On doit en faire des tableaux et retester toute l'application**
 
