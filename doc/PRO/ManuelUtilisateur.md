@@ -137,7 +137,7 @@ Commusica nécessite au minimum la version 8 de Java, téléchargeable sur leur 
 ## Infrastructure
 Pour une configuration en tant que serveur, il faut prévoir suffisamment d'espace de stockage pour recevoir les fichiers audio temporaires. Cela peut donc varier selon l'usage, mais il est préférable de prévoir 1 Go d'espace libre.
 
-De plus, il est nécessaire d'avoir un système qui puisse diffuser de la musique afin que l'application marche.
+De plus, il est nécessaire d'avoir un système qui puisse diffuser de la musique afin que l'application marche et tous les clients doivent être connectés au même réseau local.
 
 # Lancement
 Les étapes suivantes vont vous permettre de lancer l'application.

@@ -21,8 +21,8 @@ playlist : date_added: TIMESTAMP
 playlist : date_played: TIMESTAMP
 
 
-track "*" - "1" playlist_track
+track "1" - "*" playlist_track
 
-playlist_track "1" - "*" playlist
+playlist_track "*" - "1" playlist
 
 @enduml
