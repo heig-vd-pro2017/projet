@@ -188,7 +188,7 @@ Une fois l'application lancée, la fenêtre ci-dessous apparaît.
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics{figures_manuel_utilisateur/premiere_fenetre.PNG}
+  \includegraphics[scale=0.9]{mu-images/client-server-chooser.png}
   \captionof{figure}{Choix de lancement du programme}
 \end{minipage}
 
@@ -205,7 +205,7 @@ Quand vous choisissez de lancer l'application en tant que serveur, une fenêtre 
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics{figures_manuel_utilisateur/nomServeur.PNG}
+  \includegraphics{mu-images/server-name.png}
   \captionof{figure}{Fenêtre permettant de donner un nom au serveur}
 \end{minipage}
 
@@ -216,7 +216,7 @@ Quand le choix du nom de serveur a été fait, la fenêtre principale est affich
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[width=0.9\linewidth]{figures_manuel_utilisateur/Server.PNG}
+  \includegraphics[width=\linewidth]{mu-images/main-server-interface.png}
   \captionof{figure}{Interface de l'application lancée en tant que serveur}
 \end{minipage}
 
@@ -227,8 +227,15 @@ Quand le choix du nom de serveur a été fait, la fenêtre principale est affich
 5. Contrôles sur la musique et détails du morceau en écoute
 
 ### Réglages du côté serveur
+Le panneau `Settings` vous offre la possibilité de choisir l'interface réseau à utiliser parmi les interfaces que votre ordinateur met à disposition. Une interface par défaut est sélectionnée, mais si les clients ne vous voient pas, il est peut-être nécessaire de changer l'interface réseau dans la liste déroulante.
 
-** AJOUTER NOUVELLE IMAGE ICI **
+Si tout marche, il n'est pas nécessaire de changer d'interface.
+
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[scale=1]{mu-images/server-settings.png}
+  \captionof{figure}{Paramètres du serveur}
+\end{minipage}
 
 1. Nom du serveur permettant de s'en souvenir après sa configuration
 2. Choix de l'interface réseau
@@ -241,8 +248,8 @@ Quand l'application est lancée, la fenêtre suivante est affichée à l'écran.
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[width=0.9\linewidth]{figures_manuel_utilisateur/client.PNG}
-  \captionof{figure}{Gestion d'un morceau de musique}
+  \includegraphics[width=\linewidth]{mu-images/main-client-interface.jpg}
+  \captionof{figure}{Interface de l'application lancée en tant que client}
 \end{minipage}
 
 1. Liste des listes de lectures
@@ -254,39 +261,30 @@ Quand l'application est lancée, la fenêtre suivante est affichée à l'écran.
 ### Réglages du côté client
 Quand vous choisissez de lancer l'application en tant que client, vous avez le choix de vous connecter à l'un des serveurs. Vous pouvez choisir parmi une liste de serveurs disonibles.
 
+Le panneau `Settings` vous offre la possibilité de choisir l'interface réseau à utiliser parmi les interfaces que votre ordinateur met à disposition. Une interface par défaut est sélectionnée, mais si vous ne voyez pas le serveur auquel vous souhaitez vous connecter, il est peut-être nécessaire de changer l'interface réseau dans la liste déroulante.
+
+Si tout marche, il n'est pas nécessaire de changer d'interface.
+
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics{figures_manuel_utilisateur/server_list.PNG}
+  \includegraphics{mu-images/client-settings.png}
   \captionof{figure}{Réglages}
 \end{minipage}
 
 1. Choix du serveur
 2. Choix de l'interface réseau
 
-Attention, l'interface réseau doit correspondre à celle configurée pour le serveur afin que ce dernier soit visible.
-
 Une fois proprement connecté, la playlist en cours de lecture et toutes les informations liées aux morceaux de cette playlist sont visibles. Si cela n'est pas le cas, pensez à vérifier que l'interface réseau soit correcte.
 
 ## Interface commune
 Les explications suivantes sont communes aux deux façons d'utiliser l'application, que ce soit en tant que serveur ou en tant que client.
-
-### Choix de l'interface réseau
-Le panneau `Settings` vous offre la possibilité de choisir l'interface réseau à utiliser parmi les interfaces que votre ordinateur met à disposition. Une interface par défaut est sélectionnée, mais si les clients ne vous voient pas ou si vous ne voyez pas le serveur auquel vous souhaitez vous connecter, il est peut-être nécessaire de changer l'interface réseau dans la liste déroulante.
-
-Si tout marche, il n'est pas nécessaire de changer d'interface.
-
-\begin{minipage}{\linewidth}
-  \centering
-  \includegraphics{figures_manuel_utilisateur/settings.PNG}
-  \captionof{figure}{Choix de l'interface réseau}
-\end{minipage}
 
 ### Choix des listes de lecture et favoris
 Ce panneau vous permet de naviguer entre la liste de lecture actuelle, votre liste de morceaux favoris et les différentes listes de lecture qui ont été sauvegardées sur votre ordinateur lors d'utilisations précédentes de **Commusica**.
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics{figures_manuel_utilisateur/client_Playlists.jpg}
+  \includegraphics{mu-images/playlists.png}
   \captionof{figure}{Listes de lectures}
 \end{minipage}
 
@@ -304,7 +302,7 @@ Les morceaux lus sont grisés. Le dernier morceau grisé en partant du haut est 
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics{figures_manuel_utilisateur/client_Playlist_playing.PNG}
+  \includegraphics{mu-images/track-cells.png}
   \captionof{figure}{Liste de lecture en cours de lecture}
 \end{minipage}
 
@@ -312,7 +310,7 @@ Les morceaux lus sont grisés. Le dernier morceau grisé en partant du haut est 
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/track-cell.png}
+  \includegraphics[scale=1]{mu-images/track-cell.png}
   \captionof{figure}{Interface de l'application lancée en tant que client}
 \end{minipage}
 
@@ -325,11 +323,11 @@ Les morceaux lus sont grisés. Le dernier morceau grisé en partant du haut est 
 Votre vote aura pour conséquence d'augmenter ou diminuer le score du morceau d'au maximum un point. Le vote sur le morceau en cours de lecture n'aura pas d'effet.
 Ceci a pour conséquence de réorganiser la liste, les morceaux les plus votés se trouvant en début de liste.
 
-### Contrôles sur la musique 
+### Contrôles sur la musique
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics{figures_manuel_utilisateur/track_playing.png}
+  \includegraphics{mu-images/player}
   \captionof{figure}{Contrôles sur la musique et détails du morceau en écoute}
 \end{minipage}
 
@@ -350,7 +348,7 @@ Grâce à cet encart, vous avez encore la possibilité d'ajouter à vos favoris 
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics{figures_manuel_utilisateur/client_previous_track.PNG}
+  \includegraphics{mu-images/previous-track.png}
   \captionof{figure}{Morceau précédent}
 \end{minipage}
 
