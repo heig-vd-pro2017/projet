@@ -83,6 +83,7 @@ header-includes:
 {\LARGE Rapport final}\vskip1.5em
 {
     \large
+    Groupe 4B\vskip0.4em
     \begin{tabular}{ll}
         \underline{Chef de projet} & Ludovic Delafontaine \\
         \underline{Chef remplaçant} & Lucas Elisei \\
@@ -103,12 +104,6 @@ header-includes:
 \title{%
   Commusica \vskip0.4em
   \large Le lecteur de musique communautaire et égalitaire}
-
-\author{Groupe 4B\\
-   Chef de projet: Ludovic Delafontaine\\
-   Chef remplaçant: Lucas Elisei\\
-   Membres: David Truan, Denise Gemesio, Thibaut Togue, Yosra Harbaoui\\
-   Responsable du cours: René Rentsch}
 
 \date{HEIG-VD - Semestre d'été 2017}
 
