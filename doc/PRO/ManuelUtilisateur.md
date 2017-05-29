@@ -146,9 +146,11 @@ Version du manuel utilisateur: 1.0
 ## Infrastructure
 Pour une configuration en tant que serveur, il faut prévoir suffisamment d'espace de stockage pour recevoir les fichiers audio temporaires. Cela peut donc varier selon l'usage, mais il est préférable de prévoir 1 Go d'espace libre minimum.
 
-Il est également nécessaire d'avoir un système qui puisse diffuser de la musique afin que l'application marche. 
+Il est également nécessaire d'avoir un système qui puisse diffuser de la musique afin que l'application marche.
 
 Pour finir, tous les clients doivent être connectés au même réseau local.
+
+\pagebreak
 
 # Lancement
 Les étapes suivantes vous permettent de lancer l'application :
@@ -166,7 +168,7 @@ Les étapes suivantes vous permettent de lancer l'application :
 Si cela ne marche pas :
 
 - Ouvrir PowerShell depuis le menu `Démarrer`
-- Se déplacer à l'endroit où est sauvegardé le fichier `commusia-1.0.jar`
+- Se déplacer à l'endroit où est sauvegardé le fichier `commusica-1.0.jar`
 - Taper la commande `java -jar commusica-1.0.jar`
 - Appuyer sur `Enter`
 - Le programme devrait se lancer
@@ -206,12 +208,18 @@ Les explications suivantes concernent le lancement de l'application en tant que 
 Quand vous choisissez de lancer l'application en tant que serveur, une fenêtre apparaît pour vous demander de nommer votre serveur. Le nom du serveur devient également le nom de la nouvelle liste de lecture. En cas d'appui sur `Annuler`, l'application se ferme.
 
 \begin{minipage}{\linewidth}
-  \centering
-  \includegraphics[scale=0.8]{mu-images/server-name.png}
-  \captionof{figure}{Fenêtre permettant de donner un nom au serveur}
+    \centering
+    \begin{minipage}{0.55\linewidth}
+        \centering
+        \includegraphics[scale=0.75]{mu-images/server-name.png}
+        \captionof{figure}{Fenêtre permettant de donner un nom au serveur}
+    \end{minipage}
+    \begin{minipage}{0.40\linewidth}
+        \begin{enumerate}
+            \item{Choix du nom du serveur ainsi que de la nouvelle liste de lecture}
+        \end{enumerate}
+    \end{minipage}
 \end{minipage}
-
-1. Choix du nom du serveur ainsi que de la nouvelle liste de lecture
 
 ### Interface serveur
 Quand le choix du nom de serveur a été fait, la fenêtre principale est affichée à l'écran.
@@ -236,7 +244,7 @@ Si tout marche, il n'est pas nécessaire de changer d'interface.
 \begin{minipage}{\linewidth}
     \centering
     \begin{minipage}{0.45\linewidth}
-        \includegraphics[trim={0 200pt 0 0}, clip=true]{mu-images/server-settings.png}
+        \includegraphics{mu-images/server-settings.png}
         \captionof{figure}{Paramètres du serveur}
     \end{minipage}
     \hspace{0.05\linewidth}
@@ -247,6 +255,8 @@ Si tout marche, il n'est pas nécessaire de changer d'interface.
         \end{enumerate}
     \end{minipage}
 \end{minipage}
+
+\pagebreak
 
 ## Client
 Les explications suivantes concernent le lancement de l'application en tant que client.
