@@ -1,0 +1,16 @@
+@startuml
+
+    class Logger {
+        [[Logger.html]]
+        {static} -DEBUG: boolean
+        -className: String
+        +Logger(String)
+        -log(Logger.Level, String): void
+        -log(Logger.Level, Exception): void
+        +info(String): void
+        +warning(String): void
+        +error(String): void
+        +error(Exception): void
+    }
+
+@enduml

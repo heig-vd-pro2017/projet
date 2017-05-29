@@ -1,0 +1,40 @@
+@startuml
+
+    class UserSessionManager {
+        [[UserSessionManager.html]]
+        {static} -LOG: Logger
+        {static} -instance: UserSessionManager
+        -activeSessions: Map<Integer, UserSession>
+        -inactiveSessions: Map<Integer, UserSession>
+        -usersAskedForPlayPause: Set<Integer>
+        -usersAskedForNextTrack: Set<Integer>
+        -usersAskedForPreviousTrack: Set<Integer>
+        -usersAskedToTurnVolumeUp: Set<Integer>
+        -usersAskedToTurnVolumeDown: Set<Integer>
+        -scheduledExecutorService: ScheduledExecutorService
+        {static} +getInstance(): UserSessionManager
+        +store(Integer): void
+        +countActiveSessions(): int
+        +countInactiveSessions(): int
+        +countPlayPauseRequests(): int
+        +countNextTrackRequests(): int
+        +countPreviousTrackRequests(): int
+        +countTurnVolumeUpRequests(): int
+        +countTurnVolumeDownRequests(): int
+        +playPause(Integer): void
+        +previousTrack(Integer): void
+        +nextTrack(Integer): void
+        +upvote(Integer, String): void
+        +downvote(Integer, String): void
+        +turnVolumeUp(Integer): void
+        +turnVolumeDown(Integer): void
+        +resetNextTrackRequests(): void
+        +resetPreviousTrackRequests(): void
+        +resetTurnVolumeUpRequests(): void
+        +resetTurnVolumeDownRequests(): void
+        +resetPlayPauseRequests(): void
+        -deleteObsoleteSessions(): void
+        +stop(): void
+    }
+
+@enduml

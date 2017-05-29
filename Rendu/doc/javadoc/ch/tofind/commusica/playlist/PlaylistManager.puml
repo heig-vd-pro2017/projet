@@ -1,0 +1,22 @@
+@startuml
+
+    class PlaylistManager {
+        [[PlaylistManager.html]]
+        {static} -LOG: Logger
+        {static} -instance: PlaylistManager
+        -savedPlaylists: List<SavedPlaylist>
+        -playlist: EphemeralPlaylist
+        -favoritesPlaylist: SavedPlaylist
+        {static} +getInstance(): PlaylistManager
+        +getPlaylist(): EphemeralPlaylist
+        +createPlaylist(String): SavedPlaylist
+        +removePlaylist(SavedPlaylist): void
+        +getSavedPlaylists(): List<SavedPlaylist>
+        +getFavoritesPlaylist(): SavedPlaylist
+        +addTrackToFavorites(Track): void
+        +removeTrackFromFavorites(Track): void
+        -retrieveFavoritesPlaylist(): SavedPlaylist
+        -retrievePlaylists(): List<SavedPlaylist>
+    }
+
+@enduml

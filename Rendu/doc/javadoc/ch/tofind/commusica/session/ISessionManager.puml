@@ -1,0 +1,9 @@
+@startuml
+
+    interface ISessionManager {
+        [[ISessionManager.html]]
+        {static} +TIME_BEFORE_SESSION_INACTIVE: int
+        {abstract} +stop(): void
+    }
+
+@enduml

@@ -1,0 +1,16 @@
+@startuml
+
+    class MulticastClient {
+        [[MulticastClient.html]]
+        {static} -LOG: Logger
+        -port: int
+        -multicastGroup: InetAddress
+        -socket: MulticastSocket
+        -running: boolean
+        +MulticastClient(String, int, InetAddress)
+        +stop(): void
+        +send(String): void
+        +run(): void
+    }
+
+@enduml

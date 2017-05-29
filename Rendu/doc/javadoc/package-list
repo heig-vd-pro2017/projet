@@ -1,0 +1,12 @@
+ch.tofind.commusica
+ch.tofind.commusica.core
+ch.tofind.commusica.database
+ch.tofind.commusica.file
+ch.tofind.commusica.media
+ch.tofind.commusica.network
+ch.tofind.commusica.playlist
+ch.tofind.commusica.session
+ch.tofind.commusica.ui
+ch.tofind.commusica.utils
+org.hibernate.dialect
+org.hibernate.dialect.identity

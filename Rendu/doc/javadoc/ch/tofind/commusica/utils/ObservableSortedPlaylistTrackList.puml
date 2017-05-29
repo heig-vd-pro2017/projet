@@ -1,0 +1,18 @@
+@startuml
+
+    class ObservableSortedPlaylistTrackList {
+        [[ObservableSortedPlaylistTrackList.html]]
+        -delegate: List<PlaylistTrack>
+        -comparator: VoteComparator
+        -count: int
+        +add(PlaylistTrack): boolean
+        +clear(): void
+        +get(int): PlaylistTrack
+        +getNextTrack(): PlaylistTrack
+        +remove(PlaylistTrack): void
+        +size(): int
+        -sort(): void
+        +toString(): String
+    }
+
+@enduml

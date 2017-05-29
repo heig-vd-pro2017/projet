@@ -1,0 +1,8 @@
+@startuml
+
+    class VoteComparator {
+        [[VoteComparator.html]]
+        +compare(PlaylistTrack, PlaylistTrack): int
+    }
+
+@enduml

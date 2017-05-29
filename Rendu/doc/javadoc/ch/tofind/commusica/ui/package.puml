@@ -1,0 +1,170 @@
+@startuml
+
+    namespace ch.tofind.commusica.ui {
+
+        class PreviousTrackView {
+            [[PreviousTrackView.html]]
+            {static} +CSS_CLASS: String
+            {static} -CSS_FILE: String
+            {static} -FAV_EMPTY_IMAGE: String
+            {static} -FAV_FULL_IMAGE: String
+            {static} -FXML_FILE: String
+            {static} -player: Player
+            -previousTrack: Track
+            -albumLabel: Label
+            -artistLabel: Label
+            -favoriteImageView: ImageView
+            -titleLabel: Label
+            -favorite(MouseEvent): void
+        }
+
+        class ClientServerDialog {
+            [[ClientServerDialog.html]]
+            {static} -LOG: Logger
+            +start(Stage): void
+        }
+
+        class PlaylistsListView {
+            [[PlaylistsListView.html]]
+            {static} -CSS_FILE: String
+            {static} -FXML_FILE: String
+            {static} -manager: PlaylistManager
+            ~favoritesLabel: Label
+            ~playingLabel: Label
+            +refresh(): void
+            -loadFavoritesPlaylist(MouseEvent): void
+            -loadPlayingPlaylist(MouseEvent): void
+        }
+
+        class CurrentTrackView {
+            [[CurrentTrackView.html]]
+            {static} +CSS_CLASS: String
+            {static} -CSS_FILE: String
+            {static} -FAV_EMPTY_IMAGE: String
+            {static} -FAV_FULL_IMAGE: String
+            {static} -FXML_FILE: String
+            {static} -player: Player
+            {static} -playlistManager: PlaylistManager
+            -albumLabel: Label
+            -artistLabel: Label
+            -durationBar: ProgressBar
+            -durationLabel: Label
+            -favoriteImageView: ImageView
+            -titleLabel: Label
+            -votesLabel: Label
+            -downvote(MouseEvent): void
+            -favorite(MouseEvent): void
+            -upvote(MouseEvent): void
+        }
+
+        class SettingsView {
+            [[SettingsView.html]]
+            {static} -FXML_FILE: String
+            -interfacesList: ComboBox<Map.Entry<String, InetAddress>>
+            -serverNameField: TextField
+            -serverNameLabel: Label
+            -serversList: ComboBox<ServerSession>
+            -serversListLabel: Label
+            -initializeInterfacesList(): void
+            -initializeServerNameField(): void
+            -initializeServersList(): void
+        }
+
+        class UIController {
+            [[UIController.html]]
+            {static} -LOG: Logger
+            {static} -loader: FXMLLoader
+            {static} -FXML_FILE: String
+            -currentPlaylist: IPlaylist
+            {static} +getController(): UIController
+            +showPlaylist(IPlaylist): void
+            +refreshPlaylist(): void
+            +refreshPlaylistsList(): void
+            +getCurrentPlaylist(): IPlaylist
+            +showAlert(String, String, Alert.AlertType): void
+            +start(Stage): void
+            +initialize(URL, ResourceBundle): void
+            +stop(): void
+        }
+
+        class PlaylistTrackCell {
+            [[PlaylistTrackCell.html]]
+            {static} -LOG: Logger
+            {static} -FAV_EMPTY_IMAGE: String
+            {static} -FAV_FULL_IMAGE: String
+            {static} -FXML_FILE: String
+            -playlistTrack: PlaylistTrack
+            -track: Track
+            -albumLabel: Label
+            -artistLabel: Label
+            -titleLabel: Label
+            -votesLabel: Label
+            -favoriteImageView: ImageView
+            +PlaylistTrackCell(PlaylistTrack)
+            -downvote(MouseEvent): void
+            -favorite(MouseEvent): void
+            -upvote(MouseEvent): void
+        }
+
+        class PlayerControlsView {
+            [[PlayerControlsView.html]]
+            {static} -LOG: Logger
+            {static} +CSS_CLASS: String
+            {static} -CSS_FILE: String
+            {static} -FXML_FILE: String
+            {static} -player: Player
+            {static} -PLAY_IMAGE: String
+            {static} -PAUSE_IMAGE: String
+            -playPauseImageView: ImageView
+            -volumeSlider: Slider
+            -lowerVolume(MouseEvent): void
+            -next(MouseEvent): void
+            -playPause(MouseEvent): void
+            -previous(MouseEvent): void
+            -riseVolume(MouseEvent): void
+        }
+
+        class TracksListView {
+            [[TracksListView.html]]
+            {static} -LOG: Logger
+            {static} -playlistManager: PlaylistManager
+            +showPlaylist(IPlaylist): void
+            -initializeDragAndDrop(): void
+        }
+
+        class javafx.scene.layout.GridPane
+        javafx.scene.layout.GridPane <|-- PreviousTrackView
+
+        abstract class javafx.application.Application {
+            {abstract} +start(Stage): void
+        }
+        javafx.application.Application <|-- ClientServerDialog
+
+        class javafx.scene.layout.AnchorPane
+        javafx.scene.layout.AnchorPane <|-- PlaylistsListView
+
+        javafx.scene.layout.GridPane <|-- CurrentTrackView
+
+        javafx.scene.layout.AnchorPane <|-- SettingsView
+
+        interface javafx.fxml.Initializable {
+            {abstract} +initialize(URL, ResourceBundle): void
+        }
+        javafx.fxml.Initializable <|.. UIController
+
+        javafx.scene.layout.GridPane <|-- PlayerControlsView
+
+        class javafx.scene.control.ListView<T>
+        javafx.scene.control.ListView <|-- TracksListView
+
+        PlaylistsListView --> javafx.scene.control.ListView: playlistsView
+
+        UIController --> PlaylistsListView: playlistsListView
+
+        UIController --> TracksListView: tracksListView
+
+        PlaylistTrackCell --> javafx.scene.layout.AnchorPane: trackPane\npane
+
+    }
+
+@enduml

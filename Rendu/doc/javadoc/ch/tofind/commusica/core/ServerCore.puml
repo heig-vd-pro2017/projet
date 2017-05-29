@@ -1,0 +1,36 @@
+@startuml
+
+    class ServerCore {
+        [[ServerCore.html]]
+        {static} -LOG: Logger
+        {static} -TIME_BEFORE_PLAYLIST_UPDATE: int
+        {static} -name: String
+        -multicast: MulticastClient
+        -server: Server
+        -userSessionManager: UserSessionManager
+        -broadcastPlaylist: ScheduledExecutorService
+        +END_OF_COMMUNICATION(ArrayList<Object>): String
+        +SEND_PLAYLIST_UPDATE(ArrayList<Object>): String
+        +NEW_ACTIVE_CLIENT(ArrayList<Object>): String
+        +TRACK_REQUEST(ArrayList<Object>): String
+        +SENDING_TRACK(ArrayList<Object>): String
+        +UPVOTE_TRACK_REQUEST(ArrayList<Object>): String
+        +DOWNVOTE_TRACK_REQUEST(ArrayList<Object>): String
+        +SEND_NEXT_TRACK_REQUEST(ArrayList<Object>): String
+        +SEND_PLAY_PAUSE_REQUEST(ArrayList<Object>): String
+        +SEND_UPVOTE_TRACK_REQUEST(ArrayList<Object>): String
+        +SEND_DOWNVOTE_TRACK_REQUEST(ArrayList<Object>): String
+        +PLAY_PAUSE_REQUEST(ArrayList<Object>): String
+        +NEXT_TRACK_REQUEST(ArrayList<Object>): String
+        +PREVIOUS_TRACK_REQUEST(ArrayList<Object>): String
+        +SEND_TURN_VOLUME_UP_REQUEST(ArrayList<Object>): String
+        +TURN_VOLUME_UP_REQUEST(ArrayList<Object>): String
+        +SEND_TURN_VOLUME_DOWN_REQUEST(ArrayList<Object>): String
+        +TURN_VOLUME_DOWN_REQUEST(ArrayList<Object>): String
+        +sendUnicast(InetAddress, String): void
+        +sendMulticast(String): void
+        +stop(): void
+        +isServer(): boolean
+    }
+
+@enduml

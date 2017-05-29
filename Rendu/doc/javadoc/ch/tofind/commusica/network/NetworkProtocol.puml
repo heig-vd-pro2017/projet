@@ -1,0 +1,14 @@
+@startuml
+
+    class NetworkProtocol {
+        [[NetworkProtocol.html]]
+        {static} +interfaceToUse: InetAddress
+        {static} +MULTICAST_PORT: int
+        {static} +UNICAST_PORT: int
+        {static} +MULTICAST_ADDRESS: String
+        {static} +END_OF_LINE: String
+        {static} +END_OF_COMMAND: String
+        {static} +END_OF_COMMUNICATION: String
+    }
+
+@enduml

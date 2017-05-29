@@ -1,0 +1,239 @@
+@startuml
+
+    namespace org.hibernate.dialect.identity {
+
+        class SQLiteDialectIdentityColumnSupport {
+            [[SQLiteDialectIdentityColumnSupport.html]]
+            +supportsIdentityColumns(): boolean
+            +hasDataTypeInIdentityColumn(): boolean
+            +getIdentitySelectString(String, String, int): String
+            +getIdentityColumnString(int): String
+        }
+
+        class Teradata14IdentityColumnSupport {
+            [[Teradata14IdentityColumnSupport.html]]
+            +supportsIdentityColumns(): boolean
+            +getIdentityColumnString(int): String
+            +getIdentityInsertString(): String
+        }
+
+        class SybaseAnywhereIdentityColumnSupport {
+            [[SybaseAnywhereIdentityColumnSupport.html]]
+            +supportsInsertSelectIdentity(): boolean
+        }
+
+        class SQLServerIdentityColumnSupport {
+            [[SQLServerIdentityColumnSupport.html]]
+            +appendIdentitySelectToInsert(String): String
+        }
+
+        class PostgreSQL81IdentityColumnSupport {
+            [[PostgreSQL81IdentityColumnSupport.html]]
+            +supportsIdentityColumns(): boolean
+            +getIdentitySelectString(String, String, int): String
+            +getIdentityColumnString(int): String
+            +hasDataTypeInIdentityColumn(): boolean
+        }
+
+        class Oracle12cIdentityColumnSupport {
+            [[Oracle12cIdentityColumnSupport.html]]
+            +supportsIdentityColumns(): boolean
+            +supportsInsertSelectIdentity(): boolean
+            +getIdentityColumnString(int): String
+            +buildGetGeneratedKeysDelegate(PostInsertIdentityPersister, Dialect): GetGeneratedKeysDelegate
+        }
+
+        class Oracle12cGetGeneratedKeysDelegate {
+            [[Oracle12cGetGeneratedKeysDelegate.html]]
+            -keyColumns: String[]
+            +Oracle12cGetGeneratedKeysDelegate(PostInsertIdentityPersister, Dialect)
+            #prepare(String, SharedSessionContractImplementor): PreparedStatement
+        }
+
+        class MySQLIdentityColumnSupport {
+            [[MySQLIdentityColumnSupport.html]]
+            +supportsIdentityColumns(): boolean
+            +getIdentitySelectString(String, String, int): String
+            +getIdentityColumnString(int): String
+        }
+
+        class MimerSQLIdentityColumnSupport {
+            [[MimerSQLIdentityColumnSupport.html]]
+            +supportsIdentityColumns(): boolean
+        }
+
+        class JDataStoreIdentityColumnSupport {
+            [[JDataStoreIdentityColumnSupport.html]]
+            +supportsIdentityColumns(): boolean
+            +getIdentitySelectString(String, String, int): String
+            +getIdentityColumnString(int): String
+        }
+
+        class Ingres9IdentityColumnSupport {
+            [[Ingres9IdentityColumnSupport.html]]
+            +getIdentitySelectString(String, String, int): String
+        }
+
+        class Ingres10IdentityColumnSupport {
+            [[Ingres10IdentityColumnSupport.html]]
+            +supportsIdentityColumns(): boolean
+            +hasDataTypeInIdentityColumn(): boolean
+            +getIdentityColumnString(int): String
+            +getIdentityInsertString(): String
+        }
+
+        class InformixIdentityColumnSupport {
+            [[InformixIdentityColumnSupport.html]]
+            +supportsIdentityColumns(): boolean
+            +getIdentitySelectString(String, String, int): String
+            +getIdentityColumnString(int): String
+            +hasDataTypeInIdentityColumn(): boolean
+        }
+
+        class IdentityColumnSupportImpl {
+            [[IdentityColumnSupportImpl.html]]
+            +supportsIdentityColumns(): boolean
+            +supportsInsertSelectIdentity(): boolean
+            +hasDataTypeInIdentityColumn(): boolean
+            +appendIdentitySelectToInsert(String): String
+            +getIdentitySelectString(String, String, int): String
+            +getIdentityColumnString(int): String
+            +getIdentityInsertString(): String
+            +buildGetGeneratedKeysDelegate(PostInsertIdentityPersister, Dialect): GetGeneratedKeysDelegate
+        }
+
+        interface IdentityColumnSupport {
+            [[IdentityColumnSupport.html]]
+            {abstract} +supportsIdentityColumns(): boolean
+            {abstract} +supportsInsertSelectIdentity(): boolean
+            {abstract} +hasDataTypeInIdentityColumn(): boolean
+            {abstract} +appendIdentitySelectToInsert(String): String
+            {abstract} +getIdentitySelectString(String, String, int): String
+            {abstract} +getIdentityColumnString(int): String
+            {abstract} +getIdentityInsertString(): String
+            {abstract} +buildGetGeneratedKeysDelegate(PostInsertIdentityPersister, Dialect): GetGeneratedKeysDelegate
+        }
+
+        class HSQLIdentityColumnSupport {
+            [[HSQLIdentityColumnSupport.html]]
+            -hsqldbVersion: int
+            +HSQLIdentityColumnSupport(int)
+            +supportsIdentityColumns(): boolean
+            +getIdentityColumnString(int): String
+            +getIdentitySelectString(String, String, int): String
+            +getIdentityInsertString(): String
+        }
+
+        class H2IdentityColumnSupport {
+            [[H2IdentityColumnSupport.html]]
+            +supportsIdentityColumns(): boolean
+            +getIdentityColumnString(int): String
+            +getIdentitySelectString(String, String, int): String
+            +getIdentityInsertString(): String
+        }
+
+        class GetGeneratedKeysDelegate {
+            [[GetGeneratedKeysDelegate.html]]
+            -persister: PostInsertIdentityPersister
+            -dialect: Dialect
+            +GetGeneratedKeysDelegate(PostInsertIdentityPersister, Dialect)
+            +prepareIdentifierGeneratingInsert(): IdentifierGeneratingInsert
+            #prepare(String, SharedSessionContractImplementor): PreparedStatement
+            +executeAndExtract(PreparedStatement, SharedSessionContractImplementor): Serializable
+        }
+
+        class DB2IdentityColumnSupport {
+            [[DB2IdentityColumnSupport.html]]
+            +supportsIdentityColumns(): boolean
+            +getIdentitySelectString(String, String, int): String
+            +getIdentityColumnString(int): String
+            +getIdentityInsertString(): String
+        }
+
+        class DB2390IdentityColumnSupport {
+            [[DB2390IdentityColumnSupport.html]]
+            +getIdentitySelectString(String, String, int): String
+        }
+
+        class Chache71IdentityColumnSupport {
+            [[Chache71IdentityColumnSupport.html]]
+            +supportsIdentityColumns(): boolean
+            +hasDataTypeInIdentityColumn(): boolean
+            +getIdentityColumnString(int): String
+            +getIdentitySelectString(String, String, int): String
+        }
+
+        class CUBRIDIdentityColumnSupport {
+            [[CUBRIDIdentityColumnSupport.html]]
+            +supportsIdentityColumns(): boolean
+            +getIdentityInsertString(): String
+            +getIdentitySelectString(String, String, int): String
+            +getIdentityColumnString(int): String
+        }
+
+        class AbstractTransactSQLIdentityColumnSupport {
+            [[AbstractTransactSQLIdentityColumnSupport.html]]
+            +supportsIdentityColumns(): boolean
+            +getIdentityColumnString(int): String
+            +getIdentitySelectString(String, String, int): String
+            +supportsInsertSelectIdentity(): boolean
+            +appendIdentitySelectToInsert(String): String
+        }
+
+        IdentityColumnSupportImpl <|-- SQLiteDialectIdentityColumnSupport
+
+        IdentityColumnSupportImpl <|-- Teradata14IdentityColumnSupport
+
+        AbstractTransactSQLIdentityColumnSupport <|-- SybaseAnywhereIdentityColumnSupport
+
+        AbstractTransactSQLIdentityColumnSupport <|-- SQLServerIdentityColumnSupport
+
+        IdentityColumnSupportImpl <|-- PostgreSQL81IdentityColumnSupport
+
+        IdentityColumnSupportImpl <|-- Oracle12cIdentityColumnSupport
+
+        GetGeneratedKeysDelegate <|-- Oracle12cGetGeneratedKeysDelegate
+
+        IdentityColumnSupportImpl <|-- MySQLIdentityColumnSupport
+
+        IdentityColumnSupportImpl <|-- MimerSQLIdentityColumnSupport
+
+        IdentityColumnSupportImpl <|-- JDataStoreIdentityColumnSupport
+
+        IdentityColumnSupportImpl <|-- Ingres9IdentityColumnSupport
+
+        Ingres9IdentityColumnSupport <|-- Ingres10IdentityColumnSupport
+
+        IdentityColumnSupportImpl <|-- InformixIdentityColumnSupport
+
+        IdentityColumnSupport <|.. IdentityColumnSupportImpl
+
+        IdentityColumnSupportImpl <|-- HSQLIdentityColumnSupport
+
+        IdentityColumnSupportImpl <|-- H2IdentityColumnSupport
+
+        abstract class org.hibernate.id.insert.AbstractReturningDelegate {
+            {abstract} #prepare(String, SharedSessionContractImplementor): PreparedStatement
+            {abstract} #executeAndExtract(PreparedStatement, SharedSessionContractImplementor): Serializable
+        }
+        org.hibernate.id.insert.AbstractReturningDelegate <|-- GetGeneratedKeysDelegate
+
+        interface org.hibernate.id.insert.InsertGeneratedIdentifierDelegate {
+            {abstract} +prepareIdentifierGeneratingInsert(): IdentifierGeneratingInsert
+            {abstract} +performInsert(String, SharedSessionContractImplementor, Binder): Serializable
+        }
+        org.hibernate.id.insert.InsertGeneratedIdentifierDelegate <|.. GetGeneratedKeysDelegate
+
+        IdentityColumnSupportImpl <|-- DB2IdentityColumnSupport
+
+        DB2IdentityColumnSupport <|-- DB2390IdentityColumnSupport
+
+        IdentityColumnSupportImpl <|-- Chache71IdentityColumnSupport
+
+        IdentityColumnSupportImpl <|-- CUBRIDIdentityColumnSupport
+
+        IdentityColumnSupportImpl <|-- AbstractTransactSQLIdentityColumnSupport
+
+    }
+
+@enduml

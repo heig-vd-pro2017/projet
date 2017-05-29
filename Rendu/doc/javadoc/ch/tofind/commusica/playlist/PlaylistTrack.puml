@@ -1,0 +1,21 @@
+@startuml
+
+    class PlaylistTrack {
+        [[PlaylistTrack.html]]
+        -id: PlaylistTrackId
+        -hasBeenPlayed: ReadOnlyBooleanWrapper
+        -votes: Integer
+        -votesProperty: IntegerProperty
+        -PlaylistTrack()
+        +PlaylistTrack(SavedPlaylist, Track)
+        +hasBeenPlayed(): ReadOnlyBooleanProperty
+        +getPlaylist(): SavedPlaylist
+        +getTrack(): Track
+        +getVotesProperty(): IntegerProperty
+        +getId(): PlaylistTrackId
+        +upvote(): void
+        +downvote(): void
+        +update(): void
+    }
+
+@enduml

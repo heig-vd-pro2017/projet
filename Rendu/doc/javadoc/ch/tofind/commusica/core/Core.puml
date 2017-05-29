@@ -1,0 +1,13 @@
+@startuml
+
+    class Core {
+        [[Core.html]]
+        {static} -instance: AbstractCore
+        {static} +execute(String, ArrayList<Object>): String
+        {static} +isServer(): boolean
+        {static} +setupAsServer(): void
+        {static} +setupAsClient(): void
+        {static} +stop(): void
+    }
+
+@enduml

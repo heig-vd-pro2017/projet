@@ -1,0 +1,130 @@
+@startuml
+
+    namespace ch.tofind.commusica.media {
+
+        interface IPlaylist {
+            [[IPlaylist.html]]
+            {abstract} +addTrack(Track): boolean
+            {abstract} +contains(Track): boolean
+            {abstract} +getPlaylistTrack(Track): PlaylistTrack
+            {abstract} +getTracksList(): List<PlaylistTrack>
+            {abstract} +isSaved(): boolean
+        }
+
+        class SavedPlaylist {
+            [[SavedPlaylist.html]]
+            -id: Integer
+            -name: String
+            -dateAdded: Date
+            -datePlayed: Date
+            -version: Integer
+            -SavedPlaylist()
+            +SavedPlaylist(String)
+            +getId(): Integer
+            +getName(): String
+            +setName(String): void
+            +getDateAdded(): Date
+            +getDatePlayed(): Date
+            +update(): void
+            +addTrack(Track): boolean
+            +contains(Track): boolean
+            +getPlaylistTrack(Track): PlaylistTrack
+            +getTracksList(): List<PlaylistTrack>
+            +isSaved(): boolean
+        }
+
+        class EphemeralPlaylist {
+            [[EphemeralPlaylist.html]]
+            {static} -LOG: Logger
+            -tracksList: ObservableSortedPlaylistTrackList
+            +EphemeralPlaylist(String)
+            +downvoteTrack(Track): boolean
+            +upvoteTrack(Track): boolean
+            +getName(): String
+            +save(): void
+            +saveTrack(Track): void
+            +setName(String): void
+            +addTrack(Track): boolean
+            +contains(Track): boolean
+            +getPlaylistTrack(Track): PlaylistTrack
+            +getTracksList(): ObservableSortedPlaylistTrackList
+            +isSaved(): boolean
+            -retrieveDbTracks(): List<Track>
+        }
+
+        class Track {
+            [[Track.html]]
+            -id: String
+            -title: String
+            -artist: String
+            -album: String
+            -length: Integer
+            -uri: String
+            -dateAdded: Date
+            -datePlayed: Date
+            -favoritedProperty: BooleanProperty
+            -version: Integer
+            #Track()
+            +Track(String, String, String, String, Integer, String)
+            +Track(AudioFile)
+            +getId(): String
+            +getTitle(): String
+            +getArtist(): String
+            +getAlbum(): String
+            +getLength(): Integer
+            +getUri(): String
+            +setUri(String): void
+            +getDateAdded(): Date
+            +getDatePlayed(): Date
+            +getFavoritedProperty(): BooleanProperty
+            +setFavoritedProperty(boolean): void
+            +update(): void
+        }
+
+        class Player {
+            [[Player.html]]
+            {static} -LOG: Logger
+            {static} -currentPlayer: Player
+            -player: MediaPlayer
+            -currentTimeProperty: IntegerProperty
+            -currentTrackProperty: PlaylistTrackProperty
+            -previousTrackProperty: PlaylistTrackProperty
+            -volumeStep: double
+            -isPlayingProperty: BooleanProperty
+            -volumeProperty: DoubleProperty
+            -MIN_VOLUME: double
+            -MAX_VOLUME: double
+            -Player(double)
+            {static} +getCurrentPlayer(): Player
+            +load(): void
+            +getCurrentTimeProperty(): IntegerProperty
+            +getCurrentTrackProperty(): PlaylistTrackProperty
+            +getPreviousTrackProperty(): PlaylistTrackProperty
+            +getIsPlayingProperty(): BooleanProperty
+            +getVolumeProperty(): DoubleProperty
+            +isPlaying(): boolean
+            +play(): void
+            +pause(): void
+            +stop(): void
+            +riseVolume(): void
+            +lowerVolume(): void
+        }
+
+        interface java.io.Serializable
+        java.io.Serializable <|.. SavedPlaylist
+
+        IPlaylist <|.. SavedPlaylist
+
+        IPlaylist <|.. EphemeralPlaylist
+
+        java.io.Serializable <|.. Track
+
+        EphemeralPlaylist --> "*" Track: dbTracks
+
+        EphemeralPlaylist --> SavedPlaylist: delegate
+
+        Player --> Track: currentTrack
+
+    }
+
+@enduml

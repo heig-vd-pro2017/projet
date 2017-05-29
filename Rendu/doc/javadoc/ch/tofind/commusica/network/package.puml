@@ -1,0 +1,65 @@
+@startuml
+
+    namespace ch.tofind.commusica.network {
+
+        class UnicastClient {
+            [[UnicastClient.html]]
+            {static} -LOG: Logger
+            -socket: Socket
+            -out: PrintWriter
+            -in: BufferedReader
+            +UnicastClient(InetAddress, int)
+            +UnicastClient(Socket)
+            +send(String): void
+            +send(File): void
+            +run(): void
+        }
+
+        class MulticastClient {
+            [[MulticastClient.html]]
+            {static} -LOG: Logger
+            -port: int
+            -multicastGroup: InetAddress
+            -socket: MulticastSocket
+            -running: boolean
+            +MulticastClient(String, int, InetAddress)
+            +stop(): void
+            +send(String): void
+            +run(): void
+        }
+
+        class Server {
+            [[Server.html]]
+            {static} -LOG: Logger
+            -socket: ServerSocket
+            -port: int
+            -running: boolean
+            -threadPool: ExecutorService
+            +Server(int)
+            +stop(): void
+            +run(): void
+        }
+
+        class NetworkProtocol {
+            [[NetworkProtocol.html]]
+            {static} +interfaceToUse: InetAddress
+            {static} +MULTICAST_PORT: int
+            {static} +UNICAST_PORT: int
+            {static} +MULTICAST_ADDRESS: String
+            {static} +END_OF_LINE: String
+            {static} +END_OF_COMMAND: String
+            {static} +END_OF_COMMUNICATION: String
+        }
+
+        interface java.lang.Runnable {
+            {abstract} +run(): void
+        }
+        java.lang.Runnable <|.. UnicastClient
+
+        java.lang.Runnable <|.. MulticastClient
+
+        java.lang.Runnable <|.. Server
+
+    }
+
+@enduml

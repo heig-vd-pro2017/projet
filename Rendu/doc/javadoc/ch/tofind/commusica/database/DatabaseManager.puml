@@ -1,0 +1,19 @@
+@startuml
+
+    class DatabaseManager {
+        [[DatabaseManager.html]]
+        {static} -LOG: Logger
+        {static} -instance: DatabaseManager
+        -factory: SessionFactory
+        -session: Session
+        -transaction: Transaction
+        {static} +getInstance(): DatabaseManager
+        +getSession(): Session
+        +execute(Query): void
+        +save(Object): void
+        +delete(Object): void
+        +update(Object): void
+        +close(): void
+    }
+
+@enduml

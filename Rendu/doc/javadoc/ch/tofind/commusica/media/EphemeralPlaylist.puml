@@ -1,0 +1,24 @@
+@startuml
+
+    class EphemeralPlaylist {
+        [[EphemeralPlaylist.html]]
+        {static} -LOG: Logger
+        -dbTracks: List<Track>
+        -tracksList: ObservableSortedPlaylistTrackList
+        -delegate: SavedPlaylist
+        +EphemeralPlaylist(String)
+        +downvoteTrack(Track): boolean
+        +upvoteTrack(Track): boolean
+        +getName(): String
+        +save(): void
+        +saveTrack(Track): void
+        +setName(String): void
+        +addTrack(Track): boolean
+        +contains(Track): boolean
+        +getPlaylistTrack(Track): PlaylistTrack
+        +getTracksList(): ObservableSortedPlaylistTrackList
+        +isSaved(): boolean
+        -retrieveDbTracks(): List<Track>
+    }
+
+@enduml

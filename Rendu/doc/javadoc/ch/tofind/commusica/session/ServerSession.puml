@@ -1,0 +1,17 @@
+@startuml
+
+    class ServerSession {
+        [[ServerSession.html]]
+        -id: Integer
+        -serverIp: InetAddress
+        -serverName: String
+        -updated: Date
+        +ServerSession(Integer, InetAddress, String)
+        +getServerIp(): InetAddress
+        +getServerName(): String
+        +getId(): Integer
+        +update(): void
+        +getLastUpdate(): Date
+    }
+
+@enduml

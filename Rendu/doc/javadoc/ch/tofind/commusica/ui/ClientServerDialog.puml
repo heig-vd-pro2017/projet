@@ -1,0 +1,9 @@
+@startuml
+
+    class ClientServerDialog {
+        [[ClientServerDialog.html]]
+        {static} -LOG: Logger
+        +start(Stage): void
+    }
+
+@enduml

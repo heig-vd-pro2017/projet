@@ -1,0 +1,17 @@
+@startuml
+
+    class ServerSessionManager {
+        [[ServerSessionManager.html]]
+        {static} -LOG: Logger
+        {static} -instance: ServerSessionManager
+        {static} -availableServers: ObservableMap<Integer, ServerSession>
+        -scheduledExecutorService: ScheduledExecutorService
+        {static} +getInstance(): ServerSessionManager
+        +store(Integer, InetAddress, String): void
+        +getAvailableServers(): ObservableMap<Integer, ServerSession>
+        -deleteObsoleteSessions(): void
+        +clear(): void
+        +stop(): void
+    }
+
+@enduml

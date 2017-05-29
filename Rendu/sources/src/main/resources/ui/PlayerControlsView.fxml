@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Font?>
+
+<fx:root type="javafx.scene.layout.GridPane" vgap="5.0" xmlns:fx="http://javafx.com/fxml/1">
+
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+    </padding>
+
+    <columnConstraints>
+        <ColumnConstraints hgrow="NEVER" maxWidth="10.0" minWidth="10.0"/>
+        <ColumnConstraints hgrow="NEVER" maxWidth="40.0" minWidth="40.0"/>
+        <ColumnConstraints hgrow="NEVER" maxWidth="40.0" minWidth="40.0"/>
+        <ColumnConstraints hgrow="NEVER" maxWidth="40.0" minWidth="40.0"/>
+        <ColumnConstraints hgrow="NEVER" maxWidth="10.0" minWidth="10.0"/>
+    </columnConstraints>
+
+    <rowConstraints>
+        <RowConstraints vgrow="ALWAYS"/>
+        <RowConstraints maxHeight="15.0" minHeight="15.0" vgrow="NEVER"/>
+    </rowConstraints>
+
+    <!-- Previous button -->
+    <ImageView fitWidth="20.0" onMouseClicked="#previous" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+        <Image url="@icons/back.png" />
+    </ImageView>
+
+    <!-- Play/pause button -->
+    <ImageView fx:id="playPauseImageView" fitWidth="30.0" onMouseClicked="#playPause" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+
+    <!-- Next button -->
+    <ImageView fitWidth="20.0" onMouseClicked="#next" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+        <Image url="@icons/next.png" />
+    </ImageView>
+
+    <!-- Volume '-' button -->
+    <Label onMouseClicked="#lowerVolume" text="–" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+        <font>
+            <Font size="10.0"/>
+        </font>
+    </Label>
+
+    <!-- Volume slider -->
+    <Slider fx:id="volumeSlider" disable="true" focusTraversable="false" max="1.0" maxHeight="10.0" maxWidth="120.0" minHeight="10.0" minWidth="120.0" value="0.5" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+
+    <!-- Volume '+' button -->
+    <Label onMouseClicked="#riseVolume" text="+" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+        <font>
+            <Font size="10.0"/>
+        </font>
+    </Label>
+
+</fx:root>

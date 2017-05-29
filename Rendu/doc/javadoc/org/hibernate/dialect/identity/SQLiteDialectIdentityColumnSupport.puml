@@ -1,0 +1,11 @@
+@startuml
+
+    class SQLiteDialectIdentityColumnSupport {
+        [[SQLiteDialectIdentityColumnSupport.html]]
+        +supportsIdentityColumns(): boolean
+        +hasDataTypeInIdentityColumn(): boolean
+        +getIdentitySelectString(String, String, int): String
+        +getIdentityColumnString(int): String
+    }
+
+@enduml

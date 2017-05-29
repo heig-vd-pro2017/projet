@@ -1,0 +1,10 @@
+@startuml
+
+    class EphemeralPlaylistSerializer {
+        [[EphemeralPlaylistSerializer.html]]
+        {static} -LOG: Logger
+        +deserialize(JsonElement, Type, JsonDeserializationContext): EphemeralPlaylist
+        +serialize(EphemeralPlaylist, Type, JsonSerializationContext): JsonElement
+    }
+
+@enduml

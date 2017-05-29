@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Font?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TextField?>
+<fx:root type="javafx.scene.layout.AnchorPane" xmlns:fx="http://javafx.com/fxml/1">
+
+    <GridPane AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
+
+        <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS"/>
+        </columnConstraints>
+
+        <rowConstraints>
+            <RowConstraints maxHeight="50.0" minHeight="50.0" vgrow="NEVER"/>
+            <RowConstraints maxHeight="20.0" minHeight="20.0" vgrow="NEVER"/>
+            <RowConstraints maxHeight="20.0" minHeight="20.0" vgrow="NEVER"/>
+            <RowConstraints maxHeight="40.0" minHeight="40.0" vgrow="NEVER"/>
+            <RowConstraints maxHeight="20.0" minHeight="20.0" vgrow="NEVER"/>
+            <RowConstraints maxHeight="20.0" minHeight="20.0" vgrow="NEVER"/>
+            <RowConstraints maxHeight="40.0" minHeight="40.0" vgrow="NEVER"/>
+            <RowConstraints vgrow="ALWAYS"/>
+        </rowConstraints>
+
+        <Label maxWidth="Infinity" text="Settings" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0" GridPane.valignment="BOTTOM">
+            <font>
+                <Font size="28.0"/>
+            </font>
+        </Label>
+
+        <Label fx:id="serversListLabel" maxWidth="Infinity" text="Servers list" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+            <font>
+                <Font size="16.0"/>
+            </font>
+        </Label>
+
+        <Label fx:id="serverNameLabel" maxWidth="Infinity" text="Server name" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+            <font>
+                <Font size="16.0"/>
+            </font>
+        </Label>
+
+        <ComboBox fx:id="serversList" maxWidth="Infinity" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
+            <GridPane.margin>
+                <Insets left="10.0" right="10.0"/>
+            </GridPane.margin>
+        </ComboBox>
+
+        <TextField fx:id="serverNameField" focusTraversable="false" maxWidth="Infinity" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
+            <GridPane.margin>
+                <Insets left="10.0" right="10.0"/>
+            </GridPane.margin>
+        </TextField>
+
+        <Label maxWidth="Infinity" text="Network interfaces" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+            <font>
+                <Font size="16.0"/>
+            </font>
+        </Label>
+
+        <ComboBox fx:id="interfacesList" maxWidth="Infinity" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6">
+            <GridPane.margin>
+                <Insets left="10.0" right="10.0"/>
+            </GridPane.margin>
+        </ComboBox>
+
+    </GridPane>
+
+</fx:root>

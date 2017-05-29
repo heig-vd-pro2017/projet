@@ -1,0 +1,36 @@
+@startuml
+
+    class ClientCore {
+        [[ClientCore.html]]
+        {static} -LOG: Logger
+        -multicast: MulticastClient
+        -client: UnicastClient
+        -fileToSend: File
+        -trackToSend: Track
+        -serverSessionManager: ServerSessionManager
+        -threadPool: ExecutorService
+        +END_OF_COMMUNICATION(ArrayList<Object>): String
+        +PLAYLIST_UPDATE(ArrayList<Object>): String
+        +SEND_FIRST_CONNECTION(ArrayList<Object>): String
+        +SEND_TRACK_REQUEST(ArrayList<Object>): String
+        +TRACK_ACCEPTED(ArrayList<Object>): String
+        +TRACK_REFUSED(ArrayList<Object>): String
+        +TRACK_SAVED(ArrayList<Object>): String
+        +SEND_PLAY_PAUSE_REQUEST(ArrayList<Object>): String
+        +SEND_NEXT_TRACK_REQUEST(ArrayList<Object>): String
+        +SEND_PREVIOUS_TRACK_REQUEST(ArrayList<Object>): String
+        +SEND_TURN_VOLUME_UP_REQUEST(ArrayList<Object>): String
+        +SEND_TURN_VOLUME_DOWN_REQUEST(ArrayList<Object>): String
+        +SEND_UPVOTE_TRACK_REQUEST(ArrayList<Object>): String
+        +SEND_DOWNVOTE_TRACK_REQUEST(ArrayList<Object>): String
+        +TRACK_UPVOTED(ArrayList<Object>): String
+        +TRACK_DOWNVOTED(ArrayList<Object>): String
+        +ERROR(ArrayList<Object>): String
+        +SUCCESS(ArrayList<Object>): String
+        +sendUnicast(InetAddress, String): void
+        +sendMulticast(String): void
+        +stop(): void
+        +isServer(): boolean
+    }
+
+@enduml

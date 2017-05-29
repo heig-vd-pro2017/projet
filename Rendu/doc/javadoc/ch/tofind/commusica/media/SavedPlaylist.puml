@@ -1,0 +1,25 @@
+@startuml
+
+    class SavedPlaylist {
+        [[SavedPlaylist.html]]
+        -id: Integer
+        -name: String
+        -dateAdded: Date
+        -datePlayed: Date
+        -version: Integer
+        -SavedPlaylist()
+        +SavedPlaylist(String)
+        +getId(): Integer
+        +getName(): String
+        +setName(String): void
+        +getDateAdded(): Date
+        +getDatePlayed(): Date
+        +update(): void
+        +addTrack(Track): boolean
+        +contains(Track): boolean
+        +getPlaylistTrack(Track): PlaylistTrack
+        +getTracksList(): List<PlaylistTrack>
+        +isSaved(): boolean
+    }
+
+@enduml

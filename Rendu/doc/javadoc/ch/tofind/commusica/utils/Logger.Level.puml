@@ -1,0 +1,14 @@
+@startuml
+
+    enum Logger.Level {
+        [[Logger.Level.html]]
+        {static} +INFO
+        {static} +SEVERE
+        {static} +SUCCESS
+        {static} +WARNING
+        ~color: Logger.ANSIColor
+        -Level(Logger.ANSIColor)
+        +toString(): String
+    }
+
+@enduml

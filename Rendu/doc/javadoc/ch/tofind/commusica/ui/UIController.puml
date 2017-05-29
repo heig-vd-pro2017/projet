@@ -1,0 +1,22 @@
+@startuml
+
+    class UIController {
+        [[UIController.html]]
+        {static} -LOG: Logger
+        {static} -loader: FXMLLoader
+        {static} -FXML_FILE: String
+        -currentPlaylist: IPlaylist
+        -playlistsListView: PlaylistsListView
+        -tracksListView: TracksListView
+        {static} +getController(): UIController
+        +showPlaylist(IPlaylist): void
+        +refreshPlaylist(): void
+        +refreshPlaylistsList(): void
+        +getCurrentPlaylist(): IPlaylist
+        +showAlert(String, String, Alert.AlertType): void
+        +start(Stage): void
+        +initialize(URL, ResourceBundle): void
+        +stop(): void
+    }
+
+@enduml

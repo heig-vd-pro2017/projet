@@ -1,0 +1,19 @@
+@startuml
+
+    class PreviousTrackView {
+        [[PreviousTrackView.html]]
+        {static} +CSS_CLASS: String
+        {static} -CSS_FILE: String
+        {static} -FAV_EMPTY_IMAGE: String
+        {static} -FAV_FULL_IMAGE: String
+        {static} -FXML_FILE: String
+        {static} -player: Player
+        -previousTrack: Track
+        -albumLabel: Label
+        -artistLabel: Label
+        -favoriteImageView: ImageView
+        -titleLabel: Label
+        -favorite(MouseEvent): void
+    }
+
+@enduml

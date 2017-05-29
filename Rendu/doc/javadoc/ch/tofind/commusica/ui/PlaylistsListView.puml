@@ -1,0 +1,16 @@
+@startuml
+
+    class PlaylistsListView {
+        [[PlaylistsListView.html]]
+        {static} -CSS_FILE: String
+        {static} -FXML_FILE: String
+        {static} -manager: PlaylistManager
+        ~favoritesLabel: Label
+        ~playingLabel: Label
+        ~playlistsView: ListView<SavedPlaylist>
+        +refresh(): void
+        -loadFavoritesPlaylist(MouseEvent): void
+        -loadPlayingPlaylist(MouseEvent): void
+    }
+
+@enduml

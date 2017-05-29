@@ -1,0 +1,105 @@
+@startuml
+
+    namespace ch.tofind.commusica.utils {
+
+        class Network {
+            [[Network.html]]
+            {static} +configureNetwork(): void
+            {static} +getMacAddress(InetAddress): byte[]
+            {static} +getNetworkInterfaces(): ArrayList<NetworkInterface>
+            {static} +getIPv4Interfaces(): TreeMap<String, InetAddress>
+            {static} +getInetAddresses(NetworkInterface): ArrayList<InetAddress>
+        }
+
+        class Serialize {
+            [[Serialize.html]]
+            {static} -builder: GsonBuilder
+            {static} -gson: Gson
+            {static} +serialize(Object): String
+            {static} +unserialize(String, Class<T>): T
+        }
+
+        class Logger {
+            [[Logger.html]]
+            {static} -DEBUG: boolean
+            -className: String
+            +Logger(String)
+            -log(Logger.Level, String): void
+            -log(Logger.Level, Exception): void
+            +info(String): void
+            +warning(String): void
+            +error(String): void
+            +error(Exception): void
+        }
+
+        enum ch.tofind.commusica.utils.Logger.Level {
+            [[Logger.Level.html]]
+            {static} +INFO
+            {static} +SEVERE
+            {static} +SUCCESS
+            {static} +WARNING
+            ~color: Logger.ANSIColor
+            -Level(Logger.ANSIColor)
+            +toString(): String
+        }
+
+        class EphemeralPlaylistSerializer {
+            [[EphemeralPlaylistSerializer.html]]
+            {static} -LOG: Logger
+            +deserialize(JsonElement, Type, JsonDeserializationContext): EphemeralPlaylist
+            +serialize(EphemeralPlaylist, Type, JsonSerializationContext): JsonElement
+        }
+
+        class Configuration {
+            [[Configuration.html]]
+            {static} -LOG: Logger
+            {static} -CONFIG_FILE: String
+            {static} -instance: Configuration
+            -configuration: Properties
+            {static} +getInstance(): Configuration
+            +get(String): String
+        }
+
+        class ObservableSortedPlaylistTrackList {
+            [[ObservableSortedPlaylistTrackList.html]]
+            -delegate: List<PlaylistTrack>
+            -comparator: VoteComparator
+            -count: int
+            +add(PlaylistTrack): boolean
+            +clear(): void
+            +get(int): PlaylistTrack
+            +getNextTrack(): PlaylistTrack
+            +remove(PlaylistTrack): void
+            +size(): int
+            -sort(): void
+            +toString(): String
+        }
+
+        class PlaylistTrackProperty {
+            [[PlaylistTrackProperty.html]]
+            +getTrack(): Track
+            +getBean(): Object
+            +getName(): String
+        }
+
+        Logger +-- ch.tofind.commusica.utils.Logger.Level
+
+        interface com.google.gson.JsonSerializer<T> {
+            {abstract} +serialize(T, Type, JsonSerializationContext): JsonElement
+        }
+        com.google.gson.JsonSerializer <|.. EphemeralPlaylistSerializer
+
+        interface com.google.gson.JsonDeserializer<T> {
+            {abstract} +deserialize(JsonElement, Type, JsonDeserializationContext): T
+        }
+        com.google.gson.JsonDeserializer <|.. EphemeralPlaylistSerializer
+
+        abstract class javafx.collections.ObservableListBase<E>
+        javafx.collections.ObservableListBase <|-- ObservableSortedPlaylistTrackList
+
+        abstract class javafx.beans.property.ObjectPropertyBase<T>
+        javafx.beans.property.ObjectPropertyBase <|-- PlaylistTrackProperty
+
+    }
+
+@enduml

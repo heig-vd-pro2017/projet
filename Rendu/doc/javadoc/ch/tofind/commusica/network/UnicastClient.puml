@@ -1,0 +1,16 @@
+@startuml
+
+    class UnicastClient {
+        [[UnicastClient.html]]
+        {static} -LOG: Logger
+        -socket: Socket
+        -out: PrintWriter
+        -in: BufferedReader
+        +UnicastClient(InetAddress, int)
+        +UnicastClient(Socket)
+        +send(String): void
+        +send(File): void
+        +run(): void
+    }
+
+@enduml

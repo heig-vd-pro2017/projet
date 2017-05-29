@@ -1,0 +1,10 @@
+@startuml
+
+    interface ISession {
+        [[ISession.html]]
+        {abstract} +getId(): Integer
+        {abstract} +update(): void
+        {abstract} +getLastUpdate(): Date
+    }
+
+@enduml

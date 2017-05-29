@@ -1,0 +1,71 @@
+@startuml
+
+    namespace ch.tofind.commusica.playlist {
+
+        class PlaylistTrack {
+            [[PlaylistTrack.html]]
+            -hasBeenPlayed: ReadOnlyBooleanWrapper
+            -votes: Integer
+            -votesProperty: IntegerProperty
+            -PlaylistTrack()
+            +PlaylistTrack(SavedPlaylist, Track)
+            +hasBeenPlayed(): ReadOnlyBooleanProperty
+            +getPlaylist(): SavedPlaylist
+            +getTrack(): Track
+            +getVotesProperty(): IntegerProperty
+            +upvote(): void
+            +downvote(): void
+            +update(): void
+        }
+
+        class PlaylistManager {
+            [[PlaylistManager.html]]
+            {static} -LOG: Logger
+            {static} -instance: PlaylistManager
+            -savedPlaylists: List<SavedPlaylist>
+            -playlist: EphemeralPlaylist
+            -favoritesPlaylist: SavedPlaylist
+            {static} +getInstance(): PlaylistManager
+            +getPlaylist(): EphemeralPlaylist
+            +createPlaylist(String): SavedPlaylist
+            +removePlaylist(SavedPlaylist): void
+            +getSavedPlaylists(): List<SavedPlaylist>
+            +getFavoritesPlaylist(): SavedPlaylist
+            +addTrackToFavorites(Track): void
+            +removeTrackFromFavorites(Track): void
+            -retrieveFavoritesPlaylist(): SavedPlaylist
+            -retrievePlaylists(): List<SavedPlaylist>
+        }
+
+        class VoteComparator {
+            [[VoteComparator.html]]
+            +compare(PlaylistTrack, PlaylistTrack): int
+        }
+
+        class PlaylistTrackId {
+            [[PlaylistTrackId.html]]
+            -playlist: SavedPlaylist
+            -track: Track
+            +PlaylistTrackId()
+            +PlaylistTrackId(SavedPlaylist, Track)
+            +setPlaylist(SavedPlaylist): void
+            +getPlaylist(): SavedPlaylist
+            +setTrack(Track): void
+            +getTrack(): Track
+        }
+
+        interface java.io.Serializable
+        java.io.Serializable <|.. PlaylistTrack
+
+        interface java.util.Comparator<T> {
+            {abstract} +compare(T, T): int
+        }
+        java.util.Comparator <|.. VoteComparator
+
+        java.io.Serializable <|.. PlaylistTrackId
+
+        PlaylistTrack --> PlaylistTrackId: id
+
+    }
+
+@enduml

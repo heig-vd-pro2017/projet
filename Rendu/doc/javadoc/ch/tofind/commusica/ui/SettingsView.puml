@@ -1,0 +1,16 @@
+@startuml
+
+    class SettingsView {
+        [[SettingsView.html]]
+        {static} -FXML_FILE: String
+        -interfacesList: ComboBox<Map.Entry<String, InetAddress>>
+        -serverNameField: TextField
+        -serverNameLabel: Label
+        -serversList: ComboBox<ServerSession>
+        -serversListLabel: Label
+        -initializeInterfacesList(): void
+        -initializeServerNameField(): void
+        -initializeServersList(): void
+    }
+
+@enduml

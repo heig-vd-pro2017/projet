@@ -1,0 +1,21 @@
+@startuml
+
+    class PlayerControlsView {
+        [[PlayerControlsView.html]]
+        {static} -LOG: Logger
+        {static} +CSS_CLASS: String
+        {static} -CSS_FILE: String
+        {static} -FXML_FILE: String
+        {static} -player: Player
+        {static} -PLAY_IMAGE: String
+        {static} -PAUSE_IMAGE: String
+        -playPauseImageView: ImageView
+        -volumeSlider: Slider
+        -lowerVolume(MouseEvent): void
+        -next(MouseEvent): void
+        -playPause(MouseEvent): void
+        -previous(MouseEvent): void
+        -riseVolume(MouseEvent): void
+    }
+
+@enduml

@@ -1,0 +1,15 @@
+@startuml
+
+    class Server {
+        [[Server.html]]
+        {static} -LOG: Logger
+        -socket: ServerSocket
+        -port: int
+        -running: boolean
+        -threadPool: ExecutorService
+        +Server(int)
+        +stop(): void
+        +run(): void
+    }
+
+@enduml

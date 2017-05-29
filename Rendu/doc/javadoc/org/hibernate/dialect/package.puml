@@ -1,0 +1,1542 @@
+@startuml
+
+    namespace org.hibernate.dialect {
+
+        class SQLiteDialect {
+            [[SQLiteDialect.html]]
+            {static} -IDENTITY_COLUMN_SUPPORT: SQLiteDialectIdentityColumnSupport
+            {static} -LIMIT_HANDLER: AbstractLimitHandler
+            {static} -SQLITE_BUSY: int
+            {static} -SQLITE_LOCKED: int
+            {static} -SQLITE_IOERR: int
+            {static} -SQLITE_CORRUPT: int
+            {static} -SQLITE_NOTFOUND: int
+            {static} -SQLITE_FULL: int
+            {static} -SQLITE_CANTOPEN: int
+            {static} -SQLITE_PROTOCOL: int
+            {static} -SQLITE_TOOBIG: int
+            {static} -SQLITE_CONSTRAINT: int
+            {static} -SQLITE_MISMATCH: int
+            {static} -SQLITE_NOTADB: int
+            {static} -EXTRACTER: ViolatedConstraintNameExtracter
+            -uniqueDelegate: UniqueDelegate
+            +getCastTypeName(int): String
+            +getIdentityColumnSupport(): IdentityColumnSupport
+            +getLimitHandler(): LimitHandler
+            +supportsLockTimeouts(): boolean
+            +getForUpdateString(): String
+            +supportsOuterJoinForUpdate(): boolean
+            +supportsCurrentTimestampSelection(): boolean
+            +isCurrentTimestampSelectStringCallable(): boolean
+            +getCurrentTimestampSelectString(): String
+            +buildSQLExceptionConversionDelegate(): SQLExceptionConversionDelegate
+            +getViolatedConstraintNameExtracter(): ViolatedConstraintNameExtracter
+            +supportsUnionAll(): boolean
+            +canCreateSchema(): boolean
+            +hasAlterTable(): boolean
+            +dropConstraints(): boolean
+            +qualifyIndexName(): boolean
+            +getAddColumnString(): String
+            +getDropForeignKeyString(): String
+            +getAddForeignKeyConstraintString(String, String[], String, String[], boolean): String
+            +getAddPrimaryKeyConstraintString(String): String
+            +supportsCommentOn(): boolean
+            +supportsIfExistsBeforeTableName(): boolean
+            +doesReadCommittedCauseWritersToBlockReaders(): boolean
+            +doesRepeatableReadCauseReadersToBlockWriters(): boolean
+            +supportsTupleDistinctCounts(): boolean
+            +getInExpressionCountLimit(): int
+            +getUniqueDelegate(): UniqueDelegate
+            +getSelectGUIDString(): String
+            +defaultScrollMode(): ScrollMode
+        }
+
+        class TypeNames {
+            [[TypeNames.html]]
+            -defaults: Map<Integer, String>
+            -weighted: Map<Integer, Map<Long, String>>
+            +get(int): String
+            +get(int, long, int, int): String
+            {static} -replace(String, long, int, int): String
+            +put(int, long, String): void
+            +put(int, String): void
+            +containsTypeName(String): boolean
+        }
+
+        class TimesTenDialect {
+            [[TimesTenDialect.html]]
+            +dropConstraints(): boolean
+            +qualifyIndexName(): boolean
+            +getAddColumnString(): String
+            +supportsSequences(): boolean
+            +getSelectSequenceNextValString(String): String
+            +getSequenceNextValString(String): String
+            +getCreateSequenceString(String): String
+            +getDropSequenceString(String): String
+            +getQuerySequencesString(): String
+            +createOuterJoinFragment(): JoinFragment
+            +getCrossJoinSeparator(): String
+            +getForUpdateString(): String
+            +supportsColumnCheck(): boolean
+            +supportsTableCheck(): boolean
+            +getLimitHandler(): LimitHandler
+            +supportsLimitOffset(): boolean
+            +supportsVariableLimit(): boolean
+            +supportsLimit(): boolean
+            +useMaxForLimit(): boolean
+            +getLimitString(String, int, int): String
+            +supportsCurrentTimestampSelection(): boolean
+            +getCurrentTimestampSelectString(): String
+            +isCurrentTimestampSelectStringCallable(): boolean
+            +getDefaultMultiTableBulkIdStrategy(): MultiTableBulkIdStrategy
+            +getLockingStrategy(Lockable, LockMode): LockingStrategy
+            +supportsEmptyInList(): boolean
+        }
+
+        class TeradataDialect {
+            [[TeradataDialect.html]]
+            {static} -PARAM_LIST_SIZE_LIMIT: int
+            +getForUpdateString(): String
+            +supportsSequences(): boolean
+            +getAddColumnString(): String
+            +getDefaultMultiTableBulkIdStrategy(): MultiTableBulkIdStrategy
+            +generateIdTableName(String): String
+            +getCreateIdTableCommand(): String
+            +getCreateIdTableStatementOptions(): String
+            +getDropIdTableCommand(): String
+            +getTypeName(int, int, int, int): String
+            +supportsCascadeDelete(): boolean
+            +supportsCircularCascadeDeleteConstraints(): boolean
+            +areStringComparisonsCaseInsensitive(): boolean
+            +supportsEmptyInList(): boolean
+            +getSelectClauseNullString(int): String
+            +getCreateMultisetTableString(): String
+            +supportsLobValueChangePropogation(): boolean
+            +doesReadCommittedCauseWritersToBlockReaders(): boolean
+            +doesRepeatableReadCauseReadersToBlockWriters(): boolean
+            +supportsBindAsCallableArgument(): boolean
+            +getInExpressionCountLimit(): int
+        }
+
+        class Teradata14Dialect {
+            [[Teradata14Dialect.html]]
+            {static} -EXTRACTER: ViolatedConstraintNameExtracter
+            ~TeraIndexExporter: StandardIndexExporter
+            +getAddColumnString(): String
+            +getTypeName(int, int, int, int): String
+            +areStringComparisonsCaseInsensitive(): boolean
+            +supportsExpectedLobUsagePattern(): boolean
+            +getViolatedConstraintNameExtracter(): ViolatedConstraintNameExtracter
+            +supportsTupleDistinctCounts(): boolean
+            +supportsExistsInSelect(): boolean
+            +supportsUnboundedLobLocatorMaterialization(): boolean
+            +registerResultSetOutParameter(CallableStatement, int): int
+            +getResultSet(CallableStatement): ResultSet
+            +getWriteLockString(int): String
+            +getReadLockString(int): String
+            +applyLocksToSql(String, LockOptions, Map): String
+            +useFollowOnLocking(QueryParameters): boolean
+            +supportsLockTimeouts(): boolean
+            +getIndexExporter(): Exporter<Index>
+            +getIdentityColumnSupport(): IdentityColumnSupport
+        }
+
+        class SybaseDialect {
+            [[SybaseDialect.html]]
+            {static} -PARAM_LIST_SIZE_LIMIT: int
+            +getInExpressionCountLimit(): int
+            #getSqlTypeDescriptorOverride(int): SqlTypeDescriptor
+            +getNullColumnString(): String
+            +supportsPartitionBy(): boolean
+            +getIdentityColumnSupport(): IdentityColumnSupport
+            +supportsTuplesInSubqueries(): boolean
+            +supportsTupleDistinctCounts(): boolean
+            +doesRepeatableReadCauseReadersToBlockWriters(): boolean
+            +doesReadCommittedCauseWritersToBlockReaders(): boolean
+            +supportsExistsInSelect(): boolean
+            +supportsUnionAll(): boolean
+            +supportsEmptyInList(): boolean
+            +getSelectGUIDString(): String
+            +getDefaultMultiTableBulkIdStrategy(): MultiTableBulkIdStrategy
+            +getCurrentTimestampSelectString(): String
+            +isCurrentTimestampSelectStringCallable(): boolean
+            +supportsCurrentTimestampSelection(): boolean
+            +getResultSet(CallableStatement): ResultSet
+            +registerResultSetOutParameter(CallableStatement, int): int
+            +applyLocksToSql(String, LockOptions, Map): String
+            +appendLockHint(LockOptions, String): String
+            +getForUpdateString(): String
+            +qualifyIndexName(): boolean
+            +getAddColumnString(): String
+        }
+
+        class SybaseAnywhereDialect {
+            [[SybaseAnywhereDialect.html]]
+            +getNoColumnsInsertString(): String
+            +dropConstraints(): boolean
+            +getIdentityColumnSupport(): IdentityColumnSupport
+        }
+
+        class SybaseASE15Dialect {
+            [[SybaseASE15Dialect.html]]
+            -registerSybaseKeywords(): void
+            +supportsCascadeDelete(): boolean
+            +getMaxAliasLength(): int
+            +areStringComparisonsCaseInsensitive(): boolean
+            +getCurrentTimestampSQLFunctionName(): String
+            +supportsExpectedLobUsagePattern(): boolean
+            +getCrossJoinSeparator(): String
+            #getSqlTypeDescriptorOverride(int): SqlTypeDescriptor
+            +supportsLockTimeouts(): boolean
+        }
+
+        class SybaseASE157Dialect {
+            [[SybaseASE157Dialect.html]]
+            +getTableTypeString(): String
+            +supportsExpectedLobUsagePattern(): boolean
+            +supportsLobValueChangePropogation(): boolean
+            +forUpdateOfColumns(): boolean
+            +getForUpdateString(): String
+            +getForUpdateString(String): String
+            +appendLockHint(LockOptions, String): String
+            +applyLocksToSql(String, LockOptions, Map<String, String[]>): String
+            +buildSQLExceptionConversionDelegate(): SQLExceptionConversionDelegate
+        }
+
+        class Sybase11Dialect {
+            [[Sybase11Dialect.html]]
+            +createOuterJoinFragment(): JoinFragment
+            +getCrossJoinSeparator(): String
+        }
+
+        class SQLServerDialect {
+            [[SQLServerDialect.html]]
+            {static} -PARAM_LIST_SIZE_LIMIT: int
+            -limitHandler: LimitHandler
+            +getNoColumnsInsertString(): String
+            {static} ~getAfterSelectInsertPoint(String): int
+            +getLimitString(String, int, int): String
+            +getLimitHandler(): LimitHandler
+            #getDefaultLimitHandler(): LimitHandler
+            +supportsLimit(): boolean
+            +useMaxForLimit(): boolean
+            +supportsLimitOffset(): boolean
+            +supportsVariableLimit(): boolean
+            +closeQuote(): char
+            +openQuote(): char
+            +appendLockHint(LockOptions, String): String
+            +getCurrentTimestampSelectString(): String
+            +areStringComparisonsCaseInsensitive(): boolean
+            +supportsResultSetPositionQueryMethodsOnForwardOnlyCursor(): boolean
+            +supportsCircularCascadeDeleteConstraints(): boolean
+            +supportsLobValueChangePropogation(): boolean
+            +doesReadCommittedCauseWritersToBlockReaders(): boolean
+            +doesRepeatableReadCauseReadersToBlockWriters(): boolean
+            #getSqlTypeDescriptorOverride(int): SqlTypeDescriptor
+            +getInExpressionCountLimit(): int
+            +getIdentityColumnSupport(): IdentityColumnSupport
+            +supportsPartitionBy(): boolean
+            +supportsTuplesInSubqueries(): boolean
+            +supportsTupleDistinctCounts(): boolean
+            +supportsExistsInSelect(): boolean
+            +supportsUnionAll(): boolean
+            +supportsEmptyInList(): boolean
+            +getSelectGUIDString(): String
+            +getDefaultMultiTableBulkIdStrategy(): MultiTableBulkIdStrategy
+            +isCurrentTimestampSelectStringCallable(): boolean
+            +supportsCurrentTimestampSelection(): boolean
+            +getResultSet(CallableStatement): ResultSet
+            +registerResultSetOutParameter(CallableStatement, int): int
+            +applyLocksToSql(String, LockOptions, Map): String
+            +getForUpdateString(): String
+            +qualifyIndexName(): boolean
+            +getNullColumnString(): String
+            +getAddColumnString(): String
+        }
+
+        class SQLServer2012Dialect {
+            [[SQLServer2012Dialect.html]]
+            +supportsSequences(): boolean
+            +supportsPooledSequences(): boolean
+            +getCreateSequenceString(String): String
+            +getDropSequenceString(String): String
+            +getSelectSequenceNextValString(String): String
+            +getSequenceNextValString(String): String
+            +getQuerySequencesString(): String
+            +getQueryHintString(String, List<String>): String
+            +supportsLimitOffset(): boolean
+            #getDefaultLimitHandler(): LimitHandler
+        }
+
+        class SQLServer2008Dialect {
+            [[SQLServer2008Dialect.html]]
+            {static} -NVARCHAR_MAX_LENGTH: int
+            +renderOrderByElement(String, String, String, NullPrecedence): String
+            +supportsValuesList(): boolean
+        }
+
+        class SQLServer2005Dialect {
+            [[SQLServer2005Dialect.html]]
+            {static} -MAX_LENGTH: int
+            #getDefaultLimitHandler(): LimitHandler
+            +appendLockHint(LockOptions, String): String
+            +buildSQLExceptionConversionDelegate(): SQLExceptionConversionDelegate
+            +supportsNonQueryWithCTE(): boolean
+        }
+
+        class SAPDBDialect {
+            [[SAPDBDialect.html]]
+            +dropConstraints(): boolean
+            +getAddColumnString(): String
+            +getAddForeignKeyConstraintString(String, String[], String, String[], boolean): String
+            +getAddForeignKeyConstraintString(String, String): String
+            +getAddPrimaryKeyConstraintString(String): String
+            +getNullColumnString(): String
+            +getSequenceNextValString(String): String
+            +getSelectSequenceNextValString(String): String
+            +getCreateSequenceString(String): String
+            +getDropSequenceString(String): String
+            +getQuerySequencesString(): String
+            +supportsSequences(): boolean
+            +createCaseFragment(): CaseFragment
+            +getDefaultMultiTableBulkIdStrategy(): MultiTableBulkIdStrategy
+        }
+
+        enum ResultColumnReferenceStrategy {
+            [[ResultColumnReferenceStrategy.html]]
+            {static} +SOURCE
+            {static} +ALIAS
+            {static} +ORDINAL
+            {static} +resolveByName(String): ResultColumnReferenceStrategy
+        }
+
+        class RDMSOS2200Dialect {
+            [[RDMSOS2200Dialect.html]]
+            {static} -LOG: CoreMessageLogger
+            {static} -LIMIT_HANDLER: AbstractLimitHandler
+            {static} -LEGACY_LIMIT_HANDLER: AbstractLimitHandler
+            +qualifyIndexName(): boolean
+            +forUpdateOfColumns(): boolean
+            +getForUpdateString(): String
+            +supportsCascadeDelete(): boolean
+            +supportsOuterJoinForUpdate(): boolean
+            +getAddColumnString(): String
+            +getNullColumnString(): String
+            +supportsSequences(): boolean
+            +getSequenceNextValString(String): String
+            +getCreateSequenceString(String): String
+            +getDropSequenceString(String): String
+            +getCascadeConstraintsString(): String
+            +createCaseFragment(): CaseFragment
+            +getLimitHandler(): LimitHandler
+            +supportsLimit(): boolean
+            +supportsLimitOffset(): boolean
+            +getLimitString(String, int, int): String
+            +supportsVariableLimit(): boolean
+            +supportsUnionAll(): boolean
+            +getLockingStrategy(Lockable, LockMode): LockingStrategy
+        }
+
+        class ProgressDialect {
+            [[ProgressDialect.html]]
+            +hasAlterTable(): boolean
+            +getAddColumnString(): String
+            +qualifyIndexName(): boolean
+        }
+
+        class PostgreSQL9Dialect {
+            [[PostgreSQL9Dialect.html]]
+            +supportsIfExistsBeforeConstraintName(): boolean
+        }
+
+        class PostgreSQL95Dialect {
+            [[PostgreSQL95Dialect.html]]
+            +getWriteLockString(int): String
+            +getWriteLockString(String, int): String
+            +getReadLockString(int): String
+            +getReadLockString(String, int): String
+            +getForUpdateSkipLockedString(): String
+            +getForUpdateSkipLockedString(String): String
+        }
+
+        class PostgreSQL94Dialect {
+            [[PostgreSQL94Dialect.html]]
+        }
+
+        class PostgreSQL93Dialect {
+            [[PostgreSQL93Dialect.html]]
+            +augmentRecognizedTableTypes(List<String>): void
+        }
+
+        class PostgreSQL92Dialect {
+            [[PostgreSQL92Dialect.html]]
+        }
+
+        class PostgreSQL91Dialect {
+            [[PostgreSQL91Dialect.html]]
+            +supportsPartitionBy(): boolean
+            +supportsNonQueryWithCTE(): boolean
+        }
+
+        class PostgreSQL82Dialect {
+            [[PostgreSQL82Dialect.html]]
+            +supportsIfExistsBeforeTableName(): boolean
+            +contributeTypes(TypeContributions, ServiceRegistry): void
+            +getDefaultMultiTableBulkIdStrategy(): MultiTableBulkIdStrategy
+            +getDropSequenceString(String): String
+            +supportsValuesList(): boolean
+            +supportsRowValueConstructorSyntaxInInList(): boolean
+        }
+
+        class PostgreSQL81Dialect {
+            [[PostgreSQL81Dialect.html]]
+            {static} -LIMIT_HANDLER: AbstractLimitHandler
+            {static} -EXTRACTER: ViolatedConstraintNameExtracter
+            +getSqlTypeDescriptorOverride(int): SqlTypeDescriptor
+            +getAddColumnString(): String
+            +getSequenceNextValString(String): String
+            +getSelectSequenceNextValString(String): String
+            +getCreateSequenceString(String): String
+            +getDropSequenceString(String): String
+            +getCascadeConstraintsString(): String
+            +dropConstraints(): boolean
+            +supportsSequences(): boolean
+            +getQuerySequencesString(): String
+            +getLimitHandler(): LimitHandler
+            +supportsLimit(): boolean
+            +getLimitString(String, boolean): String
+            +bindLimitParametersInReverseOrder(): boolean
+            +getForUpdateString(String): String
+            +getForUpdateString(String, LockOptions): String
+            +getNoColumnsInsertString(): String
+            +getCaseInsensitiveLike(): String
+            +supportsCaseInsensitiveLike(): boolean
+            +getNativeIdentifierGeneratorStrategy(): String
+            +supportsOuterJoinForUpdate(): boolean
+            +useInputStreamToInsertBlob(): boolean
+            +supportsUnionAll(): boolean
+            +getSelectClauseNullString(int): String
+            +supportsCommentOn(): boolean
+            +getDefaultMultiTableBulkIdStrategy(): MultiTableBulkIdStrategy
+            +supportsCurrentTimestampSelection(): boolean
+            +isCurrentTimestampSelectStringCallable(): boolean
+            +getCurrentTimestampSelectString(): String
+            +requiresParensForTupleDistinctCounts(): boolean
+            +toBooleanValueString(boolean): String
+            +getViolatedConstraintNameExtracter(): ViolatedConstraintNameExtracter
+            +buildSQLExceptionConversionDelegate(): SQLExceptionConversionDelegate
+            +registerResultSetOutParameter(CallableStatement, int): int
+            +getResultSet(CallableStatement): ResultSet
+            +supportsPooledSequences(): boolean
+            #getCreateSequenceString(String, int, int): String
+            +supportsEmptyInList(): boolean
+            +supportsExpectedLobUsagePattern(): boolean
+            +supportsLobValueChangePropogation(): boolean
+            +supportsUnboundedLobLocatorMaterialization(): boolean
+            +getForUpdateString(): String
+            +getWriteLockString(int): String
+            +getWriteLockString(String, int): String
+            +getReadLockString(int): String
+            +getReadLockString(String, int): String
+            +supportsRowValueConstructorSyntax(): boolean
+            +getForUpdateNowaitString(): String
+            +getForUpdateNowaitString(String): String
+            +getCallableStatementSupport(): CallableStatementSupport
+            +getResultSet(CallableStatement, int): ResultSet
+            +getResultSet(CallableStatement, String): ResultSet
+            +qualifyIndexName(): boolean
+            +getIdentityColumnSupport(): IdentityColumnSupport
+            +supportsNationalizedTypes(): boolean
+        }
+
+        class PointbaseDialect {
+            [[PointbaseDialect.html]]
+            +getAddColumnString(): String
+            +dropConstraints(): boolean
+            +getCascadeConstraintsString(): String
+            +getForUpdateString(): String
+            +getLockingStrategy(Lockable, LockMode): LockingStrategy
+        }
+
+        class OracleTypesHelper {
+            [[OracleTypesHelper.html]]
+            {static} -log: CoreMessageLogger
+            {static} +INSTANCE: OracleTypesHelper
+            {static} -ORACLE_TYPES_CLASS_NAME: String
+            {static} -DEPRECATED_ORACLE_TYPES_CLASS_NAME: String
+            -oracleCursorTypeSqlType: int
+            -extractOracleCursorTypeValue(): int
+            -locateOracleTypesClass(): Class
+            +getOracleCursorTypeSqlType(): int
+        }
+
+        class Oracle9iDialect {
+            [[Oracle9iDialect.html]]
+            {static} -LIMIT_HANDLER: AbstractLimitHandler
+            #registerCharacterTypeMappings(): void
+            #registerDateTimeTypeMappings(): void
+            +createCaseFragment(): CaseFragment
+            +getLimitHandler(): LimitHandler
+            +getLimitString(String, boolean): String
+            +getSelectClauseNullString(int): String
+            +getCurrentTimestampSelectString(): String
+            +getCurrentTimestampSQLFunctionName(): String
+            +getForUpdateString(): String
+            +getWriteLockString(int): String
+            +getReadLockString(int): String
+            +supportsRowValueConstructorSyntaxInInList(): boolean
+            +supportsTupleDistinctCounts(): boolean
+        }
+
+        class Oracle8iDialect {
+            [[Oracle8iDialect.html]]
+            {static} -DISTINCT_KEYWORD_PATTERN: Pattern
+            {static} -GROUP_BY_KEYWORD_PATTERN: Pattern
+            {static} -ORDER_BY_KEYWORD_PATTERN: Pattern
+            {static} -UNION_KEYWORD_PATTERN: Pattern
+            {static} -LIMIT_HANDLER: AbstractLimitHandler
+            {static} -PARAM_LIST_SIZE_LIMIT: int
+            {static} -EXTRACTER: ViolatedConstraintNameExtracter
+            #registerCharacterTypeMappings(): void
+            #registerNumericTypeMappings(): void
+            #registerDateTimeTypeMappings(): void
+            #registerLargeObjectTypeMappings(): void
+            #registerReverseHibernateTypeMappings(): void
+            #registerFunctions(): void
+            #registerDefaultProperties(): void
+            #getSqlTypeDescriptorOverride(int): SqlTypeDescriptor
+            +createOuterJoinFragment(): JoinFragment
+            +getCrossJoinSeparator(): String
+            +createCaseFragment(): CaseFragment
+            +getLimitHandler(): LimitHandler
+            +getLimitString(String, boolean): String
+            +getBasicSelectClauseNullString(int): String
+            +getSelectClauseNullString(int): String
+            +getCurrentTimestampSelectString(): String
+            +getCurrentTimestampSQLFunctionName(): String
+            +getAddColumnString(): String
+            +getSequenceNextValString(String): String
+            +getSelectSequenceNextValString(String): String
+            +getCreateSequenceString(String): String
+            +getDropSequenceString(String): String
+            +getCascadeConstraintsString(): String
+            +dropConstraints(): boolean
+            +getForUpdateNowaitString(): String
+            +supportsSequences(): boolean
+            +supportsPooledSequences(): boolean
+            +supportsLimit(): boolean
+            +getForUpdateString(String): String
+            +getForUpdateNowaitString(String): String
+            +bindLimitParametersInReverseOrder(): boolean
+            +useMaxForLimit(): boolean
+            +forUpdateOfColumns(): boolean
+            +getQuerySequencesString(): String
+            +getSelectGUIDString(): String
+            +getViolatedConstraintNameExtracter(): ViolatedConstraintNameExtracter
+            +buildSQLExceptionConversionDelegate(): SQLExceptionConversionDelegate
+            +registerResultSetOutParameter(CallableStatement, int): int
+            +getResultSet(CallableStatement): ResultSet
+            +supportsUnionAll(): boolean
+            +supportsCommentOn(): boolean
+            +getDefaultMultiTableBulkIdStrategy(): MultiTableBulkIdStrategy
+            +supportsCurrentTimestampSelection(): boolean
+            +isCurrentTimestampSelectStringCallable(): boolean
+            +supportsEmptyInList(): boolean
+            +supportsExistsInSelect(): boolean
+            +getInExpressionCountLimit(): int
+            +forceLobAsLastValue(): boolean
+            +useFollowOnLocking(QueryParameters): boolean
+            +getNotExpression(String): String
+            +getQueryHintString(String, List<String>): String
+            +getMaxAliasLength(): int
+            +getCallableStatementSupport(): CallableStatementSupport
+            +canCreateSchema(): boolean
+            +supportsPartitionBy(): boolean
+        }
+
+        class Oracle12cDialect {
+            [[Oracle12cDialect.html]]
+            {static} +PREFER_LONG_RAW: String
+            +contributeTypes(TypeContributions, ServiceRegistry): void
+            #registerDefaultProperties(): void
+            +getLimitHandler(): LimitHandler
+            +getNativeIdentifierGeneratorStrategy(): String
+            +getIdentityColumnSupport(): IdentityColumnSupport
+        }
+
+        class Oracle10gDialect {
+            [[Oracle10gDialect.html]]
+            +createOuterJoinFragment(): JoinFragment
+            +getCrossJoinSeparator(): String
+            +getWriteLockString(int): String
+            +getWriteLockString(String, int): String
+            +getForUpdateSkipLockedString(): String
+            +getForUpdateSkipLockedString(String): String
+            +getResultSet(CallableStatement, int): ResultSet
+            +registerResultSetOutParameter(CallableStatement, String): int
+            +getResultSet(CallableStatement, String): ResultSet
+        }
+
+        interface MySQLStorageEngine {
+            [[MySQLStorageEngine.html]]
+            {abstract} +supportsCascadeDelete(): boolean
+            {abstract} +getTableTypeString(String): String
+            {abstract} +hasSelfReferentialForeignKeyBug(): boolean
+            {abstract} +dropConstraints(): boolean
+        }
+
+        class MySQLDialect {
+            [[MySQLDialect.html]]
+            {static} -LIMIT_HANDLER: LimitHandler
+            -uniqueDelegate: UniqueDelegate
+            #registerVarcharTypes(): void
+            +getAddColumnString(): String
+            +qualifyIndexName(): boolean
+            +getAddForeignKeyConstraintString(String, String[], String, String[], boolean): String
+            +supportsLimit(): boolean
+            +getDropForeignKeyString(): String
+            +getLimitHandler(): LimitHandler
+            +getLimitString(String, boolean): String
+            +closeQuote(): char
+            +openQuote(): char
+            +canCreateCatalog(): boolean
+            +getCreateCatalogCommand(String): String[]
+            +getDropCatalogCommand(String): String[]
+            +canCreateSchema(): boolean
+            +getCreateSchemaCommand(String): String[]
+            +getDropSchemaCommand(String): String[]
+            +supportsIfExistsBeforeTableName(): boolean
+            +getSelectGUIDString(): String
+            +getTableComment(String): String
+            +getColumnComment(String): String
+            +getDefaultMultiTableBulkIdStrategy(): MultiTableBulkIdStrategy
+            +getCastTypeName(int): String
+            #smallIntegerCastTarget(): String
+            #floatingPointNumberCastTarget(): String
+            #fixedPointNumberCastTarget(): String
+            +supportsCurrentTimestampSelection(): boolean
+            +isCurrentTimestampSelectStringCallable(): boolean
+            +getCurrentTimestampSelectString(): String
+            +registerResultSetOutParameter(CallableStatement, int): int
+            +getResultSet(CallableStatement): ResultSet
+            +getUniqueDelegate(): UniqueDelegate
+            +supportsRowValueConstructorSyntax(): boolean
+            +renderOrderByElement(String, String, String, NullPrecedence): String
+            +getForUpdateString(): String
+            +getWriteLockString(int): String
+            +getReadLockString(int): String
+            +supportsEmptyInList(): boolean
+            +areStringComparisonsCaseInsensitive(): boolean
+            +supportsLobValueChangePropogation(): boolean
+            +supportsSubqueryOnMutatingTable(): boolean
+            +supportsLockTimeouts(): boolean
+            +buildSQLExceptionConversionDelegate(): SQLExceptionConversionDelegate
+            +getNotExpression(String): String
+            +getIdentityColumnSupport(): IdentityColumnSupport
+            +isJdbcLogWarningsEnabledByDefault(): boolean
+            +supportsCascadeDelete(): boolean
+            +getTableTypeString(): String
+            #getEngineKeyword(): String
+            +hasSelfReferentialForeignKeyBug(): boolean
+            +dropConstraints(): boolean
+        }
+
+        class MySQL5Dialect {
+            [[MySQL5Dialect.html]]
+            {static} -EXTRACTER: ViolatedConstraintNameExtracter
+            #registerVarcharTypes(): void
+            +supportsColumnCheck(): boolean
+            +getViolatedConstraintNameExtracter(): ViolatedConstraintNameExtracter
+            #getEngineKeyword(): String
+        }
+
+        class MySQL57Dialect {
+            [[MySQL57Dialect.html]]
+            +supportsRowValueConstructorSyntaxInInList(): boolean
+        }
+
+        class MySQL55Dialect {
+            [[MySQL55Dialect.html]]
+        }
+
+        class MyISAMStorageEngine {
+            [[MyISAMStorageEngine.html]]
+            {static} +INSTANCE: MySQLStorageEngine
+            +supportsCascadeDelete(): boolean
+            +getTableTypeString(String): String
+            +hasSelfReferentialForeignKeyBug(): boolean
+            +dropConstraints(): boolean
+        }
+
+        class MimerSQLDialect {
+            [[MimerSQLDialect.html]]
+            {static} -NATIONAL_CHAR_LENGTH: int
+            {static} -BINARY_MAX_LENGTH: int
+            +getAddColumnString(): String
+            +dropConstraints(): boolean
+            +supportsSequences(): boolean
+            +getSequenceNextValString(String): String
+            +getCreateSequenceString(String): String
+            +getDropSequenceString(String): String
+            +supportsLimit(): boolean
+            +getCascadeConstraintsString(): String
+            +getQuerySequencesString(): String
+            +forUpdateOfColumns(): boolean
+            +supportsOuterJoinForUpdate(): boolean
+            +getIdentityColumnSupport(): IdentityColumnSupport
+        }
+
+        class MckoiDialect {
+            [[MckoiDialect.html]]
+            +getAddColumnString(): String
+            +getSequenceNextValString(String): String
+            +getSelectSequenceNextValString(String): String
+            +getCreateSequenceString(String): String
+            +getDropSequenceString(String): String
+            +getForUpdateString(): String
+            +supportsSequences(): boolean
+            +createCaseFragment(): CaseFragment
+            +getLockingStrategy(Lockable, LockMode): LockingStrategy
+        }
+
+        class MariaDBDialect {
+            [[MariaDBDialect.html]]
+            +supportsRowValueConstructorSyntaxInInList(): boolean
+        }
+
+        class MariaDB53Dialect {
+            [[MariaDB53Dialect.html]]
+        }
+
+        interface LobMergeStrategy {
+            [[LobMergeStrategy.html]]
+            {abstract} +mergeBlob(Blob, Blob, SharedSessionContractImplementor): Blob
+            {abstract} +mergeClob(Clob, Clob, SharedSessionContractImplementor): Clob
+            {abstract} +mergeNClob(NClob, NClob, SharedSessionContractImplementor): NClob
+        }
+
+        class JDataStoreDialect {
+            [[JDataStoreDialect.html]]
+            +getAddColumnString(): String
+            +dropConstraints(): boolean
+            +getCascadeConstraintsString(): String
+            +getNoColumnsInsertString(): String
+            +supportsColumnCheck(): boolean
+            +supportsTableCheck(): boolean
+            +getIdentityColumnSupport(): IdentityColumnSupport
+        }
+
+        class InterbaseDialect {
+            [[InterbaseDialect.html]]
+            {static} -LIMIT_HANDLER: AbstractLimitHandler
+            +getAddColumnString(): String
+            +getSequenceNextValString(String): String
+            +getSelectSequenceNextValString(String): String
+            +getCreateSequenceString(String): String
+            +getDropSequenceString(String): String
+            +getQuerySequencesString(): String
+            +getForUpdateString(): String
+            +getForUpdateString(String): String
+            +supportsSequences(): boolean
+            +getLimitHandler(): LimitHandler
+            +supportsLimit(): boolean
+            +getLimitString(String, boolean): String
+            +bindLimitParametersFirst(): boolean
+            +bindLimitParametersInReverseOrder(): boolean
+            +getCurrentTimestampSelectString(): String
+            +isCurrentTimestampSelectStringCallable(): boolean
+        }
+
+        class InnoDBStorageEngine {
+            [[InnoDBStorageEngine.html]]
+            {static} +INSTANCE: MySQLStorageEngine
+            +supportsCascadeDelete(): boolean
+            +getTableTypeString(String): String
+            +hasSelfReferentialForeignKeyBug(): boolean
+            +dropConstraints(): boolean
+        }
+
+        class IngresDialect {
+            [[IngresDialect.html]]
+            +getSelectGUIDString(): String
+            +dropConstraints(): boolean
+            +getAddColumnString(): String
+            +getNullColumnString(): String
+            +supportsSequences(): boolean
+            +getSequenceNextValString(String): String
+            +getSelectSequenceNextValString(String): String
+            +getCreateSequenceString(String): String
+            +getDropSequenceString(String): String
+            +getQuerySequencesString(): String
+            +getLowercaseFunction(): String
+            +getLimitHandler(): LimitHandler
+            #getDefaultLimitHandler(): LimitHandler
+            +supportsLimit(): boolean
+            +supportsLimitOffset(): boolean
+            +getLimitString(String, int, int): String
+            +supportsVariableLimit(): boolean
+            +useMaxForLimit(): boolean
+            +getDefaultMultiTableBulkIdStrategy(): MultiTableBulkIdStrategy
+            +getCurrentTimestampSQLFunctionName(): String
+            +supportsSubselectAsInPredicateLHS(): boolean
+            +supportsEmptyInList(): boolean
+            +supportsExpectedLobUsagePattern(): boolean
+            +supportsTupleDistinctCounts(): boolean
+        }
+
+        class Ingres9Dialect {
+            [[Ingres9Dialect.html]]
+            {static} -LIMIT_HANDLER: LimitHandler
+            #registerDateTimeFunctions(): void
+            #registerDateTimeColumnTypes(): void
+            +supportsOuterJoinForUpdate(): boolean
+            +forUpdateOfColumns(): boolean
+            +getQuerySequencesString(): String
+            +supportsPooledSequences(): boolean
+            +isCurrentTimestampSelectStringCallable(): boolean
+            +supportsCurrentTimestampSelection(): boolean
+            +getCurrentTimestampSelectString(): String
+            +getCurrentTimestampSQLFunctionName(): String
+            +supportsUnionAll(): boolean
+            +doesReadCommittedCauseWritersToBlockReaders(): boolean
+            +doesRepeatableReadCauseReadersToBlockWriters(): boolean
+            +getDefaultLimitHandler(): LimitHandler
+            +supportsLimitOffset(): boolean
+            +supportsVariableLimit(): boolean
+            +useMaxForLimit(): boolean
+            +getLimitString(String, int, int): String
+            +getIdentityColumnSupport(): IdentityColumnSupport
+        }
+
+        class Ingres10Dialect {
+            [[Ingres10Dialect.html]]
+            #registerBooleanSupport(): void
+            -registerDefaultProperties(): void
+            +toBooleanValueString(boolean): String
+            +getIdentityColumnSupport(): IdentityColumnSupport
+        }
+
+        class InformixDialect {
+            [[InformixDialect.html]]
+            {static} -EXTRACTER: ViolatedConstraintNameExtracter
+            -uniqueDelegate: UniqueDelegate
+            +getAddColumnString(): String
+            +getAddForeignKeyConstraintString(String, String[], String, String[], boolean): String
+            +getAddForeignKeyConstraintString(String, String): String
+            +getAddPrimaryKeyConstraintString(String): String
+            +getCreateSequenceString(String): String
+            +getDropSequenceString(String): String
+            +getSequenceNextValString(String): String
+            +getSelectSequenceNextValString(String): String
+            +supportsSequences(): boolean
+            +supportsPooledSequences(): boolean
+            +getQuerySequencesString(): String
+            +getLimitHandler(): LimitHandler
+            +supportsLimit(): boolean
+            +useMaxForLimit(): boolean
+            +supportsLimitOffset(): boolean
+            +getLimitString(String, int, int): String
+            +supportsVariableLimit(): boolean
+            +getViolatedConstraintNameExtracter(): ViolatedConstraintNameExtracter
+            +supportsCurrentTimestampSelection(): boolean
+            +isCurrentTimestampSelectStringCallable(): boolean
+            +getCurrentTimestampSelectString(): String
+            +getDefaultMultiTableBulkIdStrategy(): MultiTableBulkIdStrategy
+            +getUniqueDelegate(): UniqueDelegate
+            +getIdentityColumnSupport(): IdentityColumnSupport
+            +toBooleanValueString(boolean): String
+        }
+
+        class Informix10Dialect {
+            [[Informix10Dialect.html]]
+            +getLimitHandler(): LimitHandler
+        }
+
+        class HSQLDialect {
+            [[HSQLDialect.html]]
+            {static} -LOG: CoreMessageLogger
+            {static} -EXTRACTER_18: ViolatedConstraintNameExtracter
+            {static} -EXTRACTER_20: ViolatedConstraintNameExtracter
+            -hsqldbVersion: int
+            -limitHandler: LimitHandler
+            +getAddColumnString(): String
+            +supportsLockTimeouts(): boolean
+            +getForUpdateString(): String
+            +getLimitHandler(): LimitHandler
+            +supportsLimit(): boolean
+            +getLimitString(String, boolean): String
+            +bindLimitParametersFirst(): boolean
+            +supportsIfExistsAfterTableName(): boolean
+            +supportsColumnCheck(): boolean
+            +supportsSequences(): boolean
+            +supportsPooledSequences(): boolean
+            #getCreateSequenceString(String): String
+            #getCreateSequenceString(String, int, int): String
+            #getDropSequenceString(String): String
+            +getSelectSequenceNextValString(String): String
+            +getSequenceNextValString(String): String
+            +getQuerySequencesString(): String
+            +getViolatedConstraintNameExtracter(): ViolatedConstraintNameExtracter
+            +getSelectClauseNullString(int): String
+            +supportsUnionAll(): boolean
+            +getDefaultMultiTableBulkIdStrategy(): MultiTableBulkIdStrategy
+            +supportsCurrentTimestampSelection(): boolean
+            +isCurrentTimestampSelectStringCallable(): boolean
+            +getCurrentTimestampSelectString(): String
+            +getCurrentTimestampSQLFunctionName(): String
+            +getLockingStrategy(Lockable, LockMode): LockingStrategy
+            +supportsCommentOn(): boolean
+            +supportsEmptyInList(): boolean
+            +requiresCastingOfParametersInSelectClause(): boolean
+            +doesReadCommittedCauseWritersToBlockReaders(): boolean
+            +doesRepeatableReadCauseReadersToBlockWriters(): boolean
+            +supportsLobValueChangePropogation(): boolean
+            +toBooleanValueString(boolean): String
+            +supportsTupleDistinctCounts(): boolean
+            +getIdentityColumnSupport(): IdentityColumnSupport
+            +getNameQualifierSupport(): NameQualifierSupport
+            +supportsNamedParameters(DatabaseMetaData): boolean
+        }
+
+        class HANARowStoreDialect {
+            [[HANARowStoreDialect.html]]
+        }
+
+        class HANAColumnStoreDialect {
+            [[HANAColumnStoreDialect.html]]
+            +getCreateTableString(): String
+        }
+
+        class H2Dialect {
+            [[H2Dialect.html]]
+            {static} -LOG: CoreMessageLogger
+            {static} -LIMIT_HANDLER: AbstractLimitHandler
+            {static} -EXTRACTER: ViolatedConstraintNameExtracter
+            -querySequenceString: String
+            -sequenceInformationExtractor: SequenceInformationExtractor
+            +getAddColumnString(): String
+            +getForUpdateString(): String
+            +getLimitHandler(): LimitHandler
+            +supportsLimit(): boolean
+            +getLimitString(String, boolean): String
+            +bindLimitParametersInReverseOrder(): boolean
+            +bindLimitParametersFirst(): boolean
+            +supportsIfExistsAfterTableName(): boolean
+            +supportsIfExistsBeforeConstraintName(): boolean
+            +supportsSequences(): boolean
+            +supportsPooledSequences(): boolean
+            +getCreateSequenceString(String): String
+            +getDropSequenceString(String): String
+            +getSelectSequenceNextValString(String): String
+            +getSequenceNextValString(String): String
+            +getQuerySequencesString(): String
+            +getSequenceInformationExtractor(): SequenceInformationExtractor
+            +getViolatedConstraintNameExtracter(): ViolatedConstraintNameExtracter
+            +buildSQLExceptionConversionDelegate(): SQLExceptionConversionDelegate
+            +getDefaultMultiTableBulkIdStrategy(): MultiTableBulkIdStrategy
+            +supportsCurrentTimestampSelection(): boolean
+            +isCurrentTimestampSelectStringCallable(): boolean
+            +getCurrentTimestampSelectString(): String
+            +supportsUnionAll(): boolean
+            +supportsLobValueChangePropogation(): boolean
+            +requiresParensForTupleDistinctCounts(): boolean
+            +doesReadCommittedCauseWritersToBlockReaders(): boolean
+            +supportsTuplesInSubqueries(): boolean
+            +dropConstraints(): boolean
+            +getIdentityColumnSupport(): IdentityColumnSupport
+        }
+
+        class FrontBaseDialect {
+            [[FrontBaseDialect.html]]
+            +getAddColumnString(): String
+            +getCascadeConstraintsString(): String
+            +dropConstraints(): boolean
+            +getForUpdateString(): String
+            +getCurrentTimestampSelectString(): String
+            +isCurrentTimestampSelectStringCallable(): boolean
+            +getLockingStrategy(Lockable, LockMode): LockingStrategy
+        }
+
+        class FirebirdDialect {
+            [[FirebirdDialect.html]]
+            {static} -LIMIT_HANDLER: AbstractLimitHandler
+            +getDropSequenceString(String): String
+            +getLimitString(String, boolean): String
+            +bindLimitParametersFirst(): boolean
+            +bindLimitParametersInReverseOrder(): boolean
+            +getLimitHandler(): LimitHandler
+        }
+
+        abstract class Dialect {
+            [[Dialect.html]]
+            {static} -LOG: CoreMessageLogger
+            {static} +DEFAULT_BATCH_SIZE: String
+            {static} +NO_BATCH: String
+            {static} +QUOTE: String
+            {static} +CLOSED_QUOTE: String
+            {static} #LEGACY_LOB_MERGE_STRATEGY: LobMergeStrategy
+            {static} #STREAM_XFER_LOB_MERGE_STRATEGY: LobMergeStrategy
+            {static} #NEW_LOCATOR_LOB_MERGE_STRATEGY: LobMergeStrategy
+            {static} -EXTRACTER: ViolatedConstraintNameExtracter
+            -properties: Properties
+            -sqlFunctions: Map<String, SQLFunction>
+            -sqlKeywords: Set<String>
+            -uniqueDelegate: UniqueDelegate
+            -legacyLimitHandlerBehavior: boolean
+            -tableExporter: StandardTableExporter
+            -sequenceExporter: StandardSequenceExporter
+            -indexExporter: StandardIndexExporter
+            -foreignKeyExporter: StandardForeignKeyExporter
+            -uniqueKeyExporter: StandardUniqueKeyExporter
+            -auxiliaryObjectExporter: StandardAuxiliaryDatabaseObjectExporter
+            #STANDARD_DEFAULT_BATCH_LOAD_SIZING_STRATEGY: BatchLoadSizingStrategy
+            {static} +getDialect(): Dialect
+            {static} +getDialect(Properties): Dialect
+            {static} -instantiateDialect(String): Dialect
+            +getDefaultProperties(): Properties
+            +contributeTypes(TypeContributions, ServiceRegistry): void
+            +getTypeName(int): String
+            +getTypeName(int, long, int, int): String
+            +getCastTypeName(int): String
+            +cast(String, int, int, int, int): String
+            +cast(String, int, int): String
+            +cast(String, int, int, int): String
+            #registerColumnType(int, long, String): void
+            #registerColumnType(int, String): void
+            +remapSqlTypeDescriptor(SqlTypeDescriptor): SqlTypeDescriptor
+            #getSqlTypeDescriptorOverride(int): SqlTypeDescriptor
+            +getHibernateTypeName(int): String
+            +isTypeNameRegistered(String): boolean
+            +getHibernateTypeName(int, int, int, int): String
+            #registerHibernateType(int, long, String): void
+            #registerHibernateType(int, String): void
+            #registerFunction(String, SQLFunction): void
+            +getFunctions(): Map<String, SQLFunction>
+            +getNativeIdentifierGeneratorStrategy(): String
+            +getIdentityColumnSupport(): IdentityColumnSupport
+            +supportsSequences(): boolean
+            +supportsPooledSequences(): boolean
+            +getSequenceNextValString(String): String
+            +getSelectSequenceNextValString(String): String
+            +getCreateSequenceStrings(String, int, int): String[]
+            #getCreateSequenceString(String): String
+            #getCreateSequenceString(String, int, int): String
+            +getDropSequenceStrings(String): String[]
+            #getDropSequenceString(String): String
+            +getQuerySequencesString(): String
+            +getSequenceInformationExtractor(): SequenceInformationExtractor
+            +getSelectGUIDString(): String
+            +getLimitHandler(): LimitHandler
+            +supportsLockTimeouts(): boolean
+            +isLockTimeoutParameterized(): boolean
+            +getLockingStrategy(Lockable, LockMode): LockingStrategy
+            +getForUpdateString(LockOptions): String
+            -getForUpdateString(LockMode, int): String
+            +getForUpdateString(LockMode): String
+            +getForUpdateString(): String
+            +getWriteLockString(int): String
+            +getWriteLockString(String, int): String
+            +getReadLockString(int): String
+            +getReadLockString(String, int): String
+            +forUpdateOfColumns(): boolean
+            +supportsOuterJoinForUpdate(): boolean
+            +getForUpdateString(String): String
+            +getForUpdateString(String, LockOptions): String
+            +getForUpdateNowaitString(): String
+            +getForUpdateSkipLockedString(): String
+            +getForUpdateNowaitString(String): String
+            +getForUpdateSkipLockedString(String): String
+            +appendLockHint(LockOptions, String): String
+            +applyLocksToSql(String, LockOptions, Map<String, String[]>): String
+            +getCreateTableString(): String
+            +getCreateMultisetTableString(): String
+            +getDefaultMultiTableBulkIdStrategy(): MultiTableBulkIdStrategy
+            +registerResultSetOutParameter(CallableStatement, int): int
+            +registerResultSetOutParameter(CallableStatement, String): int
+            +getResultSet(CallableStatement): ResultSet
+            +getResultSet(CallableStatement, int): ResultSet
+            +getResultSet(CallableStatement, String): ResultSet
+            +supportsCurrentTimestampSelection(): boolean
+            +isCurrentTimestampSelectStringCallable(): boolean
+            +getCurrentTimestampSelectString(): String
+            +getCurrentTimestampSQLFunctionName(): String
+            +buildSQLExceptionConversionDelegate(): SQLExceptionConversionDelegate
+            +getViolatedConstraintNameExtracter(): ViolatedConstraintNameExtracter
+            +getSelectClauseNullString(int): String
+            +supportsUnionAll(): boolean
+            +createOuterJoinFragment(): JoinFragment
+            +createCaseFragment(): CaseFragment
+            +getNoColumnsInsertString(): String
+            +getLowercaseFunction(): String
+            +getCaseInsensitiveLike(): String
+            +supportsCaseInsensitiveLike(): boolean
+            +transformSelectString(String): String
+            +getMaxAliasLength(): int
+            +toBooleanValueString(boolean): String
+            #registerKeyword(String): void
+            +buildIdentifierHelper(IdentifierHelperBuilder, DatabaseMetaData): IdentifierHelper
+            +openQuote(): char
+            +closeQuote(): char
+            +quote(String): String
+            +getTableExporter(): Exporter<Table>
+            +getSequenceExporter(): Exporter<Sequence>
+            +getIndexExporter(): Exporter<Index>
+            +getForeignKeyExporter(): Exporter<ForeignKey>
+            +getUniqueKeyExporter(): Exporter<Constraint>
+            +getAuxiliaryDatabaseObjectExporter(): Exporter<AuxiliaryDatabaseObject>
+            +canCreateCatalog(): boolean
+            +getCreateCatalogCommand(String): String[]
+            +getDropCatalogCommand(String): String[]
+            +canCreateSchema(): boolean
+            +getCreateSchemaCommand(String): String[]
+            +getDropSchemaCommand(String): String[]
+            +getCurrentSchemaCommand(): String
+            +getSchemaNameResolver(): SchemaNameResolver
+            +hasAlterTable(): boolean
+            +dropConstraints(): boolean
+            +qualifyIndexName(): boolean
+            +getAddColumnString(): String
+            +getAddColumnSuffixString(): String
+            +getDropForeignKeyString(): String
+            +getTableTypeString(): String
+            +getAddForeignKeyConstraintString(String, String[], String, String[], boolean): String
+            +getAddForeignKeyConstraintString(String, String): String
+            +getAddPrimaryKeyConstraintString(String): String
+            +hasSelfReferentialForeignKeyBug(): boolean
+            +getNullColumnString(): String
+            +supportsCommentOn(): boolean
+            +getTableComment(String): String
+            +getColumnComment(String): String
+            +supportsIfExistsBeforeTableName(): boolean
+            +supportsIfExistsAfterTableName(): boolean
+            +supportsIfExistsBeforeConstraintName(): boolean
+            +supportsIfExistsAfterConstraintName(): boolean
+            +getDropTableString(String): String
+            +supportsColumnCheck(): boolean
+            +supportsTableCheck(): boolean
+            +supportsCascadeDelete(): boolean
+            +getCascadeConstraintsString(): String
+            +getCrossJoinSeparator(): String
+            +supportsEmptyInList(): boolean
+            +areStringComparisonsCaseInsensitive(): boolean
+            +supportsRowValueConstructorSyntax(): boolean
+            +supportsRowValueConstructorSyntaxInInList(): boolean
+            +useInputStreamToInsertBlob(): boolean
+            +supportsParametersInInsertSelect(): boolean
+            +replaceResultVariableInOrderByClauseWithPosition(): boolean
+            +renderOrderByElement(String, String, String, NullPrecedence): String
+            +requiresCastingOfParametersInSelectClause(): boolean
+            +supportsResultSetPositionQueryMethodsOnForwardOnlyCursor(): boolean
+            +supportsCircularCascadeDeleteConstraints(): boolean
+            +supportsSubselectAsInPredicateLHS(): boolean
+            +supportsExpectedLobUsagePattern(): boolean
+            +supportsLobValueChangePropogation(): boolean
+            +supportsUnboundedLobLocatorMaterialization(): boolean
+            +supportsSubqueryOnMutatingTable(): boolean
+            +supportsExistsInSelect(): boolean
+            +doesReadCommittedCauseWritersToBlockReaders(): boolean
+            +doesRepeatableReadCauseReadersToBlockWriters(): boolean
+            +supportsBindAsCallableArgument(): boolean
+            +supportsTupleCounts(): boolean
+            +supportsTupleDistinctCounts(): boolean
+            +requiresParensForTupleDistinctCounts(): boolean
+            +getInExpressionCountLimit(): int
+            +forceLobAsLastValue(): boolean
+            +useFollowOnLocking(QueryParameters): boolean
+            +getNotExpression(String): String
+            +getUniqueDelegate(): UniqueDelegate
+            +getQueryHintString(String, List<String>): String
+            +defaultScrollMode(): ScrollMode
+            +supportsTuplesInSubqueries(): boolean
+            +getCallableStatementSupport(): CallableStatementSupport
+            +getNameQualifierSupport(): NameQualifierSupport
+            +getDefaultBatchLoadSizingStrategy(): BatchLoadSizingStrategy
+            +isJdbcLogWarningsEnabledByDefault(): boolean
+            +augmentRecognizedTableTypes(List<String>): void
+            +supportsPartitionBy(): boolean
+            +supportsNamedParameters(DatabaseMetaData): boolean
+            +supportsNationalizedTypes(): boolean
+            +supportsNonQueryWithCTE(): boolean
+            +supportsValuesList(): boolean
+            +isLegacyLimitHandlerBehaviorEnabled(): boolean
+            -resolveLegacyLimitHandlerBehavior(ServiceRegistry): void
+        }
+
+        class DB2Dialect {
+            [[DB2Dialect.html]]
+            {static} -log: CoreMessageLogger
+            {static} -LIMIT_HANDLER: AbstractLimitHandler
+            -uniqueDelegate: UniqueDelegate
+            +getLowercaseFunction(): String
+            +getAddColumnString(): String
+            +dropConstraints(): boolean
+            +getSequenceNextValString(String): String
+            +getSelectSequenceNextValString(String): String
+            +getCreateSequenceString(String): String
+            +getDropSequenceString(String): String
+            +supportsSequences(): boolean
+            +supportsPooledSequences(): boolean
+            +getQuerySequencesString(): String
+            +supportsLimit(): boolean
+            +supportsVariableLimit(): boolean
+            +getLimitString(String, int, int): String
+            +convertToFirstRowValue(int): int
+            +getForUpdateString(): String
+            +useMaxForLimit(): boolean
+            +supportsOuterJoinForUpdate(): boolean
+            +supportsExistsInSelect(): boolean
+            +supportsLockTimeouts(): boolean
+            +getSelectClauseNullString(int): String
+            +supportsUnionAll(): boolean
+            +registerResultSetOutParameter(CallableStatement, int): int
+            +getResultSet(CallableStatement): ResultSet
+            +supportsCommentOn(): boolean
+            +getDefaultMultiTableBulkIdStrategy(): MultiTableBulkIdStrategy
+            +supportsCurrentTimestampSelection(): boolean
+            +getCurrentTimestampSelectString(): String
+            +isCurrentTimestampSelectStringCallable(): boolean
+            +supportsParametersInInsertSelect(): boolean
+            +requiresCastingOfParametersInSelectClause(): boolean
+            +supportsResultSetPositionQueryMethodsOnForwardOnlyCursor(): boolean
+            +getCrossJoinSeparator(): String
+            +supportsEmptyInList(): boolean
+            +supportsLobValueChangePropogation(): boolean
+            +doesReadCommittedCauseWritersToBlockReaders(): boolean
+            +supportsTupleDistinctCounts(): boolean
+            #getSqlTypeDescriptorOverride(int): SqlTypeDescriptor
+            +buildSQLExceptionConversionDelegate(): SQLExceptionConversionDelegate
+            +getUniqueDelegate(): UniqueDelegate
+            +getNotExpression(String): String
+            +getLimitHandler(): LimitHandler
+            +renderOrderByElement(String, String, String, NullPrecedence): String
+            +getIdentityColumnSupport(): IdentityColumnSupport
+            +supportsPartitionBy(): boolean
+        }
+
+        class DB2400Dialect {
+            [[DB2400Dialect.html]]
+            {static} -LIMIT_HANDLER: AbstractLimitHandler
+            +supportsSequences(): boolean
+            +supportsLimit(): boolean
+            +getQuerySequencesString(): String
+            +supportsLimitOffset(): boolean
+            +useMaxForLimit(): boolean
+            +supportsVariableLimit(): boolean
+            +getLimitString(String, int, int): String
+            +getLimitHandler(): LimitHandler
+            +getForUpdateString(): String
+            +getIdentityColumnSupport(): IdentityColumnSupport
+        }
+
+        class DB2390Dialect {
+            [[DB2390Dialect.html]]
+            {static} -LIMIT_HANDLER: AbstractLimitHandler
+            {static} -LEGACY_LIMIT_HANDLER: AbstractLimitHandler
+            +supportsSequences(): boolean
+            +getQuerySequencesString(): String
+            +supportsLimit(): boolean
+            +supportsLimitOffset(): boolean
+            +useMaxForLimit(): boolean
+            +supportsVariableLimit(): boolean
+            +getLimitString(String, int, int): String
+            +getLimitHandler(): LimitHandler
+            +getIdentityColumnSupport(): IdentityColumnSupport
+        }
+
+        interface ColumnAliasExtractor {
+            [[ColumnAliasExtractor.html]]
+            {static} +COLUMN_LABEL_EXTRACTOR: ColumnAliasExtractor
+            {static} +COLUMN_NAME_EXTRACTOR: ColumnAliasExtractor
+            {abstract} +extractColumnAlias(ResultSetMetaData, int): String
+        }
+
+        class Cache71Dialect {
+            [[Cache71Dialect.html]]
+            {static} +EXTRACTER: ViolatedConstraintNameExtracter
+            -limitHandler: LimitHandler
+            #commonRegistration(): void
+            #register71Functions(): void
+            +hasAlterTable(): boolean
+            +qualifyIndexName(): boolean
+            +getAddForeignKeyConstraintString(String, String[], String, String[], boolean): String
+            +supportsCheck(): boolean
+            +getAddColumnString(): String
+            +getCascadeConstraintsString(): String
+            +dropConstraints(): boolean
+            +supportsCascadeDelete(): boolean
+            +hasSelfReferentialForeignKeyBug(): boolean
+            +getDefaultMultiTableBulkIdStrategy(): MultiTableBulkIdStrategy
+            +getNativeIdentifierGeneratorStrategy(): String
+            +getIdentityColumnSupport(): IdentityColumnSupport
+            +supportsSequences(): boolean
+            +supportsOuterJoinForUpdate(): boolean
+            +getLockingStrategy(Lockable, LockMode): LockingStrategy
+            +getLimitHandler(): LimitHandler
+            +supportsLimit(): boolean
+            +supportsLimitOffset(): boolean
+            +supportsVariableLimit(): boolean
+            +bindLimitParametersFirst(): boolean
+            +useMaxForLimit(): boolean
+            +getLimitString(String, boolean): String
+            +registerResultSetOutParameter(CallableStatement, int): int
+            +getResultSet(CallableStatement): ResultSet
+            +getLowercaseFunction(): String
+            +getNullColumnString(): String
+            +createOuterJoinFragment(): JoinFragment
+            +getNoColumnsInsertString(): String
+            +buildSQLExceptionConversionDelegate(): SQLExceptionConversionDelegate
+            +getViolatedConstraintNameExtracter(): ViolatedConstraintNameExtracter
+            +supportsEmptyInList(): boolean
+            +areStringComparisonsCaseInsensitive(): boolean
+            +supportsResultSetPositionQueryMethodsOnForwardOnlyCursor(): boolean
+        }
+
+        class CUBRIDDialect {
+            [[CUBRIDDialect.html]]
+            +supportsColumnCheck(): boolean
+            +supportsPooledSequences(): boolean
+            +getAddColumnString(): String
+            +getSequenceNextValString(String): String
+            +getCreateSequenceString(String): String
+            +getDropSequenceString(String): String
+            +getDropForeignKeyString(): String
+            +qualifyIndexName(): boolean
+            +supportsSequences(): boolean
+            +supportsExistsInSelect(): boolean
+            +getQuerySequencesString(): String
+            +openQuote(): char
+            +closeQuote(): char
+            +getForUpdateString(): String
+            +supportsUnionAll(): boolean
+            +supportsCurrentTimestampSelection(): boolean
+            +getCurrentTimestampSelectString(): String
+            +isCurrentTimestampSelectStringCallable(): boolean
+            +supportsEmptyInList(): boolean
+            +supportsIfExistsBeforeTableName(): boolean
+            +supportsTupleDistinctCounts(): boolean
+            +getLimitHandler(): LimitHandler
+            +getIdentityColumnSupport(): IdentityColumnSupport
+            +supportsPartitionBy(): boolean
+        }
+
+        abstract class AbstractTransactSQLDialect {
+            [[AbstractTransactSQLDialect.html]]
+            +getAddColumnString(): String
+            +getNullColumnString(): String
+            +qualifyIndexName(): boolean
+            +getForUpdateString(): String
+            +appendLockHint(LockOptions, String): String
+            +applyLocksToSql(String, LockOptions, Map<String, String[]>): String
+            +registerResultSetOutParameter(CallableStatement, int): int
+            +getResultSet(CallableStatement): ResultSet
+            +supportsCurrentTimestampSelection(): boolean
+            +isCurrentTimestampSelectStringCallable(): boolean
+            +getCurrentTimestampSelectString(): String
+            +getDefaultMultiTableBulkIdStrategy(): MultiTableBulkIdStrategy
+            +getSelectGUIDString(): String
+            +supportsEmptyInList(): boolean
+            +supportsUnionAll(): boolean
+            +supportsExistsInSelect(): boolean
+            +doesReadCommittedCauseWritersToBlockReaders(): boolean
+            +doesRepeatableReadCauseReadersToBlockWriters(): boolean
+            +supportsTupleDistinctCounts(): boolean
+            +supportsTuplesInSubqueries(): boolean
+            +getIdentityColumnSupport(): IdentityColumnSupport
+            +supportsPartitionBy(): boolean
+        }
+
+        abstract class AbstractHANADialect {
+            [[AbstractHANADialect.html]]
+            {static} -LIMIT_HANDLER: AbstractLimitHandler
+            {static} -HANA_CLOB_STREAM_BINDING: ClobTypeDescriptor
+            {static} -HANA_NCLOB_STREAM_BINDING: NClobTypeDescriptor
+            +bindLimitParametersInReverseOrder(): boolean
+            +buildSQLExceptionConversionDelegate(): SQLExceptionConversionDelegate
+            +forUpdateOfColumns(): boolean
+            +getAddColumnString(): String
+            +getAddColumnSuffixString(): String
+            +getCascadeConstraintsString(): String
+            +getCreateSequenceString(String): String
+            +getDefaultMultiTableBulkIdStrategy(): MultiTableBulkIdStrategy
+            +getCurrentTimestampSelectString(): String
+            +getDropSequenceString(String): String
+            +getForUpdateString(String): String
+            +getForUpdateString(String, LockOptions): String
+            +getForUpdateNowaitString(): String
+            +getReadLockString(int): String
+            +getWriteLockString(int): String
+            +getLimitString(String, boolean): String
+            +getNotExpression(String): String
+            +getQuerySequencesString(): String
+            +getSelectSequenceNextValString(String): String
+            +getSequenceNextValString(String): String
+            #getSqlTypeDescriptorOverride(int): SqlTypeDescriptor
+            +isCurrentTimestampSelectStringCallable(): boolean
+            #registerHanaKeywords(): void
+            +supportsCircularCascadeDeleteConstraints(): boolean
+            +defaultScrollMode(): ScrollMode
+            +supportsColumnCheck(): boolean
+            +supportsCurrentTimestampSelection(): boolean
+            +supportsEmptyInList(): boolean
+            +supportsExistsInSelect(): boolean
+            +supportsExpectedLobUsagePattern(): boolean
+            +supportsLimit(): boolean
+            +supportsPooledSequences(): boolean
+            +supportsSequences(): boolean
+            +supportsTableCheck(): boolean
+            +supportsTupleDistinctCounts(): boolean
+            +supportsUnionAll(): boolean
+            +dropConstraints(): boolean
+            +supportsRowValueConstructorSyntax(): boolean
+            +supportsRowValueConstructorSyntaxInInList(): boolean
+            +getMaxAliasLength(): int
+            +getAddForeignKeyConstraintString(String, String[], String, String[], boolean): String
+            +getLimitHandler(): LimitHandler
+        }
+
+        Dialect <|-- SQLiteDialect
+
+        Dialect <|-- TimesTenDialect
+
+        Dialect <|-- TeradataDialect
+
+        interface org.hibernate.hql.spi.id.IdTableSupport {
+            {abstract} +generateIdTableName(String): String
+            {abstract} +getCreateIdTableCommand(): String
+            {abstract} +getCreateIdTableStatementOptions(): String
+            {abstract} +getDropIdTableCommand(): String
+        }
+        org.hibernate.hql.spi.id.IdTableSupport <|.. TeradataDialect
+
+        TeradataDialect <|-- Teradata14Dialect
+
+        AbstractTransactSQLDialect <|-- SybaseDialect
+
+        SybaseDialect <|-- SybaseAnywhereDialect
+
+        SybaseDialect <|-- SybaseASE15Dialect
+
+        SybaseASE15Dialect <|-- SybaseASE157Dialect
+
+        SybaseDialect <|-- Sybase11Dialect
+
+        AbstractTransactSQLDialect <|-- SQLServerDialect
+
+        SQLServer2008Dialect <|-- SQLServer2012Dialect
+
+        SQLServer2005Dialect <|-- SQLServer2008Dialect
+
+        SQLServerDialect <|-- SQLServer2005Dialect
+
+        Dialect <|-- SAPDBDialect
+
+        Dialect <|-- RDMSOS2200Dialect
+
+        Dialect <|-- ProgressDialect
+
+        PostgreSQL82Dialect <|-- PostgreSQL9Dialect
+
+        PostgreSQL94Dialect <|-- PostgreSQL95Dialect
+
+        PostgreSQL93Dialect <|-- PostgreSQL94Dialect
+
+        PostgreSQL92Dialect <|-- PostgreSQL93Dialect
+
+        PostgreSQL91Dialect <|-- PostgreSQL92Dialect
+
+        PostgreSQL9Dialect <|-- PostgreSQL91Dialect
+
+        PostgreSQL81Dialect <|-- PostgreSQL82Dialect
+
+        Dialect <|-- PostgreSQL81Dialect
+
+        Dialect <|-- PointbaseDialect
+
+        Oracle8iDialect <|-- Oracle9iDialect
+
+        Dialect <|-- Oracle8iDialect
+
+        Oracle10gDialect <|-- Oracle12cDialect
+
+        Oracle9iDialect <|-- Oracle10gDialect
+
+        Dialect <|-- MySQLDialect
+
+        MySQLDialect <|-- MySQL5Dialect
+
+        MySQL55Dialect <|-- MySQL57Dialect
+
+        MySQL5Dialect <|-- MySQL55Dialect
+
+        MySQLStorageEngine <|.. MyISAMStorageEngine
+
+        Dialect <|-- MimerSQLDialect
+
+        Dialect <|-- MckoiDialect
+
+        MySQL5Dialect <|-- MariaDBDialect
+
+        MariaDBDialect <|-- MariaDB53Dialect
+
+        Dialect <|-- JDataStoreDialect
+
+        Dialect <|-- InterbaseDialect
+
+        MySQLStorageEngine <|.. InnoDBStorageEngine
+
+        Dialect <|-- IngresDialect
+
+        IngresDialect <|-- Ingres9Dialect
+
+        Ingres9Dialect <|-- Ingres10Dialect
+
+        Dialect <|-- InformixDialect
+
+        InformixDialect <|-- Informix10Dialect
+
+        Dialect <|-- HSQLDialect
+
+        AbstractHANADialect <|-- HANARowStoreDialect
+
+        AbstractHANADialect <|-- HANAColumnStoreDialect
+
+        Dialect <|-- H2Dialect
+
+        Dialect <|-- FrontBaseDialect
+
+        InterbaseDialect <|-- FirebirdDialect
+
+        interface org.hibernate.exception.spi.ConversionContext {
+            {abstract} +getViolatedConstraintNameExtracter(): ViolatedConstraintNameExtracter
+        }
+        org.hibernate.exception.spi.ConversionContext <|.. Dialect
+
+        Dialect <|-- DB2Dialect
+
+        DB2Dialect <|-- DB2400Dialect
+
+        DB2Dialect <|-- DB2390Dialect
+
+        Dialect <|-- Cache71Dialect
+
+        Dialect <|-- CUBRIDDialect
+
+        Dialect <|-- AbstractTransactSQLDialect
+
+        Dialect <|-- AbstractHANADialect
+
+        MySQLDialect --> MySQLStorageEngine: storageEngine\ndefaultMySQLStorageEngine
+
+        MySQL55Dialect --> MySQLStorageEngine: defaultMySQLStorageEngine
+
+        MariaDBDialect --> MySQLStorageEngine: defaultMySQLStorageEngine
+
+        Dialect --> TypeNames: typeNames\nhibernateTypeNames
+
+        Dialect --> LobMergeStrategy: lobMergeStrategy
+
+        Dialect --> ColumnAliasExtractor: columnAliasExtractor
+
+    }
+
+@enduml

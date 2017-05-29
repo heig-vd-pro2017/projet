@@ -1,0 +1,13 @@
+@startuml
+
+    class Configuration {
+        [[Configuration.html]]
+        {static} -LOG: Logger
+        {static} -CONFIG_FILE: String
+        {static} -instance: Configuration
+        -configuration: Properties
+        {static} +getInstance(): Configuration
+        +get(String): String
+    }
+
+@enduml

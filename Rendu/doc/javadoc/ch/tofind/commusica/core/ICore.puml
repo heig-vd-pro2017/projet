@@ -1,0 +1,10 @@
+@startuml
+
+    interface ICore {
+        [[ICore.html]]
+        {abstract} +sendUnicast(InetAddress, String): void
+        {abstract} +sendMulticast(String): void
+        {abstract} +stop(): void
+    }
+
+@enduml

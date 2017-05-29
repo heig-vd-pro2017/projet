@@ -1,0 +1,52 @@
+@startuml
+
+    class SQLiteDialect {
+        [[SQLiteDialect.html]]
+        {static} -IDENTITY_COLUMN_SUPPORT: SQLiteDialectIdentityColumnSupport
+        {static} -LIMIT_HANDLER: AbstractLimitHandler
+        {static} -SQLITE_BUSY: int
+        {static} -SQLITE_LOCKED: int
+        {static} -SQLITE_IOERR: int
+        {static} -SQLITE_CORRUPT: int
+        {static} -SQLITE_NOTFOUND: int
+        {static} -SQLITE_FULL: int
+        {static} -SQLITE_CANTOPEN: int
+        {static} -SQLITE_PROTOCOL: int
+        {static} -SQLITE_TOOBIG: int
+        {static} -SQLITE_CONSTRAINT: int
+        {static} -SQLITE_MISMATCH: int
+        {static} -SQLITE_NOTADB: int
+        {static} -EXTRACTER: ViolatedConstraintNameExtracter
+        -uniqueDelegate: UniqueDelegate
+        +getCastTypeName(int): String
+        +getIdentityColumnSupport(): IdentityColumnSupport
+        +getLimitHandler(): LimitHandler
+        +supportsLockTimeouts(): boolean
+        +getForUpdateString(): String
+        +supportsOuterJoinForUpdate(): boolean
+        +supportsCurrentTimestampSelection(): boolean
+        +isCurrentTimestampSelectStringCallable(): boolean
+        +getCurrentTimestampSelectString(): String
+        +buildSQLExceptionConversionDelegate(): SQLExceptionConversionDelegate
+        +getViolatedConstraintNameExtracter(): ViolatedConstraintNameExtracter
+        +supportsUnionAll(): boolean
+        +canCreateSchema(): boolean
+        +hasAlterTable(): boolean
+        +dropConstraints(): boolean
+        +qualifyIndexName(): boolean
+        +getAddColumnString(): String
+        +getDropForeignKeyString(): String
+        +getAddForeignKeyConstraintString(String, String[], String, String[], boolean): String
+        +getAddPrimaryKeyConstraintString(String): String
+        +supportsCommentOn(): boolean
+        +supportsIfExistsBeforeTableName(): boolean
+        +doesReadCommittedCauseWritersToBlockReaders(): boolean
+        +doesRepeatableReadCauseReadersToBlockWriters(): boolean
+        +supportsTupleDistinctCounts(): boolean
+        +getInExpressionCountLimit(): int
+        +getUniqueDelegate(): UniqueDelegate
+        +getSelectGUIDString(): String
+        +defaultScrollMode(): ScrollMode
+    }
+
+@enduml

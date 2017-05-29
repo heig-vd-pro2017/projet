@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import ch.tofind.commusica.ui.PlaylistsListView?>
+<?import ch.tofind.commusica.ui.TracksListView?>
+<?import ch.tofind.commusica.ui.PlayerControlsView?>
+<?import ch.tofind.commusica.ui.PreviousTrackView?>
+<?import ch.tofind.commusica.ui.CurrentTrackView?>
+<?import ch.tofind.commusica.ui.SettingsView?>
+
+<GridPane minHeight="608.0" minWidth="1080.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.tofind.commusica.ui.UIController">
+    <rowConstraints>
+        <RowConstraints minHeight="500.0" prefHeight="500.0" vgrow="ALWAYS" />
+        <RowConstraints maxHeight="108.0" minHeight="108.0" prefHeight="108.0" />
+    </rowConstraints>
+    <columnConstraints>
+        <ColumnConstraints hgrow="ALWAYS" minWidth="1080.0" />
+    </columnConstraints>
+    <AnchorPane prefHeight="500.0" prefWidth="1080.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <HBox minHeight="500.0" minWidth="1080.0" prefHeight="500.0" prefWidth="1080.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <PlaylistsListView fx:id="playlistsListView" minHeight="500.0" minWidth="270.0" />
+            <AnchorPane minHeight="500.0" minWidth="540.0" prefHeight="500.0" prefWidth="540.0" HBox.hgrow="ALWAYS">
+                <TracksListView id="tracks-list" fx:id="tracksListView" focusTraversable="false" AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.bottomAnchor="0" />
+            </AnchorPane>
+            <SettingsView minHeight="500.0" minWidth="270.0" />
+        </HBox>
+    </AnchorPane>
+    <AnchorPane id="bottom-pane" maxHeight="108.0" minHeight="108.0" prefHeight="108.0" prefWidth="1080.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
+        <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="NEVER" maxWidth="270.0" minWidth="270.0" />
+                <ColumnConstraints hgrow="ALWAYS" minWidth="540.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="270.0" minWidth="270.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="108.0" minHeight="108.0" vgrow="NEVER" />
+            </rowConstraints>
+            <AnchorPane maxHeight="108.0" maxWidth="270.0" minHeight="108.0" minWidth="270.0">
+                <PreviousTrackView AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+            </AnchorPane>
+            <AnchorPane id="bottom-center-pane" layoutY="4.0" maxHeight="100.0" minHeight="100.0" minWidth="540.0" GridPane.columnIndex="1">
+                <GridPane maxHeight="100.0" minHeight="100.0" minWidth="540.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="NEVER" maxWidth="160.0" minWidth="160.0" />
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="380.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints maxHeight="100.0" minHeight="100.0" vgrow="NEVER" />
+                    </rowConstraints>
+                    <AnchorPane maxHeight="100.0" maxWidth="160.0" minHeight="100.0" minWidth="160.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <PlayerControlsView AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                    </AnchorPane>
+                    <AnchorPane maxHeight="100.0" minHeight="100.0" minWidth="380.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="0">
+                        <CurrentTrackView AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                    </AnchorPane>
+                </GridPane>
+            </AnchorPane>
+            <AnchorPane maxHeight="108.0" maxWidth="270.0" minHeight="108.0" minWidth="270.0" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+        </GridPane>
+    </AnchorPane>
+</GridPane>

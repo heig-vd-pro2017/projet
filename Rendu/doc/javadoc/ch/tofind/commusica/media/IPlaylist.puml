@@ -1,0 +1,12 @@
+@startuml
+
+    interface IPlaylist {
+        [[IPlaylist.html]]
+        {abstract} +addTrack(Track): boolean
+        {abstract} +contains(Track): boolean
+        {abstract} +getPlaylistTrack(Track): PlaylistTrack
+        {abstract} +getTracksList(): List<PlaylistTrack>
+        {abstract} +isSaved(): boolean
+    }
+
+@enduml

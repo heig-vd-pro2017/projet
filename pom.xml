@@ -82,6 +82,7 @@
                             </docletArtifact>
                             <useStandardDocletOptions>true</useStandardDocletOptions>
                             <additionalparam>
+                                -umlImageFormat SVG
                                 -umlIncludePrivateFields true
                                 -umlIncludePackagePrivateFields true
                                 -umlIncludePrivateMethods true

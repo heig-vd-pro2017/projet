@@ -1,0 +1,17 @@
+@startuml
+
+    class FileManager {
+        [[FileManager.html]]
+        {static} -LOG: Logger
+        {static} -instance: FileManager
+        {static} +OUTPUT_DIRECTORY: String
+        {static} +getInstance(): FileManager
+        +retrieveFile(InputStream, int): File
+        +getFormatExtension(File): String
+        +getBytes(File, int): byte[]
+        +delete(File): void
+        +rename(File, File): void
+        +getMD5Checksum(File): String
+    }
+
+@enduml

@@ -1,0 +1,11 @@
+@startuml
+
+    class Serialize {
+        [[Serialize.html]]
+        {static} -builder: GsonBuilder
+        {static} -gson: Gson
+        {static} +serialize(Object): String
+        {static} +unserialize(String, Class<T>): T
+    }
+
+@enduml

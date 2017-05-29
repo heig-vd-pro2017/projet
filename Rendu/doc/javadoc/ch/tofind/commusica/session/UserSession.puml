@@ -1,0 +1,19 @@
+@startuml
+
+    class UserSession {
+        [[UserSession.html]]
+        -id: Integer
+        -updated: Date
+        -upvotedTracks: Set<String>
+        -downvotedTracks: Set<String>
+        +UserSession(Integer)
+        +getUpvotedTracks(): Set<String>
+        +getDownvotedTracks(): Set<String>
+        +addUpvotedTrack(String): void
+        +addDownvotedTrack(String): void
+        +getId(): Integer
+        +update(): void
+        +getLastUpdate(): Date
+    }
+
+@enduml

@@ -1,0 +1,12 @@
+@startuml
+
+    class Network {
+        [[Network.html]]
+        {static} +configureNetwork(): void
+        {static} +getMacAddress(InetAddress): byte[]
+        {static} +getNetworkInterfaces(): ArrayList<NetworkInterface>
+        {static} +getIPv4Interfaces(): TreeMap<String, InetAddress>
+        {static} +getInetAddresses(NetworkInterface): ArrayList<InetAddress>
+    }
+
+@enduml

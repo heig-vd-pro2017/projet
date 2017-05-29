@@ -1,0 +1,9 @@
+@startuml
+
+    class Commusica {
+        [[Commusica.html]]
+        {static} -LOG: Logger
+        {static} +main(String[]): void
+    }
+
+@enduml

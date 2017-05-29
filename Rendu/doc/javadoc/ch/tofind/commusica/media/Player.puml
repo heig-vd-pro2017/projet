@@ -1,0 +1,33 @@
+@startuml
+
+    class Player {
+        [[Player.html]]
+        {static} -LOG: Logger
+        {static} -currentPlayer: Player
+        -player: MediaPlayer
+        -currentTimeProperty: IntegerProperty
+        -currentTrackProperty: PlaylistTrackProperty
+        -previousTrackProperty: PlaylistTrackProperty
+        -volumeStep: double
+        -isPlayingProperty: BooleanProperty
+        -volumeProperty: DoubleProperty
+        -MIN_VOLUME: double
+        -MAX_VOLUME: double
+        -Player(double)
+        {static} +getCurrentPlayer(): Player
+        +load(): void
+        +getCurrentTimeProperty(): IntegerProperty
+        +getCurrentTrack(): Track
+        +getCurrentTrackProperty(): PlaylistTrackProperty
+        +getPreviousTrackProperty(): PlaylistTrackProperty
+        +getIsPlayingProperty(): BooleanProperty
+        +getVolumeProperty(): DoubleProperty
+        +isPlaying(): boolean
+        +play(): void
+        +pause(): void
+        +stop(): void
+        +riseVolume(): void
+        +lowerVolume(): void
+    }
+
+@enduml

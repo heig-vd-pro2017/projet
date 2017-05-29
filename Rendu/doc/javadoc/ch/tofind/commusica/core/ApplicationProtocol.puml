@@ -1,0 +1,47 @@
+@startuml
+
+    class ApplicationProtocol {
+        [[ApplicationProtocol.html]]
+        {static} +myId: Integer
+        {static} +serverId: Integer
+        {static} +serverAddress: InetAddress
+        {static} +serverName: String
+        {static} +SUCCESS: String
+        {static} +ERROR: String
+        {static} +SEND_FIRST_CONNECTION: String
+        {static} +TRACK_REQUEST: String
+        {static} +TRACK_ACCEPTED: String
+        {static} +TRACK_REFUSED: String
+        {static} +TRACK_SAVED: String
+        {static} +SENDING_TRACK: String
+        {static} +SEND_UPVOTE_TRACK_REQUEST: String
+        {static} +SEND_DOWNVOTE_TRACK_REQUEST: String
+        {static} +UPVOTE_TRACK_REQUEST: String
+        {static} +DOWNVOTE_TRACK_REQUEST: String
+        {static} +TRACK_DOWNVOTED: String
+        {static} +TRACK_UPVOTED: String
+        {static} +PLAYLIST_UPDATE: String
+        {static} +NEW_ACTIVE_CLIENT: String
+        {static} +SEND_PLAYLIST_UPDATE: String
+        {static} +SEND_TRACK_REQUEST: String
+        {static} +SEND_PLAY_PAUSE_REQUEST: String
+        {static} +PLAY_PAUSE_REQUEST: String
+        {static} +PLAY: String
+        {static} +PAUSE: String
+        {static} +SEND_NEXT_TRACK_REQUEST: String
+        {static} +NEXT_TRACK_REQUEST: String
+        {static} +SEND_PREVIOUS_TRACK_REQUEST: String
+        {static} +PREVIOUS_TRACK_REQUEST: String
+        {static} +SEND_TURN_VOLUME_UP_REQUEST: String
+        {static} +TURN_VOLUME_UP_REQUEST: String
+        {static} +VOLUME_TURNED_UP: String
+        {static} +SEND_TURN_VOLUME_DOWN_REQUEST: String
+        {static} +TURN_VOLUME_DOWN_REQUEST: String
+        {static} +VOLUME_TURNED_DOWN: String
+        {static} +SUCCESS_VOTE: String
+        {static} +ERROR_VOTE: String
+        {static} +ERROR_DURING_TRANSFER: String
+        {static} +ERROR_FILE_NOT_SUPPORTED: String
+    }
+
+@enduml

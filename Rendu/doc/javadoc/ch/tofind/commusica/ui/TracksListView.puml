@@ -1,0 +1,11 @@
+@startuml
+
+    class TracksListView {
+        [[TracksListView.html]]
+        {static} -LOG: Logger
+        {static} -playlistManager: PlaylistManager
+        +showPlaylist(IPlaylist): void
+        -initializeDragAndDrop(): void
+    }
+
+@enduml

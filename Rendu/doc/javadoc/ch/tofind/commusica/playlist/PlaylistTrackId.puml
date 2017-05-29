@@ -1,0 +1,15 @@
+@startuml
+
+    class PlaylistTrackId {
+        [[PlaylistTrackId.html]]
+        -playlist: SavedPlaylist
+        -track: Track
+        +PlaylistTrackId()
+        +PlaylistTrackId(SavedPlaylist, Track)
+        +setPlaylist(SavedPlaylist): void
+        +getPlaylist(): SavedPlaylist
+        +setTrack(Track): void
+        +getTrack(): Track
+    }
+
+@enduml

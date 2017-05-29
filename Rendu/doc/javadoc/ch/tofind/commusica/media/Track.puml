@@ -1,0 +1,32 @@
+@startuml
+
+    class Track {
+        [[Track.html]]
+        -id: String
+        -title: String
+        -artist: String
+        -album: String
+        -length: Integer
+        -uri: String
+        -dateAdded: Date
+        -datePlayed: Date
+        -favoritedProperty: BooleanProperty
+        -version: Integer
+        #Track()
+        +Track(String, String, String, String, Integer, String)
+        +Track(AudioFile)
+        +getId(): String
+        +getTitle(): String
+        +getArtist(): String
+        +getAlbum(): String
+        +getLength(): Integer
+        +getUri(): String
+        +setUri(String): void
+        +getDateAdded(): Date
+        +getDatePlayed(): Date
+        +getFavoritedProperty(): BooleanProperty
+        +setFavoritedProperty(boolean): void
+        +update(): void
+    }
+
+@enduml

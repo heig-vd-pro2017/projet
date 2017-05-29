@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.image.Image?>
+
+<?import javafx.geometry.Insets?>
+<fx:root type="javafx.scene.layout.GridPane" hgap="5.0" vgap="5.0" xmlns:fx="http://javafx.com/fxml/1">
+
+    <padding>
+        <Insets bottom="24.0" right="10.0" top="24.0"/>
+    </padding>
+
+    <columnConstraints>
+        <ColumnConstraints hgrow="NEVER" maxWidth="35.0" minWidth="35.0" />
+        <ColumnConstraints hgrow="ALWAYS" />
+        <ColumnConstraints hgrow="NEVER" maxWidth="20.0" minWidth="20.0" />
+    </columnConstraints>
+
+    <rowConstraints>
+        <RowConstraints minHeight="22.0" maxHeight="22.0" vgrow="NEVER"/>
+        <RowConstraints minHeight="14.0" maxHeight="14.0" vgrow="NEVER"/>
+        <RowConstraints minHeight="14.0" maxHeight="14.0" vgrow="NEVER"/>
+    </rowConstraints>
+
+    <ImageView fitWidth="20.0" preserveRatio="true" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.rowSpan="3" GridPane.valignment="CENTER">
+        <Image url="@icons/back_arrow.png" />
+    </ImageView>
+
+    <Label fx:id="titleLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.halignment="LEFT">
+        <font>
+            <Font size="22.0" />
+        </font>
+    </Label>
+
+    <Label fx:id="artistLabel" styleClass="subtitle" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <font>
+            <Font size="14.0" />
+        </font>
+    </Label>
+
+    <Label fx:id="albumLabel" styleClass="subtitle" text="-" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="TOP">
+        <font>
+            <Font size="14.0" />
+        </font>
+    </Label>
+
+    <ImageView fx:id="favoriteImageView" fitWidth="20.0" onMouseClicked="#favorite" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.rowSpan="3" GridPane.valignment="CENTER">
+        <Image url="@icons/fav_empty.png"/>
+    </ImageView>
+
+</fx:root>

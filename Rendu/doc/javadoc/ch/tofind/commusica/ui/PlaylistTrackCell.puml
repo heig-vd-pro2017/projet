@@ -1,0 +1,24 @@
+@startuml
+
+    class PlaylistTrackCell {
+        [[PlaylistTrackCell.html]]
+        {static} -LOG: Logger
+        {static} -FAV_EMPTY_IMAGE: String
+        {static} -FAV_FULL_IMAGE: String
+        {static} -FXML_FILE: String
+        -playlistTrack: PlaylistTrack
+        -track: Track
+        -trackPane: AnchorPane
+        -albumLabel: Label
+        -artistLabel: Label
+        -titleLabel: Label
+        -votesLabel: Label
+        -favoriteImageView: ImageView
+        +PlaylistTrackCell(PlaylistTrack)
+        +getPane(): AnchorPane
+        -downvote(MouseEvent): void
+        -favorite(MouseEvent): void
+        -upvote(MouseEvent): void
+    }
+
+@enduml

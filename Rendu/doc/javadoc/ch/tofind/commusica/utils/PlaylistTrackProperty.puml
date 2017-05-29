@@ -1,0 +1,10 @@
+@startuml
+
+    class PlaylistTrackProperty {
+        [[PlaylistTrackProperty.html]]
+        +getTrack(): Track
+        +getBean(): Object
+        +getName(): String
+    }
+
+@enduml
