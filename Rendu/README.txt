@@ -14,3 +14,29 @@ L'arborescence des fichiers contenus sur le CD est la suivante:
 +- sources/                     <-- Sources Commusica
 |  +- src/                      <-- Sources Java
 |  +- pom.xml                   <-- Fichier de configuration Maven
+
+
+                                                            
+                            -/o/.                           
+                              `/hNho-                       
+                                 `oNMNy:                    
+                                    /mMMNs`                 
+                                      +NMMMs`               
+            `/ydNMMNds-                .dMMMN:              
+          -hMMMMMMMMMMMd/               `dMMMM/             
+         oMMMMMMMMMMNmMMMmo`             .MMMMM-            
+         sNMMMMMMmy/` :dMMMNs.            hMMMMd            
+           .-:-.`       -hMMMMh:          yMMMMM`           
+                          .yMMMMm+`       dMMMMM.           
+                            .sNMMMNo`    :MMMMMM`           
+                              `oNMMMMy- -NMMMMMy            
+             .-sNdo:`           `+mMMMMdMMMMMMM+            
+            :MMMhomMMNhs+:-`     `.yMMMMMMMMMhNo            
+           :d+oo-  -odMMMMMMMMMMMMMMMMMMMMMMd.yh            
+          /N.    --.  `:ohNMMMMMMMMMMMMNdMMMMMNM-           
+          do   oNMMMd.     `.:/+++++/-.  .yMMMMMd           
+          /d.  mMMMMM/                     `sNMMMo          
+           .os++dMNh:                        `+NMM.         
+              `..`                              /md         
+                                                  :-        
+                                                       
