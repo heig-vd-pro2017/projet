@@ -201,7 +201,7 @@ Vous avez le choix de lancer l'application en tant que serveur ou en tant que cl
 Les explications suivantes concernent le lancement de l'application en tant que serveur.
 
 ### Configuration du serveur
-Quand vous choisissez de lancer l'application en tant que serveur, une fenêtre apparaît pour vous demander de nommer votre serveur. Le nom du serveur devient également le nom de la nouvelle liste de lecture. En cas d'appui sur `Cancel`, l'application se ferme.
+Quand vous choisissez de lancer l'application en tant que serveur, une fenêtre apparaît pour vous demander de nommer votre serveur. Le nom du serveur devient également le nom de la nouvelle liste de lecture. En cas d'appui sur `Annuler`, l'application se ferme.
 
 \begin{minipage}{\linewidth}
   \centering
@@ -244,7 +244,7 @@ Si tout marche, il n'est pas nécessaire de changer d'interface.
 Les explications suivantes concernent le lancement de l'application en tant que client.
 
 ### Interface client
-Quand l'application est lancée, la fenêtre suivante est affichée à l'écran.
+Quand vous choisissez de lancer l'application en tant que client, la fenêtre suivante est affichée à l'écran.
 
 \begin{minipage}{\linewidth}
   \centering
@@ -270,6 +270,7 @@ Si vous êtes sur Windows et continuez de rencontrer des problèmes au niveau de
 - Ouvrir le `Panneau de configuration`
 - Ouvrir `Gestionnaire de périphériques`
 - Désactiver le périphérique réseau désiré
+- Réactiver le périphérique réseau désiré
 - Relancer **Commusica**
 
 Le programme devrait maintenant voir les serveurs disponibles.
@@ -320,7 +321,7 @@ Les morceaux lus sont grisés. Le dernier morceau grisé en partant du haut est 
 \begin{minipage}{\linewidth}
   \centering
   \includegraphics[scale=1]{mu-images/track-cell.png}
-  \captionof{figure}{Interface de l'application lancée en tant que client}
+  \captionof{figure}{Gestion d'un morceau de musique}
 \end{minipage}
 
 1. Informations du morceau de musique
