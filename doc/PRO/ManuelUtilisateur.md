@@ -265,6 +265,15 @@ Le panneau `Settings` vous offre la possibilité de choisir l'interface réseau 
 
 Si tout marche, il n'est pas nécessaire de changer d'interface.
 
+Si vous êtes sur Windows et continuez de rencontrer des problèmes au niveau de l'affichage des serveurs, suivez les étapes ci-dessous :
+
+- Ouvrir le `Panneau de configuration`
+- Ouvrir `Gestionnaire de périphériques`
+- Désactiver le périphérique réseau désiré
+- Relancer **Commusica**
+
+Le programme devrait maintenant voir les serveurs disponibles.
+
 \begin{minipage}{\linewidth}
   \centering
   \includegraphics{mu-images/client-settings.png}
