@@ -81,7 +81,19 @@ header-includes:
 {\huge\@title}\vskip1.5em
 \includegraphics[width=10cm, height=10cm]{images/logo.png}\vskip1.5em
 {\LARGE Manuel utilisateur}\vskip1.5em
-{\large\@author}\vskip1.5em
+{
+    \large
+    Groupe 4B\vskip0.4em
+    \begin{tabular}{ll}
+        \underline{Chef de projet} & Ludovic Delafontaine \\
+        \underline{Chef remplaçant} & Lucas Elisei \\
+        \underline{Membres} & David Truan \\
+        & Denise Gemesio \\
+        & Thibault Togue \\
+        & Yosra Harbaoui \\
+        \\
+        \underline{Professeur} & René Rentsch \\
+    \end{tabular}}\vskip1.5em
 {\large\@date}
 \end{center}
 \endgroup
@@ -89,12 +101,9 @@ header-includes:
 }
 \makeatother
 
-\title{Commusica\\Le lecteur de musique communautaire et égalitaire}
-
-\author{Chef de projet: Ludovic Delafontaine\\
-   Chef remplaçant: Lucas Elisei\\
-   Membres: David Truan, Denise Gemesio, Thibaut Togue, Yosra Harbaoui\\
-   Responsable du cours: René Rentsch}
+\title{%
+  Commusica \vskip0.4em
+  \large Le lecteur de musique communautaire et égalitaire}
 
 \date{HEIG-VD - Semestre d'été 2017}
 
@@ -207,7 +216,7 @@ Quand le choix du nom de serveur a été fait, la fenêtre principale est affich
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/Server.PNG}
+  \includegraphics[width=0.9\linewidth]{figures_manuel_utilisateur/Server.PNG}
   \captionof{figure}{Interface de l'application lancée en tant que serveur}
 \end{minipage}
 
@@ -232,7 +241,7 @@ Quand l'application est lancée, la fenêtre suivante est affichée à l'écran.
 
 \begin{minipage}{\linewidth}
   \centering
-  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/client.PNG}
+  \includegraphics[width=0.9\linewidth]{figures_manuel_utilisateur/client.PNG}
   \captionof{figure}{Gestion d'un morceau de musique}
 \end{minipage}
 
@@ -286,7 +295,7 @@ Ce panneau vous permet de naviguer entre la liste de lecture actuelle, votre lis
 3. Les playlists des utilisations précédentes.
 
 ### Ajouter de la musique à la liste de lecture en cours de lecture
-Afin d'ajouter de la musique à la liste de lecture en cours, il suffit de glisser-déposer le(s) morceau(x) souhaitée(s) dans le centre de l'interface et celles-ci seront ajoutées au programme. Si votre morceau n'apparaît pas dans l'interface après trente secondes, il est nécessaire de reproduire l'action, le transfert ayant pris trop de temps la première fois. 
+Afin d'ajouter de la musique à la liste de lecture en cours, il suffit de glisser-déposer le(s) morceau(x) souhaitée(s) dans le centre de l'interface et celles-ci seront ajoutées au programme. Si votre morceau n'apparaît pas dans l'interface après trente secondes, il est nécessaire de reproduire l'action, le transfert ayant pris trop de temps la première fois.
 
 ### Liste de lecture en cours de lecture
 
