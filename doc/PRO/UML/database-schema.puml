@@ -1,0 +1,28 @@
+@startuml
+
+object track
+track : id: VARCHAR(50) <<PK>>
+track : title: VARCHAR(50)
+track : artist: VARCHAR(50)
+track : album: VARCHAR(50)
+track : length: INT
+track : uri: VARCHAR(50)
+track : date_added: TIMESTAMP
+track : date_played: TIMESTAMP
+
+object playlist_track <<relation binaire N à N>>
+playlist_track : playlist_id: INT <<PK>>
+playlist_track : track_id: VARCHAR(50) <<PK>>
+playlist_track : votes: INT
+
+object playlist
+playlist : name: VARCHAR(50)
+playlist : date_added: TIMESTAMP
+playlist : date_played: TIMESTAMP
+
+
+track "1" - "*" playlist_track
+
+playlist_track "*" - "1" playlist
+
+@enduml
