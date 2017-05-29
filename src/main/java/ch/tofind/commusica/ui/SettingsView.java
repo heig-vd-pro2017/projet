@@ -93,6 +93,7 @@ public class SettingsView extends AnchorPane {
             } else {
                 Core.setupAsClient();
             }
+            initializeServersList();
         });
     }
 
