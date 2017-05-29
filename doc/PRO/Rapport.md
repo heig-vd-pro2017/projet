@@ -41,7 +41,7 @@ header-includes:
     - \fancyhead[RO,RE]{HEIG-VD - PRO 2017}
 
     # Redefine TOC style.
-    - \setcounter{tocdepth}{1}
+    - \setcounter{tocdepth}{2}
 
     # 'listings' settings.
     - \lstset{breaklines = true}
@@ -233,7 +233,13 @@ Pour chacun des paquets, dérivés des entités décrites au chapitre précéden
 
 Ce paquet est constitué essentiellement de la classe `DatabaseManager`, dont le rôle est d'assurer les méthodes définies par les notions CRUD - Create, Read, Update, Delete - de la base de données de notre application et d'assurer la fermeture de la connexion à celle-ci.
 
-*Hibernate* est la librairie utilisée dans notre projet afin de pouvoir communiquer avec la base de données. Elle utilise un système de sessions afin de garder en cache les différentes informations de la base de données. Avant d'enregistrer quoi que ce soit dans cette dernière, Hibernate va interroger son cache afin de savoir si l'information est disponible et s'il est nécessaire de faire une quelconque action sur la base de données réelle.
+Hibernate est la librairie utilisée dans notre projet afin de pouvoir communiquer avec la base de données. Elle utilise un système de sessions afin de garder en cache les différentes informations de la base de données. Avant d'enregistrer quoi que ce soit dans cette dernière, Hibernate va interroger son cache afin de savoir si l'information est disponible et s'il est nécessaire de faire une quelconque action sur la base de données réelle.
+
+\begin{minipage}[c]{\linewidth}
+  \centering
+  \includegraphics[height=160pt]{figures/database-schema.png}
+  \captionof{figure}{Schéma de la base de données}
+\end{minipage}
 
 ## Paquet `file`
 
@@ -337,7 +343,7 @@ Les `Core` ont chacun un `MulticastClient` pour pouvoir envoyer la liste de lect
 Pour utiliser le Multicast, il est nécessaire de spécifier quelle est l'interface réseau à utiliser pour l'émission et la réception des données. Dans le cas où la machine a plusieurs interfaces réseau, il faudra faire attention et sélectionner la bonne interface dans la liste de l'interface graphique.
 
 ### `NetworkProtocol`
-C'est dans cette classe que sont définies les commandes spécifiques au réseau : `END_OF_COMMUNICATION` et `END_OF_COMMAND`. Les ports pour les différents sockets ainsi que l'adresse du groupe Multicast se trouvent également dans cette classe. Ces derniers ont été choisis arbitrairement parmi les plages disponibles. Bien que peu probable, il est possible qu'une autre application utilise ces mêmes ports. Dans ce cas, le bon fonctionnement de **Commusica** se retrouverait corrompu. Nous n'avons pas voulu laisser ces valeurs dans le fichier de configuration car il est indispensable d'avoir les mêmes ports chez le serveur et chez les clients. Nous avons donc préféré prendre le risque qu'un autre programme utilise les mêmes ports plutôt qu'un utilisateur change ces valeurs.
+C'est dans cette classe que sont définies les commandes spécifiques au réseau : `END_OF_COMMUNICATION` et `END_OF_COMMAND`. Les ports pour les différents sockets ainsi que l'adresse du groupe Multicast se trouvent également dans cette classe. Ces derniers ont été choisis arbitrairement parmi les plages disponibles. Bien que peu probable, il est possible qu'une autre application utilise ces mêmes ports. Dans ce cas, le bon fonctionnement de Commusica se retrouverait corrompu. Nous n'avons pas voulu laisser ces valeurs dans le fichier de configuration car il est indispensable d'avoir les mêmes ports chez le serveur et chez les clients. Nous avons donc préféré prendre le risque qu'un autre programme utilise les mêmes ports plutôt qu'un utilisateur change ces valeurs.
 
 ### Threads lancés pour gérer la communication client-serveur
 Voici les différents threads lancés par le client et le serveur.
@@ -660,7 +666,7 @@ Nous avons dû ajouter aux fichiers FXML un ID à chaque structure dont les acti
 # Technologies utilisées
 
 ## Singleton
-Comme expliqué précédemment, nous avons implémenté une partie de nos classes comme étant des *Singleton*. Ce patron de conception fait en sorte qu'une classe n'ait qu'une seule instance.  
+Comme expliqué précédemment, nous avons implémenté une partie de nos classes comme étant des Singleton. Ce patron de conception fait en sorte qu'une classe n'ait qu'une seule instance.  
 Voici un exemple avec la classe `FileManager`:
 
 ```
@@ -734,7 +740,7 @@ Nous l'avons utilisé dans notre projet car JavaFX ne propose pas d'outil de ré
 ## Capsule
 Capsule est un outil de déploiement pour les applications Java. Une capsule est un fichier JAR exécutable unique qui contient tout ce que l'application doit avoir pour pouvoir s'exécuter.
 
-Nous l'avons utilisé dans le but de forcer l'utilisation de l'IPv4 pour les interfaces réseaux sur les ordinateurs Macintosh qui, par défaut, préfèrent l'IPv6 et ne peuvent donc pas communiquer avec les autres systèmes qui, eux, préfèrent l'IPv4.
+Nous l'avons utilisé dans le but de forcer l'utilisation de l'IPv4 pour les interfaces réseaux sur les ordinateurs Apple qui, par défaut, préfèrent l'IPv6 et ne peuvent donc pas communiquer avec les autres systèmes qui, eux, préfèrent l'IPv4.
 
 Lors du lancement de notre programme, la réelle exécution de celui-ci est la suivante:
 
@@ -761,7 +767,7 @@ Nous l'avons choisi pour les raisons suivantes:
 - Débogueur simple et efficace à utiliser.
 
 ## Apache Maven
-Apache Maven est un outil de gestion de projet basé sur *POM* (*Modèle d'Objet de Projet*).
+Apache Maven est un outil de gestion de projet basé sur POM (Modèle d'Objet de Projet).
 
 Nous l'avons utilisé dans le cadre de notre projet afin de pouvoir gérer les dépendances et la compilation de façon unifiées chez tous les développeurs. Il nous a permis de définir une librairie et sa version à utiliser et ainsi, le code de tous les développeurs se base sur les mêmes versions et compile de la même façon pour s'assurer du bon fonctionnement du programme.
 
@@ -2005,7 +2011,7 @@ Les éléments suivants semblent être ceux qui devront prendre plus de temps po
     - Implémentation du fileManager (3h00)
 
 - 22.03.2017
-    - Tutoriel sur [https://www.jmdoudoux.fr/java/dej/chap-hibernate.htm](https://www.jmdoudoux.fr/java/dej/chap-hibernate.htm) pour la réalisation de la couche persistance de l'application avec **ORM** (3h00)
+    - Tutoriel sur [https://www.jmdoudoux.fr/java/dej/chap-hibernate.htm](https://www.jmdoudoux.fr/java/dej/chap-hibernate.htm) pour la réalisation de la couche persistance de l'application avec *ORM* (3h00)
 
 - 20.03.2017
     - Test du fichier SQLite à travers des conteneurs Docker et correction des bugs (3h30)

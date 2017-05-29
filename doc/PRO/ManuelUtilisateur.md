@@ -190,13 +190,6 @@ Vous avez le choix entre lancer l'application en tant que serveur ou client.
 ## Serveur
 Les explications suivantes concernent le lancement de l'application en tant que serveur.
 
-Quand l'application est lancée, la fenêtre suivante sera affichée à l'écran.
-\begin{minipage}{\linewidth}
-  \centering
-  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/Server.PNG}
-  \captionof{figure}{Interface de l'application lancée en tant que serveur}
-\end{minipage}
-
 ### Configuration du serveur
 Quand vous choisissez de lancer l'application en tant que serveur, une fênetre apparaîtera pour vous demander de nommer votre serveur.
 
@@ -206,9 +199,18 @@ Quand vous choisissez de lancer l'application en tant que serveur, une fênetre 
   \captionof{figure}{Dialogue pour donner un nom au serveur}
 \end{minipage}
 
+### Interface serveur
+Quand l'application est lancée, la fenêtre suivante sera affichée à l'écran.
+\begin{minipage}{\linewidth}
+  \centering
+  \includegraphics[width=\linewidth]{figures_manuel_utilisateur/Server.PNG}
+  \captionof{figure}{Interface de l'application lancée en tant que serveur}
+\end{minipage}
+
 ## Client
 Les explications suivantes concernent le lancement de l'application en tant que client.
 
+### Interface client
 Quand l'application est lancée, la fenêtre suivante sera affichée à l'écran.
 \begin{minipage}{\linewidth}
   \centering
